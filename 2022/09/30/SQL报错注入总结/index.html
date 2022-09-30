@@ -20,19 +20,27 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="Are you still in pain?">
+  <meta name="description" content="SQL报错注入小结，刚刚入门的我太菜啦，请师傅们亲喷！">
 <meta property="og:type" content="article">
-<meta property="og:title" content="test3">
-<meta property="og:url" content="http://example.com/2022/09/29/test3/index.html">
+<meta property="og:title" content="MYSQL Error Injection">
+<meta property="og:url" content="http://example.com/2022/09/30/SQL%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="Boogiepop Don&#39;t Laugh">
-<meta property="og:description" content="Are you still in pain?">
+<meta property="og:description" content="SQL报错注入小结，刚刚入门的我太菜啦，请师傅们亲喷！">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-09-28T19:03:20.000Z">
-<meta property="article:modified_time" content="2022-09-28T19:03:20.759Z">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930233454931.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234806093.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234508371.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234857318.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234957469.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930235938888.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221001000013906.png">
+<meta property="article:published_time" content="2022-09-30T15:04:00.000Z">
+<meta property="article:modified_time" content="2022-09-30T16:00:34.404Z">
 <meta property="article:author" content="Boogipop">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930233454931.png">
 
-<link rel="canonical" href="http://example.com/2022/09/29/test3/">
+<link rel="canonical" href="http://example.com/2022/09/30/SQL%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/">
 
 
 <script id="page-configurations">
@@ -45,7 +53,7 @@
   };
 </script>
 
-  <title>test3 | Boogiepop Don't Laugh</title>
+  <title>MYSQL Error Injection | Boogiepop Don't Laugh</title>
   
 
 
@@ -194,7 +202,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/29/test3/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/30/SQL%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/pic.png">
@@ -207,7 +215,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          test3
+          MYSQL Error Injection
         </h1>
 
         <div class="post-meta">
@@ -217,10 +225,18 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-09-29 03:03:20" itemprop="dateCreated datePublished" datetime="2022-09-29T03:03:20+08:00">2022-09-29</time>
+              <time title="创建时间：2022-09-30 23:04:00" itemprop="dateCreated datePublished" datetime="2022-09-30T23:04:00+08:00">2022-09-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-01 00:00:34" itemprop="dateModified" datetime="2022-10-01T00:00:34+08:00">2022-10-01</time>
+              </span>
 
           
+            <div class="post-description">SQL报错注入小结，刚刚入门的我太菜啦，请师傅们亲喷！</div>
 
         </div>
       </header>
@@ -231,7 +247,51 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h1 id="MYSQL-报错注入"><a href="#MYSQL-报错注入" class="headerlink" title="MYSQL 报错注入"></a>MYSQL 报错注入</h1><h2 id="0X1-Updatexml"><a href="#0X1-Updatexml" class="headerlink" title="0X1 Updatexml"></a>0X1 Updatexml</h2><ul>
+<li><p><code>updatexml（XML_document，XPath_string，new_value）</code>:</p>
+<p>该函数的作用是修改xml文件中数据，<code>XML_document</code>表示xml文件名，这个随便你取什么；<code>XPath_string</code>指的是你修改的字符串；<code>new value</code>指的是你要修改成什么值</p>
+<ul>
+<li>updatexml使用时，当xpath_string格式出现错误，mysql则会爆出xpath语法错误（xpath syntax）</li>
+<li>例如： select * from test where id &#x3D; 1 and (updatexml(1,0x7e,3)); 由于0x7e是~，不属于xpath语法格式，因此报出xpath语法错误。(ps:0x7e就是波浪号)、</li>
+<li>该函数的返回值,如果查找到了字符串，返回值为1；如果没查找到或者报错则为0</li>
+</ul>
+</li>
+<li><p>本地测试：</p>
+<p><code>select * from tb1 where idd = 1 and (updatexml(1,concat(0x7e,database()),3));</code>：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930233454931.png" alt="image-20220930233454931"></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234806093.png" alt="image-20220930234806093"></p>
+<p>这边咱们的数据库就被暴出来了，因此这是存在漏洞的，由于我们的~不符合xml的语法，所以会报错</p>
+</li>
+<li><p>例题（CTFSHOW-web244):</p>
+</li>
+</ul>
+<p>​	<img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234508371.png" alt="image-20220930234508371">	</p>
+<p>查询语句如上<code>  $sql = &quot;select id,username,pass from ctfshow_user where id = &#39;&quot;.$id.&quot;&#39; limit 1;&quot;;</code></p>
+<p>这边肯定是存在一个error注入的，咱们payload：</p>
+<p><code>?id=1&#39; and updatexml(1,concat(0x7e,database(),0x7e),1)-- -</code>：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234857318.png" alt="image-20220930234857318"></p>
+<p>咱们的库名就被爆出来了，接下来只需要一步步的去报表,字段即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e),1)-- -</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234957469.png" alt="image-20220930234957469"></p>
+<p>接下来就不赘述~</p>
+<h2 id="0X2-Extractvalue"><a href="#0X2-Extractvalue" class="headerlink" title="0X2 Extractvalue"></a>0X2 Extractvalue</h2><ul>
+<li><p><code>extractvalue(XML_document，xpath_string)</code>:该函数的作用是查找xml文件中指定字符串，若查找到则返回1，否则0，和updatexml真的几乎一模一样了</p>
+<ul>
+<li>extractvalue使用时当xpath_string格式出现错误，mysql则会爆出xpath语法错误（xpath syntax），这一点和updatexml一样</li>
+</ul>
+</li>
+<li><p>本地测试：</p>
+<p> <code>select 1,extractvalue(1,concat(0x7e,database()));</code></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930235938888.png" alt="image-20220930235938888"></p>
+<p>和上面同样的效果，能爆出库名</p>
+</li>
+<li><p>例题（CTFSHOW-WEB245):</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221001000013906.png" alt="image-20221001000013906"></p>
+</li>
+</ul>
+<p>​		这一题过滤了updatexml，那我们就使用extractvalue</p>
+
     </div>
 
     
@@ -244,13 +304,6 @@
 
 
         
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/09/29/test2/" rel="prev" title="test2">
-      <i class="fa fa-chevron-left"></i> test2
-    </a></div>
-      <div class="post-nav-item"></div>
-    </div>
       </footer>
     
   </article>
@@ -308,6 +361,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MYSQL-%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="nav-number">1.</span> <span class="nav-text">MYSQL 报错注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0X1-Updatexml"><span class="nav-number">1.1.</span> <span class="nav-text">0X1 Updatexml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X2-Extractvalue"><span class="nav-number">1.2.</span> <span class="nav-text">0X2 Extractvalue</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -323,7 +377,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">1</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
