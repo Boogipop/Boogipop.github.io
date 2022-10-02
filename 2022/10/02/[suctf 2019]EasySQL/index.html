@@ -20,19 +20,31 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
   </script>
 
-  <meta name="description" content="杂乱无章">
-<meta property="og:type" content="website">
-<meta property="og:title" content="日程">
-<meta property="og:url" content="http://example.com/schedule/index.html">
+  <meta name="description" content="一道比较有意思的SQL注入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[SUBCTF 2019] EasySQL">
+<meta property="og:url" content="http://example.com/2022/10/02/[suctf%202019]EasySQL/index.html">
 <meta property="og:site_name" content="Boogiepop Don&#39;t Laugh">
-<meta property="og:description" content="杂乱无章">
+<meta property="og:description" content="一道比较有意思的SQL注入">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-09-28T18:47:45.000Z">
-<meta property="article:modified_time" content="2022-09-30T16:08:36.319Z">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002114646907.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002114722010.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002114800610.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122407631.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122435267.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122700582.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122735358.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002123000783.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002123316191.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002123407552.png">
+<meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002124012053.png">
+<meta property="article:published_time" content="2022-10-02T03:46:19.364Z">
+<meta property="article:modified_time" content="2022-10-02T05:01:52.294Z">
 <meta property="article:author" content="Boogipop">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002114646907.png">
 
-<link rel="canonical" href="http://example.com/schedule/">
+<link rel="canonical" href="http://example.com/2022/10/02/[suctf%202019]EasySQL/">
 
 
 <script id="page-configurations">
@@ -40,13 +52,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>日程 | Boogiepop Don't Laugh
-</title>
+  <title>[SUBCTF 2019] EasySQL | Boogiepop Don't Laugh</title>
   
 
 
@@ -192,43 +203,120 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/02/[suctf%202019]EasySQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pic.png">
+      <meta itemprop="name" content="Boogipop">
+      <meta itemprop="description" content="Are you still in pain?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Boogiepop Don't Laugh">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [SUBCTF 2019] EasySQL
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">日程
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2022-10-02 11:46:19 / 修改时间：13:01:52" itemprop="dateCreated datePublished" datetime="2022-10-02T11:46:19+08:00">2022-10-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" itemprop="url" rel="index"><span itemprop="name">SQL注入</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">一道比较有意思的SQL注入</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>进入页面，输入1发现：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002114646907.png" alt="image-20221002114646907"></p>
+<p>返回我们输出的1了，然后再输入0发现：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002114722010.png" alt="image-20221002114722010"></p>
+<p>输入1;show tables#可以发现：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002114800610.png" alt="image-20221002114800610"></p>
+<p>从这里得知表名为<code>Flag</code>,可是当我想<code>show columns from Flag</code>后发现，<code>Flag</code>与<code>from</code>全部被ban了，从这里可以猜测一下查询语句大概是，<code>select $_POST[&#39;query&#39;]||flag from Flag</code>，这个‘||’是什么意思呢？，本地测试：</p>
+<p>测试用的表是：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122407631.png" alt="image-20221002122407631"></p>
+<p>这边先输入<code>select 1||name from tb1;</code>：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122435267.png" alt="image-20221002122435267"></p>
+<p>发现返回的全是1，这边再输入<code>select 0||name from tb1;</code>：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122700582.png" alt="image-20221002122700582"></p>
+<p>这次返回的全是0,再换过另外一个字段看看：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122735358.png" alt="image-20221002122735358"></p>
+<p>我们的id字段不管输入什么都是1，其实道理很简单，id字段是int型，**||逻辑就是有非0就返回1<strong>，而id字段里面全部非0，所以运算结果自然是1，而name是字符串，</strong>字符串就相当于0**，所以当输入0时返回0，输入1时返回1</p>
+<p>知道这一点就好办了，我们接下来payload：<code>*,1</code>:</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002123000783.png" alt="image-20221002123000783"></p>
+<p>道理很简单输入*，1后相当于查询语句就是<code>select *,1||flag from Flag;</code>,结合上面的讲解很容易就知道结果，方便理解我在本地测试一下：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002123316191.png" alt="image-20221002123316191"></p>
+<p>假如想反过来写记得用反引号包裹：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002123407552.png" alt="image-20221002123407552"></p>
+<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>我们可以结合set指令和sql_mode变量来得到答案</p>
+<p>set指令：就是设置一个变量的值<a target="_blank" rel="noopener" href="https://blog.csdn.net/JesseYoung/article/details/40779631">https://blog.csdn.net/JesseYoung/article/details/40779631</a></p>
+<p>sql_mode变量：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/clschao/articles/9962347.html">https://www.cnblogs.com/clschao/articles/9962347.html</a></p>
+<p>sql_mode变量里面有一个很重要的常用值<code>sql_mode=PIPES_AS_CONCAT</code>,意思就是 将”||”视为字符串的连接操作符而非或运算符，也就是把||当做concat函数，payload<code>query=1;set sql_mode=PIPES_AS_CONCAT;select 1</code>:</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002124012053.png" alt="image-20221002124012053"></p>
+<p>意思也就是 <code>select 1;set sql_mode=pipes_as_concat;select 1||flag from Flag</code>,这里变成了三条语句，由于设置了sql_mode的值，所以最后||相当于concat，也就是concat(1,flag)</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/09/30/SQL%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/" rel="prev" title="MYSQL Error Injection">
+      <i class="fa fa-chevron-left"></i> MYSQL Error Injection
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/10/02/%5BHNCTF%5D-challenge_rce/" rel="next" title="[HNCTF] challenge_rce">
+      [HNCTF] challenge_rce <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <h1 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h1><h1 id="乱"><a href="#乱" class="headerlink" title="乱"></a>乱</h1><h1 id="无"><a href="#无" class="headerlink" title="无"></a>无</h1><h1 id="章"><a href="#章" class="headerlink" title="章"></a>章</h1>
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -279,7 +367,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%82"><span class="nav-number">1.</span> <span class="nav-text">杂</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B9%B1"><span class="nav-number">2.</span> <span class="nav-text">乱</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0"><span class="nav-number">3.</span> <span class="nav-text">无</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%A0"><span class="nav-number">4.</span> <span class="nav-text">章</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="nav-number">1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="nav-number">2.</span> <span class="nav-text">方法二</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

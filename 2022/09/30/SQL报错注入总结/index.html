@@ -44,7 +44,7 @@
 <meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/2089209-20200710110004060-1352545741.png">
 <meta property="og:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/2089209-20200710112807067-683100971.png">
 <meta property="article:published_time" content="2022-09-30T15:04:00.000Z">
-<meta property="article:modified_time" content="2022-09-30T16:52:14.177Z">
+<meta property="article:modified_time" content="2022-10-02T04:56:48.865Z">
 <meta property="article:author" content="Boogipop">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930233454931.png">
@@ -146,6 +146,11 @@
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
@@ -241,8 +246,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-01 00:52:14" itemprop="dateModified" datetime="2022-10-01T00:52:14+08:00">2022-10-01</time>
+                <time title="修改时间：2022-10-02 12:56:48" itemprop="dateModified" datetime="2022-10-02T12:56:48+08:00">2022-10-02</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" itemprop="url" rel="index"><span itemprop="name">SQL注入</span></a>
+                </span>
+            </span>
 
           
             <div class="post-description">SQL报错注入小结，刚刚入门的我太菜啦，请师傅们亲喷！</div>
@@ -385,6 +399,7 @@
 <li>而select count(*) from information_schema.tables group by concat(database(),floor(rand()*2));却不一定了吧。（要成功注入，前提表中的记录数至少为两条）</li>
 </ul>
 <p><strong>没错是因为floor(rand()*2)的前几位随机数顺序是不固定的，所以并不能保证一定会注入成功，但是其只需两条记录数就行了（因为它可能会产出 “0101” ，这样只需两条记录就可以成功注入，你可以试试推导一下），这也算是它的优势吧。</strong></p>
+<p>​		</p>
 
     </div>
 
@@ -398,6 +413,13 @@
 
 
         
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/10/02/%5Bsuctf%202019%5DEasySQL/" rel="next" title="[SUBCTF 2019] EasySQL">
+      [SUBCTF 2019] EasySQL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
     
   </article>
@@ -471,9 +493,15 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
 </div>
