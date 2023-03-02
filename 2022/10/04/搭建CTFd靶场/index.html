@@ -1,107 +1,64 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>搭建CTFd靶场 | Boogiepop Don't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"键入以继续","blurHolder":"数据检索","noResult":"无 $0 相关数据"},"code":{"codeInfo":"$0 - 共 $1 行","copy":"复制","copyFinish":"复制成功","expand":"展开"}}</script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Don't Laugh" type="application/atom+xml">
+</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="数据检索" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>搭建CTFd靶场</h1><div id="post-info"><span>文章发布时间: <div class="control"><time datetime="2022-10-04T09:27:24.095Z" id="date"> 2022-10-04</time></div></span><br><span>最后更新时间: <div class="control"><time datetime="2022-10-04T09:27:30.681Z" id="updated"> 2022-10-04</time></div></span></div></div><hr><div id="post-content"><h2 id="步骤一，安装一下docker"><a href="#步骤一，安装一下docker" class="headerlink" title="步骤一，安装一下docker"></a>步骤一，安装一下docker</h2><p>由于我买的是腾讯云的Ubuntu20.04服务器，这里就以这个为例，其实大部分的linux版本也都可以这样</p>
+<p>按步骤执行以下指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">使用 apt-get 进行安装</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">step 1: 安装必要的一些系统工具</span></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">step 2: 安装GPG证书</span></span><br><span class="line">curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Step 3: 写入软件源信息</span></span><br><span class="line">sudo add-apt-repository &quot;deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Step 4: 更新并安装Docker-CE</span></span><br><span class="line">sudo apt-get -y update</span><br><span class="line">sudo apt-get -y install docker-ce</span><br><span class="line"><span class="meta prompt_"> </span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装指定版本的Docker-CE:</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Step 1: 查找Docker-CE的版本:</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">apt-cache madison docker-ce</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">  docker-ce | 17.03.1~ce-0~ubuntu-xenial | https://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial/stable amd64 Packages</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">  docker-ce | 17.03.0~ce-0~ubuntu-xenial | https://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial/stable amd64 Packages</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Step 2: 安装指定版本的Docker-CE: (VERSION例如上面的17.03.1~ce-0~ubuntu-xenial)</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">sudo apt-get -y install docker-ce=[VERSION]</span></span><br></pre></td></tr></table></figure>
 
-block content
-  -
-    const prev = page.prev
-    const next = page.next
-    const dateConf = theme.post.date
-    const updatedConf = theme.post.updated
-    const excerptConf = theme.post.excerpt
-    const reward = theme.post.reward
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-    const countWord = theme.post.count === true && wordcount !== undefined ? wordcount(page.content) : null
-    const countTime = theme.post.time === true && min2read !== undefined ? min2read(page.content) : null
-  #post-bg
-    #post-title
-      h1= page.title
-      if (dateConf || updatedConf) && page.published
-        #post-info
-          - var first = true
-          if dateConf
-            span #{__('post.posted')}
-              div.control
-                time(datetime=page.date.toJSON())#date
-                  = ' ' + date(page.date, date_format)
-            - first = false
-          if updatedConf
-            if !first
-              br
-            span #{__('post.edited')}
-              div.control
-                time(datetime=page.updated.toJSON())#updated
-                  = ' ' + date(page.updated, date_format)
-            - first = false
-          if countWord
-            if !first
-              br
-            span #{__('post.countTotal')}
-              div.control #{countWord}
-            - first = false
-          if countTime
-            if !first
-              br
-            span #{__('post.timeTotal')}
-              div.control #{countTime} #{__('post.timeUnit')}
-    hr
-    #post-content
-      if excerptConf || encrypted
-        != page.content
-      else
-        != page.more
-      #paginator!= paginator()
-    #post-footer
-      if prev || next
-        - let fix = ""
-        if prev === undefined
-          - fix = "justify-content: flex-end"
-        if next === undefined
-          - fix = "justify-content: flex-start"
-        #pages(style=fix)
-          if prev !== undefined
-            .footer-link(style="width: 50%;text-align:right;border-right:1px #fe2 solid")
-              a(href=url_for(prev.path))
-                |← Next
-                = ' ' + prev.title
-          if next !== undefined
-            .footer-link(style="width: 50%;right:1px;border-left:1px #fe2 solid")
-              a(href=url_for(next.path))
-                = next.title + ' '
-                |Prev →
-    if reward
-      details#reward
-        summary #{__('post.reward')}
-        each imgSrc, pay in reward
-          div
-            span #{pay}
-            br
-            img(src=config.root + imgSrc)
-    -
-      let count = (theme.valine.enable === true) +
-                  (theme.gitalk.enable === true) +
-                  (theme.waline.enable === true)
-    if page.comments && count
-      #comments
-        if count > 0
-          .selector
-            if theme.valine.enable === true
-              button.valine-sel
-            if theme.gitalk.enable === true
-              button.gitalk-sel
-            if theme.waline.enable === true
-              button.waline-sel
-        if theme.valine.enable === true
-          #valine
-        if theme.gitalk.enable === true
-          #gitalk
-        if theme.waline.enable === true
-          #waline
+<p>输入以下命令验证是否安装成功：</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker <span class="keyword">run</span><span class="language-bash"> hello-world</span></span><br></pre></td></tr></table></figure>
 
-block aside-block
-  - 
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-  if (tocContent.length > 0)
-    #toc-div(style=encrypted !== undefined?"display:none":"")
-      h1 #{__('post.index')}
-      |!{tocContent}
+<p>出现下列提示说明成功</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/15863171-3c548c366e94a09c.png" alt="img"></p>
+<h2 id="步骤二，初始化docker环境"><a href="#步骤二，初始化docker环境" class="headerlink" title="步骤二，初始化docker环境"></a>步骤二，初始化docker环境</h2><p>首先在自己的root文件夹下写一个init.sh文件:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /root</span><br><span class="line">vi init.sh</span><br></pre></td></tr></table></figure>
+
+<p> 内容如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">更新系统</span></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装 docker和docker-compose</span></span><br><span class="line">sudo apt install docker docker-compose zip</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">设置镜像加速器</span></span><br><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://faalpdo3.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p>然后执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">chmod +x init.sh</span><br><span class="line"></span><br><span class="line">./init.sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="步骤三，搭建CTFd"><a href="#步骤三，搭建CTFd" class="headerlink" title="步骤三，搭建CTFd"></a>步骤三，搭建CTFd</h2><h3 id="1-拉取CTFd镜像"><a href="#1-拉取CTFd镜像" class="headerlink" title="1.拉取CTFd镜像"></a>1.拉取CTFd镜像</h3><p>直接<code>docker run -p 8000:8000 -d ctfd/ctfd</code></p>
+<p>本来是要用pull的run也可以默认给你自动装</p>
+<p>然后访问url+开放的端口号</p>
+<p>有初始化的界面，设置一下管理员账号密码即可</p>
+<h3 id="2-汉化ctfd"><a href="#2-汉化ctfd" class="headerlink" title="2.汉化ctfd"></a>2.汉化ctfd</h3><p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20211031203901602.png" alt="image-20211031203901602"></p>
+<p>首先利用docker ps去查看id，然后利用id进入docker容器里面</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it de6fe1167985 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>然后下载汉化包，用git下载：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/Gu-f/CTFd_chinese_CN.git</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">切换到CTFd目录 删除主题</span><br><span class="line">rm -rf themes</span><br><span class="line"></span><br><span class="line">然后把下载好的主题以及对应的版本cp过来</span><br><span class="line">cp /opt/CTFd/CTFd_chinese_CN/V3.1.1/CTFd-3.1.1/CTFd/themes .</span><br></pre></td></tr></table></figure>
+
+<p>刷新页面就好了</p>
+<h2 id="步骤四，出题"><a href="#步骤四，出题" class="headerlink" title="步骤四，出题"></a>步骤四，出题</h2><h3 id="1-编写dockerfile"><a href="#1-编写dockerfile" class="headerlink" title="1.编写dockerfile"></a>1.编写dockerfile</h3><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> odenktools/php7.<span class="number">2</span>-apache2</span><br><span class="line"></span><br><span class="line"><span class="keyword">LABEL</span><span class="language-bash"> Author=<span class="string">&quot;Boogipop&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./src/index.php /var/www/html/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./src/fllllaaaagggg /</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">chmod</span> -R 755 /var/www/html/ &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">chown</span> -R root:root /var/www/html </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> sh -c <span class="string">&quot;apache2-foreground&quot;</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-在src目录准备题目源码和flag"><a href="#2-在src目录准备题目源码和flag" class="headerlink" title="2.在src目录准备题目源码和flag"></a>2.在src目录准备题目源码和flag</h3><p>这边就是在当前目录新建一个src目录，然后创建flag和index.php即可</p>
+<h3 id="3-直接运行docker"><a href="#3-直接运行docker" class="headerlink" title="3.直接运行docker"></a>3.直接运行docker</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t trick:v3 .   // .的意思是把当前目录下的文件都给打包</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 7000:80 -d trick:v3</span><br></pre></td></tr></table></figure>
+
+<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2022/10/04/CTFSHOW-SSTI/">← Next CTFSHOW-SSTI</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2022/10/03/CTFSHOW-XSS/">CTFSHOW-XSS Prev →</a></div></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="回到顶部" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="文章目录">≡</a><a id="color-mode" onClick="colorMode.change()" title="切换主题"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>目录</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4%E4%B8%80%EF%BC%8C%E5%AE%89%E8%A3%85%E4%B8%80%E4%B8%8Bdocker"><span class="toc-number">1.</span> <span class="toc-text">步骤一，安装一下docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4%E4%BA%8C%EF%BC%8C%E5%88%9D%E5%A7%8B%E5%8C%96docker%E7%8E%AF%E5%A2%83"><span class="toc-number">2.</span> <span class="toc-text">步骤二，初始化docker环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4%E4%B8%89%EF%BC%8C%E6%90%AD%E5%BB%BACTFd"><span class="toc-number">3.</span> <span class="toc-text">步骤三，搭建CTFd</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8B%89%E5%8F%96CTFd%E9%95%9C%E5%83%8F"><span class="toc-number">3.1.</span> <span class="toc-text">1.拉取CTFd镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%B1%89%E5%8C%96ctfd"><span class="toc-number">3.2.</span> <span class="toc-text">2.汉化ctfd</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4%E5%9B%9B%EF%BC%8C%E5%87%BA%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">步骤四，出题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BC%96%E5%86%99dockerfile"><span class="toc-number">4.1.</span> <span class="toc-text">1.编写dockerfile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9C%A8src%E7%9B%AE%E5%BD%95%E5%87%86%E5%A4%87%E9%A2%98%E7%9B%AE%E6%BA%90%E7%A0%81%E5%92%8Cflag"><span class="toc-number">4.2.</span> <span class="toc-text">2.在src目录准备题目源码和flag</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8Cdocker"><span class="toc-number">4.3.</span> <span class="toc-text">3.直接运行docker</span></a></li></ol></li></ol></div></div><footer><nobr>构建自 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> 使用主题 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>主题作者 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script></body></html>

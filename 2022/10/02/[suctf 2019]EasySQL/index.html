@@ -1,107 +1,51 @@
-extends includes/layout.pug
-
-block content
-  -
-    const prev = page.prev
-    const next = page.next
-    const dateConf = theme.post.date
-    const updatedConf = theme.post.updated
-    const excerptConf = theme.post.excerpt
-    const reward = theme.post.reward
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-    const countWord = theme.post.count === true && wordcount !== undefined ? wordcount(page.content) : null
-    const countTime = theme.post.time === true && min2read !== undefined ? min2read(page.content) : null
-  #post-bg
-    #post-title
-      h1= page.title
-      if (dateConf || updatedConf) && page.published
-        #post-info
-          - var first = true
-          if dateConf
-            span #{__('post.posted')}
-              div.control
-                time(datetime=page.date.toJSON())#date
-                  = ' ' + date(page.date, date_format)
-            - first = false
-          if updatedConf
-            if !first
-              br
-            span #{__('post.edited')}
-              div.control
-                time(datetime=page.updated.toJSON())#updated
-                  = ' ' + date(page.updated, date_format)
-            - first = false
-          if countWord
-            if !first
-              br
-            span #{__('post.countTotal')}
-              div.control #{countWord}
-            - first = false
-          if countTime
-            if !first
-              br
-            span #{__('post.timeTotal')}
-              div.control #{countTime} #{__('post.timeUnit')}
-    hr
-    #post-content
-      if excerptConf || encrypted
-        != page.content
-      else
-        != page.more
-      #paginator!= paginator()
-    #post-footer
-      if prev || next
-        - let fix = ""
-        if prev === undefined
-          - fix = "justify-content: flex-end"
-        if next === undefined
-          - fix = "justify-content: flex-start"
-        #pages(style=fix)
-          if prev !== undefined
-            .footer-link(style="width: 50%;text-align:right;border-right:1px #fe2 solid")
-              a(href=url_for(prev.path))
-                |← Next
-                = ' ' + prev.title
-          if next !== undefined
-            .footer-link(style="width: 50%;right:1px;border-left:1px #fe2 solid")
-              a(href=url_for(next.path))
-                = next.title + ' '
-                |Prev →
-    if reward
-      details#reward
-        summary #{__('post.reward')}
-        each imgSrc, pay in reward
-          div
-            span #{pay}
-            br
-            img(src=config.root + imgSrc)
-    -
-      let count = (theme.valine.enable === true) +
-                  (theme.gitalk.enable === true) +
-                  (theme.waline.enable === true)
-    if page.comments && count
-      #comments
-        if count > 0
-          .selector
-            if theme.valine.enable === true
-              button.valine-sel
-            if theme.gitalk.enable === true
-              button.gitalk-sel
-            if theme.waline.enable === true
-              button.waline-sel
-        if theme.valine.enable === true
-          #valine
-        if theme.gitalk.enable === true
-          #gitalk
-        if theme.waline.enable === true
-          #waline
-
-block aside-block
-  - 
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-  if (tocContent.length > 0)
-    #toc-div(style=encrypted !== undefined?"display:none":"")
-      h1 #{__('post.index')}
-      |!{tocContent}
+<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>[SUBCTF 2019] EasySQL | Boogiepop Don't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"键入以继续","blurHolder":"数据检索","noResult":"无 $0 相关数据"},"code":{"codeInfo":"$0 - 共 $1 行","copy":"复制","copyFinish":"复制成功","expand":"展开"}}</script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Don't Laugh" type="application/atom+xml">
+</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="数据检索" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>[SUBCTF 2019] EasySQL</h1><div id="post-info"><span>文章发布时间: <div class="control"><time datetime="2022-10-02T03:46:19.364Z" id="date"> 2022-10-02</time></div></span><br><span>最后更新时间: <div class="control"><time datetime="2022-10-02T05:01:52.294Z" id="updated"> 2022-10-02</time></div></span></div></div><hr><div id="post-content"><h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>进入页面，输入1发现：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002114646907.png" alt="image-20221002114646907"></p>
+<p>返回我们输出的1了，然后再输入0发现：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002114722010.png" alt="image-20221002114722010"></p>
+<p>输入1;show tables#可以发现：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002114800610.png" alt="image-20221002114800610"></p>
+<p>从这里得知表名为<code>Flag</code>,可是当我想<code>show columns from Flag</code>后发现，<code>Flag</code>与<code>from</code>全部被ban了，从这里可以猜测一下查询语句大概是，<code>select $_POST[&#39;query&#39;]||flag from Flag</code>，这个‘||’是什么意思呢？，本地测试：</p>
+<p>测试用的表是：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122407631.png" alt="image-20221002122407631"></p>
+<p>这边先输入<code>select 1||name from tb1;</code>：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122435267.png" alt="image-20221002122435267"></p>
+<p>发现返回的全是1，这边再输入<code>select 0||name from tb1;</code>：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122700582.png" alt="image-20221002122700582"></p>
+<p>这次返回的全是0,再换过另外一个字段看看：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002122735358.png" alt="image-20221002122735358"></p>
+<p>我们的id字段不管输入什么都是1，其实道理很简单，id字段是int型，**||逻辑就是有非0就返回1<strong>，而id字段里面全部非0，所以运算结果自然是1，而name是字符串，</strong>字符串就相当于0**，所以当输入0时返回0，输入1时返回1</p>
+<p>知道这一点就好办了，我们接下来payload：<code>*,1</code>:</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002123000783.png" alt="image-20221002123000783"></p>
+<p>道理很简单输入*，1后相当于查询语句就是<code>select *,1||flag from Flag;</code>,结合上面的讲解很容易就知道结果，方便理解我在本地测试一下：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002123316191.png" alt="image-20221002123316191"></p>
+<p>假如想反过来写记得用反引号包裹：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002123407552.png" alt="image-20221002123407552"></p>
+<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>我们可以结合set指令和sql_mode变量来得到答案</p>
+<p>set指令：就是设置一个变量的值<a target="_blank" rel="noopener" href="https://blog.csdn.net/JesseYoung/article/details/40779631">https://blog.csdn.net/JesseYoung/article/details/40779631</a></p>
+<p>sql_mode变量：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/clschao/articles/9962347.html">https://www.cnblogs.com/clschao/articles/9962347.html</a></p>
+<p>sql_mode变量里面有一个很重要的常用值<code>sql_mode=PIPES_AS_CONCAT</code>,意思就是 将”||”视为字符串的连接操作符而非或运算符，也就是把||当做concat函数，payload<code>query=1;set sql_mode=PIPES_AS_CONCAT;select 1</code>:</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002124012053.png" alt="image-20221002124012053"></p>
+<p>意思也就是 <code>select 1;set sql_mode=pipes_as_concat;select 1||flag from Flag</code>,这里变成了三条语句，由于设置了sql_mode的值，所以最后||相当于concat，也就是concat(1,flag)</p>
+<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2022/10/02/%5BHNCTF%5D-challenge_rce/">← Next [HNCTF] challenge_rce</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2022/09/30/SQL%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/">MYSQL Error Injection Prev →</a></div></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="回到顶部" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="文章目录">≡</a><a id="color-mode" onClick="colorMode.change()" title="切换主题"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>目录</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="toc-number">1.</span> <span class="toc-text">方法一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="toc-number">2.</span> <span class="toc-text">方法二</span></a></li></ol></div></div><footer><nobr>构建自 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> 使用主题 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>主题作者 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script></body></html>

