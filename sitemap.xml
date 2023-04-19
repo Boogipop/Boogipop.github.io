@@ -1069,13 +1069,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/ACTF/</loc>
-    <lastmod>2023-04-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/tags/Java/</loc>
     <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -1091,6 +1084,13 @@
   
   <url>
     <loc>http://example.com/tags/HackTheBox/</loc>
+    <lastmod>2023-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/ACTF/</loc>
     <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1139,14 +1139,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/RCE/</loc>
+    <loc>http://example.com/tags/SSTI/</loc>
     <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/SSTI/</loc>
+    <loc>http://example.com/tags/RCE/</loc>
     <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1160,14 +1160,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/DiceCTF/</loc>
+    <loc>http://example.com/tags/%E5%BC%80%E5%8F%91/</loc>
     <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/%E5%BC%80%E5%8F%91/</loc>
+    <loc>http://example.com/tags/DiceCTF/</loc>
     <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1195,14 +1195,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/hxp/</loc>
+    <loc>http://example.com/tags/IdekCTF/</loc>
     <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/IdekCTF/</loc>
+    <loc>http://example.com/tags/hxp/</loc>
     <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1272,6 +1272,13 @@
   </url>
   
   <url>
+    <loc>http://example.com/tags/TCTF/</loc>
+    <lastmod>2023-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/tags/%E5%A4%8D%E7%8E%B0/</loc>
     <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -1280,13 +1287,6 @@
   
   <url>
     <loc>http://example.com/tags/ThinkPHP/</loc>
-    <lastmod>2023-04-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/tags/TCTF/</loc>
     <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
