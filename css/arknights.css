@@ -1658,6 +1658,79 @@ main:not(.up) .search #search-header input {
     left: 0;
   }
 }
+#valine {
+  color: var(--theme-text-light);
+  padding: 10px 0;
+}
+#valine code {
+  font-family: "JetBrains Mono";
+}
+#valine .vwrap {
+  background-color: var(--theme-bg-soft);
+  transition: 0.3s;
+}
+#valine .vwrap:hover {
+  background-color: var(--theme-bg-soft-hover);
+  border-color: var(--theme-border);
+}
+#valine .vheader .vinput {
+  border-bottom-style: solid;
+}
+#valine .vheader .vinput:focus {
+  color: var(--theme-highlight);
+  border-bottom-color: var(--theme-border);
+}
+#valine .vicon:hover {
+  background-color: unset;
+}
+#valine .vsubmit:hover {
+  color: var(--theme-subcolor);
+  border-color: var(--theme-border);
+  background-color: var(--theme-bg-soft-hover);
+}
+#valine .vsys {
+  background-color: transparent;
+}
+#valine .vmeta .vat {
+  color: var(--theme-subcolor);
+}
+#valine .vcontent {
+  color: var(--theme-text);
+  border-left: var(--theme-subcolor) solid 3px;
+  padding: 0.625em 0 0.625em 20px;
+  background-color: var(--theme-bg-soft);
+  transition: 0.3s;
+}
+#valine .vcontent:hover {
+  border-color: var(--theme-highlight);
+  background-color: var(--theme-bg-soft-hover);
+}
+#valine .vcontent::before {
+  background: linear-gradient(180deg, transparent, var(--theme-bg-trans0));
+}
+#valine .vcontent::after {
+  background: var(--theme-bg-trans0);
+}
+#valine .vcontent p {
+  color: var(--theme-text-light);
+}
+#valine a,
+#valine button,
+#valine .vicon,
+#valine .vnick,
+#valine .vat {
+  cursor: var(--cursor-data) 3 3, pointer;
+}
+#valine a {
+  color: var(--theme-highlight);
+}
+#valine a:hover {
+  color: var(--theme-text-hover);
+}
+#veditor {
+  color: var(--theme-text-light);
+  font-family: "JetBrains Mono";
+}
 .loading {
   transition: opacity 0.3s;
 }
