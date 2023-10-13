@@ -1,13 +1,179 @@
-<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="referrer" content="no-referrer"><meta name="google-site-verification" content="YKwcqblwsZCg-ylX8b6YPzjmkIRadB3nD8IU3XMN6gg"><title>PyYaml反序列化 | Boogiepop Doesn't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy","copyFinish":"copied","expand":"expand"}}</script><script src="//unpkg.com/valine/dist/Valine.min.js"></script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
-if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
- font-family: BenderLight;
- src: local('Bender'), url("/font/BenderLight.ttf");
-}
-@font-face {
- font-family: 'JetBrains Mono';
- src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
-}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Doesn't Laugh" type="application/atom+xml">
-</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li><li class="navItem"><a class="navBlock" href="/friends/"><span class="navItemTitle">Friends</span></a></li><li class="navItem"><a class="navBlock" href="/about/"><span class="navItemTitle">About</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>PyYaml反序列化</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2023-03-02T09:36:17.176Z" id="date"> 2023-03-02</time></div></span><br><span>Last Update: <div class="control"><time datetime="2023-03-02T09:37:01.412Z" id="updated"> 2023-03-02</time></div></span></div></div><hr><div id="post-content"><h1 id="YAML基本语法"><a href="#YAML基本语法" class="headerlink" title="YAML基本语法"></a>YAML基本语法</h1><p>基本语法就自行参考菜鸟教程或者是其他的教程，挺简单的，一共就三种类型：数组，对象，纯量<br>可以用这个例子全部理解一下：</p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>PyYaml反序列化 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="PyYaml反序列化 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/02/PyYAML%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T09:36:17.176Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">PyYaml反序列化</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="YAML基本语法"><a href="#YAML基本语法" class="headerlink" title="YAML基本语法"></a>YAML基本语法</h1><p>基本语法就自行参考菜鸟教程或者是其他的教程，挺简单的，一共就三种类型：数组，对象，纯量<br>可以用这个例子全部理解一下：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">string_0:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">Boogipop</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;I&#x27;m Tr0y&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;I am fine. \u263A&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;\\x0d\\x0a is \\r\\n&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">newline</span></span><br><span class="line">      <span class="string">newline2</span>  <span class="comment"># 字符串可以拆成多行，每行之间用空格隔开</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># &gt; 可以在字符串中折叠换行</span></span><br><span class="line"><span class="attr">string_1:</span> <span class="string">&gt;</span></span><br><span class="line"><span class="string">    newline</span></span><br><span class="line"><span class="string">    newline2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="comment"># | 保留换行符</span></span><br><span class="line"><span class="attr">string_2:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    newline</span></span><br><span class="line"><span class="string">    newline2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="comment"># | 保留换行符，且去掉最后一个换行符</span></span><br><span class="line"><span class="attr">string_3:</span> <span class="string">|-</span></span><br><span class="line"><span class="string">    newline</span></span><br><span class="line"><span class="string">    newline2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="attr">list:</span> <span class="meta">&amp;id_1</span></span><br><span class="line"><span class="bullet">-</span> <span class="number">18</span>  <span class="comment"># 定义锚点</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">cm</span></span><br><span class="line"></span><br><span class="line"><span class="attr">two_dimensional_list:</span></span><br><span class="line"><span class="bullet">-</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">Boogipop</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">Tr0y</span></span><br><span class="line"></span><br><span class="line"><span class="attr">boolean:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="literal">TRUE</span>  <span class="comment"># true、True、Yes、YES、yes、ON、on、On 都可以</span></span><br><span class="line">    <span class="bullet">-</span> <span class="literal">FALSE</span>  <span class="comment"># false、False、NO、no、No、off、OFF、Off 都可以</span></span><br><span class="line"></span><br><span class="line"><span class="attr">float:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">3.14</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">6.8523015e+5</span>  <span class="comment"># 可以使用科学计数法</span></span><br><span class="line"></span><br><span class="line"><span class="attr">int:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">123</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">0b10100111010010101110</span>  <span class="comment"># 支持二进制表示</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">0x0a</span>  <span class="comment"># 支持十六进制表示</span></span><br><span class="line"></span><br><span class="line"><span class="attr">nulls:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="literal">null</span>  <span class="comment"># NULL 也 ok</span></span><br><span class="line">  <span class="bullet">-</span> <span class="literal">Null</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">~</span></span><br><span class="line">  <span class="bullet">-</span></span><br><span class="line"></span><br><span class="line"><span class="attr">date:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">2018-02-17</span>  <span class="comment"># 日期必须使用 ISO 8601 格式，即 yyyy-MM-dd</span></span><br><span class="line"></span><br><span class="line"><span class="attr">datetime:</span></span><br><span class="line">    <span class="bullet">-</span>  <span class="number">2018-02-17T15:02:31+08:00</span>  <span class="comment"># 时间使用 ISO 8601 格式，时间和日期之间使用 T 连接，最后使用 + 代表时区</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># &gt; 可以在字符串中折叠换行</span></span><br><span class="line"><span class="attr">object:</span> <span class="meta">&amp;id_2</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">Tr0y</span></span><br><span class="line">    <span class="attr">money:</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="attr">json:</span> [&#123;<span class="attr">1:</span> <span class="string">Boogipop</span>, <span class="attr">2:</span> <span class="string">Tr0y</span>&#125;, <span class="string">&quot;???&quot;</span>]  <span class="comment"># 值支持 json</span></span><br><span class="line"></span><br><span class="line"><span class="attr">reference:</span></span><br><span class="line">    <span class="attr">size:</span> <span class="meta">*id_1</span></span><br><span class="line">    <span class="string">&lt;&lt;:</span> <span class="meta">*id_2</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> yaml</span><br><span class="line">f=<span class="built_in">open</span>(<span class="string">&#x27;TestYM.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">y=yaml.load(f)</span><br><span class="line"><span class="built_in">print</span>(y)</span><br></pre></td></tr></table></figure>
 <p>可以自行运行，输出结果和JSON格式一样</p>
@@ -89,22 +255,149 @@ if (window.localStorage.getItem('theme-mode') === 'dark') document.documentEleme
 <li>6.0以上的版本用户必须指定Loader了，否则报错</li>
 </ul>
 <h1 id="可爱的尾巴"><a href="#可爱的尾巴" class="headerlink" title="可爱的尾巴"></a>可爱的尾巴</h1><p>PyYAML这个知识点一直拖欠着没有进行总结，因为总觉得是一个小知识点，今天分析的时候才发现调试和分析过程并没有我想象中的那么简单，但仍然是一个很有趣的过程，我也一直觉得CTF这项竞赛是比较优雅的智力比赛，不断的剖析原理，接触新的tricks才是CTF的乐趣所在，希望HnuSec的大家不要停下来啊！</p>
-<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2023/03/02/Agent%E5%86%85%E5%AD%98%E9%A9%AC%E5%89%96%E6%9E%90/">← Next Agent内存马剖析</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2023/03/02/%E6%B5%85%E5%AD%A6RMI%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">浅学RMI反序列化 Prev →</a></div></div></div><div id="comments"><div class="selector"><button class="valine-sel"></button></div><div id="valine"></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="To Catalog">≡</a><a id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#YAML%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">YAML基本语法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PyYAML%E7%9A%84%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">PyYAML的类型转换</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#YAML%E7%89%88%E6%9C%AC-lt-5-1%E6%94%BB%E5%87%BB%E6%80%9D%E8%B7%AF"><span class="toc-number">3.</span> <span class="toc-text">YAML版本&lt;5.1攻击思路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#python-x2F-object-x2F-apply"><span class="toc-number">3.1.</span> <span class="toc-text">python&#x2F;object&#x2F;apply</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-x2F-object-x2F-new"><span class="toc-number">3.2.</span> <span class="toc-text">python&#x2F;object&#x2F;new</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-x2F-object"><span class="toc-number">3.3.</span> <span class="toc-text">python&#x2F;object</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-x2F-module-package-class"><span class="toc-number">3.4.</span> <span class="toc-text">python&#x2F;module:package.class</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-x2F-name"><span class="toc-number">3.5.</span> <span class="toc-text">python&#x2F;name</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%88%E6%9C%AC-gt-5-1%E6%94%BB%E5%87%BB%E6%80%9D%E8%B7%AF"><span class="toc-number">4.</span> <span class="toc-text">版本&gt;5.1攻击思路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FullConstructor-BreakOut"><span class="toc-number">4.1.</span> <span class="toc-text">FullConstructor BreakOut</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#extend-Attack"><span class="toc-number">4.1.1.</span> <span class="toc-text">extend Attack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#setstate-Attack"><span class="toc-number">4.1.2.</span> <span class="toc-text">setstate Attack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#update-Attack"><span class="toc-number">4.1.3.</span> <span class="toc-text">update Attack</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-2%E2%80%946-0"><span class="toc-number">5.</span> <span class="toc-text">5.2—6.0</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%AF%E7%88%B1%E7%9A%84%E5%B0%BE%E5%B7%B4"><span class="toc-number">6.</span> <span class="toc-text">可爱的尾巴</span></a></li></ol></div></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{new Valine({
- el: '#valine'
- , appId: '4KNp8mNp9RkLrDSktdFbmIO8-gzGzoHsz'
- , appKey: 'I3KhKOyWDf9eRRnVEAit98wt' , placeholder: 'This comment is sent by Penguin Logistics.'
- , path: window.location.pathname
-});code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
- cacheBust: false,
- selectors: ['title','article','#aside-block','.pjax-js'],
- switches: {'article': Pjax.switches.sideBySide},
- switchesOptions: {
-   'article': {
-     classNames: {
-       remove: "pjax-out",
-       add: "pjax-in"
-     }
-   }
- }
-});
-document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/反序列化/" class="tag">#反序列化</a><a href="/tags/Yaml/" class="tag">#Yaml</a><a href="/tags/Python/" class="tag">#Python</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/Agent%E5%86%85%E5%AD%98%E9%A9%AC%E5%89%96%E6%9E%90/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Agent内存马剖析</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/%E6%B5%85%E5%AD%A6RMI%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">浅学RMI反序列化</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

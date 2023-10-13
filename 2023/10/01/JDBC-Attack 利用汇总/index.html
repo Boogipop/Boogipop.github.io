@@ -1,13 +1,179 @@
-<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="referrer" content="no-referrer"><meta name="google-site-verification" content="YKwcqblwsZCg-ylX8b6YPzjmkIRadB3nD8IU3XMN6gg"><title>JDBC-Attack 利用汇总 | Boogiepop Doesn't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy","copyFinish":"copied","expand":"expand"}}</script><script src="//unpkg.com/valine/dist/Valine.min.js"></script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
-if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
- font-family: BenderLight;
- src: local('Bender'), url("/font/BenderLight.ttf");
-}
-@font-face {
- font-family: 'JetBrains Mono';
- src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
-}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Doesn't Laugh" type="application/atom+xml">
-</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li><li class="navItem"><a class="navBlock" href="/friends/"><span class="navItemTitle">Friends</span></a></li><li class="navItem"><a class="navBlock" href="/about/"><span class="navItemTitle">About</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>JDBC-Attack 利用汇总</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2023-10-01T02:35:53.866Z" id="date"> 2023-10-01</time></div></span><br><span>Last Update: <div class="control"><time datetime="2023-10-01T02:36:23.216Z" id="updated"> 2023-10-01</time></div></span></div></div><hr><div id="post-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><img src="https://cdn.nlark.com/yuque/0/2023/jpeg/32634994/1693894592214-eb7779fc-d146-450a-8e84-2a4761d0dec6.jpeg#averageHue=%23a9a090&clientId=u5b0ef69b-b84a-4&from=paste&height=534&id=u7cc17358&originHeight=846&originWidth=564&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=45363&status=done&style=none&taskId=uae236f0e-330b-4fa6-82cd-ef71ca6704b&title=&width=356.20001220703125" alt="johan5.jpg"><br>JDBC的路漫漫，之前只学过mysql的JDBC RCE，趁此机会补一下</p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>JDBC-Attack 利用汇总 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="JDBC-Attack 利用汇总 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/10/01/JDBC-Attack%20%E5%88%A9%E7%94%A8%E6%B1%87%E6%80%BB/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-10-01T02:35:53.866Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>October</span>
+            <span>1,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">JDBC-Attack 利用汇总</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><img src="https://cdn.nlark.com/yuque/0/2023/jpeg/32634994/1693894592214-eb7779fc-d146-450a-8e84-2a4761d0dec6.jpeg#averageHue=%23a9a090&clientId=u5b0ef69b-b84a-4&from=paste&height=534&id=u7cc17358&originHeight=846&originWidth=564&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=45363&status=done&style=none&taskId=uae236f0e-330b-4fa6-82cd-ef71ca6704b&title=&width=356.20001220703125" alt="johan5.jpg"><br>JDBC的路漫漫，之前只学过mysql的JDBC RCE，趁此机会补一下</p>
 <h1 id="H2-RCE"><a href="#H2-RCE" class="headerlink" title="H2 RCE"></a>H2 RCE</h1><p>H2数据库是之前不怎么见到过的一款数据库，之前都不清楚可以RCE，但从最近爆出的MetaBase 2023 的CVE来看还是挺重要的，所以趁着这个机会给他一起学一下。</p>
 <h2 id="INIT-RunScript-RCE"><a href="#INIT-RunScript-RCE" class="headerlink" title="INIT RunScript RCE"></a>INIT RunScript RCE</h2><p>在H2数据库进行初始化的时候或者当我们可以控制JDBC链接时即可完成RCE，并且有很多利用，首先就是INIT,进行H2连接的时候可以执行一段SQL脚本，我们可以构造恶意的脚本去RCE<br>poc.sql</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> ALIAS <span class="keyword">EXEC</span> <span class="keyword">AS</span> <span class="string">&#x27;String shellexec(String cmd) throws java.io.IOException &#123;Runtime.getRuntime().exec(cmd);return &quot;su18&quot;;&#125;&#x27;</span>;<span class="keyword">CALL</span> <span class="keyword">EXEC</span> (<span class="string">&#x27;calc&#x27;</span>)</span><br></pre></td></tr></table></figure>
@@ -58,22 +224,149 @@ if (window.localStorage.getItem('theme-mode') === 'dark') document.documentEleme
 <h2 id="流程分析-2"><a href="#流程分析-2" class="headerlink" title="流程分析"></a>流程分析</h2><p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693895893632-1363c050-c933-4e39-bfd3-a2080171e771.png#averageHue=%2341474e&clientId=u5b0ef69b-b84a-4&from=paste&height=641&id=u80c3a32b&originHeight=801&originWidth=1551&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1109615&status=done&style=none&taskId=uc98e4e82-69c5-4781-9db2-7c1f6d8e377&title=&width=1240.8" alt="image.png"><br>在<code>ReplicationMessageTransmit$MasterReceiverThread</code>内部类中有一个readMessage方法，在进行连接时会直接反序列化数据流<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693896057052-f1855c8e-7c5d-4a42-b877-d53b1e56455e.png#averageHue=%23464a50&clientId=u5b0ef69b-b84a-4&from=paste&height=881&id=ueffdd69a&originHeight=1101&originWidth=1274&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1131999&status=done&style=none&taskId=u8acda363-5b7f-4ed5-b6fa-6458fc9dec7&title=&width=1019.2" alt="image.png"></p>
 <h1 id="SQLITE"><a href="#SQLITE" class="headerlink" title="SQLITE"></a>SQLITE</h1><p>这个我就不想多讲了，没有啥利用点基本，load_extension默认是关闭的，只可以进行SSRF，鸡肋。</p>
 <h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p>至此JDBC-ATTACK就告一段落了~</p>
-<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2023/10/01/Weblogic%E5%86%85%E5%AD%98%E9%A9%AC%E5%AD%A6%E4%B9%A0&amp;&amp;%E9%9B%86%E6%88%90Suo5%E9%80%BB%E8%BE%91/">← Next Weblogic内存马学习&amp;&amp;集成Suo5逻辑</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2023/09/28/%E5%8D%8E%E4%B8%BA%E6%9D%AF%20%E7%AC%AC%E4%BA%8C%E5%B1%8A%E4%B8%AD%E5%9B%BD%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%9B%E6%96%B0%E5%A4%A7%E8%B5%9B%20Writeup/">华为杯 第二届中国研究生网络安全创新大赛 Writeup Prev →</a></div></div></div><div id="comments"><div class="selector"><button class="valine-sel"></button></div><div id="valine"></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="To Catalog">≡</a><a id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#H2-RCE"><span class="toc-number">2.</span> <span class="toc-text">H2 RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#INIT-RunScript-RCE"><span class="toc-number">2.1.</span> <span class="toc-text">INIT RunScript RCE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Alias-Script-RCE"><span class="toc-number">2.2.</span> <span class="toc-text">Alias Script RCE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TRIGGER-Script-RCE"><span class="toc-number">2.3.</span> <span class="toc-text">TRIGGER Script RCE</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Mysql-JDBC-RCE"><span class="toc-number">3.</span> <span class="toc-text">Mysql JDBC RCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PostgreSQL-JDBC-RCE"><span class="toc-number">4.</span> <span class="toc-text">PostgreSQL JDBC RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#socketFactory-x2F-socketFactoryArg-RCE"><span class="toc-number">4.1.</span> <span class="toc-text">socketFactory&#x2F;socketFactoryArg RCE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="toc-number">4.2.</span> <span class="toc-text">调用流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#socketFactory-x2F-socketFactoryArg-RCE-1"><span class="toc-number">4.3.</span> <span class="toc-text">socketFactory&#x2F;socketFactoryArg RCE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#loggerLevel-x2F-loggerFile-%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5"><span class="toc-number">4.4.</span> <span class="toc-text">loggerLevel&#x2F;loggerFile 任意文件写入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IBM-DB2-JDBC-JNDI-RCE"><span class="toc-number">5.</span> <span class="toc-text">IBM DB2 JDBC JNDI RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90"><span class="toc-number">5.1.</span> <span class="toc-text">流程分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ModeShape-JDBC-JNDI-RCE"><span class="toc-number">6.</span> <span class="toc-text">ModeShape JDBC JNDI RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90-1"><span class="toc-number">6.1.</span> <span class="toc-text">流程分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache-Derby"><span class="toc-number">7.</span> <span class="toc-text">Apache Derby</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90-2"><span class="toc-number">7.1.</span> <span class="toc-text">流程分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQLITE"><span class="toc-number">8.</span> <span class="toc-text">SQLITE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E5%B0%BE"><span class="toc-number">9.</span> <span class="toc-text">结尾</span></a></li></ol></div></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{new Valine({
- el: '#valine'
- , appId: '4KNp8mNp9RkLrDSktdFbmIO8-gzGzoHsz'
- , appKey: 'I3KhKOyWDf9eRRnVEAit98wt' , placeholder: 'This comment is sent by Penguin Logistics.'
- , path: window.location.pathname
-});code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
- cacheBust: false,
- selectors: ['title','article','#aside-block','.pjax-js'],
- switches: {'article': Pjax.switches.sideBySide},
- switchesOptions: {
-   'article': {
-     classNames: {
-       remove: "pjax-out",
-       add: "pjax-in"
-     }
-   }
- }
-});
-document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/Java/" class="tag">#Java</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/10/01/Weblogic%E5%86%85%E5%AD%98%E9%A9%AC%E5%AD%A6%E4%B9%A0&amp;&amp;%E9%9B%86%E6%88%90Suo5%E9%80%BB%E8%BE%91/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Weblogic内存马学习&amp;&amp;集成Suo5逻辑</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/09/28/%E5%8D%8E%E4%B8%BA%E6%9D%AF%20%E7%AC%AC%E4%BA%8C%E5%B1%8A%E4%B8%AD%E5%9B%BD%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%9B%E6%96%B0%E5%A4%A7%E8%B5%9B%20Writeup/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">华为杯 第二届中国研究生网络安全创新大赛 Writeup</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

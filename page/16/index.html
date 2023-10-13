@@ -1,28 +1,377 @@
-<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="referrer" content="no-referrer"><meta name="google-site-verification" content="YKwcqblwsZCg-ylX8b6YPzjmkIRadB3nD8IU3XMN6gg"><title>不吉波普不笑 | Boogiepop Doesn't Laugh</title><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy","copyFinish":"copied","expand":"expand"}}</script><script src="//unpkg.com/valine/dist/Valine.min.js"></script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light') document.documentElement.setAttribute('theme-mode', 'light')
-if (window.localStorage.getItem('theme-mode') === 'dark') document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
- font-family: BenderLight;
- src: local('Bender'), url("/font/BenderLight.ttf");
-}
-@font-face {
- font-family: 'JetBrains Mono';
- src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
-}</style><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Boogiepop Doesn't Laugh" type="application/atom+xml">
-</head><body><div class="loading" style="opacity: 0"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><nav><div class="navBtn hide"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li><li class="navItem"><a class="navBlock" href="/friends/"><span class="navItemTitle">Friends</span></a></li><li class="navItem"><a class="navBlock" href="/about/"><span class="navItemTitle">About</span></a></li></ol></nav></header><article><div class="posts"><a class="recent-post" href="/2022/10/04/%E6%90%AD%E5%BB%BACTFd%E9%9D%B6%E5%9C%BA/"><object><div class="recent-info"><span class="categories"><object><a href="/categories/At-Dawn/">At Dawn</a></object></span><span class="tags"><object><a href="/tags/CTF/">CTF</a></object><object><a href="/tags/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/">靶场搭建</a></object></span><time datetime="2022-10-04T09:27:24.095Z">2022-10-04</time></div><h1 class="recent-title">搭建CTFd靶场</h1><div class="recent-excerpt"></div><span class="read-more">READ MORE +</span></object></a><a class="recent-post" href="/2022/10/03/CTFSHOW-XSS/"><object><div class="recent-info"><span class="categories"><object><a href="/categories/At-Dawn/">At Dawn</a></object></span><span class="tags"><object><a href="/tags/CTF/">CTF</a></object><object><a href="/tags/CTFSHOW/">CTFSHOW</a></object><object><a href="/tags/RCE/">RCE</a></object></span><time datetime="2022-10-02T17:32:46.589Z">2022-10-03</time></div><h1 class="recent-title">CTFSHOW-XSS</h1><div class="recent-excerpt"></div><span class="read-more">READ MORE +</span></object></a><a class="recent-post" href="/2022/10/02/%5BHNCTF%5D-challenge_rce/"><object><div class="recent-info"><span class="categories"><object><a href="/categories/At-Dawn/">At Dawn</a></object></span><span class="tags"><object><a href="/tags/CTF/">CTF</a></object><object><a href="/tags/RCE/">RCE</a></object></span><time datetime="2022-10-02T05:00:12.800Z">2022-10-02</time></div><h1 class="recent-title">[HNCTF] challenge_rce</h1><div class="recent-excerpt"></div><span class="read-more">READ MORE +</span></object></a><a class="recent-post" href="/2022/10/02/%5Bsuctf%202019%5DEasySQL/"><object><div class="recent-info"><span class="categories"><object><a href="/categories/At-Dawn/">At Dawn</a></object></span><span class="tags"><object><a href="/tags/CTF/">CTF</a></object><object><a href="/tags/SQL/">SQL</a></object></span><time datetime="2022-10-02T03:46:19.364Z">2022-10-02</time></div><h1 class="recent-title">[SUBCTF 2019] EasySQL</h1><div class="recent-excerpt"></div><span class="read-more">READ MORE +</span></object></a><a class="recent-post" href="/2022/09/30/SQL%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/"><object><div class="recent-info"><span class="categories"><object><a href="/categories/At-Dawn/">At Dawn</a></object></span><span class="tags"><object><a href="/tags/CTF/">CTF</a></object><object><a href="/tags/SQL/">SQL</a></object></span><time datetime="2022-09-30T15:04:00.000Z">2022-09-30</time></div><h1 class="recent-title">MYSQL Error Injection</h1><div class="recent-excerpt"></div><span class="read-more">READ MORE +</span></object></a></div><div id="paginator"><a class="extend prev" rel="prev" href="/page/15/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span></div><div class="bottom-btn"><div><a id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧</a><a id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Boogipop</a></h1><div id="description"><p>Are you still in pain?</p></div></div><div id="aside-block"><section id="total"><a id="total-archives" href="/archives"><span class="total-title">Archives Total:</span><span class="total-number">155</span></a><div id="total-tags"><span class="total-title">Tags:</span><span class="total-number">58</span></div><div id="total-categories"><span class="total-title">Categories:</span><span class="total-number">6</span></div></section></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr>by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script class="pjax-js">reset=_=>{new Valine({
- el: '#valine'
- , appId: '4KNp8mNp9RkLrDSktdFbmIO8-gzGzoHsz'
- , appKey: 'I3KhKOyWDf9eRRnVEAit98wt' , placeholder: 'This comment is sent by Penguin Logistics.'
- , path: window.location.pathname
-});code.findCode();}</script><script src="/js/arknights.js"></script><script src="/js/pjax.js"></script><script>window.addEventListener("load",() => {pjax = new Pjax({
- cacheBust: false,
- selectors: ['title','article','#aside-block','.pjax-js'],
- switches: {'article': Pjax.switches.sideBySide},
- switchesOptions: {
-   'article': {
-     classNames: {
-       remove: "pjax-out",
-       add: "pjax-in"
-     }
-   }
- }
-});
-document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="website" />
+  
+  <meta property="og:url" content="http://example.com/page/16/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        <div class="container">
+    
+
+    <div class="post-list">
+        
+        <article class="post-list-item">
+            <a href="/2022/10/04/%E6%90%AD%E5%BB%BACTFd%E9%9D%B6%E5%9C%BA/">
+                
+                <div class="content">
+                    
+                    <div class="categories text-uppercase">
+                    
+                        <span>At Dawn</span>
+                    
+                    </div>
+                    
+                    <div class="title">
+                        搭建CTFd靶场
+                    </div>
+                    
+                    <div class="time">
+                        <span>October</span>
+                        <span>&nbsp;4,&nbsp;</span>
+                        <span>2022</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+        
+        <article class="post-list-item">
+            <a href="/2022/10/03/CTFSHOW-XSS/">
+                
+                <div class="content">
+                    
+                    <div class="categories text-uppercase">
+                    
+                        <span>At Dawn</span>
+                    
+                    </div>
+                    
+                    <div class="title">
+                        CTFSHOW-XSS
+                    </div>
+                    
+                    <div class="time">
+                        <span>October</span>
+                        <span>&nbsp;3,&nbsp;</span>
+                        <span>2022</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+        
+        <article class="post-list-item">
+            <a href="/2022/10/02/%5BHNCTF%5D-challenge_rce/">
+                
+                <div class="content">
+                    
+                    <div class="categories text-uppercase">
+                    
+                        <span>At Dawn</span>
+                    
+                    </div>
+                    
+                    <div class="title">
+                        [HNCTF] challenge_rce
+                    </div>
+                    
+                    <div class="time">
+                        <span>October</span>
+                        <span>&nbsp;2,&nbsp;</span>
+                        <span>2022</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+        
+        <article class="post-list-item">
+            <a href="/2022/10/02/%5Bsuctf%202019%5DEasySQL/">
+                
+                <div class="content">
+                    
+                    <div class="categories text-uppercase">
+                    
+                        <span>At Dawn</span>
+                    
+                    </div>
+                    
+                    <div class="title">
+                        [SUBCTF 2019] EasySQL
+                    </div>
+                    
+                    <div class="time">
+                        <span>October</span>
+                        <span>&nbsp;2,&nbsp;</span>
+                        <span>2022</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+        
+        <article class="post-list-item">
+            <a href="/2022/09/30/SQL%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/">
+                
+                <div class="content">
+                    
+                    <div class="categories text-uppercase">
+                    
+                        <span>At Dawn</span>
+                    
+                    </div>
+                    
+                    <div class="title">
+                        MYSQL Error Injection
+                    </div>
+                    
+                    <div class="time">
+                        <span>September</span>
+                        <span>&nbsp;30,&nbsp;</span>
+                        <span>2022</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+        
+    </div>
+
+    
+<div class="paginator">
+    <a class="extend prev" rel="prev" href="/page/15/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span>
+</div>
+
+</div>
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
