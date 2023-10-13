@@ -148,9 +148,9 @@
     <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
     
     
-    <category term="WriteUp" scheme="http://example.com/tags/WriteUp/"/>
-    
     <category term="CTF" scheme="http://example.com/tags/CTF/"/>
+    
+    <category term="WriteUp" scheme="http://example.com/tags/WriteUp/"/>
     
   </entry>
   
@@ -255,9 +255,9 @@
     <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
     
     
-    <category term="WriteUp" scheme="http://example.com/tags/WriteUp/"/>
-    
     <category term="CTF" scheme="http://example.com/tags/CTF/"/>
+    
+    <category term="WriteUp" scheme="http://example.com/tags/WriteUp/"/>
     
   </entry>
   
