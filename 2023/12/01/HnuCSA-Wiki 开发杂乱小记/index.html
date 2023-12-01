@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   
-  <title>Category: ThinkAbout - Boogiepop Doesn&#39;t Laugh</title>
+  <title>HnuCSA-Wiki 开发杂乱小记 - Boogiepop Doesn&#39;t Laugh</title>
   
     <link rel="shortcut icon" href="/favicon.png">
   
@@ -17,13 +17,17 @@
   
   
   
-  <meta property="og:title" content="Category: ThinkAbout - Boogiepop Doesn&#39;t Laugh" />
+  <meta property="og:title" content="HnuCSA-Wiki 开发杂乱小记 - Boogiepop Doesn&#39;t Laugh" />
   
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content="article" />
   
-  <meta property="og:url" content="http://example.com/categories/ThinkAbout/index.html" />
+  <meta property="og:url" content="http://example.com/2023/12/01/HnuCSA-Wiki%20%E5%BC%80%E5%8F%91%E6%9D%82%E4%B9%B1%E5%B0%8F%E8%AE%B0/index.html" />
   
   <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-12-01T14:59:11.178Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
   
   
 
@@ -71,10 +75,6 @@
 <link rel="stylesheet" href="/css/post.css">
 
   
-  
-  
-<link rel="stylesheet" href="/css/archive.css">
-
   
   
   
@@ -148,208 +148,79 @@
         </div>
     </div>
 </nav>
-        <div class="container">
+        
+<article class="post">
     <div class="meta">
-        <div class="type">
-            Category
-            
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/ThinkAbout/">ThinkAbout</a>
+        
         </div>
+        
 
-        <h2 class="title">ThinkAbout</h2>
+        
+        <div class="date" id="date">
+            <span>December</span>
+            <span>1,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">HnuCSA-Wiki 开发杂乱小记</h2>
     </div>
 
     <div class="divider"></div>
 
-    <div class="post-list archives">
+    <div class="content">
+        <h1 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h1><p>一开始我是想说要做一个类似于博客系统的东西，但是想着想着虽然hexo可以直接搭一个，但是我就是手欠想手写一个练一下，然后这段时间还支原体，躺床上写文章发牢骚。<br><img src="https://cdn.nlark.com/yuque/0/2023/jpeg/32634994/1701442255784-c1754b1e-12d0-492e-85e8-050924912b4b.jpeg#averageHue=%23d1d1d1&clientId=u40a8a097-7bc1-4&from=paste&height=362&id=u391d2a4f&originHeight=608&originWidth=606&originalType=binary&ratio=1&rotation=0&showTitle=false&size=43410&status=done&style=none&taskId=uc358a0a4-218d-4cc8-9f87-174deff5f07&title=&width=361" alt="d5902ac1ef47a926f96e8a5ecabca997.jpg"><br>整体框架应该如下<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1701442306503-cb860e3a-f875-4330-9b6e-df190a939eaa.png#averageHue=%2345494e&clientId=u40a8a097-7bc1-4&from=paste&height=1007&id=u1adec010&originHeight=1007&originWidth=1941&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1612098&status=done&style=none&taskId=uc28d8204-03ef-4f77-94c7-6cb6320dcf7&title=&width=1941" alt="image.png"></p>
+<ul>
+<li>鉴权模块</li>
+<li>登录模块</li>
+<li>注册模块</li>
+<li>文章管理一系列模块</li>
+<li>tags模块</li>
+<li>markdown转html模块</li>
+<li>Utils类</li>
+<li>文件上传模块（安全过滤）</li>
+<li>等等一大堆我忘了，想到啥写啥</li>
+<li>最重要的是什么，前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI</li>
+</ul>
+<p>虽然看起来很简单对吧，但真要自己去写一个还真就挺麻烦，主要还是体现在前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI前端UI，最终大概就做成了这样子。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1701442566415-9aa9ee52-0238-4ffe-acc8-54fe41ce3ebe.png#averageHue=%23667d94&clientId=u40a8a097-7bc1-4&from=paste&height=1440&id=uc644b496&originHeight=1440&originWidth=2560&originalType=binary&ratio=1&rotation=0&showTitle=false&size=465023&status=done&style=none&taskId=u1bd50097-0d4e-4bd8-a584-82561a7a3c2&title=&width=2560" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1701442499518-ee19c3d0-0aed-4be9-88d5-539f24b8f1e0.png#averageHue=%23364058&clientId=u40a8a097-7bc1-4&from=paste&height=1231&id=u9dec7cd4&originHeight=1231&originWidth=2200&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1456658&status=done&style=none&taskId=u4b594035-c7ef-4167-bd5d-a9658615b63&title=&width=2200" alt="image.png"><br>目前还只做了2天，所以看起来还比较的怪异，因为侧边栏右边的UI还仅仅是个裸HTML，没有任何UI设计</p>
+<h1 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h1><p>这段时间可能主要偏开发方向，安全不想太频繁了，换点调味剂，慢慢手写个博客系统先。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1701442636411-fd3ee4ed-6953-46c1-a771-eec9ed6a3388.png#averageHue=%233b4145&clientId=u40a8a097-7bc1-4&from=paste&height=1276&id=u8fa08c3f&originHeight=1276&originWidth=2485&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2264981&status=done&style=none&taskId=udac18b60-26eb-45fb-ba96-85e4fe0d008&title=&width=2485" alt="image.png"><br>摆了</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
         
-        <article class="post-list-item">
-            <a href="/2023/12/01/HnuCSA-Wiki%20%E5%BC%80%E5%8F%91%E6%9D%82%E4%B9%B1%E5%B0%8F%E8%AE%B0/">
-                
-                <div class="content">
-                    
-                    <div class="title">
-                        HnuCSA-Wiki 开发杂乱小记
-                    </div>
-                    
-                    <div class="time">
-                        <span>December</span>
-                        <span>&nbsp;1,&nbsp;</span>
-                        <span>2023</span>
-                    </div>
-                </div>
-            </a>
-        </article>
+    </div>
+    
+
+    <div class="container post-prev-next">
+        <a class="next"></a>
         
-        <article class="post-list-item">
-            <a href="/2023/10/02/XX%E5%B9%B4XX%E6%9C%88XX%E6%97%A5%E5%8F%91%E7%99%AB%E6%97%A5%E8%AE%B0/">
-                
-                <div class="content">
-                    
-                    <div class="title">
-                        XX年YY月ZZ日发癫日记
-                    </div>
-                    
-                    <div class="time">
-                        <span>October</span>
-                        <span>&nbsp;2,&nbsp;</span>
-                        <span>2023</span>
-                    </div>
+        <a href="/2023/12/01/TPCTF%202023%20Web%20Writeup/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">TPCTF 2023 Web Writeup</>
                 </div>
-            </a>
-        </article>
-        
-        <article class="post-list-item">
-            <a href="/2023/08/28/%E8%87%B4%E4%B8%80%E5%B9%B4%E5%89%8D%E7%9A%84%E8%87%AA%E5%B7%B1%E3%80%82/">
-                
-                <div class="content">
-                    
-                    <div class="title">
-                        致一年前的自己。
-                    </div>
-                    
-                    <div class="time">
-                        <span>August</span>
-                        <span>&nbsp;28,&nbsp;</span>
-                        <span>2023</span>
-                    </div>
-                </div>
-            </a>
-        </article>
-        
-        <article class="post-list-item">
-            <a href="/2023/07/27/CISCN%202023%207.24-7.27%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">
-                
-                <div class="content">
-                    
-                    <div class="title">
-                        CISCN 2023 全国大学生信息安全大赛  7.24-7.27生活记录
-                    </div>
-                    
-                    <div class="time">
-                        <span>July</span>
-                        <span>&nbsp;27,&nbsp;</span>
-                        <span>2023</span>
-                    </div>
-                </div>
-            </a>
-        </article>
-        
-        <article class="post-list-item">
-            <a href="/2023/07/13/%E9%BC%A0%E9%BC%A0%E7%9A%84%E6%9A%91%E6%9C%9F%E5%9D%90%E7%89%A2%E6%97%A5%E8%AE%B0/">
-                
-                <div class="content">
-                    
-                    <div class="title">
-                        鼠鼠的暑期坐牢日记
-                    </div>
-                    
-                    <div class="time">
-                        <span>July</span>
-                        <span>&nbsp;13,&nbsp;</span>
-                        <span>2023</span>
-                    </div>
-                </div>
-            </a>
-        </article>
-        
-        <article class="post-list-item">
-            <a href="/2023/05/22/Boogipop%E6%9C%80%E8%BF%91%E9%9B%B6%E6%95%A3%E3%81%AE%E5%AE%89%E6%8E%92/">
-                
-                <div class="content">
-                    
-                    <div class="title">
-                        Boogipop最近零散の安排
-                    </div>
-                    
-                    <div class="time">
-                        <span>May</span>
-                        <span>&nbsp;22,&nbsp;</span>
-                        <span>2023</span>
-                    </div>
-                </div>
-            </a>
-        </article>
-        
-        <article class="post-list-item">
-            <a href="/2023/04/30/%E4%B8%8A%E6%B5%B7%E6%B8%B8%E7%8E%A9%E6%9C%89%E6%84%9F/">
-                
-                <div class="content">
-                    
-                    <div class="title">
-                        上海5day游有感
-                    </div>
-                    
-                    <div class="time">
-                        <span>April</span>
-                        <span>&nbsp;30,&nbsp;</span>
-                        <span>2023</span>
-                    </div>
-                </div>
-            </a>
-        </article>
-        
-        <article class="post-list-item">
-            <a href="/2023/04/09/%E5%AE%89%E6%9C%8D%E4%BB%94%E7%9A%84%E5%85%A5%E8%81%8C%E5%B0%8F%E8%AE%B0/">
-                
-                <div class="content">
-                    
-                    <div class="title">
-                        安服仔的入职小记
-                    </div>
-                    
-                    <div class="time">
-                        <span>April</span>
-                        <span>&nbsp;9,&nbsp;</span>
-                        <span>2023</span>
-                    </div>
-                </div>
-            </a>
-        </article>
-        
-        <article class="post-list-item">
-            <a href="/2023/03/03/#Love/">
-                
-                <div class="content">
-                    
-                    <div class="title">
-                        LOVE?
-                    </div>
-                    
-                    <div class="time">
-                        <span>March</span>
-                        <span>&nbsp;3,&nbsp;</span>
-                        <span>2023</span>
-                    </div>
-                </div>
-            </a>
-        </article>
-        
-        <article class="post-list-item">
-            <a href="/2023/03/02/%E6%97%B6%E9%9A%94%E5%8D%8A%E5%B9%B4%E7%9A%84%E6%80%BB%E7%BB%93/">
-                
-                <div class="content">
-                    
-                    <div class="title">
-                        时隔半年的总结
-                    </div>
-                    
-                    <div class="time">
-                        <span>March</span>
-                        <span>&nbsp;2,&nbsp;</span>
-                        <span>2023</span>
-                    </div>
-                </div>
-            </a>
-        </article>
+            </div>
+        </a>
         
     </div>
 
     
-<div class="paginator">
-    <span class="page-number current">1</span><a class="page-number" href="/categories/ThinkAbout/page/2/">2</a><a class="extend next" rel="next" href="/categories/ThinkAbout/page/2/">Next</a>
-</div>
+        
+        
+    
+</article>
 
-</div>
         <footer>
     <div class="inner">
         <div class="links">
