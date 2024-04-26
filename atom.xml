@@ -54,9 +54,9 @@
     <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
     
     
-    <category term="CTF" scheme="http://example.com/tags/CTF/"/>
-    
     <category term="Writeup" scheme="http://example.com/tags/Writeup/"/>
+    
+    <category term="CTF" scheme="http://example.com/tags/CTF/"/>
     
   </entry>
   
