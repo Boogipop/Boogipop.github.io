@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Shoppy - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Shoppy - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/02/Shoppy/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T10:33:30.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/HackTheBox/">HackTheBox</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">Shoppy</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676382178504-add7b970-553d-4d51-9d74-3084aad9618c.png#averageHue=%23182130&clientId=u01ff6737-831e-4&from=paste&height=724&id=u9364294e&name=image.png&originHeight=905&originWidth=1724&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=301589&status=done&style=none&taskId=u5ddcc61a-62b9-4738-96cb-493854938fb&title=&width=1379.2" alt="image.png"></p>
+<h1 id="考点"><a href="#考点" class="headerlink" title="考点"></a>考点</h1><ul>
+<li>Docker用户组提权</li>
+<li>NOSQL注入</li>
+<li>逆向分析</li>
+<li>信息搜集</li>
+</ul>
+<h1 id="前期信息搜集"><a href="#前期信息搜集" class="headerlink" title="前期信息搜集"></a>前期信息搜集</h1><p>拿到靶机之后先进行信息收集：<br>首先先往hosts文件中加一下靶机的解析<br><code>sudo echo 10.10.11.180 shoppy.htb&gt;&gt;/etc/hosts</code><br><code>nmap -sS -sC -sV 10.10.11.180</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676382255250-cefded76-b74e-4990-b065-2936a695f162.png#averageHue=%232b2d34&clientId=u01ff6737-831e-4&from=paste&height=354&id=ub3e3abbc&name=image.png&originHeight=442&originWidth=659&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=208914&status=done&style=none&taskId=ue1e22963-b947-412f-a78f-4c0b95a1510&title=&width=527.2" alt="image.png"><br>开放了22端口和一个80端口，起了一个nginx网站，网站没有什么值得注意的特征，对网站的目录进行扫描搜集，发现了admin的登录界面：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676382395463-8761d3d9-61fd-405b-83f2-b659cd8ed9dc.png#averageHue=%231c2129&clientId=u01ff6737-831e-4&from=paste&height=181&id=u02dada16&name=image.png&originHeight=226&originWidth=1088&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=191694&status=done&style=none&taskId=u798dc11d-0d2e-4319-93a7-74a823b49f8&title=&width=870.4" alt="image.png"></p>
+<h1 id="NoSQL注入"><a href="#NoSQL注入" class="headerlink" title="NoSQL注入"></a>NoSQL注入</h1><p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676382412075-c44a919c-b18a-4246-906e-312806b83ccb.png#averageHue=%232a3f58&clientId=u01ff6737-831e-4&from=paste&height=711&id=u8a75188d&name=image.png&originHeight=889&originWidth=1724&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=825331&status=done&style=none&taskId=u739b873d-5132-40f0-b9ee-eaf57da187f&title=&width=1379.2" alt="image.png"><br>登录抓包进行分析：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676382600492-3d698a38-d2fc-4bbd-860c-816396817e5f.png#averageHue=%23f9f7f7&clientId=u01ff6737-831e-4&from=paste&height=525&id=u71a6415a&name=image.png&originHeight=656&originWidth=1683&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=109501&status=done&style=none&taskId=u43c772e2-5dd7-40d6-9376-4d9ac4388c4&title=&width=1346.4" alt="image.png"><br>尝试爆破，但是无果，思路转向是否可以进行sql注入，使用万能密码和一些其他的方法都以失败告终，这时候就要思考是不是<strong>NoSQL</strong>注入<br>可以猜测NoSQL语句为<code>username==&#39;xxx&#39;&amp;&amp;password==&#39;xxx&#39;</code><br>尝试payload<code>admin&#39;||1==&#39;1</code>或者<code>1&#39;||1==&#39;1%00(猜测为PHP截断?)</code>:<br>这样语句查询就变为<code>username==&#39;admin&#39;||1==&#39;1&amp;&amp;password=&#39;1&#39;</code>，由于与的优先级比或高，因此也就是<code>(username==&#39;admin&#39;)||(1==&#39;1&#39;&amp;&amp;password=&#39;1&#39;)</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676383043335-cbc5c74a-a7e7-4820-822a-41a31d73dd04.png#averageHue=%23f8f6f6&clientId=u84d6d522-7bda-4&from=paste&height=390&id=u4ae994ec&name=image.png&originHeight=488&originWidth=1720&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=106715&status=done&style=none&taskId=u0f083cc7-97e8-4e74-ac47-c9c3e6c4628&title=&width=1376" alt="image.png"></p>
+<h1 id="子域名爆破"><a href="#子域名爆破" class="headerlink" title="子域名爆破"></a>子域名爆破</h1><p>admin界面有查询用户的功能，同样尝试使用nosql的万能密码：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676383471912-26a5e089-1725-45e1-aaa7-67d50fbac547.png#averageHue=%23adb3c3&clientId=u84d6d522-7bda-4&from=paste&height=360&id=uc6e874be&name=image.png&originHeight=450&originWidth=1266&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=46034&status=done&style=none&taskId=u0234b787-7993-4eea-bbb8-1cb49f135e3&title=&width=1012.8" alt="image.png"><br>出现了一个json数据单：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676383486669-70e50c66-3ba8-4aef-a728-c1c1a8f1596a.png#averageHue=%231e1f23&clientId=u84d6d522-7bda-4&from=paste&height=272&id=u5d3d2603&name=image.png&originHeight=340&originWidth=1277&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=54117&status=done&style=none&taskId=u618299d0-6d4c-4f8c-9935-f42d80db2e9&title=&width=1021.6" alt="image.png"><br>包含用户账号密码，密码经过了md5的编码，我们使用hashcat进行碰撞：<br><code>echo 23c6877d9e2b564ef8b32c3a23de27b2 &gt;&gt; hash.txt</code><br><code>echo 6ebcea65320589ca4f2f1ce039975995 &gt;&gt; hash.txt</code><br><code>hashcat -m 0 hash.txt /usr/share/wordlists/rockyou.txt </code></p>
+<blockquote>
+<p>-m 指定hashcat的模式，默认为md5，而0表示的就是md5<br>后面指定密文和碰撞字典</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676383674652-e4de147f-2a2a-4001-86f2-c9af7412b3d0.png#averageHue=%2324272f&clientId=u84d6d522-7bda-4&from=paste&height=85&id=u9d2cbbe9&name=image.png&originHeight=106&originWidth=604&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=19296&status=done&style=none&taskId=u211ffb4b-5fab-4961-b550-89c3d9fb9ed&title=&width=483.2" alt="image.png"><br>admin的密码破解不了，但是josh用户的密码有了（这里有缓存，所以加了一个show直接显示），ssh登录无果，所以思路转向是否有别的子站呢？进行子域名爆破，这里我们使用gobuster进行爆破，当然也有其他很多优秀的脚本如<code>wfuzz、ksudomain、oneforall</code>：<br><code>obuster vhost -w SecLists-master/Discovery/DNS/bitquark-subdomains-top100000.txt -u shoppy.htb</code></p>
+<blockquote>
+<p>vhost模式进行域名爆破，其他参数请看<a target="_blank" rel="noopener" href="https://github.com/OJ/gobuster">https://github.com/OJ/gobuster</a><br>-w 指定爆破字典<br>-t 50 线程为50<br>-u URL域名</p>
+</blockquote>
+<p>不过这里我失败，gobuster有点毛病，所以又换成wfuzz了<br><code>wfuzz -c -w SecLists-master/Discovery/DNS/bitquark-subdomains-top100000.txt -u 10.10.11.180 -H &quot;Host: FUZZ.shoppy.htb&quot; --hc 301</code></p>
+<blockquote>
+<p> -c : 获得有色彩的结果<br>-w : 指定字典<br>-u : URL<br>-H : 域名<br>–hc : 屏蔽某种响应码</p>
+</blockquote>
+<p>发现<code>mattermost.shoppy.htb</code>，同样添加一条解析到hosts文件，访问网站：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676384951329-287d5883-e8c0-4952-a24f-389b3fdca013.png#averageHue=%23bacc59&clientId=u84d6d522-7bda-4&from=paste&height=654&id=u3facd035&name=image.png&originHeight=818&originWidth=1697&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=162696&status=done&style=none&taskId=ue8521d71-b426-4e77-8e92-82bb634b7d0&title=&width=1357.6" alt="image.png"></p>
+<p>可以发现用户的聊天记录，找到了一组ssh用户密码：<br><code>username: jaeger</code><br><code>password: Sh0ppyBest@pp!</code></p>
+<p>ssh连接靶机：<br>到这里获取第一个flag：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676388034678-e11d6177-9ffd-4e9f-84f8-a064982f8b81.png#averageHue=%231c212b&clientId=u84d6d522-7bda-4&from=paste&height=77&id=u1f156caa&name=image.png&originHeight=96&originWidth=990&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=22824&status=done&style=none&taskId=u2757a657-e6dd-4a48-9df3-5c9d0c91cd9&title=&width=792" alt="image.png"><br>现在为非root权限，那么就需要寻找提权的方法，首先先<code>sudo -l</code>查看一波可以sudo运行的命令<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676385016182-bed0e48a-bb68-4c6e-a5bc-d02537f494dc.png#averageHue=%23bed1dc&clientId=u84d6d522-7bda-4&from=paste&height=442&id=ue06de8f7&name=image.png&originHeight=552&originWidth=1214&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=172331&status=done&style=none&taskId=u5d95c1c3-29ad-46c3-a525-888777a6f3d&title=&width=971.2" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676385132484-7e53f9be-dafe-42a8-a597-22f4e6137fff.png#averageHue=%232e3037&clientId=u84d6d522-7bda-4&from=paste&height=78&id=udb5ab4e1&name=image.png&originHeight=97&originWidth=901&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=20199&status=done&style=none&taskId=ucb6f9946-e586-4c59-96ce-4946c05071b&title=&width=720.8" alt="image.png"><br>发现文件<code>/home/deploy/password-manager</code>，是deploy用户的，进去康康：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676385232744-366ffe7b-87bb-4ab3-8c4d-797e564be0cb.png#averageHue=%2323262e&clientId=u84d6d522-7bda-4&from=paste&height=197&id=uc83440e6&name=image.png&originHeight=246&originWidth=923&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=51221&status=done&style=none&taskId=u8e9f58e6-f459-4e59-bfc2-e9551db50a3&title=&width=738.4" alt="image.png"><br>其他用户没有运行的权限，那么我们把他下载下来拖进到IDEA分析康康，起一个python服务拿来下载：<br><code>pythoh3 -m http.server</code></p>
+<h1 id="逆向分析可执行文件"><a href="#逆向分析可执行文件" class="headerlink" title="逆向分析可执行文件"></a>逆向分析可执行文件</h1><p>拿到文件后，可以再kali用radare2静态分析这个程序：<br><code>r2 password-manager</code><br><code>aaa //自动分析命名函数</code><br><code>afl //查看程序内的函数</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676387107298-c67b8cb2-4671-4093-a582-166745799065.png#averageHue=%23202229&clientId=u84d6d522-7bda-4&from=paste&height=621&id=u12b9684f&name=image.png&originHeight=776&originWidth=1726&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=165564&status=done&style=none&taskId=uda16044d-4bdb-49b4-987e-4f6243dcac5&title=&width=1380.8" alt="image.png"><br>找到了main函数，先定位到main<br><code>s main //定位到main</code><br><code>pdf //生成汇编代码</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676387177295-04190b24-c014-451f-8650-e59881cf31e9.png#averageHue=%231b1e25&clientId=u84d6d522-7bda-4&from=paste&height=688&id=ua450f141&name=image.png&originHeight=860&originWidth=1736&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=276460&status=done&style=none&taskId=u38313428-c0d1-493d-a84a-6c2f0008f6e&title=&width=1388.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676387153837-e9a9f950-8348-476a-bf10-d3b4a03e2fb8.png#averageHue=%231b1e25&clientId=u84d6d522-7bda-4&from=paste&height=746&id=ubdadbb83&name=image.png&originHeight=932&originWidth=1836&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=321456&status=done&style=none&taskId=u0feb7cb4-36cd-4021-a1d7-f1e949385d5&title=&width=1468.8" alt="image.png"><br>就算我不会汇编代码，我也看得出来这是要我们输入一个字符串，然后将字符串和Sample进行一一比对，所以密码就是Sample，输入Sample之后就会读取cred.txt文件：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676387234391-cdc06be7-0426-4a89-b265-c9b17fa5c0c9.png#averageHue=%231b1e25&clientId=u84d6d522-7bda-4&from=paste&height=513&id=u9bb8edec&name=image.png&originHeight=641&originWidth=1644&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=188839&status=done&style=none&taskId=ud3545893-e7ab-440a-901a-874c4844cd0&title=&width=1315.2" alt="image.png"><br>用IDA分析也是一样的结果：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676387013003-8fe7326a-bbc0-4592-92f5-63467e54065f.png#averageHue=%23f4f4f4&clientId=u84d6d522-7bda-4&from=paste&height=825&id=uc9ab0e5a&name=image.png&originHeight=1031&originWidth=1908&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=219528&status=done&style=none&taskId=u20f34310-405f-43aa-a81d-451bda8e8d1&title=&width=1526.4" alt="image.png"><br>之后获取deploy用户的账号密码<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676387303063-522075ba-a9e3-4756-ab07-c0a8438cd708.png#averageHue=%2320222a&clientId=u84d6d522-7bda-4&from=paste&height=164&id=u3bdbd481&name=image.png&originHeight=205&originWidth=944&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=68829&status=done&style=none&taskId=u3c37ccf7-e47d-412a-9df8-053bcb451c8&title=&width=755.2" alt="image.png"></p>
+<h1 id="Docker用户组提权"><a href="#Docker用户组提权" class="headerlink" title="Docker用户组提权"></a>Docker用户组提权</h1><p>拿到之后再次进行SSH连接，发现属于Docker用户组：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676387350321-3fd4e47c-ac36-4831-9554-f501870571dc.png#averageHue=%231f2229&clientId=u84d6d522-7bda-4&from=paste&height=356&id=ube790a0b&name=image.png&originHeight=445&originWidth=942&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=119511&status=done&style=none&taskId=ue7c0ddcb-7980-4395-bc15-680a31349d3&title=&width=753.6" alt="image.png"><br>可以看到有一个alpine镜像：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676387937362-36efbf7e-47ff-4ca3-9940-83408346fc2f.png#averageHue=%231f2128&clientId=u84d6d522-7bda-4&from=paste&height=78&id=u4001c2f8&name=image.png&originHeight=98&originWidth=639&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=14251&status=done&style=none&taskId=u27548ca5-6aac-4f75-9d50-87c30f6472f&title=&width=511.2" alt="image.png"><br>属于Docker用户组的用户和root用户都可以运行docker指令，因此有这个权限我们可以利用docker指令进行提权,这里有两种方法：<br><code>docker run -it -v /:/mnt alpine chroot /mnt sh</code><br>这个命令将容器外也就是靶机的根目录挂载到了容器内的mnt目录内，之后运行<code>chroot /mnt sh</code>，获取root权限</p>
+<blockquote>
+<p>chroot 切换到指定目录，后面可以跟目录和进入目录后运行的指令<br>&#x2F;mnt 进入的目录，mnt目录<br>sh 进入目录后的指令，也就是root</p>
+</blockquote>
+<p>这里进入mnt也就等于进入了靶机的根目录，因此成功逃逸</p>
+<p>还有一种方法就是<code>docker run -v /:/hostOS -i -t chrisfosterelli/rootplease</code><br>其实和第一种方法一个意思，挂载根目录，但是镜像chrisfosterelli&#x2F;rootplease的启动指令就是<code>chroot /hostOS sh</code>实际上就是一样的</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676387976411-f7d21d9d-4ee0-4563-bbef-69d528718c4c.png#averageHue=%23202229&clientId=u84d6d522-7bda-4&from=paste&height=92&id=ue03276e1&name=image.png&originHeight=115&originWidth=960&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=14871&status=done&style=none&taskId=u4b524c97-5bbe-4c32-a262-eebbbd6324b&title=&width=768" alt="image.png"><br>获取system的flag：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676388067213-d07b7836-1cd0-41e3-a11b-d122253c0ab4.png#averageHue=%231c1e24&clientId=u84d6d522-7bda-4&from=paste&height=128&id=ua57ae0fd&name=image.png&originHeight=160&originWidth=1155&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=15738&status=done&style=none&taskId=ueeacfc56-0163-46e2-b969-9efe78ec234&title=&width=924" alt="image.png"></p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/HackTheBox/" class="tag">#HackTheBox</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/Ambassador/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Ambassador</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/Support%EF%BC%882_3%EF%BC%89/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Support(2/3)</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

