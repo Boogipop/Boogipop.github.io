@@ -3,11 +3,11 @@
   <title>Boogiepop Doesn&#39;t Laugh</title>
   
   <subtitle>不吉波普不笑</subtitle>
-  <link href="http://example.com/atom.xml" rel="self"/>
+  <link href="http://boogipop.com/atom.xml" rel="self"/>
   
-  <link href="http://example.com/"/>
+  <link href="http://boogipop.com/"/>
   <updated>2024-04-30T06:12:19.587Z</updated>
-  <id>http://example.com/</id>
+  <id>http://boogipop.com/</id>
   
   <author>
     <name>Boogipop</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>2024 凌武杯 x D^3CTF Web Writeup</title>
-    <link href="http://example.com/2024/04/30/%E5%87%8C%E6%AD%A6%E6%9D%AF%20x%20D^3CTF%20Web%20Writeup%202024/"/>
-    <id>http://example.com/2024/04/30/%E5%87%8C%E6%AD%A6%E6%9D%AF%20x%20D^3CTF%20Web%20Writeup%202024/</id>
+    <link href="http://boogipop.com/2024/04/30/%E5%87%8C%E6%AD%A6%E6%9D%AF%20x%20D^3CTF%20Web%20Writeup%202024/"/>
+    <id>http://boogipop.com/2024/04/30/%E5%87%8C%E6%AD%A6%E6%9D%AF%20x%20D^3CTF%20Web%20Writeup%202024/</id>
     <published>2024-04-30T06:11:21.804Z</published>
     <updated>2024-04-30T06:12:19.587Z</updated>
     
@@ -30,19 +30,19 @@
     
     
     
-    <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="WriteUp" scheme="http://example.com/tags/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/tags/WriteUp/"/>
     
-    <category term="D3CTF" scheme="http://example.com/tags/D3CTF/"/>
+    <category term="D3CTF" scheme="http://boogipop.com/tags/D3CTF/"/>
     
   </entry>
   
   <entry>
     <title>DASCTF X GFCTF 2024 Writeup</title>
-    <link href="http://example.com/2024/04/30/DASCTF%20X%20GFCTF%202024%20Writeup/"/>
-    <id>http://example.com/2024/04/30/DASCTF%20X%20GFCTF%202024%20Writeup/</id>
+    <link href="http://boogipop.com/2024/04/30/DASCTF%20X%20GFCTF%202024%20Writeup/"/>
+    <id>http://boogipop.com/2024/04/30/DASCTF%20X%20GFCTF%202024%20Writeup/</id>
     <published>2024-04-30T06:11:12.609Z</published>
     <updated>2024-04-30T06:15:14.804Z</updated>
     
@@ -53,19 +53,19 @@
     
     
     
-    <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="WriteUp" scheme="http://example.com/tags/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/tags/WriteUp/"/>
     
-    <category term="DASCTF" scheme="http://example.com/tags/DASCTF/"/>
+    <category term="DASCTF" scheme="http://boogipop.com/tags/DASCTF/"/>
     
   </entry>
   
   <entry>
     <title>你想要活出什么样的人生？</title>
-    <link href="http://example.com/2024/04/27/%E4%BD%A0%E6%83%B3%E8%A6%81%E6%B4%BB%E5%87%BA%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E4%BA%BA%E7%94%9F%EF%BC%9F/"/>
-    <id>http://example.com/2024/04/27/%E4%BD%A0%E6%83%B3%E8%A6%81%E6%B4%BB%E5%87%BA%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E4%BA%BA%E7%94%9F%EF%BC%9F/</id>
+    <link href="http://boogipop.com/2024/04/27/%E4%BD%A0%E6%83%B3%E8%A6%81%E6%B4%BB%E5%87%BA%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E4%BA%BA%E7%94%9F%EF%BC%9F/"/>
+    <id>http://boogipop.com/2024/04/27/%E4%BD%A0%E6%83%B3%E8%A6%81%E6%B4%BB%E5%87%BA%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E4%BA%BA%E7%94%9F%EF%BC%9F/</id>
     <published>2024-04-26T22:00:04.775Z</published>
     <updated>2024-04-26T22:01:04.045Z</updated>
     
@@ -76,17 +76,17 @@
     
     
     
-    <category term="ThinkAbout" scheme="http://example.com/categories/ThinkAbout/"/>
+    <category term="ThinkAbout" scheme="http://boogipop.com/categories/ThinkAbout/"/>
     
     
-    <category term="life" scheme="http://example.com/tags/life/"/>
+    <category term="life" scheme="http://boogipop.com/tags/life/"/>
     
   </entry>
   
   <entry>
     <title>AliyunCTF 2024 Web Writeup</title>
-    <link href="http://example.com/2024/03/25/AliyunCTF%202024%20Web%20Writeup%EF%BC%88Blog%20ver)/"/>
-    <id>http://example.com/2024/03/25/AliyunCTF%202024%20Web%20Writeup%EF%BC%88Blog%20ver)/</id>
+    <link href="http://boogipop.com/2024/03/25/AliyunCTF%202024%20Web%20Writeup%EF%BC%88Blog%20ver)/"/>
+    <id>http://boogipop.com/2024/03/25/AliyunCTF%202024%20Web%20Writeup%EF%BC%88Blog%20ver)/</id>
     <published>2024-03-25T09:39:55.058Z</published>
     <updated>2024-03-25T09:42:31.370Z</updated>
     
@@ -97,19 +97,19 @@
     
     
     
-    <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="Writeup" scheme="http://example.com/tags/Writeup/"/>
+    <category term="CTF" scheme="http://boogipop.com/tags/CTF/"/>
     
-    <category term="CTF" scheme="http://example.com/tags/CTF/"/>
+    <category term="Writeup" scheme="http://boogipop.com/tags/Writeup/"/>
     
   </entry>
   
   <entry>
     <title>春秋云镜 Exchange Writeup</title>
-    <link href="http://example.com/2024/03/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C%20Exchange%20Writeup/"/>
-    <id>http://example.com/2024/03/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C%20Exchange%20Writeup/</id>
+    <link href="http://boogipop.com/2024/03/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C%20Exchange%20Writeup/"/>
+    <id>http://boogipop.com/2024/03/19/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C%20Exchange%20Writeup/</id>
     <published>2024-03-19T14:54:15.078Z</published>
     <updated>2024-03-19T14:54:43.798Z</updated>
     
@@ -120,23 +120,23 @@
     
     
     
-    <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="内网" scheme="http://example.com/tags/%E5%86%85%E7%BD%91/"/>
+    <category term="内网" scheme="http://boogipop.com/tags/%E5%86%85%E7%BD%91/"/>
     
-    <category term="#Java" scheme="http://example.com/tags/Java/"/>
+    <category term="#Java" scheme="http://boogipop.com/tags/Java/"/>
     
-    <category term="#FastJson" scheme="http://example.com/tags/FastJson/"/>
+    <category term="#FastJson" scheme="http://boogipop.com/tags/FastJson/"/>
     
-    <category term="#private" scheme="http://example.com/tags/private/"/>
+    <category term="#private" scheme="http://boogipop.com/tags/private/"/>
     
   </entry>
   
   <entry>
     <title>DubheCTF 2024 Web Writeup</title>
-    <link href="http://example.com/2024/03/19/DubheCTF%202024%20Web%20Writeup/"/>
-    <id>http://example.com/2024/03/19/DubheCTF%202024%20Web%20Writeup/</id>
+    <link href="http://boogipop.com/2024/03/19/DubheCTF%202024%20Web%20Writeup/"/>
+    <id>http://boogipop.com/2024/03/19/DubheCTF%202024%20Web%20Writeup/</id>
     <published>2024-03-19T14:14:25.720Z</published>
     <updated>2024-03-19T14:15:35.929Z</updated>
     
@@ -147,19 +147,19 @@
     
     
     
-    <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="WriteUp" scheme="http://example.com/tags/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/tags/WriteUp/"/>
     
-    <category term="XCTF" scheme="http://example.com/tags/XCTF/"/>
+    <category term="XCTF" scheme="http://boogipop.com/tags/XCTF/"/>
     
   </entry>
   
   <entry>
     <title>春秋云镜 Hospital Writeup</title>
-    <link href="http://example.com/2024/03/19/%E6%98%A5%E7%A7%8B%E8%BF%90%E9%95%9C%20Hospital%20Writeup/"/>
-    <id>http://example.com/2024/03/19/%E6%98%A5%E7%A7%8B%E8%BF%90%E9%95%9C%20Hospital%20Writeup/</id>
+    <link href="http://boogipop.com/2024/03/19/%E6%98%A5%E7%A7%8B%E8%BF%90%E9%95%9C%20Hospital%20Writeup/"/>
+    <id>http://boogipop.com/2024/03/19/%E6%98%A5%E7%A7%8B%E8%BF%90%E9%95%9C%20Hospital%20Writeup/</id>
     <published>2024-03-19T07:05:08.898Z</published>
     <updated>2024-03-25T09:42:15.791Z</updated>
     
@@ -170,19 +170,19 @@
     
     
     
-    <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="private" scheme="http://example.com/tags/private/"/>
+    <category term="private" scheme="http://boogipop.com/tags/private/"/>
     
-    <category term="春秋云镜" scheme="http://example.com/tags/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C/"/>
+    <category term="春秋云镜" scheme="http://boogipop.com/tags/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C/"/>
     
   </entry>
   
   <entry>
     <title>YApi 1.10.2 Unauthenticed RCE Via NoSQL Injection</title>
-    <link href="http://example.com/2024/03/10/YApi%20NoSQL%E6%B3%A8%E5%85%A5%E5%AF%BC%E8%87%B4%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/"/>
-    <id>http://example.com/2024/03/10/YApi%20NoSQL%E6%B3%A8%E5%85%A5%E5%AF%BC%E8%87%B4%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</id>
+    <link href="http://boogipop.com/2024/03/10/YApi%20NoSQL%E6%B3%A8%E5%85%A5%E5%AF%BC%E8%87%B4%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/"/>
+    <id>http://boogipop.com/2024/03/10/YApi%20NoSQL%E6%B3%A8%E5%85%A5%E5%AF%BC%E8%87%B4%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</id>
     <published>2024-03-10T04:59:52.000Z</published>
     <updated>2024-03-10T04:59:52.000Z</updated>
     
@@ -193,17 +193,17 @@
     
     
     
-    <category term="At Dawn" scheme="http://example.com/categories/At-Dawn/"/>
+    <category term="At Dawn" scheme="http://boogipop.com/categories/At-Dawn/"/>
     
     
-    <category term="CVE" scheme="http://example.com/tags/CVE/"/>
+    <category term="CVE" scheme="http://boogipop.com/tags/CVE/"/>
     
   </entry>
   
   <entry>
     <title>CVE-2023-49070/CVE-2023-51467 Apache OfBiz 鉴权绕过RCE</title>
-    <link href="http://example.com/2024/03/10/CVE-2023-49070_CVE-2023-51467%20Apache%20OfBiz%20%E9%89%B4%E6%9D%83%E7%BB%95%E8%BF%87RCE/"/>
-    <id>http://example.com/2024/03/10/CVE-2023-49070_CVE-2023-51467%20Apache%20OfBiz%20%E9%89%B4%E6%9D%83%E7%BB%95%E8%BF%87RCE/</id>
+    <link href="http://boogipop.com/2024/03/10/CVE-2023-49070_CVE-2023-51467%20Apache%20OfBiz%20%E9%89%B4%E6%9D%83%E7%BB%95%E8%BF%87RCE/"/>
+    <id>http://boogipop.com/2024/03/10/CVE-2023-49070_CVE-2023-51467%20Apache%20OfBiz%20%E9%89%B4%E6%9D%83%E7%BB%95%E8%BF%87RCE/</id>
     <published>2024-03-10T03:14:28.000Z</published>
     <updated>2024-03-10T03:14:28.000Z</updated>
     
@@ -214,19 +214,19 @@
     
     
     
-    <category term="At Dawn" scheme="http://example.com/categories/At-Dawn/"/>
+    <category term="At Dawn" scheme="http://boogipop.com/categories/At-Dawn/"/>
     
     
-    <category term="Java" scheme="http://example.com/tags/Java/"/>
+    <category term="Java" scheme="http://boogipop.com/tags/Java/"/>
     
-    <category term="CVE" scheme="http://example.com/tags/CVE/"/>
+    <category term="CVE" scheme="http://boogipop.com/tags/CVE/"/>
     
   </entry>
   
   <entry>
     <title>CVE-2020-9496 Apache OfBiz 反序列化命令执行漏洞</title>
-    <link href="http://example.com/2024/03/08/CVE-2020-9496%20Apache%20OfBiz%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/"/>
-    <id>http://example.com/2024/03/08/CVE-2020-9496%20Apache%20OfBiz%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</id>
+    <link href="http://boogipop.com/2024/03/08/CVE-2020-9496%20Apache%20OfBiz%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/"/>
+    <id>http://boogipop.com/2024/03/08/CVE-2020-9496%20Apache%20OfBiz%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</id>
     <published>2024-03-08T12:03:56.000Z</published>
     <updated>2024-03-08T12:03:56.000Z</updated>
     
@@ -237,19 +237,19 @@
     
     
     
-    <category term="At Dawn" scheme="http://example.com/categories/At-Dawn/"/>
+    <category term="At Dawn" scheme="http://boogipop.com/categories/At-Dawn/"/>
     
     
-    <category term="Java" scheme="http://example.com/tags/Java/"/>
+    <category term="Java" scheme="http://boogipop.com/tags/Java/"/>
     
-    <category term="CVE" scheme="http://example.com/tags/CVE/"/>
+    <category term="CVE" scheme="http://boogipop.com/tags/CVE/"/>
     
   </entry>
   
   <entry>
     <title>Ysoserial JRMPListener/Client Review</title>
-    <link href="http://example.com/2024/02/29/Ysoserial%20JRMPListener_Client%20Review/"/>
-    <id>http://example.com/2024/02/29/Ysoserial%20JRMPListener_Client%20Review/</id>
+    <link href="http://boogipop.com/2024/02/29/Ysoserial%20JRMPListener_Client%20Review/"/>
+    <id>http://boogipop.com/2024/02/29/Ysoserial%20JRMPListener_Client%20Review/</id>
     <published>2024-02-29T00:42:44.000Z</published>
     <updated>2024-02-29T00:42:44.000Z</updated>
     
@@ -260,19 +260,19 @@
     
     
     
-    <category term="At Dawn" scheme="http://example.com/categories/At-Dawn/"/>
+    <category term="At Dawn" scheme="http://boogipop.com/categories/At-Dawn/"/>
     
     
-    <category term="Java" scheme="http://example.com/tags/Java/"/>
+    <category term="Java" scheme="http://boogipop.com/tags/Java/"/>
     
-    <category term="RMI" scheme="http://example.com/tags/RMI/"/>
+    <category term="RMI" scheme="http://boogipop.com/tags/RMI/"/>
     
   </entry>
   
   <entry>
     <title>Oracle 注入 RCE 由浅入深</title>
-    <link href="http://example.com/2024/02/29/Oracle%20%E6%B3%A8%E5%85%A5%20RCE%20%E7%94%B1%E6%B5%85%E5%85%A5%E6%B7%B1/"/>
-    <id>http://example.com/2024/02/29/Oracle%20%E6%B3%A8%E5%85%A5%20RCE%20%E7%94%B1%E6%B5%85%E5%85%A5%E6%B7%B1/</id>
+    <link href="http://boogipop.com/2024/02/29/Oracle%20%E6%B3%A8%E5%85%A5%20RCE%20%E7%94%B1%E6%B5%85%E5%85%A5%E6%B7%B1/"/>
+    <id>http://boogipop.com/2024/02/29/Oracle%20%E6%B3%A8%E5%85%A5%20RCE%20%E7%94%B1%E6%B5%85%E5%85%A5%E6%B7%B1/</id>
     <published>2024-02-29T00:42:24.000Z</published>
     <updated>2024-02-29T00:42:24.000Z</updated>
     
@@ -283,19 +283,19 @@
     
     
     
-    <category term="At Dawn" scheme="http://example.com/categories/At-Dawn/"/>
+    <category term="At Dawn" scheme="http://boogipop.com/categories/At-Dawn/"/>
     
     
-    <category term="CTF" scheme="http://example.com/tags/CTF/"/>
+    <category term="CTF" scheme="http://boogipop.com/tags/CTF/"/>
     
-    <category term="Oracle" scheme="http://example.com/tags/Oracle/"/>
+    <category term="Oracle" scheme="http://boogipop.com/tags/Oracle/"/>
     
   </entry>
   
   <entry>
     <title>BCEL环境下利用全反射构造高可用内存马</title>
-    <link href="http://example.com/2024/02/29/BCEL%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%88%A9%E7%94%A8%E5%85%A8%E5%8F%8D%E5%B0%84%E6%9E%84%E9%80%A0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%86%85%E5%AD%98%E9%A9%AC/"/>
-    <id>http://example.com/2024/02/29/BCEL%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%88%A9%E7%94%A8%E5%85%A8%E5%8F%8D%E5%B0%84%E6%9E%84%E9%80%A0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%86%85%E5%AD%98%E9%A9%AC/</id>
+    <link href="http://boogipop.com/2024/02/29/BCEL%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%88%A9%E7%94%A8%E5%85%A8%E5%8F%8D%E5%B0%84%E6%9E%84%E9%80%A0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%86%85%E5%AD%98%E9%A9%AC/"/>
+    <id>http://boogipop.com/2024/02/29/BCEL%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%88%A9%E7%94%A8%E5%85%A8%E5%8F%8D%E5%B0%84%E6%9E%84%E9%80%A0%E9%AB%98%E5%8F%AF%E7%94%A8%E5%86%85%E5%AD%98%E9%A9%AC/</id>
     <published>2024-02-29T00:42:06.000Z</published>
     <updated>2024-02-29T00:42:06.000Z</updated>
     
@@ -306,19 +306,19 @@
     
     
     
-    <category term="At Dawn" scheme="http://example.com/categories/At-Dawn/"/>
+    <category term="At Dawn" scheme="http://boogipop.com/categories/At-Dawn/"/>
     
     
-    <category term="Java" scheme="http://example.com/tags/Java/"/>
+    <category term="Java" scheme="http://boogipop.com/tags/Java/"/>
     
-    <category term="CTF" scheme="http://example.com/tags/CTF/"/>
+    <category term="CTF" scheme="http://boogipop.com/tags/CTF/"/>
     
   </entry>
   
   <entry>
     <title>Atlassian Confluence CVE-2023-22527 分析及武器化实现</title>
-    <link href="http://example.com/2024/02/29/Atlassian%20Confluence%20CVE-2023-22527%20%E5%88%86%E6%9E%90%E5%8F%8A%E6%AD%A6%E5%99%A8%E5%8C%96%E5%AE%9E%E7%8E%B0/"/>
-    <id>http://example.com/2024/02/29/Atlassian%20Confluence%20CVE-2023-22527%20%E5%88%86%E6%9E%90%E5%8F%8A%E6%AD%A6%E5%99%A8%E5%8C%96%E5%AE%9E%E7%8E%B0/</id>
+    <link href="http://boogipop.com/2024/02/29/Atlassian%20Confluence%20CVE-2023-22527%20%E5%88%86%E6%9E%90%E5%8F%8A%E6%AD%A6%E5%99%A8%E5%8C%96%E5%AE%9E%E7%8E%B0/"/>
+    <id>http://boogipop.com/2024/02/29/Atlassian%20Confluence%20CVE-2023-22527%20%E5%88%86%E6%9E%90%E5%8F%8A%E6%AD%A6%E5%99%A8%E5%8C%96%E5%AE%9E%E7%8E%B0/</id>
     <published>2024-02-29T00:41:58.000Z</published>
     <updated>2024-02-29T00:41:58.000Z</updated>
     
@@ -329,19 +329,19 @@
     
     
     
-    <category term="At Dawn" scheme="http://example.com/categories/At-Dawn/"/>
+    <category term="At Dawn" scheme="http://boogipop.com/categories/At-Dawn/"/>
     
     
-    <category term="Java" scheme="http://example.com/tags/Java/"/>
+    <category term="Java" scheme="http://boogipop.com/tags/Java/"/>
     
-    <category term="CVE" scheme="http://example.com/tags/CVE/"/>
+    <category term="CVE" scheme="http://boogipop.com/tags/CVE/"/>
     
   </entry>
   
   <entry>
     <title>【.NET 安全】ASP.NET SoapFormatter Deserialization 04</title>
-    <link href="http://example.com/2024/02/26/%E3%80%90.NET%20%E5%AE%89%E5%85%A8%E3%80%91ASP.NET%20SoapFormatter%20Deserialization%2004/"/>
-    <id>http://example.com/2024/02/26/%E3%80%90.NET%20%E5%AE%89%E5%85%A8%E3%80%91ASP.NET%20SoapFormatter%20Deserialization%2004/</id>
+    <link href="http://boogipop.com/2024/02/26/%E3%80%90.NET%20%E5%AE%89%E5%85%A8%E3%80%91ASP.NET%20SoapFormatter%20Deserialization%2004/"/>
+    <id>http://boogipop.com/2024/02/26/%E3%80%90.NET%20%E5%AE%89%E5%85%A8%E3%80%91ASP.NET%20SoapFormatter%20Deserialization%2004/</id>
     <published>2024-02-26T12:29:42.000Z</published>
     <updated>2024-02-26T12:29:42.000Z</updated>
     
@@ -352,19 +352,19 @@
     
     
     
-    <category term="At Dawn" scheme="http://example.com/categories/At-Dawn/"/>
+    <category term="At Dawn" scheme="http://boogipop.com/categories/At-Dawn/"/>
     
     
-    <category term="反序列化" scheme="http://example.com/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
+    <category term="反序列化" scheme="http://boogipop.com/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
     
-    <category term=".NET" scheme="http://example.com/tags/NET/"/>
+    <category term=".NET" scheme="http://boogipop.com/tags/NET/"/>
     
   </entry>
   
   <entry>
     <title>易懂的Rome反序列化利用链(updated)</title>
-    <link href="http://example.com/2024/02/12/%E6%98%93%E6%87%82%E7%9A%84Rome%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8%E9%93%BE%EF%BC%88%E6%9B%B4%E6%96%B0%EF%BC%89/"/>
-    <id>http://example.com/2024/02/12/%E6%98%93%E6%87%82%E7%9A%84Rome%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8%E9%93%BE%EF%BC%88%E6%9B%B4%E6%96%B0%EF%BC%89/</id>
+    <link href="http://boogipop.com/2024/02/12/%E6%98%93%E6%87%82%E7%9A%84Rome%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8%E9%93%BE%EF%BC%88%E6%9B%B4%E6%96%B0%EF%BC%89/"/>
+    <id>http://boogipop.com/2024/02/12/%E6%98%93%E6%87%82%E7%9A%84Rome%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8%E9%93%BE%EF%BC%88%E6%9B%B4%E6%96%B0%EF%BC%89/</id>
     <published>2024-02-12T07:05:22.000Z</published>
     <updated>2024-02-12T07:05:22.000Z</updated>
     
@@ -375,21 +375,21 @@
     
     
     
-    <category term="At Dawn" scheme="http://example.com/categories/At-Dawn/"/>
+    <category term="At Dawn" scheme="http://boogipop.com/categories/At-Dawn/"/>
     
     
-    <category term="Java" scheme="http://example.com/tags/Java/"/>
+    <category term="Java" scheme="http://boogipop.com/tags/Java/"/>
     
-    <category term="CTF" scheme="http://example.com/tags/CTF/"/>
+    <category term="CTF" scheme="http://boogipop.com/tags/CTF/"/>
     
-    <category term="Rome" scheme="http://example.com/tags/Rome/"/>
+    <category term="Rome" scheme="http://boogipop.com/tags/Rome/"/>
     
   </entry>
   
   <entry>
     <title>HDCTF2023 Web出题记录</title>
-    <link href="http://example.com/2024/02/12/HDCTF2023%20Web%E9%A2%98%E5%87%BA%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
-    <id>http://example.com/2024/02/12/HDCTF2023%20Web%E9%A2%98%E5%87%BA%E9%A2%98%E8%AE%B0%E5%BD%95/</id>
+    <link href="http://boogipop.com/2024/02/12/HDCTF2023%20Web%E9%A2%98%E5%87%BA%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
+    <id>http://boogipop.com/2024/02/12/HDCTF2023%20Web%E9%A2%98%E5%87%BA%E9%A2%98%E8%AE%B0%E5%BD%95/</id>
     <published>2024-02-12T07:03:20.000Z</published>
     <updated>2024-02-12T07:03:20.000Z</updated>
     
@@ -400,19 +400,19 @@
     
     
     
-    <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="WriteUp" scheme="http://example.com/tags/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/tags/WriteUp/"/>
     
-    <category term="HDCTF" scheme="http://example.com/tags/HDCTF/"/>
+    <category term="HDCTF" scheme="http://boogipop.com/tags/HDCTF/"/>
     
   </entry>
   
   <entry>
     <title>第七届 杭州西湖论剑网络安全大赛 Writeup</title>
-    <link href="http://example.com/2024/02/12/%E7%AC%AC%E4%B8%83%E5%B1%8A%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91Writeup/"/>
-    <id>http://example.com/2024/02/12/%E7%AC%AC%E4%B8%83%E5%B1%8A%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91Writeup/</id>
+    <link href="http://boogipop.com/2024/02/12/%E7%AC%AC%E4%B8%83%E5%B1%8A%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91Writeup/"/>
+    <id>http://boogipop.com/2024/02/12/%E7%AC%AC%E4%B8%83%E5%B1%8A%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91Writeup/</id>
     <published>2024-02-12T07:02:56.000Z</published>
     <updated>2024-02-12T07:02:56.000Z</updated>
     
@@ -423,19 +423,19 @@
     
     
     
-    <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="WriteUp" scheme="http://example.com/tags/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/tags/WriteUp/"/>
     
-    <category term="西湖论剑" scheme="http://example.com/tags/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91/"/>
+    <category term="西湖论剑" scheme="http://boogipop.com/tags/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91/"/>
     
   </entry>
   
   <entry>
     <title>2023年春秋杯网络安全联赛冬季赛 Web Writeup</title>
-    <link href="http://example.com/2024/02/10/2023%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E5%86%AC%E5%AD%A3%E8%B5%9B%20Web%20Writeup/"/>
-    <id>http://example.com/2024/02/10/2023%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E5%86%AC%E5%AD%A3%E8%B5%9B%20Web%20Writeup/</id>
+    <link href="http://boogipop.com/2024/02/10/2023%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E5%86%AC%E5%AD%A3%E8%B5%9B%20Web%20Writeup/"/>
+    <id>http://boogipop.com/2024/02/10/2023%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E5%86%AC%E5%AD%A3%E8%B5%9B%20Web%20Writeup/</id>
     <published>2024-02-10T06:57:28.000Z</published>
     <updated>2024-02-10T06:57:28.000Z</updated>
     
@@ -446,17 +446,17 @@
     
     
     
-    <category term="WriteUp" scheme="http://example.com/categories/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="WriteUp" scheme="http://example.com/tags/WriteUp/"/>
+    <category term="WriteUp" scheme="http://boogipop.com/tags/WriteUp/"/>
     
   </entry>
   
   <entry>
     <title>【.NET 安全】ASP.NET BinaryFormatter Deserialization 03</title>
-    <link href="http://example.com/2024/02/07/%E3%80%90.NET%20%E5%AE%89%E5%85%A8%E3%80%91ASP.NET%20BinaryFormatter%20Deserialization%2003/"/>
-    <id>http://example.com/2024/02/07/%E3%80%90.NET%20%E5%AE%89%E5%85%A8%E3%80%91ASP.NET%20BinaryFormatter%20Deserialization%2003/</id>
+    <link href="http://boogipop.com/2024/02/07/%E3%80%90.NET%20%E5%AE%89%E5%85%A8%E3%80%91ASP.NET%20BinaryFormatter%20Deserialization%2003/"/>
+    <id>http://boogipop.com/2024/02/07/%E3%80%90.NET%20%E5%AE%89%E5%85%A8%E3%80%91ASP.NET%20BinaryFormatter%20Deserialization%2003/</id>
     <published>2024-02-07T13:39:42.000Z</published>
     <updated>2024-02-07T13:39:42.000Z</updated>
     
@@ -467,12 +467,12 @@
     
     
     
-    <category term="At Dawn" scheme="http://example.com/categories/At-Dawn/"/>
+    <category term="At Dawn" scheme="http://boogipop.com/categories/At-Dawn/"/>
     
     
-    <category term="反序列化" scheme="http://example.com/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
+    <category term="反序列化" scheme="http://boogipop.com/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
     
-    <category term=".NET" scheme="http://example.com/tags/NET/"/>
+    <category term=".NET" scheme="http://boogipop.com/tags/NET/"/>
     
   </entry>
   
