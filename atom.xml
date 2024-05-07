@@ -100,9 +100,9 @@
     <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="Writeup" scheme="http://boogipop.com/tags/Writeup/"/>
-    
     <category term="CTF" scheme="http://boogipop.com/tags/CTF/"/>
+    
+    <category term="Writeup" scheme="http://boogipop.com/tags/Writeup/"/>
     
   </entry>
   
