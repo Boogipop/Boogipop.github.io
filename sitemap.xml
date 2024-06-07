@@ -1766,6 +1766,13 @@
 
   
   <url>
+    <loc>http://boogipop.com/tags/life/</loc>
+    <lastmod>2024-06-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://boogipop.com/tags/WriteUp/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -1787,13 +1794,6 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/life/</loc>
-    <lastmod>2024-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://boogipop.com/tags/ACTF/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -1801,7 +1801,7 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/%E5%86%85%E5%AD%98%E9%A9%AC/</loc>
+    <loc>http://boogipop.com/tags/Writeup/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1809,6 +1809,13 @@
   
   <url>
     <loc>http://boogipop.com/tags/CTF/</loc>
+    <lastmod>2024-06-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://boogipop.com/tags/%E5%86%85%E5%AD%98%E9%A9%AC/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1823,13 +1830,6 @@
   
   <url>
     <loc>http://boogipop.com/tags/CVE/</loc>
-    <lastmod>2024-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/Writeup/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1871,14 +1871,14 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/RCE/</loc>
+    <loc>http://boogipop.com/tags/SSTI/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/SSTI/</loc>
+    <loc>http://boogipop.com/tags/RCE/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1913,6 +1913,13 @@
   </url>
   
   <url>
+    <loc>http://boogipop.com/tags/FASTCGI/</loc>
+    <lastmod>2024-06-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://boogipop.com/tags/XCTF/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -1920,21 +1927,7 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</loc>
-    <lastmod>2024-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/%E4%BC%AA%E5%8D%8F%E8%AE%AE/</loc>
-    <lastmod>2024-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/FASTCGI/</loc>
+    <loc>http://boogipop.com/tags/%E5%BC%80%E5%8F%91/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1949,13 +1942,6 @@
   
   <url>
     <loc>http://boogipop.com/tags/hxp/</loc>
-    <lastmod>2024-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/%E5%BC%80%E5%8F%91/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1983,6 +1969,27 @@
   </url>
   
   <url>
+    <loc>http://boogipop.com/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</loc>
+    <lastmod>2024-06-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://boogipop.com/tags/%E4%BC%AA%E5%8D%8F%E8%AE%AE/</loc>
+    <lastmod>2024-06-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://boogipop.com/tags/CC%E9%93%BE/</loc>
+    <lastmod>2024-06-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://boogipop.com/tags/Neepu/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -1998,13 +2005,6 @@
   
   <url>
     <loc>http://boogipop.com/tags/%E5%8E%9F%E5%9E%8B%E9%93%BE/</loc>
-    <lastmod>2024-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/CC%E9%93%BE/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2060,6 +2060,13 @@
   </url>
   
   <url>
+    <loc>http://boogipop.com/tags/TCTF/</loc>
+    <lastmod>2024-06-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://boogipop.com/tags/TPCTF/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -2075,13 +2082,6 @@
   
   <url>
     <loc>http://boogipop.com/tags/ThinkPHP/</loc>
-    <lastmod>2024-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/TCTF/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2158,7 +2158,7 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/D3CTF/</loc>
+    <loc>http://boogipop.com/tags/Jetty/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2179,14 +2179,7 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/Jetty/</loc>
-    <lastmod>2024-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/Xsleaks/</loc>
+    <loc>http://boogipop.com/tags/D3CTF/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2201,13 +2194,6 @@
   
   <url>
     <loc>http://boogipop.com/tags/Rome/</loc>
-    <lastmod>2024-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2235,7 +2221,14 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/QWB/</loc>
+    <loc>http://boogipop.com/tags/Xsleaks/</loc>
+    <lastmod>2024-06-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://boogipop.com/tags/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2255,17 +2248,24 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>http://boogipop.com/tags/QWB/</loc>
+    <lastmod>2024-06-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
-    <loc>http://boogipop.com/categories/WriteUp/</loc>
+    <loc>http://boogipop.com/categories/ThinkAbout/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://boogipop.com/categories/ThinkAbout/</loc>
+    <loc>http://boogipop.com/categories/WriteUp/</loc>
     <lastmod>2024-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
