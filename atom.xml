@@ -6,7 +6,7 @@
   <link href="http://boogipop.com/atom.xml" rel="self"/>
   
   <link href="http://boogipop.com/"/>
-  <updated>2024-06-14T16:16:41.518Z</updated>
+  <updated>2024-11-18T08:09:33.238Z</updated>
   <id>http://boogipop.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://boogipop.com/2024/06/15/GuiLin/"/>
     <id>http://boogipop.com/2024/06/15/GuiLin/</id>
     <published>2024-06-14T16:16:04.195Z</published>
-    <updated>2024-06-14T16:16:41.518Z</updated>
+    <updated>2024-11-18T08:09:33.238Z</updated>
     
-    <content type="html"><![CDATA[<p>一个说不上喜欢还是讨厌的地方。</p><p>充满着回忆，充满着开心与悲伤。</p>]]></content>
+    <content type="html"><![CDATA[<p>感谢</p>]]></content>
     
     
     <summary type="html">SomeThink</summary>
@@ -180,9 +180,9 @@
     <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="Writeup" scheme="http://boogipop.com/tags/Writeup/"/>
-    
     <category term="CTF" scheme="http://boogipop.com/tags/CTF/"/>
+    
+    <category term="Writeup" scheme="http://boogipop.com/tags/Writeup/"/>
     
   </entry>
   
