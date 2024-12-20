@@ -1794,14 +1794,7 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/HackTheBox/</loc>
-    <lastmod>2024-12-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/%E5%86%85%E5%AD%98%E9%A9%AC/</loc>
+    <loc>http://boogipop.com/tags/Writeup/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1815,7 +1808,14 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/Writeup/</loc>
+    <loc>http://boogipop.com/tags/HackTheBox/</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://boogipop.com/tags/%E5%86%85%E5%AD%98%E9%A9%AC/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1920,6 +1920,13 @@
   </url>
   
   <url>
+    <loc>http://boogipop.com/tags/FASTCGI/</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://boogipop.com/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -1928,13 +1935,6 @@
   
   <url>
     <loc>http://boogipop.com/tags/%E4%BC%AA%E5%8D%8F%E8%AE%AE/</loc>
-    <lastmod>2024-12-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/FASTCGI/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1997,13 +1997,6 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/PHP/</loc>
-    <lastmod>2024-12-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://boogipop.com/tags/Nodejs/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -2025,6 +2018,20 @@
   </url>
   
   <url>
+    <loc>http://boogipop.com/tags/PHP/</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://boogipop.com/tags/Oracle/</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://boogipop.com/tags/Yaml/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -2033,13 +2040,6 @@
   
   <url>
     <loc>http://boogipop.com/tags/Python/</loc>
-    <lastmod>2024-12-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/Oracle/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2102,14 +2102,14 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/Weblogic/</loc>
+    <loc>http://boogipop.com/tags/XXE/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/XXE/</loc>
+    <loc>http://boogipop.com/tags/Weblogic/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2172,14 +2172,14 @@
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/Jetty/</loc>
+    <loc>http://boogipop.com/tags/D3CTF/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://boogipop.com/tags/D3CTF/</loc>
+    <loc>http://boogipop.com/tags/Jetty/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2207,6 +2207,13 @@
   </url>
   
   <url>
+    <loc>http://boogipop.com/tags/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C/</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://boogipop.com/tags/Java/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -2222,13 +2229,6 @@
   
   <url>
     <loc>http://boogipop.com/tags/private/</loc>
-    <lastmod>2024-12-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://boogipop.com/tags/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
