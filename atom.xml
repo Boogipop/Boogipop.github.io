@@ -6,7 +6,7 @@
   <link href="http://boogipop.com/atom.xml" rel="self"/>
   
   <link href="http://boogipop.com/"/>
-  <updated>2024-12-20T09:38:56.020Z</updated>
+  <updated>2024-12-20T09:40:36.491Z</updated>
   <id>http://boogipop.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>桂林-6.9-6.11</title>
+    <title>博客停更说明（不定期）</title>
     <link href="http://boogipop.com/2024/12/20/%E5%8D%9A%E5%AE%A2%E5%81%9C%E6%9B%B4%E8%AF%B4%E6%98%8E/"/>
     <id>http://boogipop.com/2024/12/20/%E5%8D%9A%E5%AE%A2%E5%81%9C%E6%9B%B4%E8%AF%B4%E6%98%8E/</id>
     <published>2024-12-20T09:37:39.654Z</published>
-    <updated>2024-12-20T09:38:56.020Z</updated>
+    <updated>2024-12-20T09:40:36.491Z</updated>
     
     <content type="html"><![CDATA[<p>临近大四，学习频率也没那么快了，现在的CTF比赛也越来越魔幻和卷了，有点打不动了，后期可能随缘更新了，感谢大家看我发癫。</p>]]></content>
     
@@ -199,9 +199,9 @@
     <category term="WriteUp" scheme="http://boogipop.com/categories/WriteUp/"/>
     
     
-    <category term="CTF" scheme="http://boogipop.com/tags/CTF/"/>
-    
     <category term="Writeup" scheme="http://boogipop.com/tags/Writeup/"/>
+    
+    <category term="CTF" scheme="http://boogipop.com/tags/CTF/"/>
     
   </entry>
   
